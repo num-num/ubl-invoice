@@ -1,5 +1,5 @@
 {
-    "name": "CleverIT/UBL_invoice",
+    "name": "cleverit/ubl_invoice",
     "description": "A PHP wrapper for UBL invoices",
     "keywords": [
         "ubl", "invoice", "ublinvoice", "cleverit", "clever invoice", "electronic invoice", "xml", "xml invoice"
