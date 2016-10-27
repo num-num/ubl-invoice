@@ -16,7 +16,7 @@ class InvoiceLine implements XmlSerializable {
     private $id;
     private $invoicedQuantity;
     private $lineExtensionAmount;
-    private $unitCode = 'SRV';
+    private $unitCode = 'MON';
     /**
      * @var TaxTotal
      */
