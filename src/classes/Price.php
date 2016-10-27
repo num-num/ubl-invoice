@@ -15,6 +15,7 @@ use Sabre\Xml\XmlSerializable;
 class Price implements XmlSerializable {
     private $priceAmount;
     private $baseQuantity;
+    private $unitCode = 'SRV';
 
     /**
      * @return mixed
@@ -48,6 +49,23 @@ class Price implements XmlSerializable {
         return $this;
     }
 
+    /**
+     * @return mixed
+     */
+    public function getUnitCode() {
+        return $this->unitCode;
+    }
+
+    /**
+     * @param mixed $unitCode
+     * @return Price
+     */
+    public function setUnitCode($unitCode) {
+        $this->unitCode = $unitCode;
+        return $this;
+    }
+
+
 
     /**
      * The xmlSerialize method is called during xml writing.
@@ -68,7 +86,7 @@ class Price implements XmlSerializable {
                 'name' => Schema::CBC.'BaseQuantity',
                 'value' => $this->baseQuantity,
                 'attributes' => [
-                    'baseQuantity' => 'MON'
+                    'baseQuantity' => $this->unitCode
                 ]
             ]
 

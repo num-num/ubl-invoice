@@ -16,6 +16,7 @@ class InvoiceLine implements XmlSerializable {
     private $id;
     private $invoicedQuantity;
     private $lineExtensionAmount;
+    private $unitCode = 'SRV';
     /**
      * @var TaxTotal
      */
@@ -125,7 +126,21 @@ class InvoiceLine implements XmlSerializable {
         return $this;
     }
 
+    /**
+     * @return mixed
+     */
+    public function getUnitCode() {
+        return $this->unitCode;
+    }
 
+    /**
+     * @param mixed $unitCode
+     * @return InvoiceLine
+     */
+    public function setUnitCode($unitCode) {
+        $this->unitCode = $unitCode;
+        return $this;
+    }
 
 
     /**
@@ -140,7 +155,7 @@ class InvoiceLine implements XmlSerializable {
                 'name' => Schema::CBC . 'InvoicedQuantity',
                 'value' => $this->invoicedQuantity,
                 'attributes' => [
-                    'unitCode' => 'MON'
+                    'unitCode' => $this->unitCode
                 ]
             ],
             [
