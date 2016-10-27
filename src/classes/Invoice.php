@@ -110,7 +110,7 @@ class Invoice implements XmlSerializable{
             $cbc.'IssueDate' => $this->issueDate->format('Y-m-d'),
             $cbc.'InvoiceTypeCode' => $this->invoiceTypeCode,
             $cac.'AccountingSupplierParty' => [$cac."Party" => $this->accountingSupplierParty],
-            $cac.'AccountingCustomerParty' => [$cac."Party" => $this->accountingSupplierParty],
+            $cac.'AccountingCustomerParty' => [$cac."Party" => $this->accountingCustomerParty],
         ]);
 
 
