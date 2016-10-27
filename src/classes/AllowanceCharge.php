@@ -143,9 +143,30 @@ class AllowanceCharge implements XmlSerializable {
      */
     function xmlSerialize(Writer $writer) {
         $writer->write([
-            Schema::CBC.'ChargeIndicator' => $this->chargeIndicator ? 'true' : 'false',
+            Schema::CBC . 'ChargeIndicator' => $this->chargeIndicator ? 'true' : 'false',
+        ]);
+
+        if ($this->allowanceChargeReasonCode !== null) {
+            $writer->write([
+                Schema::CBC . 'AllowanceChargeReasonCode' => $this->allowanceChargeReasonCode
+            ]);
+        }
+
+        if ($this->allowanceChargeReason !== null) {
+            $writer->write([
+                Schema::CBC . 'AllowanceChargeReason' => $this->allowanceChargeReason
+            ]);
+        }
+
+        if ($this->multiplierFactorNumeric !== null) {
+            $writer->write([
+                Schema::CBC . 'MultiplierFactorNumeric' => $this->multiplierFactorNumeric
+            ]);
+        }
+
+        $writer->write([
             [
-                'name' => Schema::CBC.'Amount',
+                'name' => Schema::CBC . 'Amount',
                 'value' => $this->amount,
                 'attributes' => [
                     'currencyID' => Generator::$currencyID
@@ -153,27 +174,15 @@ class AllowanceCharge implements XmlSerializable {
             ],
         ]);
 
-        if($this->allowanceChargeReasonCode !== null){
+        if ($this->baseAmount !== null) {
             $writer->write([
-               Schema::CBC.'AllowanceChargeReasonCode' => $this->allowanceChargeReasonCode
-            ]);
-        }
-
-        if($this->allowanceChargeReason !== null){
-            $writer->write([
-                Schema::CBC.'AllowanceChargeReason' => $this->allowanceChargeReason
-            ]);
-        }
-
-        if($this->multiplierFactorNumeric !== null){
-            $writer->write([
-                Schema::CBC.'MultiplierFactorNumeric' => $this->multiplierFactorNumeric
-            ]);
-        }
-
-        if($this->baseAmount !== null){
-            $writer->write([
-                Schema::CBC.'BaseAmount' => $this->baseAmount
+                [
+                    'name' => Schema::CBC . 'BaseAmount',
+                    'value' => $this->baseAmount,
+                    'attributes' => [
+                        'currencyID' => Generator::$currencyID
+                    ]
+                ]
             ]);
         }
     }
