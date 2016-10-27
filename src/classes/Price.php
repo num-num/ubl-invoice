@@ -86,7 +86,7 @@ class Price implements XmlSerializable {
                 'name' => Schema::CBC.'BaseQuantity',
                 'value' => $this->baseQuantity,
                 'attributes' => [
-                    'baseQuantity' => $this->unitCode
+                    'unitCode' => $this->unitCode
                 ]
             ]
 
