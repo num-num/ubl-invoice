@@ -61,7 +61,7 @@ class Price implements XmlSerializable {
                 'name' => 'PriceAmount',
                 'value' => $this->priceAmount,
                 'attributes' => [
-                    'currencyID' => 'EUR'
+                    'currencyID' => Generator::$currencyID
                 ]
             ],
             [

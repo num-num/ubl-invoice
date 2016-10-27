@@ -97,7 +97,7 @@ class TaxSubTotal implements XmlSerializable {
                     'name' => Schema::CBC . 'TaxableAmount',
                     'value' => $this->taxableAmount,
                     'attributes' => [
-                        'currencyID' => 'EUR'
+                        'currencyID' => Generator::$currencyID
                     ]
 
                 ],
@@ -105,7 +105,7 @@ class TaxSubTotal implements XmlSerializable {
                     'name' => Schema::CBC . 'TaxAmount',
                     'value' => $this->taxAmount,
                     'attributes' => [
-                        'currencyID' => 'EUR'
+                        'currencyID' => Generator::$currencyID
                     ]
 
                 ],

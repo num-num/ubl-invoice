@@ -96,7 +96,7 @@ class LegalMonetaryTotal implements XmlSerializable {
                 'name' => Schema::CBC . 'LineExtensionAmount',
                 'value' => $this->lineExtensionAmount,
                 'attributes' => [
-                    'currencyID' => 'EUR'
+                    'currencyID' => Generator::$currencyID
                 ]
 
             ],
@@ -104,7 +104,7 @@ class LegalMonetaryTotal implements XmlSerializable {
                 'name' => Schema::CBC . 'TaxExclusiveAmount',
                 'value' => $this->taxExclusiveAmount,
                 'attributes' => [
-                    'currencyID' => 'EUR'
+                    'currencyID' => Generator::$currencyID
                 ]
 
             ],
@@ -112,7 +112,7 @@ class LegalMonetaryTotal implements XmlSerializable {
                 'name' => Schema::CBC . 'AllowanceTotalAmount',
                 'value' => $this->allowanceTotalAmount,
                 'attributes' => [
-                    'currencyID' => 'EUR'
+                    'currencyID' => Generator::$currencyID
                 ]
 
             ],
@@ -120,7 +120,7 @@ class LegalMonetaryTotal implements XmlSerializable {
                 'name' => Schema::CBC . 'PayableAmount',
                 'value' => $this->payableAmount,
                 'attributes' => [
-                    'currencyID' => 'EUR'
+                    'currencyID' => Generator::$currencyID
                 ]
 
             ],

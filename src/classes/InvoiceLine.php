@@ -129,7 +129,7 @@ class InvoiceLine implements XmlSerializable {
                 'name' => Schema::CBC . 'LineExtensionAmount',
                 'value' => $this->lineExtensionAmount,
                 'attributes' => [
-                    'currencyID' => 'EUR'
+                    'currencyID' => Generator::$currencyID
                 ]
             ],
             Schema::CAC . 'TaxTotal' => $this->taxTotal,
