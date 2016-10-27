@@ -128,7 +128,7 @@ class Invoice implements XmlSerializable{
 
         foreach($this->allowanceCharges as $invoiceLine){
             $writer->write([
-                Schema::CAC.'InvoiceLine' => $invoiceLine
+                Schema::CAC.'AllowanceCharge' => $invoiceLine
             ]);
         }
 

@@ -143,9 +143,9 @@ class AllowanceCharge implements XmlSerializable {
      */
     function xmlSerialize(Writer $writer) {
         $writer->write([
-            'ChargeIndicator' => $this->chargeIndicator ? 'true' : 'false',
+            Schema::CBC.'ChargeIndicator' => $this->chargeIndicator ? 'true' : 'false',
             [
-                'name' => 'Amount',
+                'name' => Schema::CBC.'Amount',
                 'value' => $this->amount,
                 'attributes' => [
                     'currencyID' => Generator::$currencyID
@@ -155,25 +155,25 @@ class AllowanceCharge implements XmlSerializable {
 
         if($this->allowanceChargeReasonCode !== null){
             $writer->write([
-               'AllowanceChargeReasonCode' => $this->allowanceChargeReasonCode
+               Schema::CBC.'AllowanceChargeReasonCode' => $this->allowanceChargeReasonCode
             ]);
         }
 
         if($this->allowanceChargeReason !== null){
             $writer->write([
-                'AllowanceChargeReason' => $this->allowanceChargeReason
+                Schema::CBC.'AllowanceChargeReason' => $this->allowanceChargeReason
             ]);
         }
 
         if($this->multiplierFactorNumeric !== null){
             $writer->write([
-                'MultiplierFactorNumeric' => $this->multiplierFactorNumeric
+                Schema::CBC.'MultiplierFactorNumeric' => $this->multiplierFactorNumeric
             ]);
         }
 
         if($this->baseAmount !== null){
             $writer->write([
-                'BaseAmount' => $this->baseAmount
+                Schema::CBC.'BaseAmount' => $this->baseAmount
             ]);
         }
     }
