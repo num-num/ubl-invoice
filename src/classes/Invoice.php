@@ -53,6 +53,10 @@ class Invoice implements XmlSerializable{
      * @var InvoiceLine[]
      */
     private $invoiceLines;
+    /**
+     * @var AllowanceCharge[]
+     */
+    private $allowanceCharges;
 
 
     function validate(){
@@ -122,20 +126,12 @@ class Invoice implements XmlSerializable{
             ]);
         }
 
-    }
+        foreach($this->allowanceCharges as $invoiceLine){
+            $writer->write([
+                Schema::CAC.'InvoiceLine' => $invoiceLine
+            ]);
+        }
 
-    /**
-     * @return int
-     */
-    public function getUBLVersionID() {
-        return $this->UBLVersionID;
-    }
-
-    /**
-     * @param int $UBLVersionID
-     */
-    public function setUBLVersionID($UBLVersionID) {
-        $this->UBLVersionID = $UBLVersionID;
     }
 
     /**
@@ -147,9 +143,11 @@ class Invoice implements XmlSerializable{
 
     /**
      * @param int $id
+     * @return Invoice
      */
     public function setId($id) {
         $this->id = $id;
+        return $this;
     }
 
     /**
@@ -161,9 +159,11 @@ class Invoice implements XmlSerializable{
 
     /**
      * @param boolean $copyIndicator
+     * @return Invoice
      */
     public function setCopyIndicator($copyIndicator) {
         $this->copyIndicator = $copyIndicator;
+        return $this;
     }
 
     /**
@@ -175,9 +175,11 @@ class Invoice implements XmlSerializable{
 
     /**
      * @param \DateTime $issueDate
+     * @return Invoice
      */
-    public function setIssueDate(\DateTime $issueDate) {
+    public function setIssueDate($issueDate) {
         $this->issueDate = $issueDate;
+        return $this;
     }
 
     /**
@@ -189,82 +191,107 @@ class Invoice implements XmlSerializable{
 
     /**
      * @param string $invoiceTypeCode
+     * @return Invoice
      */
     public function setInvoiceTypeCode($invoiceTypeCode) {
         $this->invoiceTypeCode = $invoiceTypeCode;
+        return $this;
     }
 
     /**
-     * @return mixed
+     * @return Party
      */
     public function getAccountingSupplierParty() {
         return $this->accountingSupplierParty;
     }
 
     /**
-     * @param mixed $accountingSupplierParty
+     * @param Party $accountingSupplierParty
+     * @return Invoice
      */
     public function setAccountingSupplierParty($accountingSupplierParty) {
         $this->accountingSupplierParty = $accountingSupplierParty;
+        return $this;
     }
 
     /**
-     * @return mixed
+     * @return Party
      */
     public function getAccountingCustomerParty() {
         return $this->accountingCustomerParty;
     }
 
     /**
-     * @param mixed $accountingCustomerParty
+     * @param Party $accountingCustomerParty
+     * @return Invoice
      */
     public function setAccountingCustomerParty($accountingCustomerParty) {
         $this->accountingCustomerParty = $accountingCustomerParty;
+        return $this;
     }
 
     /**
-     * @return mixed
+     * @return TaxTotal[]
      */
     public function getTaxTotal() {
         return $this->taxTotal;
     }
 
     /**
-     * @param mixed $taxTotal
+     * @param TaxTotal[] $taxTotal
+     * @return Invoice
      */
     public function setTaxTotal($taxTotal) {
         $this->taxTotal = $taxTotal;
+        return $this;
     }
 
     /**
-     * @return mixed
+     * @return LegalMonetaryTotal
      */
     public function getLegalMonetaryTotal() {
         return $this->legalMonetaryTotal;
     }
 
     /**
-     * @param mixed $legalMonetaryTotal
+     * @param LegalMonetaryTotal $legalMonetaryTotal
+     * @return Invoice
      */
     public function setLegalMonetaryTotal($legalMonetaryTotal) {
         $this->legalMonetaryTotal = $legalMonetaryTotal;
+        return $this;
     }
 
     /**
-     * @return mixed
+     * @return InvoiceLine[]
      */
     public function getInvoiceLines() {
         return $this->invoiceLines;
     }
 
     /**
-     * @param mixed $InvoiceLines
+     * @param InvoiceLine[] $invoiceLines
+     * @return Invoice
      */
-    public function setInvoiceLines($InvoiceLines) {
-        $this->invoiceLines = $InvoiceLines;
+    public function setInvoiceLines($invoiceLines) {
+        $this->invoiceLines = $invoiceLines;
+        return $this;
     }
 
+    /**
+     * @return AllowanceCharge[]
+     */
+    public function getAllowanceCharges() {
+        return $this->allowanceCharges;
+    }
 
-
+    /**
+     * @param AllowanceCharge[] $allowanceCharges
+     * @return Invoice
+     */
+    public function setAllowanceCharges($allowanceCharges) {
+        $this->allowanceCharges = $allowanceCharges;
+        return $this;
+    }
 
 }
