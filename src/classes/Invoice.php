@@ -113,11 +113,12 @@ class Invoice implements XmlSerializable{
             $cac.'AccountingCustomerParty' => [$cac."Party" => $this->accountingCustomerParty],
         ]);
 
-
-        foreach($this->allowanceCharges as $invoiceLine){
-            $writer->write([
-                Schema::CAC.'AllowanceCharge' => $invoiceLine
-            ]);
+        if($this->allowanceCharges != null) {
+            foreach ($this->allowanceCharges as $invoiceLine) {
+                $writer->write([
+                    Schema::CAC . 'AllowanceCharge' => $invoiceLine
+                ]);
+            }
         }
 
         foreach($this->taxTotal as $taxTotal){

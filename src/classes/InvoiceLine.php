@@ -109,6 +109,24 @@ class InvoiceLine implements XmlSerializable {
         return $this;
     }
 
+    /**
+     * @return Price
+     */
+    public function getPrice() {
+        return $this->price;
+    }
+
+    /**
+     * @param Price $price
+     * @return InvoiceLine
+     */
+    public function setPrice($price) {
+        $this->price = $price;
+        return $this;
+    }
+
+
+
 
     /**
      * The xmlSerialize method is called during xml writing.
