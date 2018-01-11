@@ -15,9 +15,9 @@ use Sabre\Xml\XmlSerializable;
 class TaxTotal implements XmlSerializable {
     private $taxAmount;
     /**
-     * @var TaxSubTotal
+     * @var array
      */
-    private $taxSubTotal;
+    private $taxSubTotals = array();
 
     /**
      * @return mixed
@@ -36,18 +36,18 @@ class TaxTotal implements XmlSerializable {
     }
 
     /**
-     * @return TaxSubTotal
+     * @return array
      */
-    public function getTaxSubTotal() {
-        return $this->taxSubTotal;
+    public function getTaxSubTotals() {
+        return $this->taxSubTotals;
     }
 
     /**
      * @param TaxSubTotal $taxSubTotal
      * @return TaxTotal
      */
-    public function setTaxSubTotal($taxSubTotal) {
-        $this->taxSubTotal = $taxSubTotal;
+    public function addTaxSubTotal($taxSubTotal) {
+        $this->taxSubTotals[] = $taxSubTotal;
         return $this;
     }
 
@@ -55,7 +55,7 @@ class TaxTotal implements XmlSerializable {
         if($this->taxAmount === null){
             throw new \InvalidArgumentException('Missing taxtotal taxamount');
         }
-        if($this->taxSubTotal === null){
+        if(count($this->taxSubTotals) === 0){
             throw new \InvalidArgumentException('Missing taxtotal taxsubtotal');
         }
     }
