@@ -71,12 +71,15 @@ class TaxTotal implements XmlSerializable {
         $writer->write([
             [
                 'name' => Schema::CBC . 'TaxAmount',
-                'value' => $this->taxAmount,
+                'value' => number_format($this->taxAmount,2),
                 'attributes' => [
                     'currencyID' => Generator::$currencyID
                 ]
             ],
-            Schema::CAC . 'TaxSubtotal' => $this->taxSubTotal
         ]);
+
+        foreach($this->taxSubTotals as $taxSubTotal){
+            $writer->write([Schema::CAC . 'TaxSubtotal' => $taxSubTotal]);
+        }
     }
 }

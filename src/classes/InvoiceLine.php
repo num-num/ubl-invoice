@@ -160,7 +160,7 @@ class InvoiceLine implements XmlSerializable {
             ],
             [
                 'name' => Schema::CBC . 'LineExtensionAmount',
-                'value' => $this->lineExtensionAmount,
+                'value' => number_format($this->lineExtensionAmount,2),
                 'attributes' => [
                     'currencyID' => Generator::$currencyID
                 ]

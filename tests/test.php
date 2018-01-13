@@ -1,5 +1,5 @@
 <?php
-require_once "vendor/autoload.php";
+require_once "../vendor/autoload.php";
 
 $xmlService = new Sabre\Xml\Service();
 
@@ -32,14 +32,21 @@ $invoice->setAccountingSupplierParty($accountingSupplierParty);
 $invoice->setAccountingCustomerParty($accountingSupplierParty);
 
 $taxtotal = (new \CleverIt\UBL\Invoice\TaxTotal())
-    ->setTaxAmount(10)
-    ->setTaxSubTotal((new \CleverIt\UBL\Invoice\TaxSubTotal())
-        ->setTaxAmount(10)
+    ->setTaxAmount(30)
+    ->addTaxSubTotal((new \CleverIt\UBL\Invoice\TaxSubTotal())
+        ->setTaxAmount(21)
         ->setTaxableAmount(100)
         ->setTaxCategory((new \CleverIt\UBL\Invoice\TaxCategory())
             ->setId("H")
             ->setName("NL, Hoog Tarief")
-            ->setPercent(21.00)));
+            ->setPercent(21.00)))
+    ->addTaxSubTotal((new \CleverIt\UBL\Invoice\TaxSubTotal())
+        ->setTaxAmount(9)
+        ->setTaxableAmount(100)
+        ->setTaxCategory((new \CleverIt\UBL\Invoice\TaxCategory())
+            ->setId("X")
+            ->setName("NL, Laag Tarief")
+            ->setPercent(9.00)));
 
 $invoiceLine = (new \CleverIt\UBL\Invoice\InvoiceLine())
     ->setId(1)
@@ -57,6 +64,4 @@ $invoice->setLegalMonetaryTotal((new \CleverIt\UBL\Invoice\LegalMonetaryTotal())
     ->setAllowanceTotalAmount(50));
 
 
-file_put_contents("ubl.xml", $xmlService->write('Invoice', [
-    $invoice
-]));
+file_put_contents("ubl.xml", \CleverIt\UBL\Invoice\Generator::invoice($invoice, 'EUR'));

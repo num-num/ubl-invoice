@@ -111,7 +111,10 @@ class TaxCategory implements XmlSerializable {
             Schema::CBC.'ID' => $this->id,
             Schema::CBC.'Name' => $this->name,
             Schema::CBC.'Percent' => $this->percent,
-            Schema::CAC.'TaxScheme' => $this->taxScheme
         ]);
+
+        if($this->taxScheme != null){
+            $writer->write([Schema::CAC.'TaxScheme' => $this->taxScheme]);
+        }
     }
 }

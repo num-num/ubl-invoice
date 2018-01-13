@@ -1,0 +1,131 @@
+<?xml version="1.0"?>
+<Invoice xmlns="urn:oasis:names:specification:ubl:schema:xsd:Invoice-2" xmlns:cbc="urn:oasis:names:specification:ubl:schema:xsd:CommonBasicComponents-2" xmlns:cac="urn:oasis:names:specification:ubl:schema:xsd:CommonAggregateComponents-2">
+ <cbc:UBLVersionID>2.0</cbc:UBLVersionID>
+ <cbc:CustomizationID>OIOUBL-2.01</cbc:CustomizationID>
+ <cbc:ID>CIT1234</cbc:ID>
+ <cbc:CopyIndicator>false</cbc:CopyIndicator>
+ <cbc:IssueDate>1994-12-12</cbc:IssueDate>
+ <cbc:InvoiceTypeCode>SalesInvoice</cbc:InvoiceTypeCode>
+ <cac:AccountingSupplierParty>
+  <cac:Party>
+   <cac:PartyName>
+    <cbc:Name>CleverIt</cbc:Name>
+   </cac:PartyName>
+   <cac:PostalAddress>
+    <cbc:StreetName>Keizersgracht</cbc:StreetName>
+    <cbc:BuildingNumber>15</cbc:BuildingNumber>
+    <cbc:CityName>Eindhoven</cbc:CityName>
+    <cbc:PostalZone>5600 AC</cbc:PostalZone>
+    <cac:Country>
+     <cbc:IdentificationCode>NL</cbc:IdentificationCode>
+    </cac:Country>
+   </cac:PostalAddress>
+   <cac:PhysicalLocation>
+    <cac:Address>
+     <cbc:StreetName>Keizersgracht</cbc:StreetName>
+     <cbc:BuildingNumber>15</cbc:BuildingNumber>
+     <cbc:CityName>Eindhoven</cbc:CityName>
+     <cbc:PostalZone>5600 AC</cbc:PostalZone>
+     <cac:Country>
+      <cbc:IdentificationCode>NL</cbc:IdentificationCode>
+     </cac:Country>
+    </cac:Address>
+   </cac:PhysicalLocation>
+   <cac:Contact>
+    <cbc:Telephone>31402939003</cbc:Telephone>
+    <cbc:ElectronicMail>info@cleverit.nl</cbc:ElectronicMail>
+   </cac:Contact>
+  </cac:Party>
+ </cac:AccountingSupplierParty>
+ <cac:AccountingCustomerParty>
+  <cac:Party>
+   <cac:PartyName>
+    <cbc:Name>CleverIt</cbc:Name>
+   </cac:PartyName>
+   <cac:PostalAddress>
+    <cbc:StreetName>Keizersgracht</cbc:StreetName>
+    <cbc:BuildingNumber>15</cbc:BuildingNumber>
+    <cbc:CityName>Eindhoven</cbc:CityName>
+    <cbc:PostalZone>5600 AC</cbc:PostalZone>
+    <cac:Country>
+     <cbc:IdentificationCode>NL</cbc:IdentificationCode>
+    </cac:Country>
+   </cac:PostalAddress>
+   <cac:PhysicalLocation>
+    <cac:Address>
+     <cbc:StreetName>Keizersgracht</cbc:StreetName>
+     <cbc:BuildingNumber>15</cbc:BuildingNumber>
+     <cbc:CityName>Eindhoven</cbc:CityName>
+     <cbc:PostalZone>5600 AC</cbc:PostalZone>
+     <cac:Country>
+      <cbc:IdentificationCode>NL</cbc:IdentificationCode>
+     </cac:Country>
+    </cac:Address>
+   </cac:PhysicalLocation>
+   <cac:Contact>
+    <cbc:Telephone>31402939003</cbc:Telephone>
+    <cbc:ElectronicMail>info@cleverit.nl</cbc:ElectronicMail>
+   </cac:Contact>
+  </cac:Party>
+ </cac:AccountingCustomerParty>
+ <cac:TaxTotal>
+  <cbc:TaxAmount currencyID="EUR">30.00</cbc:TaxAmount>
+  <cac:TaxSubtotal>
+   <cbc:TaxableAmount currencyID="EUR">100.00</cbc:TaxableAmount>
+   <cbc:TaxAmount currencyID="EUR">21.00</cbc:TaxAmount>
+   <cac:TaxCategory>
+    <cbc:ID>H</cbc:ID>
+    <cbc:Name>NL, Hoog Tarief</cbc:Name>
+    <cbc:Percent>21</cbc:Percent>
+   </cac:TaxCategory>
+  </cac:TaxSubtotal>
+  <cac:TaxSubtotal>
+   <cbc:TaxableAmount currencyID="EUR">100.00</cbc:TaxableAmount>
+   <cbc:TaxAmount currencyID="EUR">9.00</cbc:TaxAmount>
+   <cac:TaxCategory>
+    <cbc:ID>X</cbc:ID>
+    <cbc:Name>NL, Laag Tarief</cbc:Name>
+    <cbc:Percent>9</cbc:Percent>
+   </cac:TaxCategory>
+  </cac:TaxSubtotal>
+ </cac:TaxTotal>
+ <cac:LegalMonetaryTotal>
+  <cbc:LineExtensionAmount currencyID="EUR">100.00</cbc:LineExtensionAmount>
+  <cbc:TaxExclusiveAmount currencyID="EUR">100.00</cbc:TaxExclusiveAmount>
+  <cbc:AllowanceTotalAmount currencyID="EUR">50.00</cbc:AllowanceTotalAmount>
+  <cbc:PayableAmount currencyID="EUR">-1,000.00</cbc:PayableAmount>
+ </cac:LegalMonetaryTotal>
+ <cac:InvoiceLine>
+  <cbc:ID>1</cbc:ID>
+  <cbc:InvoicedQuantity unitCode="MON">1</cbc:InvoicedQuantity>
+  <cbc:LineExtensionAmount currencyID="EUR">100.00</cbc:LineExtensionAmount>
+  <cac:TaxTotal>
+   <cbc:TaxAmount currencyID="EUR">30.00</cbc:TaxAmount>
+   <cac:TaxSubtotal>
+    <cbc:TaxableAmount currencyID="EUR">100.00</cbc:TaxableAmount>
+    <cbc:TaxAmount currencyID="EUR">21.00</cbc:TaxAmount>
+    <cac:TaxCategory>
+     <cbc:ID>H</cbc:ID>
+     <cbc:Name>NL, Hoog Tarief</cbc:Name>
+     <cbc:Percent>21</cbc:Percent>
+    </cac:TaxCategory>
+   </cac:TaxSubtotal>
+   <cac:TaxSubtotal>
+    <cbc:TaxableAmount currencyID="EUR">100.00</cbc:TaxableAmount>
+    <cbc:TaxAmount currencyID="EUR">9.00</cbc:TaxAmount>
+    <cac:TaxCategory>
+     <cbc:ID>X</cbc:ID>
+     <cbc:Name>NL, Laag Tarief</cbc:Name>
+     <cbc:Percent>9</cbc:Percent>
+    </cac:TaxCategory>
+   </cac:TaxSubtotal>
+  </cac:TaxTotal>
+  <cac:Item>
+   <cbc:Description>test item description</cbc:Description>
+   <cbc:Name>Test item</cbc:Name>
+   <cac:SellersItemIdentification>
+    <cbc:ID>1ABCD</cbc:ID>
+   </cac:SellersItemIdentification>
+  </cac:Item>
+ </cac:InvoiceLine>
+</Invoice>

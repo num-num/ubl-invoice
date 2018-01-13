@@ -42,7 +42,7 @@ class Invoice implements XmlSerializable{
      */
     private $accountingCustomerParty;
     /**
-     * @var TaxTotal[]
+     * @var TaxTotal
      */
     private $taxTotal;
     /**
@@ -59,61 +59,64 @@ class Invoice implements XmlSerializable{
     private $allowanceCharges;
 
 
-    function validate(){
-        if($this->id === null){
+    function validate()
+    {
+        if ($this->id === null) {
             throw new \InvalidArgumentException('Missing invoice id');
         }
 
-        if($this->id === null){
+        if ($this->id === null) {
             throw new \InvalidArgumentException('Missing invoice id');
         }
 
-        if(!$this->issueDate instanceof \DateTime){
+        if (!$this->issueDate instanceof \DateTime) {
             throw new \InvalidArgumentException('Invalid invoice issueDate');
         }
 
-        if($this->invoiceTypeCode === null){
+        if ($this->invoiceTypeCode === null) {
             throw new \InvalidArgumentException('Missing invoice invoiceTypeCode');
         }
 
-        if($this->accountingSupplierParty === null){
+        if ($this->accountingSupplierParty === null) {
             throw new \InvalidArgumentException('Missing invoice accountingSupplierParty');
         }
 
-        if($this->accountingCustomerParty === null){
+        if ($this->accountingCustomerParty === null) {
             throw new \InvalidArgumentException('Missing invoice accountingCustomerParty');
         }
 
-        if($this->invoiceLines === null){
+        if ($this->invoiceLines === null) {
             throw new \InvalidArgumentException('Missing invoice lines');
         }
 
-        if($this->legalMonetaryTotal === null){
+        if ($this->legalMonetaryTotal === null) {
             throw new \InvalidArgumentException('Missing invoice LegalMonetaryTotal');
         }
 
-        if($this->taxTotal === null){
+        if ($this->taxTotal === null) {
             throw new \InvalidArgumentException('Missing invoice taxTotal');
         }
     }
 
-    function xmlSerialize(Writer $writer) {
+    function xmlSerialize(Writer $writer)
+    {
         $cbc = '{urn:oasis:names:specification:ubl:schema:xsd:CommonBasicComponents-2}';
         $cac = '{urn:oasis:names:specification:ubl:schema:xsd:CommonAggregateComponents-2}';
 
         $this->validate();
 
         $writer->write([
-            $cbc.'UBLVersionID' => $this->UBLVersionID,
-            $cbc.'ID' => $this->id,
-            $cbc.'CopyIndicator' => $this->copyIndicator ? 'true' : 'false',
-            $cbc.'IssueDate' => $this->issueDate->format('Y-m-d'),
-            $cbc.'InvoiceTypeCode' => $this->invoiceTypeCode,
-            $cac.'AccountingSupplierParty' => [$cac."Party" => $this->accountingSupplierParty],
-            $cac.'AccountingCustomerParty' => [$cac."Party" => $this->accountingCustomerParty],
+            $cbc . 'UBLVersionID' => $this->UBLVersionID,
+            $cbc . 'CustomizationID' => 'OIOUBL-2.01',
+            $cbc . 'ID' => $this->id,
+            $cbc . 'CopyIndicator' => $this->copyIndicator ? 'true' : 'false',
+            $cbc . 'IssueDate' => $this->issueDate->format('Y-m-d'),
+            $cbc . 'InvoiceTypeCode' => $this->invoiceTypeCode,
+            $cac . 'AccountingSupplierParty' => [$cac . "Party" => $this->accountingSupplierParty],
+            $cac . 'AccountingCustomerParty' => [$cac . "Party" => $this->accountingCustomerParty],
         ]);
 
-        if($this->allowanceCharges != null) {
+        if ($this->allowanceCharges != null) {
             foreach ($this->allowanceCharges as $invoiceLine) {
                 $writer->write([
                     Schema::CAC . 'AllowanceCharge' => $invoiceLine
@@ -121,19 +124,17 @@ class Invoice implements XmlSerializable{
             }
         }
 
-        foreach($this->taxTotal as $taxTotal){
-            $writer->write([
-                Schema::CAC.'TaxTotal' => $taxTotal
-            ]);
-        }
-
         $writer->write([
-            $cac.'LegalMonetaryTotal' => $this->legalMonetaryTotal
+            Schema::CAC . 'TaxTotal' => $this->taxTotal
         ]);
 
-        foreach($this->invoiceLines as $invoiceLine){
+        $writer->write([
+            $cac . 'LegalMonetaryTotal' => $this->legalMonetaryTotal
+        ]);
+
+        foreach ($this->invoiceLines as $invoiceLine) {
             $writer->write([
-                Schema::CAC.'InvoiceLine' => $invoiceLine
+                Schema::CAC . 'InvoiceLine' => $invoiceLine
             ]);
         }
 
@@ -236,14 +237,14 @@ class Invoice implements XmlSerializable{
     }
 
     /**
-     * @return TaxTotal[]
+     * @return TaxTotal
      */
     public function getTaxTotal() {
         return $this->taxTotal;
     }
 
     /**
-     * @param TaxTotal[] $taxTotal
+     * @param TaxTotal $taxTotal
      * @return Invoice
      */
     public function setTaxTotal($taxTotal) {

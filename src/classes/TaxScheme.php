@@ -24,7 +24,7 @@ class TaxScheme implements XmlSerializable {
 
 	/**
 	 * @param mixed $id
-	 * @return TaxCategory
+	 * @return int
 	 */
 	public function setId($id) {
 		$this->id = $id;
