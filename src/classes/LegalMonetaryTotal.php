@@ -15,6 +15,7 @@ use Sabre\Xml\XmlSerializable;
 class LegalMonetaryTotal implements XmlSerializable {
     private $lineExtensionAmount;
     private $taxExclusiveAmount;
+    private $taxInclusiveAmount;
     private $allowanceTotalAmount = 0;
     private $payableAmount;
 
@@ -47,6 +48,22 @@ class LegalMonetaryTotal implements XmlSerializable {
      */
     public function setTaxExclusiveAmount($taxExclusiveAmount) {
         $this->taxExclusiveAmount = $taxExclusiveAmount;
+        return $this;
+    }
+
+    /**
+     * @return mixed
+     */
+    public function getTaxInclusiveAmount() {
+        return $this->taxInclusiveAmount;
+    }
+
+    /**
+     * @param mixed $taxInclusiveAmount
+     * @return LegalMonetaryTotal
+     */
+    public function setTaxInclusiveAmount($taxInclusiveAmount) {
+        $this->taxInclusiveAmount = $taxInclusiveAmount;
         return $this;
     }
 
@@ -103,6 +120,14 @@ class LegalMonetaryTotal implements XmlSerializable {
             [
                 'name' => Schema::CBC . 'TaxExclusiveAmount',
                 'value' => number_format($this->taxExclusiveAmount, 2),
+                'attributes' => [
+                    'currencyID' => Generator::$currencyID
+                ]
+
+            ],
+            [
+                'name' => Schema::CBC . 'TaxInclusiveAmount',
+                'value' => number_format($this->taxInclusiveAmount, 2),
                 'attributes' => [
                     'currencyID' => Generator::$currencyID
                 ]
