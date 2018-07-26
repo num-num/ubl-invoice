@@ -55,9 +55,6 @@ class TaxTotal implements XmlSerializable {
         if($this->taxAmount === null){
             throw new \InvalidArgumentException('Missing taxtotal taxamount');
         }
-        if(count($this->taxSubTotals) === 0){
-            throw new \InvalidArgumentException('Missing taxtotal taxsubtotal');
-        }
     }
 
     /**
@@ -71,7 +68,7 @@ class TaxTotal implements XmlSerializable {
         $writer->write([
             [
                 'name' => Schema::CBC . 'TaxAmount',
-                'value' => number_format($this->taxAmount,2),
+                'value' => number_format($this->taxAmount, 2, '.', ''),
                 'attributes' => [
                     'currencyID' => Generator::$currencyID
                 ]

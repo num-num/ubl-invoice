@@ -92,10 +92,6 @@ class Invoice implements XmlSerializable{
         if ($this->legalMonetaryTotal === null) {
             throw new \InvalidArgumentException('Missing invoice LegalMonetaryTotal');
         }
-
-        if ($this->taxTotal === null) {
-            throw new \InvalidArgumentException('Missing invoice taxTotal');
-        }
     }
 
     function xmlSerialize(Writer $writer)
@@ -124,9 +120,11 @@ class Invoice implements XmlSerializable{
             }
         }
 
-        $writer->write([
-            Schema::CAC . 'TaxTotal' => $this->taxTotal
-        ]);
+        if ($this->taxTotal != null) {
+            $writer->write([
+                Schema::CAC . 'TaxTotal' => $this->taxTotal
+            ]);
+        }
 
         $writer->write([
             $cac . 'LegalMonetaryTotal' => $this->legalMonetaryTotal
