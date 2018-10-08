@@ -57,6 +57,10 @@ class Invoice implements XmlSerializable{
      * @var AllowanceCharge[]
      */
     private $allowanceCharges;
+    /**
+     * @var AdditionalDocumentReference
+     */
+    private $additionalDocumentReference;
 
 
     function validate()
@@ -133,6 +137,12 @@ class Invoice implements XmlSerializable{
         foreach ($this->invoiceLines as $invoiceLine) {
             $writer->write([
                 Schema::CAC . 'InvoiceLine' => $invoiceLine
+            ]);
+        }
+
+        if ($this->additionalDocumentReference != null) {
+            $writer->write([
+                Schema::CAC . 'AdditionalDocumentReference' => $this->additionalDocumentReference
             ]);
         }
 
@@ -295,6 +305,22 @@ class Invoice implements XmlSerializable{
      */
     public function setAllowanceCharges($allowanceCharges) {
         $this->allowanceCharges = $allowanceCharges;
+        return $this;
+    }
+
+    /**
+     * @return AdditionalDocumentReference
+     */
+    public function getAdditionalDocumentReference() {
+        return $this->additionalDocumentReference;
+    }
+
+    /**
+     * @param AdditionalDocumentReference $additionalDocumentReference
+     * @return Invoice
+     */
+    public function setAdditionalDocumentReference($additionalDocumentReference) {
+        $this->additionalDocumentReference = $additionalDocumentReference;
         return $this;
     }
 
