@@ -17,6 +17,13 @@ class Attachment implements XmlSerializable{
     /**
      * @return String
      */
+    public function getFileMimeType() {
+        return mime_content_type($this->filePath);
+    }
+
+    /**
+     * @return String
+     */
     public function getFilePath() {
         return $this->filePath;
     }
@@ -35,7 +42,7 @@ class Attachment implements XmlSerializable{
             throw new \InvalidArgumentException('Missing filePath');
         }
         if (file_exists($this->filePath) === false) {
-            throw new \InvalidArgumentException('Attachment filePath does not exist');
+            throw new \InvalidArgumentException('Attachment at filePath does not exist');
         }
     }
 
@@ -50,10 +57,17 @@ class Attachment implements XmlSerializable{
         $cbc = '{urn:oasis:names:specification:ubl:schema:xsd:CommonBasicComponents-2}';
         $cac = '{urn:oasis:names:specification:ubl:schema:xsd:CommonAggregateComponents-2}';
 
+        $fileContents = base64_encode(file_get_contents($this->filePath));
+        $mimeType = $this->getFileMimeType();
+
         $this->validate();
 
         $writer->write([
-            Schema::CBC.'EmbeddedDocumentBinaryObject' => base64_encode(file_get_contents($this->filePath)),
+            'name' => Schema::CBC . 'EmbeddedDocumentBinaryObject',
+            'value' => $fileContents,
+            'attributes' => [
+                'mimeCode' => $mimeType
+            ]
         ]);
     }
 }

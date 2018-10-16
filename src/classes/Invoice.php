@@ -111,7 +111,16 @@ class Invoice implements XmlSerializable{
             $cbc . 'ID' => $this->id,
             $cbc . 'CopyIndicator' => $this->copyIndicator ? 'true' : 'false',
             $cbc . 'IssueDate' => $this->issueDate->format('Y-m-d'),
-            $cbc . 'InvoiceTypeCode' => $this->invoiceTypeCode,
+            $cbc . 'InvoiceTypeCode' => $this->invoiceTypeCode
+        ]);
+
+        if ($this->additionalDocumentReference != null) {
+            $writer->write([
+                Schema::CAC . 'AdditionalDocumentReference' => $this->additionalDocumentReference
+            ]);
+        }
+
+        $writer->write([
             $cac . 'AccountingSupplierParty' => [$cac . "Party" => $this->accountingSupplierParty],
             $cac . 'AccountingCustomerParty' => [$cac . "Party" => $this->accountingCustomerParty],
         ]);
@@ -139,13 +148,6 @@ class Invoice implements XmlSerializable{
                 Schema::CAC . 'InvoiceLine' => $invoiceLine
             ]);
         }
-
-        if ($this->additionalDocumentReference != null) {
-            $writer->write([
-                Schema::CAC . 'AdditionalDocumentReference' => $this->additionalDocumentReference
-            ]);
-        }
-
     }
 
     /**
