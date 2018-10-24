@@ -7,30 +7,28 @@ use Sabre\Xml\XmlSerializable;
 
 class PaymentTerms implements XmlSerializable
 {
-	private $paymentDueDate;
+	private $note;
 
 	/**
 	 * @return mixed
 	 */
-	public function getPaymentDueDate()
+	public function getNote()
 	{
-		return $this->paymentDueDate;
+		return $this->note;
 	}
 
 	/**
-	 * @param mixed $paymentDueDate
-	 * @return int
+	 * @param mixed $note
+	 * @return PaymentTerms
 	 */
-	public function setPaymentDueDate(\DateTime $paymentDueDate)
+	public function setNote($note)
 	{
-		$this->paymentDueDate = $paymentDueDate;
+		$this->note = $note;
 		return $this;
 	}
 
 	function xmlSerialize(Writer $writer)
 	{
-		if ($this->getPaymentDueDate() != null) {
-			$writer->write([Schema::CBC . 'PaymentDueDate' => $this->getPaymentDueDate()->format('Y-m-d')]);
-		}
+		$writer->write([ Schema::CBC . 'Note' => $this->note ]);
 	}
 }
