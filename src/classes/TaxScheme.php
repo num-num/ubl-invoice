@@ -1,24 +1,19 @@
 <?php
-/**
- * Created by PhpStorm.
- * User: baselbers
- * Date: 26-10-2017
- * Time: 20:28
- */
 
-namespace CleverIt\UBL\Invoice;
-
+namespace NumNum\UBL;
 
 use Sabre\Xml\Writer;
 use Sabre\Xml\XmlSerializable;
 
-class TaxScheme implements XmlSerializable {
+class TaxScheme implements XmlSerializable
+{
 	private $id;
 
 	/**
 	 * @return mixed
 	 */
-	public function getId() {
+	public function getId()
+	{
 		return $this->id;
 	}
 
@@ -26,14 +21,16 @@ class TaxScheme implements XmlSerializable {
 	 * @param mixed $id
 	 * @return int
 	 */
-	public function setId($id) {
+	public function setId($id)
+	{
 		$this->id = $id;
 		return $this;
 	}
 
-	function xmlSerialize(Writer $writer) {
+	function xmlSerialize(Writer $writer)
+	{
 		$writer->write([
-			Schema::CAC.'ID' => $this->id
+			Schema::CAC . 'ID' => $this->id
 		]);
 	}
 }

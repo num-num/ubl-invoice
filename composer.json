@@ -1,12 +1,26 @@
 {
-    "name": "cleverit/ubl_invoice",
-    "description": "A PHP wrapper for UBL invoices",
+    "name": "num-num/ubl-invoice",
+    "description": "A PHP wrapper to create UBL invoices",
     "keywords": [
-        "ubl", "invoice", "ublinvoice", "cleverit", "clever invoice", "electronic invoice", "xml", "xml invoice"
+        "ubl",
+        "invoice",
+        "ublinvoice",
+        "ubl invoice",
+        "efff",
+        "electronic invoice",
+        "digital invoice",
+        "xml",
+        "xml invoice"
     ],
-    "homepage": "https://github.com/CleverIT/UBL_invoice",
+    "homepage": "https://github.com/num-num/ubl-invoice",
     "license": "MIT",
     "authors": [
+        {
+            "name": "Bert Devriese",
+            "email": "bert@numnum.be",
+            "homepage": "https://www.numnum.be",
+            "role": "Developer"
+        },
         {
             "name": "Bram van Eijk | CleverIT",
             "email": "bram@cleverit.nl",
@@ -14,15 +28,13 @@
             "role": "Developer"
         }
     ],
-
     "require": {
+        "php": "^7.0",
         "sabre/xml": "^1.5"
     },
-
     "autoload": {
         "psr-4": {
-            "CleverIt\\UBL\\Invoice\\": ["src/", "src/classes"]
+            "NumNum\\UBL\\": ["src/", "src/classes"]
         }
     }
-
 }

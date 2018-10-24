@@ -1,355 +1,341 @@
 <?php
-/**
- * Created by PhpStorm.
- * User: bram.vaneijk
- * Date: 13-10-2016
- * Time: 16:29
- */
 
-namespace CleverIt\UBL\Invoice;
-
+namespace NumNum\UBL;
 
 use Sabre\Xml\Writer;
 use Sabre\Xml\XmlSerializable;
 
-class Invoice implements XmlSerializable{
-    private $UBLVersionID = '2.0';
+class Invoice implements XmlSerializable
+{
+	private $UBLVersionID = '2.0';
+	private $id;
+	private $copyIndicator = false;
+	private $issueDate;
+	private $invoiceTypeCode;
+	private $paymentTerms;
+	private $accountingSupplierParty;
+	private $accountingCustomerParty;
+	private $taxTotal;
+	private $legalMonetaryTotal;
+	private $invoiceLines;
+	private $allowanceCharges;
+	private $additionalDocumentReference;
 
-    /**
-     * @var int
-     */
-    private $id;
-    /**
-     * @var bool
-     */
-    private $copyIndicator = false;
+	/**
+	 * @return int
+	 */
+	public function getId()
+	{
+		return $this->id;
+	}
 
-    /**
-     * @var \DateTime
-     */
-    private $issueDate;
-    /**
-     * @var string
-     */
+	/**
+	 * @param int $id
+	 * @return Invoice
+	 */
+	public function setId($id)
+	{
+		$this->id = $id;
+		return $this;
+	}
 
-    private $invoiceTypeCode;
-    /**
-     * @var PaymentTerms
-     */
-    private $paymentTerms;
-    /**
-     * @var Party
-     */
-    private $accountingSupplierParty;
-    /**
-     * @var Party
-     */
-    private $accountingCustomerParty;
-    /**
-     * @var TaxTotal
-     */
-    private $taxTotal;
-    /**
-     * @var LegalMonetaryTotal
-     */
-    private $legalMonetaryTotal;
-    /**
-     * @var InvoiceLine[]
-     */
-    private $invoiceLines;
-    /**
-     * @var AllowanceCharge[]
-     */
-    private $allowanceCharges;
-    /**
-     * @var AdditionalDocumentReference
-     */
-    private $additionalDocumentReference;
+	/**
+	 * @return boolean
+	 */
+	public function isCopyIndicator()
+	{
+		return $this->copyIndicator;
+	}
 
+	/**
+	 * @param boolean $copyIndicator
+	 * @return Invoice
+	 */
+	public function setCopyIndicator($copyIndicator)
+	{
+		$this->copyIndicator = $copyIndicator;
+		return $this;
+	}
 
-    function validate()
-    {
-        if ($this->id === null) {
-            throw new \InvalidArgumentException('Missing invoice id');
-        }
+	/**
+	 * @return \DateTime
+	 */
+	public function getIssueDate()
+	{
+		return $this->issueDate;
+	}
 
-        if ($this->id === null) {
-            throw new \InvalidArgumentException('Missing invoice id');
-        }
+	/**
+	 * @param \DateTime $issueDate
+	 * @return Invoice
+	 */
+	public function setIssueDate($issueDate)
+	{
+		$this->issueDate = $issueDate;
+		return $this;
+	}
 
-        if (!$this->issueDate instanceof \DateTime) {
-            throw new \InvalidArgumentException('Invalid invoice issueDate');
-        }
+	/**
+	 * @return string
+	 */
+	public function getInvoiceTypeCode()
+	{
+		return $this->invoiceTypeCode;
+	}
 
-        if ($this->invoiceTypeCode === null) {
-            throw new \InvalidArgumentException('Missing invoice invoiceTypeCode');
-        }
+	/**
+	 * @param string $invoiceTypeCode
+	 * @return Invoice
+	 */
+	public function setInvoiceTypeCode($invoiceTypeCode)
+	{
+		$this->invoiceTypeCode = $invoiceTypeCode;
+		return $this;
+	}
 
-        if ($this->accountingSupplierParty === null) {
-            throw new \InvalidArgumentException('Missing invoice accountingSupplierParty');
-        }
+	/**
+	 * @return PaymentTerms
+	 */
+	public function getPaymentTerms()
+	{
+		return $this->paymentTerms;
+	}
 
-        if ($this->accountingCustomerParty === null) {
-            throw new \InvalidArgumentException('Missing invoice accountingCustomerParty');
-        }
+	/**
+	 * @param PaymentTerms $paymentTerms
+	 * @return Invoice
+	 */
+	public function setPaymentTerms($paymentTerms)
+	{
+		$this->paymentTerms = $paymentTerms;
+		return $this;
+	}
 
-        if ($this->invoiceLines === null) {
-            throw new \InvalidArgumentException('Missing invoice lines');
-        }
+	/**
+	 * @return Party
+	 */
+	public function getAccountingSupplierParty()
+	{
+		return $this->accountingSupplierParty;
+	}
 
-        if ($this->legalMonetaryTotal === null) {
-            throw new \InvalidArgumentException('Missing invoice LegalMonetaryTotal');
-        }
-    }
+	/**
+	 * @param Party $accountingSupplierParty
+	 * @return Invoice
+	 */
+	public function setAccountingSupplierParty($accountingSupplierParty)
+	{
+		$this->accountingSupplierParty = $accountingSupplierParty;
+		return $this;
+	}
 
-    function xmlSerialize(Writer $writer)
-    {
-        $cbc = '{urn:oasis:names:specification:ubl:schema:xsd:CommonBasicComponents-2}';
-        $cac = '{urn:oasis:names:specification:ubl:schema:xsd:CommonAggregateComponents-2}';
+	/**
+	 * @return Party
+	 */
+	public function getAccountingCustomerParty()
+	{
+		return $this->accountingCustomerParty;
+	}
 
-        $this->validate();
+	/**
+	 * @param Party $accountingCustomerParty
+	 * @return Invoice
+	 */
+	public function setAccountingCustomerParty($accountingCustomerParty)
+	{
+		$this->accountingCustomerParty = $accountingCustomerParty;
+		return $this;
+	}
 
-        $writer->write([
-            $cbc . 'UBLVersionID' => $this->UBLVersionID,
-            $cbc . 'CustomizationID' => 'OIOUBL-2.01',
-            $cbc . 'ID' => $this->id,
-            $cbc . 'CopyIndicator' => $this->copyIndicator ? 'true' : 'false',
-            $cbc . 'IssueDate' => $this->issueDate->format('Y-m-d'),
-            $cbc . 'InvoiceTypeCode' => $this->invoiceTypeCode
-        ]);
+	/**
+	 * @return TaxTotal
+	 */
+	public function getTaxTotal()
+	{
+		return $this->taxTotal;
+	}
 
-        if ($this->additionalDocumentReference != null) {
-            $writer->write([
-                Schema::CAC . 'AdditionalDocumentReference' => $this->additionalDocumentReference
-            ]);
-        }
+	/**
+	 * @param TaxTotal $taxTotal
+	 * @return Invoice
+	 */
+	public function setTaxTotal($taxTotal)
+	{
+		$this->taxTotal = $taxTotal;
+		return $this;
+	}
 
-        $writer->write([
-            $cac . 'AccountingSupplierParty' => [$cac . "Party" => $this->accountingSupplierParty],
-            $cac . 'AccountingCustomerParty' => [$cac . "Party" => $this->accountingCustomerParty],
-        ]);
+	/**
+	 * @return LegalMonetaryTotal
+	 */
+	public function getLegalMonetaryTotal()
+	{
+		return $this->legalMonetaryTotal;
+	}
 
-        if ($this->paymentTerms != null) {
-            $writer->write([
-                Schema::CAC . 'PaymentTerms' => $this->paymentTerms
-            ]);
-        }
+	/**
+	 * @param LegalMonetaryTotal $legalMonetaryTotal
+	 * @return Invoice
+	 */
+	public function setLegalMonetaryTotal($legalMonetaryTotal)
+	{
+		$this->legalMonetaryTotal = $legalMonetaryTotal;
+		return $this;
+	}
 
-        if ($this->allowanceCharges != null) {
-            foreach ($this->allowanceCharges as $invoiceLine) {
-                $writer->write([
-                    Schema::CAC . 'AllowanceCharge' => $invoiceLine
-                ]);
-            }
-        }
+	/**
+	 * @return InvoiceLine[]
+	 */
+	public function getInvoiceLines()
+	{
+		return $this->invoiceLines;
+	}
 
-        if ($this->taxTotal != null) {
-            $writer->write([
-                Schema::CAC . 'TaxTotal' => $this->taxTotal
-            ]);
-        }
+	/**
+	 * @param InvoiceLine[] $invoiceLines
+	 * @return Invoice
+	 */
+	public function setInvoiceLines($invoiceLines)
+	{
+		$this->invoiceLines = $invoiceLines;
+		return $this;
+	}
 
-        $writer->write([
-            $cac . 'LegalMonetaryTotal' => $this->legalMonetaryTotal
-        ]);
+	/**
+	 * @return AllowanceCharge[]
+	 */
+	public function getAllowanceCharges()
+	{
+		return $this->allowanceCharges;
+	}
 
-        foreach ($this->invoiceLines as $invoiceLine) {
-            $writer->write([
-                Schema::CAC . 'InvoiceLine' => $invoiceLine
-            ]);
-        }
-    }
+	/**
+	 * @param AllowanceCharge[] $allowanceCharges
+	 * @return Invoice
+	 */
+	public function setAllowanceCharges($allowanceCharges)
+	{
+		$this->allowanceCharges = $allowanceCharges;
+		return $this;
+	}
 
-    /**
-     * @return int
-     */
-    public function getId() {
-        return $this->id;
-    }
+	/**
+	 * @return AdditionalDocumentReference
+	 */
+	public function getAdditionalDocumentReference()
+	{
+		return $this->additionalDocumentReference;
+	}
 
-    /**
-     * @param int $id
-     * @return Invoice
-     */
-    public function setId($id) {
-        $this->id = $id;
-        return $this;
-    }
+	/**
+	 * @param AdditionalDocumentReference $additionalDocumentReference
+	 * @return Invoice
+	 */
+	public function setAdditionalDocumentReference($additionalDocumentReference)
+	{
+		$this->additionalDocumentReference = $additionalDocumentReference;
+		return $this;
+	}
 
-    /**
-     * @return boolean
-     */
-    public function isCopyIndicator() {
-        return $this->copyIndicator;
-    }
+	/**
+	 * The validate function that is called during xml writing to valid the data of the object.
+	 *
+	 * @throws InvalidArgumentException An error with information about required data that is missing to write the XML
+	 * @return void
+	 */
+	function validate()
+	{
+		if ($this->id === null) {
+			throw new \InvalidArgumentException('Missing invoice id');
+		}
 
-    /**
-     * @param boolean $copyIndicator
-     * @return Invoice
-     */
-    public function setCopyIndicator($copyIndicator) {
-        $this->copyIndicator = $copyIndicator;
-        return $this;
-    }
+		if ($this->id === null) {
+			throw new \InvalidArgumentException('Missing invoice id');
+		}
 
-    /**
-     * @return \DateTime
-     */
-    public function getIssueDate() {
-        return $this->issueDate;
-    }
+		if (!$this->issueDate instanceof \DateTime) {
+			throw new \InvalidArgumentException('Invalid invoice issueDate');
+		}
 
-    /**
-     * @param \DateTime $issueDate
-     * @return Invoice
-     */
-    public function setIssueDate($issueDate) {
-        $this->issueDate = $issueDate;
-        return $this;
-    }
+		if ($this->invoiceTypeCode === null) {
+			throw new \InvalidArgumentException('Missing invoice invoiceTypeCode');
+		}
 
-    /**
-     * @return string
-     */
-    public function getInvoiceTypeCode() {
-        return $this->invoiceTypeCode;
-    }
+		if ($this->accountingSupplierParty === null) {
+			throw new \InvalidArgumentException('Missing invoice accountingSupplierParty');
+		}
 
-    /**
-     * @param string $invoiceTypeCode
-     * @return Invoice
-     */
-    public function setInvoiceTypeCode($invoiceTypeCode) {
-        $this->invoiceTypeCode = $invoiceTypeCode;
-        return $this;
-    }
+		if ($this->accountingCustomerParty === null) {
+			throw new \InvalidArgumentException('Missing invoice accountingCustomerParty');
+		}
 
-    /**
-     * @return PaymentTerms
-     */
-    public function getPaymentTerms() {
-        return $this->paymentTerms;
-    }
+		if ($this->invoiceLines === null) {
+			throw new \InvalidArgumentException('Missing invoice lines');
+		}
 
-    /**
-     * @param PaymentTerms $paymentTerms
-     * @return Invoice
-     */
-    public function setPaymentTerms($paymentTerms) {
-        $this->paymentTerms = $paymentTerms;
-        return $this;
-    }
+		if ($this->legalMonetaryTotal === null) {
+			throw new \InvalidArgumentException('Missing invoice LegalMonetaryTotal');
+		}
+	}
 
-    /**
-     * @return Party
-     */
-    public function getAccountingSupplierParty() {
-        return $this->accountingSupplierParty;
-    }
+	/**
+	 * The xmlSerialize method is called during xml writing.
+	 * @param Writer $writer
+	 * @return void
+	 */
+	function xmlSerialize(Writer $writer)
+	{
+		$this->validate();
 
-    /**
-     * @param Party $accountingSupplierParty
-     * @return Invoice
-     */
-    public function setAccountingSupplierParty($accountingSupplierParty) {
-        $this->accountingSupplierParty = $accountingSupplierParty;
-        return $this;
-    }
+		$writer->write([
+			Schema::CBC . 'UBLVersionID' => $this->UBLVersionID,
+			Schema::CBC . 'CustomizationID' => 'OIOUBL-2.01',
+			Schema::CBC . 'ID' => $this->id,
+			Schema::CBC . 'CopyIndicator' => $this->copyIndicator ? 'true' : 'false',
+			Schema::CBC . 'IssueDate' => $this->issueDate->format('Y-m-d'),
+			Schema::CBC . 'InvoiceTypeCode' => $this->invoiceTypeCode
+		]);
 
-    /**
-     * @return Party
-     */
-    public function getAccountingCustomerParty() {
-        return $this->accountingCustomerParty;
-    }
+		if ($this->additionalDocumentReference != null) {
+			$writer->write([
+				Schema::CAC . 'AdditionalDocumentReference' => $this->additionalDocumentReference
+			]);
+		}
 
-    /**
-     * @param Party $accountingCustomerParty
-     * @return Invoice
-     */
-    public function setAccountingCustomerParty($accountingCustomerParty) {
-        $this->accountingCustomerParty = $accountingCustomerParty;
-        return $this;
-    }
+		$writer->write([
+			Schema::CAC . 'AccountingSupplierParty' => [Schema::CAC . "Party" => $this->accountingSupplierParty],
+			Schema::CAC . 'AccountingCustomerParty' => [Schema::CAC . "Party" => $this->accountingCustomerParty],
+		]);
 
-    /**
-     * @return TaxTotal
-     */
-    public function getTaxTotal() {
-        return $this->taxTotal;
-    }
+		if ($this->paymentTerms != null)
+		{
+			$writer->write([
+				Schema::CAC . 'PaymentTerms' => $this->paymentTerms
+			]);
+		}
 
-    /**
-     * @param TaxTotal $taxTotal
-     * @return Invoice
-     */
-    public function setTaxTotal($taxTotal) {
-        $this->taxTotal = $taxTotal;
-        return $this;
-    }
+		if ($this->allowanceCharges != null) {
+			foreach ($this->allowanceCharges as $invoiceLine) {
+				$writer->write([
+					Schema::CAC . 'AllowanceCharge' => $invoiceLine
+				]);
+			}
+		}
 
-    /**
-     * @return LegalMonetaryTotal
-     */
-    public function getLegalMonetaryTotal() {
-        return $this->legalMonetaryTotal;
-    }
+		if ($this->taxTotal != null) {
+			$writer->write([
+				Schema::CAC . 'TaxTotal' => $this->taxTotal
+			]);
+		}
 
-    /**
-     * @param LegalMonetaryTotal $legalMonetaryTotal
-     * @return Invoice
-     */
-    public function setLegalMonetaryTotal($legalMonetaryTotal) {
-        $this->legalMonetaryTotal = $legalMonetaryTotal;
-        return $this;
-    }
+		$writer->write([
+			Schema::CAC . 'LegalMonetaryTotal' => $this->legalMonetaryTotal
+		]);
 
-    /**
-     * @return InvoiceLine[]
-     */
-    public function getInvoiceLines() {
-        return $this->invoiceLines;
-    }
-
-    /**
-     * @param InvoiceLine[] $invoiceLines
-     * @return Invoice
-     */
-    public function setInvoiceLines($invoiceLines) {
-        $this->invoiceLines = $invoiceLines;
-        return $this;
-    }
-
-    /**
-     * @return AllowanceCharge[]
-     */
-    public function getAllowanceCharges() {
-        return $this->allowanceCharges;
-    }
-
-    /**
-     * @param AllowanceCharge[] $allowanceCharges
-     * @return Invoice
-     */
-    public function setAllowanceCharges($allowanceCharges) {
-        $this->allowanceCharges = $allowanceCharges;
-        return $this;
-    }
-
-    /**
-     * @return AdditionalDocumentReference
-     */
-    public function getAdditionalDocumentReference() {
-        return $this->additionalDocumentReference;
-    }
-
-    /**
-     * @param AdditionalDocumentReference $additionalDocumentReference
-     * @return Invoice
-     */
-    public function setAdditionalDocumentReference($additionalDocumentReference) {
-        $this->additionalDocumentReference = $additionalDocumentReference;
-        return $this;
-    }
-
+		foreach ($this->invoiceLines as $invoiceLine) {
+			$writer->write([
+				Schema::CAC . 'InvoiceLine' => $invoiceLine
+			]);
+		}
+	}
 }

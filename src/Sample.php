@@ -4,7 +4,7 @@
  * http://www.oioubl.net/validator/
  */
 
-namespace CleverIt\UBL\Invoice;
+namespace NumNum\UBL;
 
 use \DateTime as DateTime;
 
@@ -56,7 +56,8 @@ $invoiceLine->setItem($item);
 $invoiceLine->setPrice($price);
 $invoiceLine->setInvoicedQuantity(1);
 
-$invoiceLines = array($invoiceLine);
+$invoiceLines = [$invoiceLine];
+
 // taxe TVA
 $TaxScheme    = new TaxScheme();
 $TaxScheme->setId(0);
