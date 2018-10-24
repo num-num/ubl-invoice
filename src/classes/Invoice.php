@@ -34,6 +34,10 @@ class Invoice implements XmlSerializable{
 
     private $invoiceTypeCode;
     /**
+     * @var PaymentTerms
+     */
+    private $paymentTerms;
+    /**
      * @var Party
      */
     private $accountingSupplierParty;
@@ -111,6 +115,12 @@ class Invoice implements XmlSerializable{
             $cac . 'AccountingSupplierParty' => [$cac . "Party" => $this->accountingSupplierParty],
             $cac . 'AccountingCustomerParty' => [$cac . "Party" => $this->accountingCustomerParty],
         ]);
+
+        if ($this->paymentTerms != null) {
+            $writer->write([
+                Schema::CAC . 'PaymentTerms' => $this->paymentTerms
+            ]);
+        }
 
         if ($this->allowanceCharges != null) {
             foreach ($this->allowanceCharges as $invoiceLine) {
@@ -199,6 +209,22 @@ class Invoice implements XmlSerializable{
      */
     public function setInvoiceTypeCode($invoiceTypeCode) {
         $this->invoiceTypeCode = $invoiceTypeCode;
+        return $this;
+    }
+
+    /**
+     * @return PaymentTerms
+     */
+    public function getPaymentTerms() {
+        return $this->paymentTerms;
+    }
+
+    /**
+     * @param PaymentTerms $paymentTerms
+     * @return Invoice
+     */
+    public function setPaymentTerms($paymentTerms) {
+        $this->paymentTerms = $paymentTerms;
         return $this;
     }
 
