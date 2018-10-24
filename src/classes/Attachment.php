@@ -29,7 +29,7 @@ class Attachment implements XmlSerializable
 	 * @param String $filePath
 	 * @return AdditionalDocumentReference
 	 */
-	public function setFilePath($filePath)
+	public function setFilePath(String $filePath)
 	{
 		$this->filePath = $filePath;
 		return $this;

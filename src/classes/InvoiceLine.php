@@ -81,7 +81,7 @@ class InvoiceLine implements XmlSerializable
 	 * @param TaxTotal $taxTotal
 	 * @return InvoiceLine
 	 */
-	public function setTaxTotal($taxTotal)
+	public function setTaxTotal(TaxTotal $taxTotal)
 	{
 		$this->taxTotal = $taxTotal;
 		return $this;
@@ -117,7 +117,7 @@ class InvoiceLine implements XmlSerializable
 	 * @param Price $price
 	 * @return InvoiceLine
 	 */
-	public function setPrice($price)
+	public function setPrice(Price $price)
 	{
 		$this->price = $price;
 		return $this;

@@ -59,7 +59,7 @@ class TaxSubTotal implements XmlSerializable
 	 * @param TaxCategory $taxCategory
 	 * @return TaxSubTotal
 	 */
-	public function setTaxCategory($taxCategory)
+	public function setTaxCategory(TaxCategory $taxCategory)
 	{
 		$this->taxCategory = $taxCategory;
 		return $this;

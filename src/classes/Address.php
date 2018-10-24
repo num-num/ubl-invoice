@@ -97,7 +97,7 @@ class Address implements XmlSerializable
 	 * @param Country $country
 	 * @return Address
 	 */
-	public function setCountry($country)
+	public function setCountry(Country $country)
 	{
 		$this->country = $country;
 		return $this;
