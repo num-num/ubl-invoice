@@ -40,7 +40,7 @@ class Invoice implements XmlSerializable
 	}
 
 	/**
-	 * @return boolean
+	 * @return bool
 	 */
 	public function isCopyIndicator()
 	{
@@ -48,10 +48,10 @@ class Invoice implements XmlSerializable
 	}
 
 	/**
-	 * @param boolean $copyIndicator
+	 * @param bool $copyIndicator
 	 * @return Invoice
 	 */
-	public function setCopyIndicator(boolean $copyIndicator)
+	public function setCopyIndicator(bool $copyIndicator)
 	{
 		$this->copyIndicator = $copyIndicator;
 		return $this;

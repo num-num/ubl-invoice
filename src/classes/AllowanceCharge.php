@@ -17,7 +17,7 @@ class AllowanceCharge implements XmlSerializable
 	private $taxCategory;
 
 	/**
-	 * @return boolean
+	 * @return bool
 	 */
 	public function isChargeIndicator()
 	{
@@ -25,10 +25,10 @@ class AllowanceCharge implements XmlSerializable
 	}
 
 	/**
-	 * @param boolean $chargeIndicator
+	 * @param bool $chargeIndicator
 	 * @return AllowanceCharge
 	 */
-	public function setChargeIndicator(boolean $chargeIndicator)
+	public function setChargeIndicator(bool $chargeIndicator)
 	{
 		$this->chargeIndicator = $chargeIndicator;
 		return $this;
