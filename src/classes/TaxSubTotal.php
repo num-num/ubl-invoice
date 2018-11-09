@@ -10,6 +10,7 @@ class TaxSubTotal implements XmlSerializable
 	private $taxableAmount;
 	private $taxAmount;
 	private $taxCategory;
+	private $percent;
 
 	/**
 	 * @return mixed
@@ -66,6 +67,24 @@ class TaxSubTotal implements XmlSerializable
 	}
 
 	/**
+	 * @return float
+	 */
+	public function getPercent()
+	{
+		return $this->percent;
+	}
+
+	/**
+	 * @param float $percent
+	 * @return TaxSubTotal
+	 */
+	public function setPercent(float $percent)
+	{
+		$this->percent = $percent;
+		return $this;
+	}
+
+	/**
 	 * The validate function that is called during xml writing to valid the data of the object.
 	 *
 	 * @throws InvalidArgumentException An error with information about required data that is missing to write the XML
@@ -109,8 +128,16 @@ class TaxSubTotal implements XmlSerializable
 				'attributes' => [
 					'currencyID' => Generator::$currencyID
 				]
+			]
+		]);
 
-			],
+		if ($this->percent !== null) {
+			$writer->write([
+				Schema::CBC . 'Percent' => $this->percent
+			]);
+		}
+
+		$writer->write([
 			Schema::CAC . 'TaxCategory' => $this->taxCategory
 		]);
 	}

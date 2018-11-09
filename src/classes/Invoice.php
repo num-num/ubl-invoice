@@ -15,6 +15,7 @@ class Invoice implements XmlSerializable
 	private $paymentTerms;
 	private $accountingSupplierParty;
 	private $accountingCustomerParty;
+	private $paymentMeans;
 	private $taxTotal;
 	private $legalMonetaryTotal;
 	private $invoiceLines;
@@ -144,6 +145,24 @@ class Invoice implements XmlSerializable
 	public function setAccountingCustomerParty(Party $accountingCustomerParty)
 	{
 		$this->accountingCustomerParty = $accountingCustomerParty;
+		return $this;
+	}
+
+	/**
+	 * @return PaymentMeans
+	 */
+	public function getPaymentMeans()
+	{
+		return $this->paymentMeans;
+	}
+
+	/**
+	 * @param PaymentMeans $paymentMeans
+	 * @return Invoice
+	 */
+	public function setPaymentMeans(PaymentMeans $paymentMeans)
+	{
+		$this->paymentMeans = $paymentMeans;
 		return $this;
 	}
 
@@ -307,8 +326,13 @@ class Invoice implements XmlSerializable
 			Schema::CAC . 'AccountingCustomerParty' => [Schema::CAC . "Party" => $this->accountingCustomerParty],
 		]);
 
-		if ($this->paymentTerms != null)
-		{
+		if ($this->paymentMeans != null) {
+			$writer->write([
+				Schema::CAC . 'PaymentMeans' => $this->paymentMeans
+			]);
+		}
+
+		if ($this->paymentTerms != null) {
 			$writer->write([
 				Schema::CAC . 'PaymentTerms' => $this->paymentTerms
 			]);
