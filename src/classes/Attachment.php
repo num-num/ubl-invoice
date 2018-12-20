@@ -69,7 +69,8 @@ class Attachment implements XmlSerializable
 			'name' => Schema::CBC . 'EmbeddedDocumentBinaryObject',
 			'value' => $fileContents,
 			'attributes' => [
-				'mimeCode' => $mimeType
+				'mimeCode' => $mimeType,
+				'filename' => basename($this->filePath)
 			]
 		]);
 	}

@@ -7,11 +7,13 @@ use Sabre\Xml\XmlSerializable;
 
 class Invoice implements XmlSerializable
 {
-	private $UBLVersionID = '2.0';
+	private $UBLVersionID = '2.1';
+	private $CustomizationID = '2.1';
 	private $id;
 	private $copyIndicator = false;
 	private $issueDate;
 	private $invoiceTypeCode;
+	private $taxPointDate;
 	private $paymentTerms;
 	private $accountingSupplierParty;
 	private $accountingCustomerParty;
@@ -91,6 +93,24 @@ class Invoice implements XmlSerializable
 	public function setInvoiceTypeCode(string $invoiceTypeCode)
 	{
 		$this->invoiceTypeCode = $invoiceTypeCode;
+		return $this;
+	}
+
+	/**
+	 * @return DateTime
+	 */
+	public function getTaxPointDate()
+	{
+		return $this->taxPointDate;
+	}
+
+	/**
+	 * @param DateTime $taxPointDate
+	 * @return Invoice
+	 */
+	public function setTaxPointDate(\DateTime $taxPointDate)
+	{
+		$this->taxPointDate = $taxPointDate;
 		return $this;
 	}
 
@@ -308,11 +328,27 @@ class Invoice implements XmlSerializable
 
 		$writer->write([
 			Schema::CBC . 'UBLVersionID' => $this->UBLVersionID,
-			Schema::CBC . 'CustomizationID' => 'OIOUBL-2.01',
+			Schema::CBC . 'CustomizationID' => $this->UBLVersionID,
 			Schema::CBC . 'ID' => $this->id,
 			Schema::CBC . 'CopyIndicator' => $this->copyIndicator ? 'true' : 'false',
 			Schema::CBC . 'IssueDate' => $this->issueDate->format('Y-m-d'),
-			Schema::CBC . 'InvoiceTypeCode' => $this->invoiceTypeCode
+			[
+				'name' => Schema::CBC . 'InvoiceTypeCode',
+				'value' => $this->invoiceTypeCode,
+				'attributes' => [
+					'listURI' => 'http://www.E-FFF.be/ubl/2.0/cl/gc/BE-InvoiceCode-1.0.gc'
+				]
+			]
+		]);
+
+		if ($this->taxPointDate != null) {
+			$writer->write([
+				Schema::CBC . 'TaxPointDate' => $this->taxPointDate->format('Y-m-d')
+			]);
+		}
+
+		$writer->write([
+			Schema::CBC . 'DocumentCurrencyCode' => 'EUR',
 		]);
 
 		if ($this->additionalDocumentReference != null) {
