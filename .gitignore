@@ -1,4 +1,5 @@
 ## Composer
+composer.lock
 .idea
 composer.phar
 /vendor/
