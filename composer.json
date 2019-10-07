@@ -30,7 +30,7 @@
     ],
     "require": {
         "php": "^7.0",
-        "sabre/xml": "^1.5"
+        "sabre/xml": "^2.1"
     },
     "require-dev": {
         "phpunit/phpunit" : "^7.0"
