@@ -144,8 +144,17 @@ class TaxCategory implements XmlSerializable
 			Schema::CBC . 'Percent' => number_format($this->percent, 2, '.', ''),
 		]);
 
+		$writer->write([
+			Schema::CBC . 'TaxExemptionReasonCode' => null,
+			Schema::CBC . 'TaxExemptionReason' => null,
+		]);
+
 		if ($this->taxScheme != null) {
 			$writer->write([Schema::CAC . 'TaxScheme' => $this->taxScheme]);
+		} else {
+			$writer->write([
+				Schema::CAC . 'TaxScheme' => null,
+			]);
 		}
 	}
 }

@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "86c629ccb76332a6b7343046e5296bbb",
+    "content-hash": "2646fc31202c17c83aba9ec455cc7792",
     "packages": [
         {
             "name": "sabre/uri",
@@ -1592,7 +1592,9 @@
     ],
     "aliases": [],
     "minimum-stability": "stable",
-    "stability-flags": [],
+    "stability-flags": {
+        "num-num/ubl-invoice": 20
+    },
     "prefer-stable": false,
     "prefer-lowest": false,
     "platform": {

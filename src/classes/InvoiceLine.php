@@ -173,7 +173,7 @@ class InvoiceLine implements XmlSerializable
 
 		if (!empty($this->getNote())) {
 			$writer->write([
-				Schema::CAC . 'Note' => $this->getNote()
+				Schema::CBC . 'Note' => $this->getNote()
 			]);
 		}
 
@@ -199,6 +199,10 @@ class InvoiceLine implements XmlSerializable
 		if ($this->price !== null) {
 			$writer->write([
 				Schema::CAC . 'Price' => $this->price
+			]);
+		} else {
+			$writer->write([
+				Schema::CAC . 'TaxScheme' => null,
 			]);
 		}
 	}
