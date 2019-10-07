@@ -8,7 +8,7 @@ use Sabre\Xml\XmlSerializable;
 class Invoice implements XmlSerializable
 {
 	private $UBLVersionID = '2.1';
-	private $CustomizationID = '2.1';
+	private $CustomizationID = '1.0';
 	private $id;
 	private $copyIndicator = false;
 	private $issueDate;

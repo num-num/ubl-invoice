@@ -12,6 +12,7 @@ class InvoiceLine implements XmlSerializable
 	private $lineExtensionAmount;
 	private $unitCode = 'MON';
 	private $taxTotal;
+	private $note;
 	private $item;
 	private $price;
 
@@ -90,6 +91,24 @@ class InvoiceLine implements XmlSerializable
 	/**
 	 * @return mixed
 	 */
+	public function getNote()
+	{
+		return $this->note;
+	}
+
+	/**
+	 * @param mixed $note
+	 * @return InvoiceLine
+	 */
+	public function setNote($note)
+	{
+		$this->note = $note;
+		return $this;
+	}
+
+	/**
+	 * @return mixed
+	 */
 	public function getItem()
 	{
 		return $this->item;
@@ -149,7 +168,16 @@ class InvoiceLine implements XmlSerializable
 	function xmlSerialize(Writer $writer)
 	{
 		$writer->write([
-			Schema::CBC . 'ID' => $this->id,
+			Schema::CBC . 'ID' => $this->id
+		]);
+
+		if (!empty($this->getNote())) {
+			$writer->write([
+				Schema::CAC . 'Note' => $this->getNote()
+			]);
+		}
+
+		$writer->write([
 			[
 				'name' => Schema::CBC . 'InvoicedQuantity',
 				'value' => $this->invoicedQuantity,

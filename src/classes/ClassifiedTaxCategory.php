@@ -5,7 +5,7 @@ namespace NumNum\UBL;
 use Sabre\Xml\Writer;
 use Sabre\Xml\XmlSerializable;
 
-class TaxCategory implements XmlSerializable
+class ClassifiedTaxCategory implements XmlSerializable
 {
 	private $id;
 	private $name;
@@ -38,7 +38,7 @@ class TaxCategory implements XmlSerializable
 
 	/**
 	 * @param mixed $id
-	 * @return TaxCategory
+	 * @return ClassifiedTaxCategory
 	 */
 	public function setId($id)
 	{
@@ -56,7 +56,7 @@ class TaxCategory implements XmlSerializable
 
 	/**
 	 * @param mixed $name
-	 * @return TaxCategory
+	 * @return ClassifiedTaxCategory
 	 */
 	public function setName($name)
 	{
@@ -74,7 +74,7 @@ class TaxCategory implements XmlSerializable
 
 	/**
 	 * @param mixed $percent
-	 * @return TaxCategory
+	 * @return ClassifiedTaxCategory
 	 */
 	public function setPercent($percent)
 	{
@@ -92,7 +92,7 @@ class TaxCategory implements XmlSerializable
 
 	/**
 	 * @param mixed $taxScheme
-	 * @return TaxCategory
+	 * @return ClassifiedTaxCategory
 	 */
 	public function setTaxScheme($taxScheme)
 	{
@@ -136,7 +136,7 @@ class TaxCategory implements XmlSerializable
 				'name' => Schema::CBC . 'ID',
 				'value' => $this->getId(),
 				'attributes' => [
-					'schemeID' => TaxCategory::UNCL5305,
+					'schemeID' => ClassifiedTaxCategory::UNCL5305,
 					'schemeName' => 'Duty or tax or fee category'
 				]
 			],
