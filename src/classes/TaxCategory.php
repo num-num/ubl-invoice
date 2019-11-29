@@ -24,11 +24,11 @@ class TaxCategory implements XmlSerializable
 		}
 
 		if ($this->getPercent() !== null) {
-			if ($this->getPercent() == 21) {
+			if ($this->getPercent() >= 21) {
 				return 'S';
-			} else if ($this->getPercent() == 12 || $this->getPercent() == 6) {
+			} else if ($this->getPercent() <= 21 && $this->getPercent() >= 6) {
 				return 'AA';
-			} else if ($this->getPercent() == 0) {
+			} else {
 				return 'Z';
 			}
 		}
