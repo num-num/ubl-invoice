@@ -14,6 +14,7 @@ class Invoice implements XmlSerializable
 	private $issueDate;
 	private $invoiceTypeCode;
 	private $taxPointDate;
+	private $dueDate;
 	private $paymentTerms;
 	private $accountingSupplierParty;
 	private $accountingCustomerParty;
@@ -23,6 +24,7 @@ class Invoice implements XmlSerializable
 	private $invoiceLines;
 	private $allowanceCharges;
 	private $additionalDocumentReference;
+	private $documentCurrencyCode;
 
 	/**
 	 * @return mixed
@@ -77,6 +79,36 @@ class Invoice implements XmlSerializable
 		$this->issueDate = $issueDate;
 		return $this;
 	}
+
+	/**
+	 * @return \DateTime
+	 */
+	public function getDueDate()
+	{
+		return $this->dueDate;
+	}
+
+	/**
+	 * @param \DateTime $dueDate
+	 * @return Invoice
+	 */
+	public function setDueDate(\DateTime $dueDate)
+	{
+		$this->dueDate = $dueDate;
+		return $this;
+	}
+
+
+	/**
+	 * @param mixed $currencyCode
+	 * @return Invoice
+	 */
+	public function setDocumentCurrencyCode(string $currencyCode = 'EUR')
+	{
+		$this->documentCurrencyCode = $currencyCode;
+		return $this;
+	}
+
 
 	/**
 	 * @return string
@@ -279,8 +311,8 @@ class Invoice implements XmlSerializable
 	/**
 	 * The validate function that is called during xml writing to valid the data of the object.
 	 *
-	 * @throws InvalidArgumentException An error with information about required data that is missing to write the XML
 	 * @return void
+	 * @throws InvalidArgumentException An error with information about required data that is missing to write the XML
 	 */
 	function validate()
 	{
@@ -347,8 +379,14 @@ class Invoice implements XmlSerializable
 			]);
 		}
 
+		if ($this->dueDate != null) {
+			$writer->write([
+				Schema::CBC . 'DueDate' => $this->dueDate->format('Y-m-d')
+			]);
+		}
+
 		$writer->write([
-			Schema::CBC . 'DocumentCurrencyCode' => 'EUR',
+			Schema::CBC . 'DocumentCurrencyCode' => $this->documentCurrencyCode,
 		]);
 
 		if ($this->additionalDocumentReference != null) {
