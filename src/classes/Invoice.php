@@ -24,7 +24,7 @@ class Invoice implements XmlSerializable
 	private $invoiceLines;
 	private $allowanceCharges;
 	private $additionalDocumentReference;
-	private $documentCurrencyCode;
+	private $documentCurrencyCode = 'EUR';
 
 	/**
 	 * @return mixed
