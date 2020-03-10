@@ -266,7 +266,7 @@ class Invoice implements XmlSerializable
 	 * @param InvoiceLine[] $invoiceLines
 	 * @return Invoice
 	 */
-	public function setInvoiceLines(Array $invoiceLines)
+	public function setInvoiceLines(array $invoiceLines)
 	{
 		$this->invoiceLines = $invoiceLines;
 		return $this;
@@ -284,7 +284,7 @@ class Invoice implements XmlSerializable
 	 * @param AllowanceCharge[] $allowanceCharges
 	 * @return Invoice
 	 */
-	public function setAllowanceCharges(Array $allowanceCharges)
+	public function setAllowanceCharges(array $allowanceCharges)
 	{
 		$this->allowanceCharges = $allowanceCharges;
 		return $this;

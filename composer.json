@@ -38,7 +38,7 @@
     },
     "autoload": {
         "psr-4": {
-            "NumNum\\UBL\\": ["src/", "src/classes"]
+            "NumNum\\UBL\\": ["src"]
         }
     },
     "scripts": {
