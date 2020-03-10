@@ -8,10 +8,10 @@ namespace NumNum\UBL;
 
 use \DateTime as DateTime;
 
-include '../vendor/autoload.php';
+require '../vendor/autoload.php';
 
-require 'classes/Invoice.php';
-require 'Generator.php';
+require '../src/classes/Invoice.php';
+require '../src/Generator.php';
 
 
 $generator          = new Generator();
