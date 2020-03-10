@@ -12,4 +12,4 @@ composer require num-num/ubl-invoice
 
 ## Examples
 
-The usage examples are to be updated in a later stage. For now, you can find a fairly simple `Sample.php` file in the `src` folder.
+The usage examples are to be updated in a later stage. For now, you can find a fairly simple `Sample.php` file in the `example` folder.
