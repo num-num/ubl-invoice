@@ -9,7 +9,6 @@ require '../vendor/autoload.php';
 require '../src/Invoice.php';
 require '../src/Generator.php';
 
-
 $generator          = new NumNum\UBL\Generator();
 $legalMonetaryTotal = new NumNum\UBL\LegalMonetaryTotal();
 

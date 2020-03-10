@@ -7,138 +7,138 @@ use Sabre\Xml\XmlSerializable;
 
 class TaxSubTotal implements XmlSerializable
 {
-	private $taxableAmount;
-	private $taxAmount;
-	private $taxCategory;
-	private $percent;
+    private $taxableAmount;
+    private $taxAmount;
+    private $taxCategory;
+    private $percent;
 
-	/**
-	 * @return mixed
-	 */
-	public function getTaxableAmount()
-	{
-		return $this->taxableAmount;
-	}
+    /**
+     * @return mixed
+     */
+    public function getTaxableAmount()
+    {
+        return $this->taxableAmount;
+    }
 
-	/**
-	 * @param mixed $taxableAmount
-	 * @return TaxSubTotal
-	 */
-	public function setTaxableAmount($taxableAmount)
-	{
-		$this->taxableAmount = $taxableAmount;
-		return $this;
-	}
+    /**
+     * @param mixed $taxableAmount
+     * @return TaxSubTotal
+     */
+    public function setTaxableAmount($taxableAmount)
+    {
+        $this->taxableAmount = $taxableAmount;
+        return $this;
+    }
 
-	/**
-	 * @return mixed
-	 */
-	public function getTaxAmount()
-	{
-		return $this->taxAmount;
-	}
+    /**
+     * @return mixed
+     */
+    public function getTaxAmount()
+    {
+        return $this->taxAmount;
+    }
 
-	/**
-	 * @param mixed $taxAmount
-	 * @return TaxSubTotal
-	 */
-	public function setTaxAmount($taxAmount)
-	{
-		$this->taxAmount = $taxAmount;
-		return $this;
-	}
+    /**
+     * @param mixed $taxAmount
+     * @return TaxSubTotal
+     */
+    public function setTaxAmount($taxAmount)
+    {
+        $this->taxAmount = $taxAmount;
+        return $this;
+    }
 
-	/**
-	 * @return TaxCategory
-	 */
-	public function getTaxCategory()
-	{
-		return $this->taxCategory;
-	}
+    /**
+     * @return TaxCategory
+     */
+    public function getTaxCategory()
+    {
+        return $this->taxCategory;
+    }
 
-	/**
-	 * @param TaxCategory $taxCategory
-	 * @return TaxSubTotal
-	 */
-	public function setTaxCategory(TaxCategory $taxCategory)
-	{
-		$this->taxCategory = $taxCategory;
-		return $this;
-	}
+    /**
+     * @param TaxCategory $taxCategory
+     * @return TaxSubTotal
+     */
+    public function setTaxCategory(TaxCategory $taxCategory)
+    {
+        $this->taxCategory = $taxCategory;
+        return $this;
+    }
 
-	/**
-	 * @return float
-	 */
-	public function getPercent()
-	{
-		return $this->percent;
-	}
+    /**
+     * @return float
+     */
+    public function getPercent()
+    {
+        return $this->percent;
+    }
 
-	/**
-	 * @param float $percent
-	 * @return TaxSubTotal
-	 */
-	public function setPercent(float $percent)
-	{
-		$this->percent = $percent;
-		return $this;
-	}
+    /**
+     * @param float $percent
+     * @return TaxSubTotal
+     */
+    public function setPercent(float $percent)
+    {
+        $this->percent = $percent;
+        return $this;
+    }
 
-	/**
-	 * The validate function that is called during xml writing to valid the data of the object.
-	 *
-	 * @throws InvalidArgumentException An error with information about required data that is missing to write the XML
-	 * @return void
-	 */
-	public function validate()
-	{
-		if ($this->taxableAmount === null) {
-			throw new \InvalidArgumentException('Missing taxsubtotal taxableAmount');
-		}
+    /**
+     * The validate function that is called during xml writing to valid the data of the object.
+     *
+     * @throws InvalidArgumentException An error with information about required data that is missing to write the XML
+     * @return void
+     */
+    public function validate()
+    {
+        if ($this->taxableAmount === null) {
+            throw new \InvalidArgumentException('Missing taxsubtotal taxableAmount');
+        }
 
-		if ($this->taxAmount === null) {
-			throw new \InvalidArgumentException('Missing taxsubtotal taxamount');
-		}
+        if ($this->taxAmount === null) {
+            throw new \InvalidArgumentException('Missing taxsubtotal taxamount');
+        }
 
-		if ($this->taxCategory === null) {
-			throw new \InvalidArgumentException('Missing taxsubtotal taxcategory');
-		}
-	}
+        if ($this->taxCategory === null) {
+            throw new \InvalidArgumentException('Missing taxsubtotal taxcategory');
+        }
+    }
 
-	/**
-	 * The xmlSerialize method is called during xml writing.
-	 * @param Writer $writer
-	 * @return void
-	 */
-	function xmlSerialize(Writer $writer)
-	{
-		$this->validate();
+    /**
+     * The xmlSerialize method is called during xml writing.
+     * @param Writer $writer
+     * @return void
+     */
+    public function xmlSerialize(Writer $writer)
+    {
+        $this->validate();
 
-		$writer->write([
-			[
-				'name' => Schema::CBC . 'TaxableAmount',
-				'value' => number_format($this->taxableAmount, 2, '.', ''),
-				'attributes' => [
-					'currencyID' => Generator::$currencyID
-				]
-			],
-			[
-				'name' => Schema::CBC . 'TaxAmount',
-				'value' => number_format($this->taxAmount, 2, '.', ''),
-				'attributes' => [
-					'currencyID' => Generator::$currencyID
-				]
-			]
-		]);
+        $writer->write([
+            [
+                'name' => Schema::CBC . 'TaxableAmount',
+                'value' => number_format($this->taxableAmount, 2, '.', ''),
+                'attributes' => [
+                    'currencyID' => Generator::$currencyID
+                ]
+            ],
+            [
+                'name' => Schema::CBC . 'TaxAmount',
+                'value' => number_format($this->taxAmount, 2, '.', ''),
+                'attributes' => [
+                    'currencyID' => Generator::$currencyID
+                ]
+            ]
+        ]);
 
-		if ($this->percent !== null) {
-			$writer->write([
-				Schema::CBC . 'Percent' => $this->percent
-			]);
-		}
+        if ($this->percent !== null) {
+            $writer->write([
+                Schema::CBC . 'Percent' => $this->percent
+            ]);
+        }
 
-		$writer->write([
-			Schema::CAC . 'TaxCategory' => $this->taxCategory
-		]);
-	}
+        $writer->write([
+            Schema::CAC . 'TaxCategory' => $this->taxCategory
+        ]);
+    }
 }
