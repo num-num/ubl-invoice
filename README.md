@@ -6,7 +6,7 @@ A PHP Wrapper for creating UBL invoices. This code is a hard fork of the [`cleve
 
 This package requires PHP 7.0 or higher. Installation can be done with [composer](https://www.getcomposer.org).
 
-```bash
+```sh
 composer require num-num/ubl-invoice
 ```
 
@@ -16,8 +16,8 @@ Feel free to create a pull request for code additions/changes. Please always fol
 
 ## Examples & Documentation
 
-This repository does not contain any documentation at the moment. For now, you can find a fairly simple example in the `SimpleInvoiceTest.php` file in the `tests` unit tests folder.
+This repository does not provide any documentation at the moment. For now, you can find a fairly simple example in the unit test files in the `tests` folder.
 
 ## Unit testing
 
-This repository does not contain contain exhaustive unit testing for all possiblities and options that are included in the code. Unit tests are to be created in the `tests` folder and can be run by running `phpunit` in the repository root.
+This repository does not provide exhaustive unit testing for *all* possiblities, getters & setters that are included in the code. Please feel free to add new unit tests for new features that you write. Unit tests are to be created in the `tests` folder and can be run by running `phpunit` in the repository root.
