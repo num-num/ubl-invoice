@@ -9,7 +9,7 @@ class Price implements XmlSerializable
 {
     private $priceAmount;
     private $baseQuantity;
-    private $unitCode = 'MON';
+    private $unitCode = UnitCode::UNIT;
 
     /**
      * @return mixed
@@ -57,9 +57,10 @@ class Price implements XmlSerializable
 
     /**
      * @param mixed $unitCode
+     * See also: src/UnitCode.php
      * @return Price
      */
-    public function setUnitCode($unitCode)
+    public function setUnitCode(string $unitCode)
     {
         $this->unitCode = $unitCode;
         return $this;

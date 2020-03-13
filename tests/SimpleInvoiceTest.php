@@ -52,7 +52,7 @@ class SimpleInvoiceTest extends TestCase
         // Price
         $price = new \NumNum\UBL\Price();
         $price->setBaseQuantity(1);
-        $price->setUnitCode('ZZ');
+        $price->setUnitCode(\NumNum\UBL\UnitCode::UNIT);
         $price->setPriceAmount(10);
 
         // Invoice Line tax totals
