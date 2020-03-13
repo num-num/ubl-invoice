@@ -27,6 +27,25 @@ class Invoice implements XmlSerializable
     private $documentCurrencyCode = 'EUR';
 
     /**
+     * @return string
+     */
+    public function getUBLVersionID()
+    {
+        return $this->UBLVersionID;
+    }
+
+    /**
+     * @param string $UBLVersionID
+     * eg. '2.0', '2.1', '2.2', ...
+     * @return Invoice
+     */
+    public function setUBLVersionID(string $UBLVersionID)
+    {
+        $this->UBLVersionID = $UBLVersionID;
+        return $this;
+    }
+
+    /**
      * @return mixed
      */
     public function getId()
