@@ -87,7 +87,6 @@ class SimpleInvoiceTest extends TestCase
 
         // Invoice object
         $invoice = new \NumNum\UBL\Invoice();
-        $invoice->setAccountingSupplierParty($supplierCompany);
         $invoice->setId(1234);
         $invoice->setIssueDate(new \DateTime());
         $invoice->setAccountingSupplierParty($supplierCompany);
