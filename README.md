@@ -16,7 +16,7 @@ Feel free to create a pull request for code additions/changes. Please always fol
 
 ## Examples & Documentation
 
-This repository does not contain any documentation at the moment. For now, you can find a fairly simple example in the `SimpleInoviceTest.php` file in the `tests` unit tests folder.
+This repository does not contain any documentation at the moment. For now, you can find a fairly simple example in the `SimpleInvoiceTest.php` file in the `tests` unit tests folder.
 
 ## Unit testing
 
