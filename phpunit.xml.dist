@@ -10,7 +10,7 @@
          processIsolation="false"
          stopOnFailure="false">
     <testsuites>
-        <testsuite name="Num–Num ubl-invoice Test Suite">
+        <testsuite name="Num–Num UBL-invoice Test Suite">
             <directory>tests</directory>
         </testsuite>
     </testsuites>
