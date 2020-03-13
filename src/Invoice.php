@@ -8,11 +8,11 @@ use Sabre\Xml\XmlSerializable;
 class Invoice implements XmlSerializable
 {
     private $UBLVersionID = '2.1';
-    private $CustomizationID = '1.0';
+    private $customizationID = '1.0';
     private $id;
     private $copyIndicator = false;
     private $issueDate;
-    private $invoiceTypeCode;
+    private $invoiceTypeCode = InvoiceTypeCode::INVOICE;
     private $taxPointDate;
     private $dueDate;
     private $paymentTerms;
@@ -120,6 +120,7 @@ class Invoice implements XmlSerializable
 
     /**
      * @param string $invoiceTypeCode
+     * See also: src/InvoiceTypeCode.php
      * @return Invoice
      */
     public function setInvoiceTypeCode(string $invoiceTypeCode)
@@ -360,16 +361,13 @@ class Invoice implements XmlSerializable
 
         $writer->write([
             Schema::CBC . 'UBLVersionID' => $this->UBLVersionID,
-            Schema::CBC . 'CustomizationID' => $this->UBLVersionID,
+            Schema::CBC . 'CustomizationID' => $this->customizationID,
             Schema::CBC . 'ID' => $this->id,
             Schema::CBC . 'CopyIndicator' => $this->copyIndicator ? 'true' : 'false',
             Schema::CBC . 'IssueDate' => $this->issueDate->format('Y-m-d'),
             [
                 'name' => Schema::CBC . 'InvoiceTypeCode',
-                'value' => $this->invoiceTypeCode,
-                'attributes' => [
-                    'listURI' => 'http://www.E-FFF.be/ubl/2.0/cl/gc/BE-InvoiceCode-1.0.gc'
-                ]
+                'value' => $this->invoiceTypeCode
             ]
         ]);
 

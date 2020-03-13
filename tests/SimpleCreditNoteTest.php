@@ -5,9 +5,9 @@ namespace NumNum\UBL\Tests;
 use PHPUnit\Framework\TestCase;
 
 /**
- * Test an UBL2.1 invoice document
+ * Test an UBL2.1 credit note document
  */
-class SimpleInvoiceTest extends TestCase
+class SimpleCreditNoteTest extends TestCase
 {
     private $schema = 'http://docs.oasis-open.org/ubl/os-UBL-2.1/xsd/maindoc/UBL-Invoice-2.1.xsd';
 
@@ -90,11 +90,13 @@ class SimpleInvoiceTest extends TestCase
         $invoice->setAccountingSupplierParty($supplierCompany);
         $invoice->setId(1234);
         $invoice->setIssueDate(new \DateTime());
+        $invoice->setInvoiceTypeCode('invoiceTypeCode');
         $invoice->setAccountingSupplierParty($supplierCompany);
         $invoice->setAccountingCustomerParty($clientCompany);
         $invoice->setInvoiceLines($invoiceLines);
         $invoice->setLegalMonetaryTotal($legalMonetaryTotal);
         $invoice->setTaxTotal($taxTotal);
+        $invoice->setInvoiceTypeCode(\NumNum\UBL\InvoiceTypeCode::CREDIT_NOTE);
 
         // Test created object
         // Use \NumNum\UBL\Generator to generate an XML string
