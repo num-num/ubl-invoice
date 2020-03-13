@@ -24,8 +24,7 @@
     ],
     "require": {
         "php": "^7.0",
-        "sabre/xml": "^2.1",
-        "num-num/ubl-invoice": "@dev"
+        "sabre/xml": "^2.1"
     },
     "require-dev": {
         "phpunit/phpunit" : "^7.0"
