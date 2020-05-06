@@ -11,6 +11,10 @@ class ClassifiedTaxCategory implements XmlSerializable
     private $name;
     private $percent;
     private $taxScheme;
+    private $taxExemptionReason;
+    private $taxExemptionReasonCode;
+    private $schemeID;
+    private $schemeName;
 
     public const UNCL5305 = 'UNCL5305';
 
@@ -101,6 +105,26 @@ class ClassifiedTaxCategory implements XmlSerializable
     }
 
     /**
+     * @param mixed $id
+     * @return ClassifiedTaxCategory
+     */
+    public function setSchemeID($id)
+    {
+        $this->schemeID = $id;
+        return $this;
+    }
+
+    /**
+     * @param mixed $name
+     * @return ClassifiedTaxCategory
+     */
+    public function setSchemeName($name)
+    {
+        $this->schemeName = $name;
+        return $this;
+    }
+
+    /**
      * The validate function that is called during xml writing to valid the data of the object.
      *
      * @throws InvalidArgumentException An error with information about required data that is missing to write the XML
@@ -110,10 +134,6 @@ class ClassifiedTaxCategory implements XmlSerializable
     {
         if ($this->getId() === null) {
             throw new \InvalidArgumentException('Missing taxcategory id');
-        }
-
-        if ($this->getName() === null) {
-            throw new \InvalidArgumentException('Missing taxcategory name');
         }
 
         if ($this->getPercent() === null) {
@@ -130,24 +150,35 @@ class ClassifiedTaxCategory implements XmlSerializable
     public function xmlSerialize(Writer $writer)
     {
         $this->validate();
-
+        $schemeAttributes = array();
+        if ($this->schemeID != null) {
+            $schemeAttributes['schemeID'] = $this->schemeID;
+        }
+        if ($this->schemeName != null) {
+            $schemeAttributes['schemeName'] = $this->schemeName;
+        }
         $writer->write([
             [
                 'name' => Schema::CBC . 'ID',
                 'value' => $this->getId(),
-                'attributes' => [
-                    'schemeID' => ClassifiedTaxCategory::UNCL5305,
-                    'schemeName' => 'Duty or tax or fee category'
-                ]
+                'attributes' => $schemeAttributes
+                
             ],
-            Schema::CBC . 'Name' => $this->name,
             Schema::CBC . 'Percent' => number_format($this->percent, 2, '.', ''),
         ]);
 
-        $writer->write([
-            Schema::CBC . 'TaxExemptionReasonCode' => null,
-            Schema::CBC . 'TaxExemptionReason' => null,
-        ]);
+        if ($this->name != null) {
+            $writer->write([
+                Schema::CBC . 'Name' => $this->name,
+            ]);
+        }
+
+        if ($this->taxExemptionReasonCode != null) {
+            $writer->write([
+                Schema::CBC . 'TaxExemptionReasonCode' => $this->taxExemptionReasonCode,
+                Schema::CBC . 'TaxExemptionReason' => $this->taxExemptionReason,
+            ]);
+        }
 
         if ($this->taxScheme != null) {
             $writer->write([Schema::CAC . 'TaxScheme' => $this->taxScheme]);

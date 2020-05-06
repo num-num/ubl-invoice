@@ -9,6 +9,7 @@ class TaxScheme implements XmlSerializable
 {
     private $id;
     private $taxTypeCode;
+    private $name;
 
     /**
      * @return mixed
@@ -46,11 +47,31 @@ class TaxScheme implements XmlSerializable
         return $this;
     }
 
+    /**
+     * @param mixed $name
+     * @return int
+     */
+    public function setName($name)
+    {
+        $this->name = $name;
+        return $this;
+    }
+
     public function xmlSerialize(Writer $writer)
     {
         $writer->write([
-            Schema::CBC . 'ID' => $this->id,
-            Schema::CBC . 'TaxTypeCode' => $this->taxTypeCode
+            Schema::CBC . 'ID' => $this->id
         ]);
+        if ($this->taxTypeCode != null) {
+            $writer->write([
+                Schema::CBC . 'TaxTypeCode' => $this->taxTypeCode
+            ]);
+        }
+        if ($this->name != null) {
+            $writer->write([
+                Schema::CBC . 'Name' => $this->name
+            ]);
+        }
     }
+
 }

@@ -7,47 +7,66 @@ use PHPUnit\Framework\TestCase;
 /**
  * Test an UBL2.1 invoice document
  */
-class SimpleInvoiceTest extends TestCase
+class EN16931Test extends TestCase
 {
     private $schema = 'http://docs.oasis-open.org/ubl/os-UBL-2.1/xsd/maindoc/UBL-Invoice-2.1.xsd';
+    private $xslfile = 'vendor/num-num/ubl-invoice/tests/EN16931-UBL-validation.xslt';
 
     /** @test */
     public function testIfXMLIsValid()
     {
+        // Tax scheme
+        $taxScheme = (new \NumNum\UBL\TaxScheme())
+            ->setId('VAT');
+
         // Address country
         $country = (new \NumNum\UBL\Country())
             ->setIdentificationCode('BE');
 
         // Full address
         $address = (new \NumNum\UBL\Address())
-            ->setStreetName('Korenmarkt')
-            ->setBuildingNumber(1)
+            ->setStreetName('Korenmarkt 1')
             ->setCityName('Gent')
             ->setPostalZone('9000')
             ->setCountry($country);
 
+        $sle = (new \NumNum\UBL\LegalEntity());
+        $sle->setRegistrationName('Supplier Company Name');
+        $sle->setCompanyId('Company Registration');
+
         // Supplier company node
         $supplierCompany = (new \NumNum\UBL\Party())
             ->setName('Supplier Company Name')
-            ->setPhysicalLocation($address)
+            ->setLegalEntity($sle)
             ->setPostalAddress($address);
+        $supplierCompany->setTaxScheme($taxScheme);
+        $supplierCompany->setTaxCompanyId('BEtax id supplier company');
 
         // Client company node
+        $cle = (new \NumNum\UBL\LegalEntity());
+        $cle->setRegistrationName('My Client');
+        $cle->setCompanyId('Client Company Registration');
         $clientCompany = (new \NumNum\UBL\Party())
             ->setName('My client')
+            ->setLegalEntity($cle)
             ->setPostalAddress($address);
 
         $legalMonetaryTotal = (new \NumNum\UBL\LegalMonetaryTotal())
-            ->setPayableAmount(10 + 2)
-            ->setAllowanceTotalAmount(0);
+            ->setPayableAmount(10 + 2.1)
+            ->setAllowanceTotalAmount(0)
+            ->setTaxInclusiveAmount(10 + 2.1)
+            ->setLineExtensionAmount(10)
+            ->setTaxExclusiveAmount(10);
 
-        // Tax scheme
-        $taxScheme = (new \NumNum\UBL\TaxScheme())
-            ->setId(0);
+        $classifiedTaxCategory = (new \NumNum\UBL\ClassifiedTaxCategory())
+            ->setId('S')
+            ->setPercent(21.00)
+            ->setTaxScheme($taxScheme);
 
         // Product
         $productItem = (new \NumNum\UBL\Item())
             ->setName('Product Name')
+            ->setClassifiedTaxCategory($classifiedTaxCategory)
             ->setDescription('Product Description');
 
         // Price
@@ -65,16 +84,15 @@ class SimpleInvoiceTest extends TestCase
             ->setId(0)
             ->setItem($productItem)
             ->setPrice($price)
-            ->setTaxTotal($lineTaxTotal)
+            ->setLineExtensionAmount(10)
             ->setInvoicedQuantity(1);
 
         $invoiceLines = [$invoiceLine];
 
         // Total Taxes
         $taxCategory = (new \NumNum\UBL\TaxCategory())
-            ->setId(0)
-            ->setName('VAT21%')
-            ->setPercent(.21)
+            ->setId('S', [])
+            ->setPercent(21.00)
             ->setTaxScheme($taxScheme);
 
         $taxSubTotal = (new \NumNum\UBL\TaxSubTotal())
@@ -87,15 +105,20 @@ class SimpleInvoiceTest extends TestCase
             ->addTaxSubTotal($taxSubTotal)
             ->setTaxAmount(2.1);
 
+        // Payment Terms
+        $paymentTerms = (new \NumNum\UBL\PaymentTerms())
+            ->setNote('30 days net');
+
         // Invoice object
         $invoice = (new \NumNum\UBL\Invoice())
+            ->setCustomizationID('urn:cen.eu:en16931:2017')
             ->setId(1234)
-            ->setCopyIndicator(false)
             ->setIssueDate(new \DateTime())
             ->setAccountingSupplierParty($supplierCompany)
             ->setAccountingCustomerParty($clientCompany)
             ->setInvoiceLines($invoiceLines)
             ->setLegalMonetaryTotal($legalMonetaryTotal)
+            ->setPaymentTerms($paymentTerms)
             ->setTaxTotal($taxTotal);
 
         // Test created object
@@ -108,5 +131,14 @@ class SimpleInvoiceTest extends TestCase
         $dom = new \DOMDocument;
         $dom->loadXML($outputXMLString);
         $this->assertEquals(true, $dom->schemaValidate($this->schema));
+
+        // Use webservice at peppol.helger.com to verify the result
+        $wsdl = "http://peppol.helger.com/wsdvs?wsdl=1";
+        $client = new \SoapClient($wsdl);
+        $response = $client->validate(array('XML' => $outputXMLString, 'VESID' => 'eu.cen.en16931:ubl:1.3.1'));
+        $this->assertEquals('SUCCESS', $response->mostSevereErrorLevel);
+
+        // file_put_contents('EN16931Test.xml', $outputXMLString);
+
     }
 }

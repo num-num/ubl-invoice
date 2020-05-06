@@ -10,7 +10,7 @@ class Invoice implements XmlSerializable
     private $UBLVersionID = '2.1';
     private $customizationID = '1.0';
     private $id;
-    private $copyIndicator = false;
+    private $copyIndicator;
     private $issueDate;
     private $invoiceTypeCode = InvoiceTypeCode::INVOICE;
     private $taxPointDate;
@@ -63,6 +63,17 @@ class Invoice implements XmlSerializable
         return $this;
     }
 
+    /**
+     * @param mixed $customizationID
+     * @return Invoice
+     */
+    public function setCustomizationID($id)
+    {
+        $this->customizationID = $id;
+        return $this;
+    }
+
+    /**
     /**
      * @return bool
      */
@@ -381,14 +392,24 @@ class Invoice implements XmlSerializable
         $writer->write([
             Schema::CBC . 'UBLVersionID' => $this->UBLVersionID,
             Schema::CBC . 'CustomizationID' => $this->customizationID,
-            Schema::CBC . 'ID' => $this->id,
-            Schema::CBC . 'CopyIndicator' => $this->copyIndicator ? 'true' : 'false',
+            Schema::CBC . 'ID' => $this->id
+        ]);
+
+        if ($this->copyIndicator !== null) {
+            $writer->write([
+                Schema::CBC . 'CopyIndicator' => $this->copyIndicator ? 'true' : 'false'
+            ]);
+        }
+        
+        $writer->write([
             Schema::CBC . 'IssueDate' => $this->issueDate->format('Y-m-d'),
             [
                 'name' => Schema::CBC . 'InvoiceTypeCode',
                 'value' => $this->invoiceTypeCode
             ]
         ]);
+
+        
 
         if ($this->taxPointDate != null) {
             $writer->write([
