@@ -109,6 +109,42 @@ class TaxCategory implements XmlSerializable
     }
 
     /**
+     * @return mixed
+     */
+    public function getTaxExemptionReason()
+    {
+        return $this->taxExemptionReason;
+    }
+
+    /**
+     * @param mixed $taxExemptionReason
+     * @return TaxCategory
+     */
+    public function setTaxExemptionReason($taxExemptionReason)
+    {
+        $this->taxExemptionReason = $taxExemptionReason;
+        return $this;
+    }
+
+    /**
+     * @return mixed
+     */
+    public function getTaxExemptionReasonCode()
+    {
+        return $this->taxExemptionReasonCode;
+    }
+
+    /**
+     * @param mixed $taxExemptionReason
+     * @return TaxCategory
+     */
+    public function setTaxExemptionReasonCode($taxExemptionReasonCode)
+    {
+        $this->taxExemptionReasonCode = $taxExemptionReasonCode;
+        return $this;
+    }
+
+    /**
      * The validate function that is called during xml writing to valid the data of the object.
      *
      * @throws InvalidArgumentException An error with information about required data that is missing to write the XML
@@ -155,6 +191,11 @@ class TaxCategory implements XmlSerializable
         if ($this->taxExemptionReasonCode != null) {
             $writer->write([
                 Schema::CBC . 'TaxExemptionReasonCode' => $this->taxExemptionReasonCode,
+            ]);
+        }
+
+        if ($this->taxExemptionReason != null) {
+            $writer->write([
                 Schema::CBC . 'TaxExemptionReason' => $this->taxExemptionReason,
             ]);
         }
