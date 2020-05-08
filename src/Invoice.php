@@ -25,6 +25,8 @@ class Invoice implements XmlSerializable
     private $allowanceCharges;
     private $additionalDocumentReference;
     private $documentCurrencyCode = 'EUR';
+    private $buyerReference;
+
 
     /**
      * @return string
@@ -340,6 +342,24 @@ class Invoice implements XmlSerializable
     }
 
     /**
+     * @param string $buyerReference
+     * @return Invoice
+     */
+    public function setBuyerReference(string $buyerReference)
+    {
+        $this->buyerReference = $buyerReference;
+        return $this;
+    }
+
+      /**
+     * @return string buyerReference
+     */
+    public function getBuyerReference()
+    {
+        return $this->buyerReference;
+    }
+
+    /**
      * The validate function that is called during xml writing to valid the data of the object.
      *
      * @return void
@@ -426,6 +446,13 @@ class Invoice implements XmlSerializable
         $writer->write([
             Schema::CBC . 'DocumentCurrencyCode' => $this->documentCurrencyCode,
         ]);
+
+        if ($this->buyerReference != null) {
+            $writer->write([
+                Schema::CBC . 'BuyerReference' => $this->buyerReference,
+                Schema::CAC . 'OrderReference' => [Schema::CBC . "ID" => $this->buyerReference]
+            ]);
+        }
 
         if ($this->additionalDocumentReference != null) {
             $writer->write([

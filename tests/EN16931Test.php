@@ -34,6 +34,20 @@ class EN16931Test extends TestCase
         $sle->setRegistrationName('Supplier Company Name');
         $sle->setCompanyId('Company Registration');
 
+        $financialInstitutionBranch = (new \NumNum\UBL\FinancialInstitutionBranch())
+            ->setId('RABONL2U');
+        
+        $payeeFinancialAccount = (new \NumNum\UBL\PayeeFinancialAccount())
+           ->setFinancialInstitutionBranch($financialInstitutionBranch)
+            ->setName('Customer Account Holder')
+            ->setId('NL00RABO0000000000');
+
+        $paymentMeans = (new \NumNum\UBL\PaymentMeans())
+            ->setPayeeFinancialAccount($payeeFinancialAccount)
+            ->setPaymentMeansCode(31, [])
+            ->setPaymentId('our invoice 1234');
+            
+
         // Supplier company node
         $supplierCompany = (new \NumNum\UBL\Party())
             ->setName('Supplier Company Name')
@@ -119,6 +133,7 @@ class EN16931Test extends TestCase
             ->setInvoiceLines($invoiceLines)
             ->setLegalMonetaryTotal($legalMonetaryTotal)
             ->setPaymentTerms($paymentTerms)
+            ->setPaymentMeans($paymentMeans)
             ->setTaxTotal($taxTotal);
 
         // Test created object
