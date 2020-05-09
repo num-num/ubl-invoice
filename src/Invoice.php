@@ -26,6 +26,8 @@ class Invoice implements XmlSerializable
     private $additionalDocumentReference;
     private $documentCurrencyCode = 'EUR';
     private $buyerReference;
+    private $accountingCostCode;
+
 
 
     /**
@@ -360,6 +362,24 @@ class Invoice implements XmlSerializable
     }
 
     /**
+     * @return mixed
+     */
+    public function getAccountingCostCode()
+    {
+        return $this->accountingCostCode;
+    }
+
+    /**
+     * @param mixed $accountingCostCode
+     * @return InvoiceLine
+     */
+    public function setAccountingCostCode($accountingCostCode)
+    {
+        $this->accountingCostCode = $accountingCostCode;
+        return $this;
+    }
+
+    /**
      * The validate function that is called during xml writing to valid the data of the object.
      *
      * @return void
@@ -447,6 +467,12 @@ class Invoice implements XmlSerializable
             Schema::CBC . 'DocumentCurrencyCode' => $this->documentCurrencyCode,
         ]);
 
+        if ($this->accountingCostCode !== null) {
+            $writer->write([
+                Schema::CBC . 'AccountingCostCode' => $this->accountingCostCode
+            ]);
+        }
+        
         if ($this->buyerReference != null) {
             $writer->write([
                 Schema::CBC . 'BuyerReference' => $this->buyerReference,
@@ -460,6 +486,7 @@ class Invoice implements XmlSerializable
             ]);
         }
 
+        
         $writer->write([
             Schema::CAC . 'AccountingSupplierParty' => [Schema::CAC . "Party" => $this->accountingSupplierParty],
             Schema::CAC . 'AccountingCustomerParty' => [Schema::CAC . "Party" => $this->accountingCustomerParty],
