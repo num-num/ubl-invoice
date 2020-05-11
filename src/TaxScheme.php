@@ -73,5 +73,4 @@ class TaxScheme implements XmlSerializable
             ]);
         }
     }
-
 }

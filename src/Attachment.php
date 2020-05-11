@@ -10,7 +10,7 @@ class Attachment implements XmlSerializable
     private $filePath;
 
     /**
-     * @return String
+     * @return string
      */
     public function getFileMimeType()
     {
@@ -18,7 +18,7 @@ class Attachment implements XmlSerializable
     }
 
     /**
-     * @return String
+     * @return string
      */
     public function getFilePath()
     {
@@ -26,10 +26,10 @@ class Attachment implements XmlSerializable
     }
 
     /**
-     * @param String $filePath
+     * @param string $filePath
      * @return AdditionalDocumentReference
      */
-    public function setFilePath(String $filePath)
+    public function setFilePath(string $filePath)
     {
         $this->filePath = $filePath;
         return $this;

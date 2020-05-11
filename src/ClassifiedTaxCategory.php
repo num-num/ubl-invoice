@@ -30,7 +30,7 @@ class ClassifiedTaxCategory implements XmlSerializable
         if ($this->getPercent() !== null) {
             if ($this->getPercent() >= 21) {
                 return 'S';
-            } else if ($this->getPercent() <= 21 && $this->getPercent() >= 6) {
+            } elseif ($this->getPercent() <= 21 && $this->getPercent() >= 6) {
                 return 'AA';
             } else {
                 return 'Z';
@@ -162,7 +162,7 @@ class ClassifiedTaxCategory implements XmlSerializable
                 'name' => Schema::CBC . 'ID',
                 'value' => $this->getId(),
                 'attributes' => $schemeAttributes
-                
+
             ],
             Schema::CBC . 'Percent' => number_format($this->percent, 2, '.', ''),
         ]);

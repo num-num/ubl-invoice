@@ -12,7 +12,7 @@ class AdditionalDocumentReference implements XmlSerializable
     private $attachment;
 
     /**
-     * @return String
+     * @return string
      */
     public function getId()
     {
@@ -20,7 +20,7 @@ class AdditionalDocumentReference implements XmlSerializable
     }
 
     /**
-     * @param String $id
+     * @param string $id
      * @return AdditionalDocumentReference
      */
     public function setId($id)
@@ -30,7 +30,7 @@ class AdditionalDocumentReference implements XmlSerializable
     }
 
     /**
-     * @return String
+     * @return string
      */
     public function getDocumentType()
     {
@@ -38,7 +38,7 @@ class AdditionalDocumentReference implements XmlSerializable
     }
 
     /**
-     * @param String $documentType
+     * @param string $documentType
      * @return AdditionalDocumentReference
      */
     public function setDocumentType($documentType)

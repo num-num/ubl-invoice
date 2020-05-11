@@ -22,7 +22,7 @@ class PaymentTerms implements XmlSerializable
 
     /**
      * @param mixed $note
-     * @return String
+     * @return string
      */
     public function setNote($note)
     {
