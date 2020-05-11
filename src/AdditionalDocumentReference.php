@@ -57,7 +57,7 @@ class AdditionalDocumentReference implements XmlSerializable
 
     /**
      * @param Attachment $attachment
-     * @return Attachment
+     * @return AdditionalDocumentReference
      */
     public function setAttachment(Attachment $attachment)
     {

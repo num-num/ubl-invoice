@@ -5,6 +5,8 @@ namespace NumNum\UBL;
 use Sabre\Xml\Writer;
 use Sabre\Xml\XmlSerializable;
 
+use InvalidArgumentException;
+
 class TaxTotal implements XmlSerializable
 {
     private $taxAmount;
@@ -55,7 +57,7 @@ class TaxTotal implements XmlSerializable
     public function validate()
     {
         if ($this->taxAmount === null) {
-            throw new \InvalidArgumentException('Missing taxtotal taxamount');
+            throw new InvalidArgumentException('Missing taxtotal taxamount');
         }
     }
 

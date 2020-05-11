@@ -5,6 +5,8 @@ namespace NumNum\UBL;
 use Sabre\Xml\Writer;
 use Sabre\Xml\XmlSerializable;
 
+use InvalidArgumentException;
+
 class Attachment implements XmlSerializable
 {
     private $filePath;
@@ -44,11 +46,11 @@ class Attachment implements XmlSerializable
     public function validate()
     {
         if ($this->filePath === null) {
-            throw new \InvalidArgumentException('Missing filePath');
+            throw new InvalidArgumentException('Missing filePath');
         }
 
         if (file_exists($this->filePath) === false) {
-            throw new \InvalidArgumentException('Attachment at filePath does not exist');
+            throw new InvalidArgumentException('Attachment at filePath does not exist');
         }
     }
 

@@ -10,24 +10,40 @@ class LegalEntity implements XmlSerializable
     private $registrationName;
     private $companyId;
 
+    /**
+     * @return mixed
+     */
     public function getRegistrationName()
     {
         return $this->registrationName;
     }
 
+    /**
+     * @param string $registrationName
+     * @return LegalEntity
+     */
     public function setRegistrationName($registrationName)
     {
         $this->registrationName = $registrationName;
+        return $this;
     }
 
+    /**
+     * @return mixed
+     */
     public function getCompanyId()
     {
         return $this->companyId;
     }
 
+    /**
+     * @param string $companyId
+     * @return LegalEntity
+     */
     public function setCompanyId($companyId)
     {
         $this->companyId = $companyId;
+        return $this;
     }
 
     /**

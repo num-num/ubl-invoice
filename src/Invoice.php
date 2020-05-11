@@ -5,6 +5,9 @@ namespace NumNum\UBL;
 use Sabre\Xml\Writer;
 use Sabre\Xml\XmlSerializable;
 
+use DateTime;
+use InvalidArgumentException;
+
 class Invoice implements XmlSerializable
 {
     private $UBLVersionID = '2.1';
@@ -27,8 +30,6 @@ class Invoice implements XmlSerializable
     private $documentCurrencyCode = 'EUR';
     private $buyerReference;
     private $accountingCostCode;
-
-
 
     /**
      * @return string
@@ -78,7 +79,6 @@ class Invoice implements XmlSerializable
     }
 
     /**
-    /**
      * @return bool
      */
     public function isCopyIndicator()
@@ -97,7 +97,7 @@ class Invoice implements XmlSerializable
     }
 
     /**
-     * @return \DateTime
+     * @return DateTime
      */
     public function getIssueDate()
     {
@@ -105,17 +105,17 @@ class Invoice implements XmlSerializable
     }
 
     /**
-     * @param \DateTime $issueDate
+     * @param DateTime $issueDate
      * @return Invoice
      */
-    public function setIssueDate(\DateTime $issueDate)
+    public function setIssueDate(DateTime $issueDate)
     {
         $this->issueDate = $issueDate;
         return $this;
     }
 
     /**
-     * @return \DateTime
+     * @return DateTime
      */
     public function getDueDate()
     {
@@ -123,15 +123,14 @@ class Invoice implements XmlSerializable
     }
 
     /**
-     * @param \DateTime $dueDate
+     * @param DateTime $dueDate
      * @return Invoice
      */
-    public function setDueDate(\DateTime $dueDate)
+    public function setDueDate(DateTime $dueDate)
     {
         $this->dueDate = $dueDate;
         return $this;
     }
-
 
     /**
      * @param mixed $currencyCode
@@ -142,7 +141,6 @@ class Invoice implements XmlSerializable
         $this->documentCurrencyCode = $currencyCode;
         return $this;
     }
-
 
     /**
      * @return string
@@ -175,7 +173,7 @@ class Invoice implements XmlSerializable
      * @param DateTime $taxPointDate
      * @return Invoice
      */
-    public function setTaxPointDate(\DateTime $taxPointDate)
+    public function setTaxPointDate(DateTime $taxPointDate)
     {
         $this->taxPointDate = $taxPointDate;
         return $this;
@@ -388,35 +386,35 @@ class Invoice implements XmlSerializable
     public function validate()
     {
         if ($this->id === null) {
-            throw new \InvalidArgumentException('Missing invoice id');
+            throw new InvalidArgumentException('Missing invoice id');
         }
 
         if ($this->id === null) {
-            throw new \InvalidArgumentException('Missing invoice id');
+            throw new InvalidArgumentException('Missing invoice id');
         }
 
-        if (!$this->issueDate instanceof \DateTime) {
-            throw new \InvalidArgumentException('Invalid invoice issueDate');
+        if (!$this->issueDate instanceof DateTime) {
+            throw new InvalidArgumentException('Invalid invoice issueDate');
         }
 
         if ($this->invoiceTypeCode === null) {
-            throw new \InvalidArgumentException('Missing invoice invoiceTypeCode');
+            throw new InvalidArgumentException('Missing invoice invoiceTypeCode');
         }
 
         if ($this->accountingSupplierParty === null) {
-            throw new \InvalidArgumentException('Missing invoice accountingSupplierParty');
+            throw new InvalidArgumentException('Missing invoice accountingSupplierParty');
         }
 
         if ($this->accountingCustomerParty === null) {
-            throw new \InvalidArgumentException('Missing invoice accountingCustomerParty');
+            throw new InvalidArgumentException('Missing invoice accountingCustomerParty');
         }
 
         if ($this->invoiceLines === null) {
-            throw new \InvalidArgumentException('Missing invoice lines');
+            throw new InvalidArgumentException('Missing invoice lines');
         }
 
         if ($this->legalMonetaryTotal === null) {
-            throw new \InvalidArgumentException('Missing invoice LegalMonetaryTotal');
+            throw new InvalidArgumentException('Missing invoice LegalMonetaryTotal');
         }
     }
 
@@ -449,13 +447,13 @@ class Invoice implements XmlSerializable
             ]
         ]);
 
-        if ($this->taxPointDate != null) {
+        if ($this->taxPointDate !== null) {
             $writer->write([
                 Schema::CBC . 'TaxPointDate' => $this->taxPointDate->format('Y-m-d')
             ]);
         }
 
-        if ($this->dueDate != null) {
+        if ($this->dueDate !== null) {
             $writer->write([
                 Schema::CBC . 'DueDate' => $this->dueDate->format('Y-m-d')
             ]);
@@ -471,14 +469,14 @@ class Invoice implements XmlSerializable
             ]);
         }
 
-        if ($this->buyerReference != null) {
+        if ($this->buyerReference !== null) {
             $writer->write([
                 Schema::CBC . 'BuyerReference' => $this->buyerReference,
                 Schema::CAC . 'OrderReference' => [Schema::CBC . "ID" => $this->buyerReference]
             ]);
         }
 
-        if ($this->additionalDocumentReference != null) {
+        if ($this->additionalDocumentReference !== null) {
             $writer->write([
                 Schema::CAC . 'AdditionalDocumentReference' => $this->additionalDocumentReference
             ]);
@@ -490,19 +488,19 @@ class Invoice implements XmlSerializable
             Schema::CAC . 'AccountingCustomerParty' => [Schema::CAC . "Party" => $this->accountingCustomerParty],
         ]);
 
-        if ($this->paymentMeans != null) {
+        if ($this->paymentMeans !== null) {
             $writer->write([
                 Schema::CAC . 'PaymentMeans' => $this->paymentMeans
             ]);
         }
 
-        if ($this->paymentTerms != null) {
+        if ($this->paymentTerms !== null) {
             $writer->write([
                 Schema::CAC . 'PaymentTerms' => $this->paymentTerms
             ]);
         }
 
-        if ($this->allowanceCharges != null) {
+        if ($this->allowanceCharges !== null) {
             foreach ($this->allowanceCharges as $invoiceLine) {
                 $writer->write([
                     Schema::CAC . 'AllowanceCharge' => $invoiceLine
@@ -510,7 +508,7 @@ class Invoice implements XmlSerializable
             }
         }
 
-        if ($this->taxTotal != null) {
+        if ($this->taxTotal !== null) {
             $writer->write([
                 Schema::CAC . 'TaxTotal' => $this->taxTotal
             ]);

@@ -48,7 +48,7 @@ class PayeeFinancialAccount implements XmlSerializable
         return $this;
     }
 
-       /**
+    /**
      * @return mixed
      */
     public function getFinancialInstitutionBranch()
@@ -65,7 +65,6 @@ class PayeeFinancialAccount implements XmlSerializable
         $this->financialInstitutionBranch = $financialInstitutionBranch;
         return $this;
     }
-
 
     public function xmlSerialize(Writer $writer)
     {

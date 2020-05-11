@@ -5,6 +5,8 @@ namespace NumNum\UBL;
 use Sabre\Xml\Writer;
 use Sabre\Xml\XmlSerializable;
 
+use InvalidArgumentException;
+
 class ClassifiedTaxCategory implements XmlSerializable
 {
     private $id;
@@ -133,11 +135,11 @@ class ClassifiedTaxCategory implements XmlSerializable
     public function validate()
     {
         if ($this->getId() === null) {
-            throw new \InvalidArgumentException('Missing taxcategory id');
+            throw new InvalidArgumentException('Missing taxcategory id');
         }
 
         if ($this->getPercent() === null) {
-            throw new \InvalidArgumentException('Missing taxcategory percent');
+            throw new InvalidArgumentException('Missing taxcategory percent');
         }
     }
 
@@ -151,10 +153,10 @@ class ClassifiedTaxCategory implements XmlSerializable
     {
         $this->validate();
         $schemeAttributes = array();
-        if ($this->schemeID != null) {
+        if ($this->schemeID !== null) {
             $schemeAttributes['schemeID'] = $this->schemeID;
         }
-        if ($this->schemeName != null) {
+        if ($this->schemeName !== null) {
             $schemeAttributes['schemeName'] = $this->schemeName;
         }
         $writer->write([
@@ -167,20 +169,20 @@ class ClassifiedTaxCategory implements XmlSerializable
             Schema::CBC . 'Percent' => number_format($this->percent, 2, '.', ''),
         ]);
 
-        if ($this->name != null) {
+        if ($this->name !== null) {
             $writer->write([
                 Schema::CBC . 'Name' => $this->name,
             ]);
         }
 
-        if ($this->taxExemptionReasonCode != null) {
+        if ($this->taxExemptionReasonCode !== null) {
             $writer->write([
                 Schema::CBC . 'TaxExemptionReasonCode' => $this->taxExemptionReasonCode,
                 Schema::CBC . 'TaxExemptionReason' => $this->taxExemptionReason,
             ]);
         }
 
-        if ($this->taxScheme != null) {
+        if ($this->taxScheme !== null) {
             $writer->write([Schema::CAC . 'TaxScheme' => $this->taxScheme]);
         } else {
             $writer->write([

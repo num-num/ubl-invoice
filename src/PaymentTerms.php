@@ -13,7 +13,7 @@ class PaymentTerms implements XmlSerializable
     private $settlementPeriod;
 
     /**
-     * @return mixed
+     * @return string
      */
     public function getNote()
     {
@@ -21,17 +21,17 @@ class PaymentTerms implements XmlSerializable
     }
 
     /**
-     * @param mixed $note
-     * @return string
+     * @param string $note
+     * @return PaymentTerms
      */
-    public function setNote($note)
+    public function setNote(string $note)
     {
         $this->note = $note;
         return $this;
     }
 
     /**
-     * @return mixed
+     * @return float
      */
     public function getSettlementDiscountPercent()
     {
@@ -39,17 +39,17 @@ class PaymentTerms implements XmlSerializable
     }
 
     /**
-     * @param mixed $settlementDiscountPercent
-     * @return float
+     * @param float $settlementDiscountPercent
+     * @return PaymentTerms
      */
-    public function setSettlementDiscountPercent($settlementDiscountPercent)
+    public function setSettlementDiscountPercent(float $settlementDiscountPercent)
     {
         $this->settlementDiscountPercent = $settlementDiscountPercent;
         return $this;
     }
 
     /**
-     * @return mixed
+     * @return float
      */
     public function getAmount()
     {
@@ -57,17 +57,17 @@ class PaymentTerms implements XmlSerializable
     }
 
     /**
-     * @param mixed $amount
-     * @return float
+     * @param float $amount
+     * @return PaymentTerms
      */
-    public function setAmount($amount)
+    public function setAmount(float $amount)
     {
         $this->amount = $amount;
         return $this;
     }
 
     /**
-     * @return mixed
+     * @return SettlementPeriod
      */
     public function getSettlementPeriod()
     {
@@ -75,8 +75,8 @@ class PaymentTerms implements XmlSerializable
     }
 
     /**
-     * @param mixed $settlementPeriod
-     * @return SettlementPeriod  <?=$t->g('translation_key');?>
+     * @param SettlementPeriod $settlementPeriod
+     * @return PaymentTerms
      */
     public function setSettlementPeriod(SettlementPeriod $settlementPeriod)
     {
@@ -90,11 +90,11 @@ class PaymentTerms implements XmlSerializable
             $writer->write([ Schema::CBC . 'Note' => $this->note ]);
         }
 
-        if ($this->settlementDiscountPercent != null) {
+        if ($this->settlementDiscountPercent !== null) {
             $writer->write([ Schema::CBC . 'SettlementDiscountPercent' => $this->settlementDiscountPercent ]);
         }
 
-        if ($this->amount != null) {
+        if ($this->amount !== null) {
             $writer->write([
                 [
                     'name' => Schema::CBC . 'Amount',
@@ -106,7 +106,7 @@ class PaymentTerms implements XmlSerializable
             ]);
         }
 
-        if ($this->settlementPeriod != null) {
+        if ($this->settlementPeriod !== null) {
             $writer->write([ Schema::CAC . 'SettlementPeriod' => $this->settlementPeriod ]);
         }
     }

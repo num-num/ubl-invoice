@@ -63,6 +63,7 @@ class Party implements XmlSerializable
 
     /**
      * @param string $companyId
+     * @return Party
      */
     public function setCompanyId($companyId)
     {
@@ -75,15 +76,19 @@ class Party implements XmlSerializable
     public function setTaxCompanyId($companyId)
     {
         $this->taxCompanyId = $companyId;
+        return $this;
     }
 
     /**
      * @param string $taxCompanyName
+     * @return Party
      */
     public function setTaxCompanyName($companyName)
     {
         $this->taxCompanyName = $companyName;
+        return $this;
     }
+
     /**
      * @param TaxScheme $taxScheme.
      * @return mixed
@@ -95,10 +100,12 @@ class Party implements XmlSerializable
 
     /**
      * @param TaxScheme $taxScheme
+     * @return Party
      */
     public function setTaxScheme(TaxScheme $taxScheme)
     {
         $this->taxScheme = $taxScheme;
+        return $this;
     }
 
     /**
@@ -170,33 +177,37 @@ class Party implements XmlSerializable
             Schema::CAC . 'PostalAddress' => $this->postalAddress
         ]);
 
-        if ($this->physicalLocation) {
+        if ($this->physicalLocation !== null) {
             $writer->write([
                Schema::CAC . 'PhysicalLocation' => [Schema::CAC . 'Address' => $this->physicalLocation]
             ]);
         }
 
-        if ($this->taxScheme) {
-            $partyTaxScheme = array();
-            if ($this->taxCompanyName != null) {
+        if ($this->taxScheme !== null) {
+            $partyTaxScheme = [];
+
+            if ($this->taxCompanyName !== null) {
                 $partyTaxScheme[Schema::CBC . 'RegistrationName'] = $this->taxCompanyName;
             }
-            if ($this->taxCompanyId != null) {
+
+            if ($this->taxCompanyId !== null) {
                 $partyTaxScheme[Schema::CBC . 'CompanyID'] = $this->taxCompanyId;
             }
+
             $partyTaxScheme[Schema::CAC . 'TaxScheme'] = $this->taxScheme;
+
             $writer->write([
                 Schema::CAC . 'PartyTaxScheme' => $partyTaxScheme
             ]);
         }
 
-        if ($this->contact) {
+        if ($this->contact !== null) {
             $writer->write([
                 Schema::CAC . 'Contact' => $this->contact
             ]);
         }
 
-        if ($this->legalEntity) {
+        if ($this->legalEntity !== null) {
             $writer->write([
                 Schema::CAC . 'PartyLegalEntity' => $this->legalEntity
             ]);

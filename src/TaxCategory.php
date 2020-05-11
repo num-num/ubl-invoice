@@ -5,6 +5,8 @@ namespace NumNum\UBL;
 use Sabre\Xml\Writer;
 use Sabre\Xml\XmlSerializable;
 
+use InvalidArgumentException;
+
 class TaxCategory implements XmlSerializable
 {
     private $id;
@@ -43,6 +45,7 @@ class TaxCategory implements XmlSerializable
 
     /**
      * @param mixed $id
+     * @param array $attributes
      * @return TaxCategory
      */
     public function setId($id, $attributes = null)
@@ -153,11 +156,11 @@ class TaxCategory implements XmlSerializable
     public function validate()
     {
         if ($this->getId() === null) {
-            throw new \InvalidArgumentException('Missing taxcategory id');
+            throw new InvalidArgumentException('Missing taxcategory id');
         }
 
         if ($this->getPercent() === null) {
-            throw new \InvalidArgumentException('Missing taxcategory percent');
+            throw new InvalidArgumentException('Missing taxcategory percent');
         }
     }
 
@@ -179,7 +182,7 @@ class TaxCategory implements XmlSerializable
             ],
         ]);
 
-        if ($this->name != null) {
+        if ($this->name !== null) {
             $writer->write([
                 Schema::CBC . 'Name' => $this->name,
             ]);
@@ -188,19 +191,19 @@ class TaxCategory implements XmlSerializable
             Schema::CBC . 'Percent' => number_format($this->percent, 2, '.', ''),
         ]);
 
-        if ($this->taxExemptionReasonCode != null) {
+        if ($this->taxExemptionReasonCode !== null) {
             $writer->write([
                 Schema::CBC . 'TaxExemptionReasonCode' => $this->taxExemptionReasonCode,
             ]);
         }
 
-        if ($this->taxExemptionReason != null) {
+        if ($this->taxExemptionReason !== null) {
             $writer->write([
                 Schema::CBC . 'TaxExemptionReason' => $this->taxExemptionReason,
             ]);
         }
 
-        if ($this->taxScheme != null) {
+        if ($this->taxScheme !== null) {
             $writer->write([Schema::CAC . 'TaxScheme' => $this->taxScheme]);
         } else {
             $writer->write([

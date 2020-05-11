@@ -41,7 +41,7 @@ class PaymentMeans implements XmlSerializable
     }
 
     /**
-     * @return \DateTime
+     * @return DateTime
      */
     public function getPaymentDueDate()
     {
@@ -49,10 +49,10 @@ class PaymentMeans implements XmlSerializable
     }
 
     /**
-     * @param \DateTime $paymentDueDate
+     * @param DateTime $paymentDueDate
      * @return PaymentMeans
      */
-    public function setPaymentDueDate(\DateTime $paymentDueDate)
+    public function setPaymentDueDate(DateTime $paymentDueDate)
     {
         $this->paymentDueDate = $paymentDueDate;
         return $this;

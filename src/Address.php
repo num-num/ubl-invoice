@@ -103,7 +103,6 @@ class Address implements XmlSerializable
         return $this;
     }
 
-
     /**
      * The xmlSerialize method is called during xml writing.
      *
@@ -112,27 +111,27 @@ class Address implements XmlSerializable
      */
     public function xmlSerialize(Writer $writer)
     {
-        if ($this->streetName != null) {
+        if ($this->streetName !== null) {
             $writer->write([
                 Schema::CBC . 'StreetName' => $this->streetName
             ]);
         }
-        if ($this->buildingNumber != null) {
+        if ($this->buildingNumber !== null) {
             $writer->write([
                 Schema::CBC . 'BuildingNumber' => $this->buildingNumber
             ]);
         }
-        if ($this->cityName != null) {
+        if ($this->cityName !== null) {
             $writer->write([
                 Schema::CBC . 'CityName' => $this->cityName,
             ]);
         }
-        if ($this->postalZone != null) {
+        if ($this->postalZone !== null) {
             $writer->write([
                 Schema::CBC . 'PostalZone' => $this->postalZone,
             ]);
         }
-        if ($this->country != null) {
+        if ($this->country !== null) {
             $writer->write([
                 Schema::CAC . 'Country' => $this->country,
             ]);

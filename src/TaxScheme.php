@@ -21,7 +21,7 @@ class TaxScheme implements XmlSerializable
 
     /**
      * @param mixed $id
-     * @return int
+     * @return TaxScheme
      */
     public function setId($id)
     {
@@ -39,7 +39,7 @@ class TaxScheme implements XmlSerializable
 
     /**
      * @param mixed $taxTypeCode
-     * @return int
+     * @return TaxScheme
      */
     public function setTaxTypeCode($taxTypeCode)
     {
@@ -49,7 +49,7 @@ class TaxScheme implements XmlSerializable
 
     /**
      * @param mixed $name
-     * @return int
+     * @return TaxScheme
      */
     public function setName($name)
     {
@@ -62,12 +62,12 @@ class TaxScheme implements XmlSerializable
         $writer->write([
             Schema::CBC . 'ID' => $this->id
         ]);
-        if ($this->taxTypeCode != null) {
+        if ($this->taxTypeCode !== null) {
             $writer->write([
                 Schema::CBC . 'TaxTypeCode' => $this->taxTypeCode
             ]);
         }
-        if ($this->name != null) {
+        if ($this->name !== null) {
             $writer->write([
                 Schema::CBC . 'Name' => $this->name
             ]);

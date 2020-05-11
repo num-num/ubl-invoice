@@ -5,13 +5,16 @@ namespace NumNum\UBL;
 use Sabre\Xml\Writer;
 use Sabre\Xml\XmlSerializable;
 
+use DateTime;
+use InvalidArgumentException;
+
 class SettlementPeriod implements XmlSerializable
 {
     private $startDate;
     private $endDate;
 
     /**
-     * @return mixed
+     * @return DateTime
      */
     public function getStartDate()
     {
@@ -19,17 +22,17 @@ class SettlementPeriod implements XmlSerializable
     }
 
     /**
-     * @param mixed $startDate
-     * @return DateTime
+     * @param DateTime $startDate
+     * @return SettlementPeriod
      */
-    public function setStartDate(\DateTime $startDate)
+    public function setStartDate(DateTime $startDate)
     {
         $this->startDate = $startDate;
         return $this;
     }
 
     /**
-     * @return mixed
+     * @return DateTime
      */
     public function getEndDate()
     {
@@ -37,10 +40,10 @@ class SettlementPeriod implements XmlSerializable
     }
 
     /**
-     * @param mixed $endDate
-     * @return DateTime
+     * @param DateTime $endDate
+     * @return SettlementPeriod
      */
-    public function setEndDate(\DateTime $endDate)
+    public function setEndDate(DateTime $endDate)
     {
         $this->endDate = $endDate;
         return $this;
@@ -55,10 +58,10 @@ class SettlementPeriod implements XmlSerializable
     public function validate()
     {
         if ($this->startDate === null) {
-            throw new \InvalidArgumentException('Missing startDate');
+            throw new InvalidArgumentException('Missing startDate');
         }
         if ($this->endDate === null) {
-            throw new \InvalidArgumentException('Missing endDate');
+            throw new InvalidArgumentException('Missing endDate');
         }
     }
 
