@@ -5,8 +5,6 @@ namespace NumNum\UBL;
 use Sabre\Xml\Writer;
 use Sabre\Xml\XmlSerializable;
 
-use DateTime;
-
 class FinancialInstitutionBranch implements XmlSerializable
 {
     private $id;
@@ -28,8 +26,6 @@ class FinancialInstitutionBranch implements XmlSerializable
         $this->id = $id;
         return $this;
     }
-
-    
 
     public function xmlSerialize(Writer $writer)
     {

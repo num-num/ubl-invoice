@@ -440,7 +440,7 @@ class Invoice implements XmlSerializable
                 Schema::CBC . 'CopyIndicator' => $this->copyIndicator ? 'true' : 'false'
             ]);
         }
-        
+
         $writer->write([
             Schema::CBC . 'IssueDate' => $this->issueDate->format('Y-m-d'),
             [
@@ -448,8 +448,6 @@ class Invoice implements XmlSerializable
                 'value' => $this->invoiceTypeCode
             ]
         ]);
-
-        
 
         if ($this->taxPointDate != null) {
             $writer->write([
@@ -472,7 +470,7 @@ class Invoice implements XmlSerializable
                 Schema::CBC . 'AccountingCostCode' => $this->accountingCostCode
             ]);
         }
-        
+
         if ($this->buyerReference != null) {
             $writer->write([
                 Schema::CBC . 'BuyerReference' => $this->buyerReference,
@@ -486,7 +484,7 @@ class Invoice implements XmlSerializable
             ]);
         }
 
-        
+
         $writer->write([
             Schema::CAC . 'AccountingSupplierParty' => [Schema::CAC . "Party" => $this->accountingSupplierParty],
             Schema::CAC . 'AccountingCustomerParty' => [Schema::CAC . "Party" => $this->accountingCustomerParty],

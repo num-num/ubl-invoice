@@ -36,7 +36,7 @@ class EN16931Test extends TestCase
 
         $financialInstitutionBranch = (new \NumNum\UBL\FinancialInstitutionBranch())
             ->setId('RABONL2U');
-        
+
         $payeeFinancialAccount = (new \NumNum\UBL\PayeeFinancialAccount())
            ->setFinancialInstitutionBranch($financialInstitutionBranch)
             ->setName('Customer Account Holder')
@@ -46,7 +46,7 @@ class EN16931Test extends TestCase
             ->setPayeeFinancialAccount($payeeFinancialAccount)
             ->setPaymentMeansCode(31, [])
             ->setPaymentId('our invoice 1234');
-            
+
 
         // Supplier company node
         $supplierCompany = (new \NumNum\UBL\Party())
