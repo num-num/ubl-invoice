@@ -1,23 +1,30 @@
 # UBL-Invoice
 
-A PHP Wrapper for creating UBL invoices. This code is a hard fork of the [`cleverit/UBL_invoice`](https://github.com/CleverIT/UBL_invoice) package. Feel free to contribute if you are missing features.
+A modern object-oriented PHP library to create valid UBL files. Feel free to [contribute](https://github.com/num-num/ubl-invoice/pulls) if you are missing features.
 
 ## Installation and usage
 
-This package requires PHP 7.0 or higher. Installation can be done with [composer](https://www.getcomposer.org).
+This package requires PHP 7.0 or higher. Installation can be done through [composer](https://www.getcomposer.org).
 
 ```sh
-composer require num-num/ubl-invoice
+$ composer require num-num/ubl-invoice
 ```
 
 ## Contributing
 
-Feel free to create a pull request for code additions/changes. Please always follow [the PSR-2 coding standard](https://www.php-fig.org/psr/psr-2/). You can use [PHP_CodeSniffer](https://github.com/squizlabs/PHP_CodeSniffer) in your editor to ensure this, since a `phpcs.xml` file is included with this project.
+Feel free to create a pull request for code additions/changes. Please always follow [the PSR-12 coding standard](https://www.php-fig.org/psr/psr-12/). You can use [PHP_CodeSniffer](https://github.com/squizlabs/PHP_CodeSniffer) in your editor to ensure you are following this standard, since a PSR-12 compliant `phpcs.xml` file is included in the source code.
 
-## Examples & Documentation
+## Examples & documentation
 
-This repository does not provide any documentation at the moment. For now, you can find a fairly simple example in the unit test files in the `tests` folder.
+This repository does not have a documentation website at this moment. For now, you can find a few simple code examples in the `tests` folder.
 
 ## Unit testing
 
-This repository does not provide exhaustive unit testing for *all* possiblities, getters & setters that are included in the code. Please feel free to add new unit tests for new features that you write. Unit tests are to be created in the `tests` folder and can be run by running `phpunit` in the repository root.
+Although unit testing is included, this repository does not provide exhaustive unit testing for *all* possiblities, getters & setters that are included in the code. Please feel free to add new unit tests for new features that you write. Unit tests are to be created in the `tests` folder. can be run by running `composer test` in the repository root.
+
+### Running the unit tests
+
+```sh
+$ cd ubl-invoice
+$ composer test
+```
