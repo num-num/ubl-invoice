@@ -8,9 +8,14 @@ use Sabre\Xml\XmlSerializable;
 class TaxCategory implements XmlSerializable
 {
     private $id;
+    private $idAttributes = [
+        'schemeID' => TaxCategory::UNCL5305,
+        'schemeName' => 'Duty or tax or fee category'];
     private $name;
     private $percent;
     private $taxScheme;
+    private $taxExemptionReason;
+    private $taxExemptionReasonCode;
 
     public const UNCL5305 = 'UNCL5305';
 
@@ -40,9 +45,12 @@ class TaxCategory implements XmlSerializable
      * @param mixed $id
      * @return TaxCategory
      */
-    public function setId($id)
+    public function setId($id, $attributes = null)
     {
         $this->id = $id;
+        if (isset($attributes)) {
+            $this->idAttributes = $attributes;
+        }
         return $this;
     }
 
@@ -101,6 +109,42 @@ class TaxCategory implements XmlSerializable
     }
 
     /**
+     * @return mixed
+     */
+    public function getTaxExemptionReason()
+    {
+        return $this->taxExemptionReason;
+    }
+
+    /**
+     * @param mixed $taxExemptionReason
+     * @return TaxCategory
+     */
+    public function setTaxExemptionReason($taxExemptionReason)
+    {
+        $this->taxExemptionReason = $taxExemptionReason;
+        return $this;
+    }
+
+    /**
+     * @return mixed
+     */
+    public function getTaxExemptionReasonCode()
+    {
+        return $this->taxExemptionReasonCode;
+    }
+
+    /**
+     * @param mixed $taxExemptionReason
+     * @return TaxCategory
+     */
+    public function setTaxExemptionReasonCode($taxExemptionReasonCode)
+    {
+        $this->taxExemptionReasonCode = $taxExemptionReasonCode;
+        return $this;
+    }
+
+    /**
      * The validate function that is called during xml writing to valid the data of the object.
      *
      * @throws InvalidArgumentException An error with information about required data that is missing to write the XML
@@ -110,10 +154,6 @@ class TaxCategory implements XmlSerializable
     {
         if ($this->getId() === null) {
             throw new \InvalidArgumentException('Missing taxcategory id');
-        }
-
-        if ($this->getName() === null) {
-            throw new \InvalidArgumentException('Missing taxcategory name');
         }
 
         if ($this->getPercent() === null) {
@@ -135,19 +175,30 @@ class TaxCategory implements XmlSerializable
             [
                 'name' => Schema::CBC . 'ID',
                 'value' => $this->getId(),
-                'attributes' => [
-                    'schemeID' => TaxCategory::UNCL5305,
-                    'schemeName' => 'Duty or tax or fee category'
-                ]
+                'attributes' => $this->idAttributes,
             ],
-            Schema::CBC . 'Name' => $this->name,
+        ]);
+
+        if ($this->name != null) {
+            $writer->write([
+                Schema::CBC . 'Name' => $this->name,
+            ]);
+        }
+        $writer->write([
             Schema::CBC . 'Percent' => number_format($this->percent, 2, '.', ''),
         ]);
 
-        $writer->write([
-            Schema::CBC . 'TaxExemptionReasonCode' => null,
-            Schema::CBC . 'TaxExemptionReason' => null,
-        ]);
+        if ($this->taxExemptionReasonCode != null) {
+            $writer->write([
+                Schema::CBC . 'TaxExemptionReasonCode' => $this->taxExemptionReasonCode,
+            ]);
+        }
+
+        if ($this->taxExemptionReason != null) {
+            $writer->write([
+                Schema::CBC . 'TaxExemptionReason' => $this->taxExemptionReason,
+            ]);
+        }
 
         if ($this->taxScheme != null) {
             $writer->write([Schema::CAC . 'TaxScheme' => $this->taxScheme]);

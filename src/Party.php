@@ -12,6 +12,8 @@ class Party implements XmlSerializable
     private $physicalLocation;
     private $contact;
     private $companyId;
+    private $taxCompanyId;
+    private $taxCompanyName;
     private $taxScheme;
     private $legalEntity;
 
@@ -67,6 +69,21 @@ class Party implements XmlSerializable
         $this->companyId = $companyId;
     }
 
+    /**
+     * @param string $taxCompanyId
+     */
+    public function setTaxCompanyId($companyId)
+    {
+        $this->taxCompanyId = $companyId;
+    }
+
+    /**
+     * @param string $taxCompanyName
+     */
+    public function setTaxCompanyName($companyName)
+    {
+        $this->taxCompanyName = $companyName;
+    }
     /**
      * @param TaxScheme $taxScheme.
      * @return mixed
@@ -160,18 +177,28 @@ class Party implements XmlSerializable
         }
 
         if ($this->taxScheme) {
+            $partyTaxScheme = array();
+            if ($this->taxCompanyName != null) {
+                $partyTaxScheme[Schema::CBC . 'RegistrationName'] = $this->taxCompanyName;
+            }
+            if ($this->taxCompanyId != null) {
+                $partyTaxScheme[Schema::CBC . 'CompanyID'] = $this->taxCompanyId;
+            }
+            $partyTaxScheme[Schema::CAC . 'TaxScheme'] = $this->taxScheme;
             $writer->write([
-                Schema::CAC . 'PartyTaxScheme' => [
-                    Schema::CBC . 'RegistrationName' => $this->name,
-                    Schema::CBC . 'CompanyID' => $this->companyId,
-                    Schema::CAC . 'TaxScheme' => $this->taxScheme
-                ]
+                Schema::CAC . 'PartyTaxScheme' => $partyTaxScheme
             ]);
         }
 
         if ($this->contact) {
             $writer->write([
                 Schema::CAC . 'Contact' => $this->contact
+            ]);
+        }
+
+        if ($this->legalEntity) {
+            $writer->write([
+                Schema::CAC . 'PartyLegalEntity' => $this->legalEntity
             ]);
         }
     }

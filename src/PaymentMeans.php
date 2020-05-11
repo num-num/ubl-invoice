@@ -10,8 +10,14 @@ use DateTime;
 class PaymentMeans implements XmlSerializable
 {
     private $paymentMeansCode = 1;
+    private $paymentMeansCodeAttributes = [
+        'listID' => 'UN/ECE 4461',
+        'listName' => 'Payment Means',
+        'listURI' => 'http://docs.oasis-open.org/ubl/os-UBL-2.0-update/cl/gc/default/PaymentMeansCode-2.0.gc'];
     private $paymentDueDate;
     private $instructionId;
+    private $paymentId;
+    private $payeeFinancialAccount;
 
     /**
      * @return mixed
@@ -25,9 +31,12 @@ class PaymentMeans implements XmlSerializable
      * @param mixed $paymentMeansCode
      * @return PaymentMeans
      */
-    public function setPaymentMeansCode($paymentMeansCode)
+    public function setPaymentMeansCode($paymentMeansCode, $attributes = null)
     {
         $this->paymentMeansCode = $paymentMeansCode;
+        if (isset($attributes)) {
+            $this->paymentMeansCodeAttributes = $attributes;
+        }
         return $this;
     }
 
@@ -67,16 +76,48 @@ class PaymentMeans implements XmlSerializable
         return $this;
     }
 
+    /**
+     * @return mixed
+     */
+    public function getPaymentId()
+    {
+        return $this->paymentId;
+    }
+
+    /**
+     * @param mixed $paymentId
+     * @return PaymentMeans
+     */
+    public function setPaymentId($paymentId)
+    {
+        $this->paymentId = $paymentId;
+        return $this;
+    }
+
+    /**
+     * @return mixed
+     */
+    public function getPayeeFinancialAccount()
+    {
+        return $this->payeeFinancialAccount;
+    }
+
+    /**
+     * @param mixed $payeeFinancialAccount
+     * @return PaymentMeans
+     */
+    public function setPayeeFinancialAccount($payeeFinancialAccount)
+    {
+        $this->payeeFinancialAccount = $payeeFinancialAccount;
+        return $this;
+    }
+
     public function xmlSerialize(Writer $writer)
     {
         $writer->write([
             'name' => Schema::CBC . 'PaymentMeansCode',
             'value' => $this->paymentMeansCode,
-            'attributes' => [
-                'listID' => 'UN/ECE 4461',
-                'listName' => 'Payment Means',
-                'listURI' => 'http://docs.oasis-open.org/ubl/os-UBL-2.0-update/cl/gc/default/PaymentMeansCode-2.0.gc'
-            ]
+            'attributes' => $this->paymentMeansCodeAttributes
         ]);
 
         if ($this->getPaymentDueDate() !== null) {
@@ -88,6 +129,18 @@ class PaymentMeans implements XmlSerializable
         if ($this->getInstructionId() !== null) {
             $writer->write([
                 Schema::CBC . 'InstructionID' => $this->getInstructionId()
+            ]);
+        }
+
+        if ($this->getPaymentId() !== null) {
+            $writer->write([
+                Schema::CBC . 'PaymentID' => $this->getPaymentId()
+            ]);
+        }
+
+        if ($this->getpayeeFinancialAccount() !== null) {
+            $writer->write([
+                Schema::CAC . 'PayeeFinancialAccount' => $this->getPayeeFinancialAccount()
             ]);
         }
     }

@@ -112,12 +112,30 @@ class Address implements XmlSerializable
      */
     public function xmlSerialize(Writer $writer)
     {
-        $writer->write([
-            Schema::CBC . 'StreetName' => $this->streetName,
-            Schema::CBC . 'BuildingNumber' => $this->buildingNumber,
-            Schema::CBC . 'CityName' => $this->cityName,
-            Schema::CBC . 'PostalZone' => $this->postalZone,
-            Schema::CAC . 'Country' => $this->country,
-        ]);
+        if ($this->streetName != null) {
+            $writer->write([
+                Schema::CBC . 'StreetName' => $this->streetName
+            ]);
+        }
+        if ($this->buildingNumber != null) {
+            $writer->write([
+                Schema::CBC . 'BuildingNumber' => $this->buildingNumber
+            ]);
+        }
+        if ($this->cityName != null) {
+            $writer->write([
+                Schema::CBC . 'CityName' => $this->cityName,
+            ]);
+        }
+        if ($this->postalZone != null) {
+            $writer->write([
+                Schema::CBC . 'PostalZone' => $this->postalZone,
+            ]);
+        }
+        if ($this->country != null) {
+            $writer->write([
+                Schema::CAC . 'Country' => $this->country,
+            ]);
+        }
     }
 }

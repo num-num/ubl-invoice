@@ -10,7 +10,7 @@ class Invoice implements XmlSerializable
     private $UBLVersionID = '2.1';
     private $customizationID = '1.0';
     private $id;
-    private $copyIndicator = false;
+    private $copyIndicator;
     private $issueDate;
     private $invoiceTypeCode = InvoiceTypeCode::INVOICE;
     private $taxPointDate;
@@ -25,6 +25,10 @@ class Invoice implements XmlSerializable
     private $allowanceCharges;
     private $additionalDocumentReference;
     private $documentCurrencyCode = 'EUR';
+    private $buyerReference;
+    private $accountingCostCode;
+
+
 
     /**
      * @return string
@@ -63,6 +67,17 @@ class Invoice implements XmlSerializable
         return $this;
     }
 
+    /**
+     * @param mixed $customizationID
+     * @return Invoice
+     */
+    public function setCustomizationID($id)
+    {
+        $this->customizationID = $id;
+        return $this;
+    }
+
+    /**
     /**
      * @return bool
      */
@@ -329,6 +344,42 @@ class Invoice implements XmlSerializable
     }
 
     /**
+     * @param string $buyerReference
+     * @return Invoice
+     */
+    public function setBuyerReference(string $buyerReference)
+    {
+        $this->buyerReference = $buyerReference;
+        return $this;
+    }
+
+      /**
+     * @return string buyerReference
+     */
+    public function getBuyerReference()
+    {
+        return $this->buyerReference;
+    }
+
+    /**
+     * @return mixed
+     */
+    public function getAccountingCostCode()
+    {
+        return $this->accountingCostCode;
+    }
+
+    /**
+     * @param mixed $accountingCostCode
+     * @return InvoiceLine
+     */
+    public function setAccountingCostCode($accountingCostCode)
+    {
+        $this->accountingCostCode = $accountingCostCode;
+        return $this;
+    }
+
+    /**
      * The validate function that is called during xml writing to valid the data of the object.
      *
      * @return void
@@ -381,8 +432,16 @@ class Invoice implements XmlSerializable
         $writer->write([
             Schema::CBC . 'UBLVersionID' => $this->UBLVersionID,
             Schema::CBC . 'CustomizationID' => $this->customizationID,
-            Schema::CBC . 'ID' => $this->id,
-            Schema::CBC . 'CopyIndicator' => $this->copyIndicator ? 'true' : 'false',
+            Schema::CBC . 'ID' => $this->id
+        ]);
+
+        if ($this->copyIndicator !== null) {
+            $writer->write([
+                Schema::CBC . 'CopyIndicator' => $this->copyIndicator ? 'true' : 'false'
+            ]);
+        }
+
+        $writer->write([
             Schema::CBC . 'IssueDate' => $this->issueDate->format('Y-m-d'),
             [
                 'name' => Schema::CBC . 'InvoiceTypeCode',
@@ -406,11 +465,25 @@ class Invoice implements XmlSerializable
             Schema::CBC . 'DocumentCurrencyCode' => $this->documentCurrencyCode,
         ]);
 
+        if ($this->accountingCostCode !== null) {
+            $writer->write([
+                Schema::CBC . 'AccountingCostCode' => $this->accountingCostCode
+            ]);
+        }
+
+        if ($this->buyerReference != null) {
+            $writer->write([
+                Schema::CBC . 'BuyerReference' => $this->buyerReference,
+                Schema::CAC . 'OrderReference' => [Schema::CBC . "ID" => $this->buyerReference]
+            ]);
+        }
+
         if ($this->additionalDocumentReference != null) {
             $writer->write([
                 Schema::CAC . 'AdditionalDocumentReference' => $this->additionalDocumentReference
             ]);
         }
+
 
         $writer->write([
             Schema::CAC . 'AccountingSupplierParty' => [Schema::CAC . "Party" => $this->accountingSupplierParty],

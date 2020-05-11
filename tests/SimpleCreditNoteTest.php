@@ -89,6 +89,7 @@ class SimpleCreditNoteTest extends TestCase
         // Invoice object
         $invoice = (new \NumNum\UBL\Invoice())
             ->setId(1234)
+            ->setCopyIndicator(false)
             ->setIssueDate(new \DateTime())
             ->setAccountingSupplierParty($supplierCompany)
             ->setAccountingCustomerParty($clientCompany)
@@ -108,5 +109,6 @@ class SimpleCreditNoteTest extends TestCase
         $dom->loadXML($outputXMLString);
 
         $this->assertEquals(true, $dom->schemaValidate($this->schema));
+
     }
 }
