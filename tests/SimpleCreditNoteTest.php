@@ -109,6 +109,5 @@ class SimpleCreditNoteTest extends TestCase
         $dom->loadXML($outputXMLString);
 
         $this->assertEquals(true, $dom->schemaValidate($this->schema));
-
     }
 }

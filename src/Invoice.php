@@ -30,6 +30,9 @@ class Invoice implements XmlSerializable
     private $documentCurrencyCode = 'EUR';
     private $buyerReference;
     private $accountingCostCode;
+    private $invoicePeriod;
+    private $delivery;
+
 
     /**
      * @return string
@@ -369,11 +372,47 @@ class Invoice implements XmlSerializable
 
     /**
      * @param mixed $accountingCostCode
-     * @return InvoiceLine
+     * @return Invoice
      */
     public function setAccountingCostCode($accountingCostCode)
     {
         $this->accountingCostCode = $accountingCostCode;
+        return $this;
+    }
+
+    /**
+     * @return InvoicePeriod
+     */
+    public function getInvoicePeriod()
+    {
+        return $this->invoicePeriod;
+    }
+
+    /**
+     * @param InvoicePeriod $invoicePeriod
+     * @return Invoice
+     */
+    public function setInvoicePeriod(InvoicePeriod $invoicePeriod)
+    {
+        $this->invoicePeriod = $invoicePeriod;
+        return $this;
+    }
+
+    /**
+     * @return Delivery
+     */
+    public function getDelivery()
+    {
+        return $this->delivery;
+    }
+
+    /**
+     * @param Delivery $delivery
+     * @return Invoice
+     */
+    public function setDelivery(Delivery $delivery)
+    {
+        $this->delivery = $delivery;
         return $this;
     }
 
@@ -469,9 +508,20 @@ class Invoice implements XmlSerializable
             ]);
         }
 
-        if ($this->buyerReference !== null) {
+        if ($this->buyerReference != null) {
             $writer->write([
-                Schema::CBC . 'BuyerReference' => $this->buyerReference,
+                Schema::CBC . 'BuyerReference' => $this->buyerReference
+            ]);
+        }
+
+        if ($this->invoicePeriod != null) {
+            $writer->write([
+                Schema::CAC . 'InvoicePeriod' => $this->invoicePeriod
+            ]);
+        }
+
+        if ($this->buyerReference != null) {
+            $writer->write([
                 Schema::CAC . 'OrderReference' => [Schema::CBC . "ID" => $this->buyerReference]
             ]);
         }
@@ -487,6 +537,12 @@ class Invoice implements XmlSerializable
             Schema::CAC . 'AccountingSupplierParty' => [Schema::CAC . "Party" => $this->accountingSupplierParty],
             Schema::CAC . 'AccountingCustomerParty' => [Schema::CAC . "Party" => $this->accountingCustomerParty],
         ]);
+
+        if ($this->delivery != null) {
+            $writer->write([
+                Schema::CAC . 'Delivery' => $this->delivery
+            ]);
+        }
 
         if ($this->paymentMeans !== null) {
             $writer->write([
