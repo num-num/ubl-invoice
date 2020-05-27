@@ -54,10 +54,10 @@ class InvoicePeriod implements XmlSerializable
      */
     public function validate()
     {
-        if ( ($this->startDate === null) && ($this->endDate === null) ) {
+        if ($this->startDate === null && $this->endDate === null) {
             throw new \InvalidArgumentException('Missing startDate');
         }
-        if ( ($this->endDate === null) && ($this->startDate === null) ) {
+        if ($this->endDate === null && $this->startDate === null) {
             throw new \InvalidArgumentException('Missing endDate');
         }
     }
