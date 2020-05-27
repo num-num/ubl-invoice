@@ -123,16 +123,30 @@ class EN16931Test extends TestCase
         $paymentTerms = (new \NumNum\UBL\PaymentTerms())
             ->setNote('30 days net');
 
+        // InvoicePeriod
+        $invoicePeriod = (new \NumNum\UBL\InvoicePeriod())
+            ->setStartDate(new \DateTime());
+
+        // Delivery
+        $deliveryLocation = (new \NumNum\UBL\Address())
+            ->setCountry($country);
+
+        $delivery = (new \NumNum\UBL\Delivery())
+            ->setActualDeliveryDate(new \DateTime())
+            ->setDeliveryLocation($deliveryLocation);
+
         // Invoice object
         $invoice = (new \NumNum\UBL\Invoice())
             ->setCustomizationID('urn:cen.eu:en16931:2017')
             ->setId(1234)
             ->setIssueDate(new \DateTime())
+            ->setDelivery($delivery)
             ->setAccountingSupplierParty($supplierCompany)
             ->setAccountingCustomerParty($clientCompany)
             ->setInvoiceLines($invoiceLines)
             ->setLegalMonetaryTotal($legalMonetaryTotal)
             ->setPaymentTerms($paymentTerms)
+            ->setInvoicePeriod($invoicePeriod)
             ->setPaymentMeans($paymentMeans)
             ->setTaxTotal($taxTotal);
 
@@ -154,6 +168,5 @@ class EN16931Test extends TestCase
         $this->assertEquals('SUCCESS', $response->mostSevereErrorLevel);
 
         // file_put_contents('EN16931Test.xml', $outputXMLString);
-
     }
 }
