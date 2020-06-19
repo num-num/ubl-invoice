@@ -12,7 +12,9 @@ $ composer require num-num/ubl-invoice
 
 ## Contributing
 
-Feel free to create a pull request for code additions/changes. Please always follow [the PSR-12 coding standard](https://www.php-fig.org/psr/psr-12/). You can use [PHP_CodeSniffer](https://github.com/squizlabs/PHP_CodeSniffer) in your editor to ensure you are following this standard, since a PSR-12 compliant `phpcs.xml` file is included in the source code.
+This library is not 100% UBL feature-complete, in the sense that it doesn't (yet) support **all** UBL XML tags & functionality. "Yet" being the keyword, since this defintely is the long-term goal. All common UBL tags that are required for most invoices are present in the library. This includes tags for discounts, cash discounts, special vat rates, etc...
+
+If you require additional UBL tags or extra functionality, please feel free to create a [pull request](https://github.com/num-num/ubl-invoice/pulls?q=is%3Apr+is%3Aclosed) to merge your code additions or changes. Please always follow [the PSR-12 coding standard](https://www.php-fig.org/psr/psr-12/). You can use [PHP_CodeSniffer](https://github.com/squizlabs/PHP_CodeSniffer) in your editor to ensure you are following this standard, since a PSR-12 compliant `phpcs.xml` file is included in the source code.
 
 ## Examples & documentation
 
