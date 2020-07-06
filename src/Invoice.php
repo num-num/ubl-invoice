@@ -480,17 +480,10 @@ class Invoice implements XmlSerializable
 
         $writer->write([
             Schema::CBC . 'IssueDate' => $this->issueDate->format('Y-m-d'),
-        ]);
-
-        // To be valid, duedate must sit between IssueDate and InvoiceTypeCode
-        if ($this->dueDate !== null) {
-            $writer->write([
-                Schema::CBC . 'DueDate' => $this->dueDate->format('Y-m-d')
-            ]);
-        }
-
-        $writer->write([
-            Schema::CBC . 'InvoiceTypeCode' => $this->invoiceTypeCode,
+            [
+                'name' => Schema::CBC . 'InvoiceTypeCode',
+                'value' => $this->invoiceTypeCode
+            ]
         ]);
 
         if ($this->taxPointDate !== null) {
