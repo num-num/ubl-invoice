@@ -138,7 +138,7 @@ class PaymentMeans implements XmlSerializable
             ]);
         }
 
-        if ($this->getpayeeFinancialAccount() !== null) {
+        if ($this->getPayeeFinancialAccount() !== null) {
             $writer->write([
                 Schema::CAC . 'PayeeFinancialAccount' => $this->getPayeeFinancialAccount()
             ]);
