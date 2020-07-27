@@ -12,7 +12,8 @@ class TaxCategory implements XmlSerializable
     private $id;
     private $idAttributes = [
         'schemeID' => TaxCategory::UNCL5305,
-        'schemeName' => 'Duty or tax or fee category'];
+        'schemeName' => 'Duty or tax or fee category'
+    ];
     private $name;
     private $percent;
     private $taxScheme;
@@ -22,9 +23,9 @@ class TaxCategory implements XmlSerializable
     public const UNCL5305 = 'UNCL5305';
 
     /**
-     * @return mixed
+     * @return string
      */
-    public function getId()
+    public function getId(): ?string
     {
         if (!empty($this->id)) {
             return $this->id;
@@ -44,11 +45,11 @@ class TaxCategory implements XmlSerializable
     }
 
     /**
-     * @param mixed $id
+     * @param string $id
      * @param array $attributes
      * @return TaxCategory
      */
-    public function setId($id, $attributes = null)
+    public function setId(?string $id, $attributes = null): TaxCategory
     {
         $this->id = $id;
         if (isset($attributes)) {
@@ -58,90 +59,90 @@ class TaxCategory implements XmlSerializable
     }
 
     /**
-     * @return mixed
+     * @return string
      */
-    public function getName()
+    public function getName(): ?string
     {
         return $this->name;
     }
 
     /**
-     * @param mixed $name
+     * @param string $name
      * @return TaxCategory
      */
-    public function setName($name)
+    public function setName(?string $name): TaxCategory
     {
         $this->name = $name;
         return $this;
     }
 
     /**
-     * @return mixed
+     * @return string
      */
-    public function getPercent()
+    public function getPercent(): ?float
     {
         return $this->percent;
     }
 
     /**
-     * @param mixed $percent
+     * @param string $percent
      * @return TaxCategory
      */
-    public function setPercent($percent)
+    public function setPercent(?float $percent): TaxCategory
     {
         $this->percent = $percent;
         return $this;
     }
 
     /**
-     * @return mixed
+     * @return string
      */
-    public function getTaxScheme()
+    public function getTaxScheme(): ?TaxScheme
     {
         return $this->taxScheme;
     }
 
     /**
-     * @param mixed $taxScheme
+     * @param TaxScheme $taxScheme
      * @return TaxCategory
      */
-    public function setTaxScheme($taxScheme)
+    public function setTaxScheme(?TaxScheme $taxScheme): TaxCategory
     {
         $this->taxScheme = $taxScheme;
         return $this;
     }
 
     /**
-     * @return mixed
+     * @return string
      */
-    public function getTaxExemptionReason()
+    public function getTaxExemptionReason(): ?string
     {
         return $this->taxExemptionReason;
     }
 
     /**
-     * @param mixed $taxExemptionReason
+     * @param string $taxExemptionReason
      * @return TaxCategory
      */
-    public function setTaxExemptionReason($taxExemptionReason)
+    public function setTaxExemptionReason(?string $taxExemptionReason): TaxCategory
     {
         $this->taxExemptionReason = $taxExemptionReason;
         return $this;
     }
 
     /**
-     * @return mixed
+     * @return string
      */
-    public function getTaxExemptionReasonCode()
+    public function getTaxExemptionReasonCode(): ?string
     {
         return $this->taxExemptionReasonCode;
     }
 
     /**
-     * @param mixed $taxExemptionReason
+     * @param string $taxExemptionReason
      * @return TaxCategory
      */
-    public function setTaxExemptionReasonCode($taxExemptionReasonCode)
+    public function setTaxExemptionReasonCode(?string $taxExemptionReasonCode): TaxCategory
     {
         $this->taxExemptionReasonCode = $taxExemptionReasonCode;
         return $this;

@@ -15,7 +15,7 @@ class PaymentTerms implements XmlSerializable
     /**
      * @return string
      */
-    public function getNote()
+    public function getNote(): ?string
     {
         return $this->note;
     }
@@ -24,7 +24,7 @@ class PaymentTerms implements XmlSerializable
      * @param string $note
      * @return PaymentTerms
      */
-    public function setNote(string $note)
+    public function setNote(?string $note): PaymentTerms
     {
         $this->note = $note;
         return $this;
@@ -33,7 +33,7 @@ class PaymentTerms implements XmlSerializable
     /**
      * @return float
      */
-    public function getSettlementDiscountPercent()
+    public function getSettlementDiscountPercent(): ?float
     {
         return $this->settlementDiscountPercent;
     }
@@ -42,7 +42,7 @@ class PaymentTerms implements XmlSerializable
      * @param float $settlementDiscountPercent
      * @return PaymentTerms
      */
-    public function setSettlementDiscountPercent(float $settlementDiscountPercent)
+    public function setSettlementDiscountPercent(?float $settlementDiscountPercent): PaymentTerms
     {
         $this->settlementDiscountPercent = $settlementDiscountPercent;
         return $this;
@@ -51,7 +51,7 @@ class PaymentTerms implements XmlSerializable
     /**
      * @return float
      */
-    public function getAmount()
+    public function getAmount(): ?float
     {
         return $this->amount;
     }
@@ -60,7 +60,7 @@ class PaymentTerms implements XmlSerializable
      * @param float $amount
      * @return PaymentTerms
      */
-    public function setAmount(float $amount)
+    public function setAmount(?float $amount): PaymentTerms
     {
         $this->amount = $amount;
         return $this;
@@ -69,7 +69,7 @@ class PaymentTerms implements XmlSerializable
     /**
      * @return SettlementPeriod
      */
-    public function getSettlementPeriod()
+    public function getSettlementPeriod(): ?SettlementPeriod
     {
         return $this->settlementPeriod;
     }
@@ -78,7 +78,7 @@ class PaymentTerms implements XmlSerializable
      * @param SettlementPeriod $settlementPeriod
      * @return PaymentTerms
      */
-    public function setSettlementPeriod(SettlementPeriod $settlementPeriod)
+    public function setSettlementPeriod(?SettlementPeriod $settlementPeriod): PaymentTerms
     {
         $this->settlementPeriod = $settlementPeriod;
         return $this;

@@ -37,7 +37,7 @@ class Invoice implements XmlSerializable
     /**
      * @return string
      */
-    public function getUBLVersionID()
+    public function getUBLVersionID(): ?string
     {
         return $this->UBLVersionID;
     }
@@ -47,7 +47,7 @@ class Invoice implements XmlSerializable
      * eg. '2.0', '2.1', '2.2', ...
      * @return Invoice
      */
-    public function setUBLVersionID(string $UBLVersionID)
+    public function setUBLVersionID(?string $UBLVersionID): Invoice
     {
         $this->UBLVersionID = $UBLVersionID;
         return $this;
@@ -56,7 +56,7 @@ class Invoice implements XmlSerializable
     /**
      * @return mixed
      */
-    public function getId()
+    public function getId(): ?string
     {
         return $this->id;
     }
@@ -65,7 +65,7 @@ class Invoice implements XmlSerializable
      * @param mixed $id
      * @return Invoice
      */
-    public function setId($id)
+    public function setId(?string $id): Invoice
     {
         $this->id = $id;
         return $this;
@@ -75,7 +75,7 @@ class Invoice implements XmlSerializable
      * @param mixed $customizationID
      * @return Invoice
      */
-    public function setCustomizationID($id)
+    public function setCustomizationID(?string $id): Invoice
     {
         $this->customizationID = $id;
         return $this;
@@ -84,7 +84,7 @@ class Invoice implements XmlSerializable
     /**
      * @return bool
      */
-    public function isCopyIndicator()
+    public function isCopyIndicator(): bool
     {
         return $this->copyIndicator;
     }
@@ -93,7 +93,7 @@ class Invoice implements XmlSerializable
      * @param bool $copyIndicator
      * @return Invoice
      */
-    public function setCopyIndicator(bool $copyIndicator)
+    public function setCopyIndicator(bool $copyIndicator): Invoice
     {
         $this->copyIndicator = $copyIndicator;
         return $this;
@@ -102,7 +102,7 @@ class Invoice implements XmlSerializable
     /**
      * @return DateTime
      */
-    public function getIssueDate()
+    public function getIssueDate(): ?DateTime
     {
         return $this->issueDate;
     }
@@ -111,7 +111,7 @@ class Invoice implements XmlSerializable
      * @param DateTime $issueDate
      * @return Invoice
      */
-    public function setIssueDate(DateTime $issueDate)
+    public function setIssueDate(DateTime $issueDate): Invoice
     {
         $this->issueDate = $issueDate;
         return $this;
@@ -120,7 +120,7 @@ class Invoice implements XmlSerializable
     /**
      * @return DateTime
      */
-    public function getDueDate()
+    public function getDueDate(): ?DateTime
     {
         return $this->dueDate;
     }
@@ -129,7 +129,7 @@ class Invoice implements XmlSerializable
      * @param DateTime $dueDate
      * @return Invoice
      */
-    public function setDueDate(DateTime $dueDate)
+    public function setDueDate(DateTime $dueDate): Invoice
     {
         $this->dueDate = $dueDate;
         return $this;
@@ -139,7 +139,7 @@ class Invoice implements XmlSerializable
      * @param mixed $currencyCode
      * @return Invoice
      */
-    public function setDocumentCurrencyCode(string $currencyCode = 'EUR')
+    public function setDocumentCurrencyCode(string $currencyCode = 'EUR'): Invoice
     {
         $this->documentCurrencyCode = $currencyCode;
         return $this;
@@ -148,7 +148,7 @@ class Invoice implements XmlSerializable
     /**
      * @return string
      */
-    public function getInvoiceTypeCode()
+    public function getInvoiceTypeCode(): ?string
     {
         return $this->invoiceTypeCode;
     }
@@ -158,7 +158,7 @@ class Invoice implements XmlSerializable
      * See also: src/InvoiceTypeCode.php
      * @return Invoice
      */
-    public function setInvoiceTypeCode(string $invoiceTypeCode)
+    public function setInvoiceTypeCode(string $invoiceTypeCode): Invoice
     {
         $this->invoiceTypeCode = $invoiceTypeCode;
         return $this;
@@ -167,7 +167,7 @@ class Invoice implements XmlSerializable
     /**
      * @return DateTime
      */
-    public function getTaxPointDate()
+    public function getTaxPointDate(): ?DateTime
     {
         return $this->taxPointDate;
     }
@@ -176,7 +176,7 @@ class Invoice implements XmlSerializable
      * @param DateTime $taxPointDate
      * @return Invoice
      */
-    public function setTaxPointDate(DateTime $taxPointDate)
+    public function setTaxPointDate(DateTime $taxPointDate): Invoice
     {
         $this->taxPointDate = $taxPointDate;
         return $this;
@@ -185,7 +185,7 @@ class Invoice implements XmlSerializable
     /**
      * @return PaymentTerms
      */
-    public function getPaymentTerms()
+    public function getPaymentTerms(): ?PaymentTerms
     {
         return $this->paymentTerms;
     }
@@ -194,7 +194,7 @@ class Invoice implements XmlSerializable
      * @param PaymentTerms $paymentTerms
      * @return Invoice
      */
-    public function setPaymentTerms(PaymentTerms $paymentTerms)
+    public function setPaymentTerms(PaymentTerms $paymentTerms): Invoice
     {
         $this->paymentTerms = $paymentTerms;
         return $this;
@@ -203,7 +203,7 @@ class Invoice implements XmlSerializable
     /**
      * @return Party
      */
-    public function getAccountingSupplierParty()
+    public function getAccountingSupplierParty(): ?Party
     {
         return $this->accountingSupplierParty;
     }
@@ -212,7 +212,7 @@ class Invoice implements XmlSerializable
      * @param Party $accountingSupplierParty
      * @return Invoice
      */
-    public function setAccountingSupplierParty(Party $accountingSupplierParty)
+    public function setAccountingSupplierParty(Party $accountingSupplierParty): Invoice
     {
         $this->accountingSupplierParty = $accountingSupplierParty;
         return $this;
@@ -221,7 +221,7 @@ class Invoice implements XmlSerializable
     /**
      * @return Party
      */
-    public function getAccountingCustomerParty()
+    public function getAccountingCustomerParty(): ?Party
     {
         return $this->accountingCustomerParty;
     }
@@ -230,7 +230,7 @@ class Invoice implements XmlSerializable
      * @param Party $accountingCustomerParty
      * @return Invoice
      */
-    public function setAccountingCustomerParty(Party $accountingCustomerParty)
+    public function setAccountingCustomerParty(Party $accountingCustomerParty): Invoice
     {
         $this->accountingCustomerParty = $accountingCustomerParty;
         return $this;
@@ -239,7 +239,7 @@ class Invoice implements XmlSerializable
     /**
      * @return PaymentMeans
      */
-    public function getPaymentMeans()
+    public function getPaymentMeans(): ?PaymentMeans
     {
         return $this->paymentMeans;
     }
@@ -248,7 +248,7 @@ class Invoice implements XmlSerializable
      * @param PaymentMeans $paymentMeans
      * @return Invoice
      */
-    public function setPaymentMeans(PaymentMeans $paymentMeans)
+    public function setPaymentMeans(PaymentMeans $paymentMeans): Invoice
     {
         $this->paymentMeans = $paymentMeans;
         return $this;
@@ -257,7 +257,7 @@ class Invoice implements XmlSerializable
     /**
      * @return TaxTotal
      */
-    public function getTaxTotal()
+    public function getTaxTotal(): ?TaxTotal
     {
         return $this->taxTotal;
     }
@@ -266,7 +266,7 @@ class Invoice implements XmlSerializable
      * @param TaxTotal $taxTotal
      * @return Invoice
      */
-    public function setTaxTotal(TaxTotal $taxTotal)
+    public function setTaxTotal(TaxTotal $taxTotal): Invoice
     {
         $this->taxTotal = $taxTotal;
         return $this;
@@ -275,7 +275,7 @@ class Invoice implements XmlSerializable
     /**
      * @return LegalMonetaryTotal
      */
-    public function getLegalMonetaryTotal()
+    public function getLegalMonetaryTotal(): ?LegalMonetaryTotal
     {
         return $this->legalMonetaryTotal;
     }
@@ -284,7 +284,7 @@ class Invoice implements XmlSerializable
      * @param LegalMonetaryTotal $legalMonetaryTotal
      * @return Invoice
      */
-    public function setLegalMonetaryTotal(LegalMonetaryTotal $legalMonetaryTotal)
+    public function setLegalMonetaryTotal(LegalMonetaryTotal $legalMonetaryTotal): Invoice
     {
         $this->legalMonetaryTotal = $legalMonetaryTotal;
         return $this;
@@ -293,7 +293,7 @@ class Invoice implements XmlSerializable
     /**
      * @return InvoiceLine[]
      */
-    public function getInvoiceLines()
+    public function getInvoiceLines(): ?array
     {
         return $this->invoiceLines;
     }
@@ -302,7 +302,7 @@ class Invoice implements XmlSerializable
      * @param InvoiceLine[] $invoiceLines
      * @return Invoice
      */
-    public function setInvoiceLines(array $invoiceLines)
+    public function setInvoiceLines(array $invoiceLines): Invoice
     {
         $this->invoiceLines = $invoiceLines;
         return $this;
@@ -311,7 +311,7 @@ class Invoice implements XmlSerializable
     /**
      * @return AllowanceCharge[]
      */
-    public function getAllowanceCharges()
+    public function getAllowanceCharges(): ?array
     {
         return $this->allowanceCharges;
     }
@@ -320,7 +320,7 @@ class Invoice implements XmlSerializable
      * @param AllowanceCharge[] $allowanceCharges
      * @return Invoice
      */
-    public function setAllowanceCharges(array $allowanceCharges)
+    public function setAllowanceCharges(array $allowanceCharges): Invoice
     {
         $this->allowanceCharges = $allowanceCharges;
         return $this;
@@ -329,7 +329,7 @@ class Invoice implements XmlSerializable
     /**
      * @return AdditionalDocumentReference
      */
-    public function getAdditionalDocumentReference()
+    public function getAdditionalDocumentReference(): ?AdditionalDocumentReference
     {
         return $this->additionalDocumentReference;
     }
@@ -338,7 +338,7 @@ class Invoice implements XmlSerializable
      * @param AdditionalDocumentReference $additionalDocumentReference
      * @return Invoice
      */
-    public function setAdditionalDocumentReference(AdditionalDocumentReference $additionalDocumentReference)
+    public function setAdditionalDocumentReference(AdditionalDocumentReference $additionalDocumentReference): Invoice
     {
         $this->additionalDocumentReference = $additionalDocumentReference;
         return $this;
@@ -348,7 +348,7 @@ class Invoice implements XmlSerializable
      * @param string $buyerReference
      * @return Invoice
      */
-    public function setBuyerReference(string $buyerReference)
+    public function setBuyerReference(string $buyerReference): Invoice
     {
         $this->buyerReference = $buyerReference;
         return $this;
@@ -357,7 +357,7 @@ class Invoice implements XmlSerializable
       /**
      * @return string buyerReference
      */
-    public function getBuyerReference()
+    public function getBuyerReference(): ?string
     {
         return $this->buyerReference;
     }
@@ -365,7 +365,7 @@ class Invoice implements XmlSerializable
     /**
      * @return mixed
      */
-    public function getAccountingCostCode()
+    public function getAccountingCostCode(): ?string
     {
         return $this->accountingCostCode;
     }
@@ -374,7 +374,7 @@ class Invoice implements XmlSerializable
      * @param mixed $accountingCostCode
      * @return Invoice
      */
-    public function setAccountingCostCode($accountingCostCode)
+    public function setAccountingCostCode(string $accountingCostCode): Invoice
     {
         $this->accountingCostCode = $accountingCostCode;
         return $this;
@@ -383,7 +383,7 @@ class Invoice implements XmlSerializable
     /**
      * @return InvoicePeriod
      */
-    public function getInvoicePeriod()
+    public function getInvoicePeriod(): ?InvoicePeriod
     {
         return $this->invoicePeriod;
     }
@@ -392,7 +392,7 @@ class Invoice implements XmlSerializable
      * @param InvoicePeriod $invoicePeriod
      * @return Invoice
      */
-    public function setInvoicePeriod(InvoicePeriod $invoicePeriod)
+    public function setInvoicePeriod(InvoicePeriod $invoicePeriod): Invoice
     {
         $this->invoicePeriod = $invoicePeriod;
         return $this;
@@ -401,7 +401,7 @@ class Invoice implements XmlSerializable
     /**
      * @return Delivery
      */
-    public function getDelivery()
+    public function getDelivery(): ?Delivery
     {
         return $this->delivery;
     }
@@ -410,7 +410,7 @@ class Invoice implements XmlSerializable
      * @param Delivery $delivery
      * @return Invoice
      */
-    public function setDelivery(Delivery $delivery)
+    public function setDelivery(Delivery $delivery): Invoice
     {
         $this->delivery = $delivery;
         return $this;

@@ -14,72 +14,72 @@ class Address implements XmlSerializable
     private $country;
 
     /**
-     * @return mixed
+     * @return string
      */
-    public function getStreetName()
+    public function getStreetName(): ?string
     {
         return $this->streetName;
     }
 
     /**
-     * @param mixed $streetName
+     * @param string $streetName
      * @return Address
      */
-    public function setStreetName($streetName)
+    public function setStreetName(?string $streetName): Address
     {
         $this->streetName = $streetName;
         return $this;
     }
 
     /**
-     * @return mixed
+     * @return string
      */
-    public function getBuildingNumber()
+    public function getBuildingNumber(): ?string
     {
         return $this->buildingNumber;
     }
 
     /**
-     * @param mixed $buildingNumber
+     * @param string $buildingNumber
      * @return Address
      */
-    public function setBuildingNumber($buildingNumber)
+    public function setBuildingNumber(?string $buildingNumber): Address
     {
         $this->buildingNumber = $buildingNumber;
         return $this;
     }
 
     /**
-     * @return mixed
+     * @return string
      */
-    public function getCityName()
+    public function getCityName(): ?string
     {
         return $this->cityName;
     }
 
     /**
-     * @param mixed $cityName
+     * @param string $cityName
      * @return Address
      */
-    public function setCityName($cityName)
+    public function setCityName(?string $cityName): Address
     {
         $this->cityName = $cityName;
         return $this;
     }
 
     /**
-     * @return mixed
+     * @return string
      */
-    public function getPostalZone()
+    public function getPostalZone(): ?string
     {
         return $this->postalZone;
     }
 
     /**
-     * @param mixed $postalZone
+     * @param string $postalZone
      * @return Address
      */
-    public function setPostalZone($postalZone)
+    public function setPostalZone(?string $postalZone): Address
     {
         $this->postalZone = $postalZone;
         return $this;
@@ -88,7 +88,7 @@ class Address implements XmlSerializable
     /**
      * @return Country
      */
-    public function getCountry()
+    public function getCountry(): ?Country
     {
         return $this->country;
     }
@@ -97,7 +97,7 @@ class Address implements XmlSerializable
      * @param Country $country
      * @return Address
      */
-    public function setCountry(Country $country)
+    public function setCountry(Country $country): Address
     {
         $this->country = $country;
         return $this;

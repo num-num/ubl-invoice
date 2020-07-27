@@ -12,54 +12,54 @@ class Contact implements XmlSerializable
     private $electronicMail;
 
     /**
-     * @return mixed
+     * @return string
      */
-    public function getTelephone()
+    public function getTelephone(): ?string
     {
         return $this->telephone;
     }
 
     /**
-     * @param mixed $telephone
+     * @param string $telephone
      * @return Contact
      */
-    public function setTelephone($telephone)
+    public function setTelephone(?string $telephone): Contact
     {
         $this->telephone = $telephone;
         return $this;
     }
 
     /**
-     * @return mixed
+     * @return string
      */
-    public function getTelefax()
+    public function getTelefax(): ?string
     {
         return $this->telefax;
     }
 
     /**
-     * @param mixed $telefax
+     * @param string $telefax
      * @return Contact
      */
-    public function setTelefax($telefax)
+    public function setTelefax(?string $telefax): Contact
     {
         $this->telefax = $telefax;
         return $this;
     }
 
     /**
-     * @return mixed
+     * @return string
      */
-    public function getElectronicMail()
+    public function getElectronicMail(): ?string
     {
         return $this->electronicMail;
     }
 
     /**
-     * @param mixed $electronicMail
+     * @param string $electronicMail
      * @return Contact
      */
-    public function setElectronicMail($electronicMail)
+    public function setElectronicMail(?string $electronicMail): Contact
     {
         $this->electronicMail = $electronicMail;
         return $this;

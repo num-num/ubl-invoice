@@ -16,7 +16,7 @@ class SettlementPeriod implements XmlSerializable
     /**
      * @return DateTime
      */
-    public function getStartDate()
+    public function getStartDate(): ?DateTime
     {
         return $this->startDate;
     }
@@ -25,7 +25,7 @@ class SettlementPeriod implements XmlSerializable
      * @param DateTime $startDate
      * @return SettlementPeriod
      */
-    public function setStartDate(DateTime $startDate)
+    public function setStartDate(DateTime $startDate): SettlementPeriod
     {
         $this->startDate = $startDate;
         return $this;
@@ -34,7 +34,7 @@ class SettlementPeriod implements XmlSerializable
     /**
      * @return DateTime
      */
-    public function getEndDate()
+    public function getEndDate(): ?DateTime
     {
         return $this->endDate;
     }
@@ -43,7 +43,7 @@ class SettlementPeriod implements XmlSerializable
      * @param DateTime $endDate
      * @return SettlementPeriod
      */
-    public function setEndDate(DateTime $endDate)
+    public function setEndDate(DateTime $endDate): SettlementPeriod
     {
         $this->endDate = $endDate;
         return $this;

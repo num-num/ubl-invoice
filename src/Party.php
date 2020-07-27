@@ -18,18 +18,18 @@ class Party implements XmlSerializable
     private $legalEntity;
 
     /**
-     * @return mixed
+     * @return string
      */
-    public function getName()
+    public function getName(): ?string
     {
         return $this->name;
     }
 
     /**
-     * @param mixed $name
+     * @param string $name
      * @return Party
      */
-    public function setName($name)
+    public function setName(?string $name): Party
     {
         $this->name = $name;
         return $this;
@@ -38,7 +38,7 @@ class Party implements XmlSerializable
     /**
      * @return Address
      */
-    public function getPostalAddress()
+    public function getPostalAddress(): ?Address
     {
         return $this->postalAddress;
     }
@@ -47,7 +47,7 @@ class Party implements XmlSerializable
      * @param Address $postalAddress
      * @return Party
      */
-    public function setPostalAddress($postalAddress)
+    public function setPostalAddress(?Address $postalAddress): Party
     {
         $this->postalAddress = $postalAddress;
         return $this;
@@ -56,7 +56,7 @@ class Party implements XmlSerializable
     /**
      * @return string
      */
-    public function getCompanyId()
+    public function getCompanyId(): ?string
     {
         return $this->companyId;
     }
@@ -65,35 +65,52 @@ class Party implements XmlSerializable
      * @param string $companyId
      * @return Party
      */
-    public function setCompanyId($companyId)
+    public function setCompanyId(?string $companyId): Party
     {
         $this->companyId = $companyId;
+        return $this;
+    }
+
+    /**
+     * @return string
+     */
+    public function getTaxCompanyId(): ?string
+    {
+        return $this->taxCompanyId;
     }
 
     /**
      * @param string $taxCompanyId
+     * @return Party
      */
-    public function setTaxCompanyId($companyId)
+    public function setTaxCompanyId(?string $companyId): Party
     {
         $this->taxCompanyId = $companyId;
         return $this;
     }
 
     /**
+     * @return string
+     */
+    public function getTaxCompanyName(): ?string
+    {
+        return $this->taxCompanyName;
+    }
+
+    /**
      * @param string $taxCompanyName
      * @return Party
      */
-    public function setTaxCompanyName($companyName)
+    public function setTaxCompanyName(?string $companyName): Party
     {
         $this->taxCompanyName = $companyName;
         return $this;
     }
 
     /**
-     * @param TaxScheme $taxScheme.
-     * @return mixed
+     * @return TaxScheme
      */
-    public function getTaxScheme()
+    public function getTaxScheme(): ?TaxScheme
     {
         return $this->taxScheme;
     }
@@ -102,7 +119,7 @@ class Party implements XmlSerializable
      * @param TaxScheme $taxScheme
      * @return Party
      */
-    public function setTaxScheme(TaxScheme $taxScheme)
+    public function setTaxScheme(?TaxScheme $taxScheme): Party
     {
         $this->taxScheme = $taxScheme;
         return $this;
@@ -111,7 +128,7 @@ class Party implements XmlSerializable
     /**
      * @return LegalEntity
      */
-    public function getLegalEntity()
+    public function getLegalEntity(): ?LegalEntity
     {
         return $this->legalEntity;
     }
@@ -120,7 +137,7 @@ class Party implements XmlSerializable
      * @param LegalEntity $legalEntity
      * @return Party
      */
-    public function setLegalEntity(LegalEntity $legalEntity)
+    public function setLegalEntity(?LegalEntity $legalEntity): Party
     {
         $this->legalEntity = $legalEntity;
         return $this;
@@ -129,7 +146,7 @@ class Party implements XmlSerializable
     /**
      * @return Address
      */
-    public function getPhysicalLocation()
+    public function getPhysicalLocation(): ?Address
     {
         return $this->physicalLocation;
     }
@@ -138,25 +155,25 @@ class Party implements XmlSerializable
      * @param Address $physicalLocation
      * @return Party
      */
-    public function setPhysicalLocation(Address $physicalLocation)
+    public function setPhysicalLocation(?Address $physicalLocation): Party
     {
         $this->physicalLocation = $physicalLocation;
         return $this;
     }
 
     /**
-     * @return mixed
+     * @return Contact
      */
-    public function getContact()
+    public function getContact(): ?Contact
     {
         return $this->contact;
     }
 
     /**
-     * @param mixed $contact
+     * @param Contact $contact
      * @return Party
      */
-    public function setContact($contact)
+    public function setContact(?Contact $contact): Party
     {
         $this->contact = $contact;
         return $this;

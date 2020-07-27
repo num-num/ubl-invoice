@@ -12,9 +12,9 @@ class LegalEntity implements XmlSerializable
     private $companyIdAttributes;
 
     /**
-     * @return mixed
+     * @return string
      */
-    public function getRegistrationName()
+    public function getRegistrationName(): ?string
     {
         return $this->registrationName;
     }
@@ -23,16 +23,16 @@ class LegalEntity implements XmlSerializable
      * @param string $registrationName
      * @return LegalEntity
      */
-    public function setRegistrationName($registrationName)
+    public function setRegistrationName(?string $registrationName): LegalEntity
     {
         $this->registrationName = $registrationName;
         return $this;
     }
 
     /**
-     * @return mixed
+     * @return string
      */
-    public function getCompanyId()
+    public function getCompanyId(): ?string
     {
         return $this->companyId;
     }
@@ -41,7 +41,7 @@ class LegalEntity implements XmlSerializable
      * @param string $companyId
      * @return LegalEntity
      */
-    public function setCompanyId($companyId, $attributes = null)
+    public function setCompanyId(?string $companyId, $attributes = null): LegalEntity
     {
         $this->companyId = $companyId;
         if (isset($attributes)) {
