@@ -8,7 +8,7 @@ use Sabre\Xml\XmlSerializable;
 class Delivery implements XmlSerializable
 {
     private $actualDeliveryDate;
-    private $deliveryLocaion;
+    private $deliveryLocation;
     private $deliveryParty;
 
     /**
