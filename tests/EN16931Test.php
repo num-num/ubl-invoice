@@ -168,6 +168,6 @@ class EN16931Test extends TestCase
         $response = $client->validate(array('XML' => $outputXMLString, 'VESID' => 'eu.cen.en16931:ubl:1.3.1'));
         $this->assertEquals('SUCCESS', $response->mostSevereErrorLevel);
 
-        file_put_contents('EN16931Test.xml', $outputXMLString);
+        // file_put_contents('EN16931Test.xml', $outputXMLString);
     }
 }
