@@ -16,6 +16,7 @@ class Invoice implements XmlSerializable
     private $copyIndicator;
     private $issueDate;
     private $invoiceTypeCode = InvoiceTypeCode::INVOICE;
+    private $note;
     private $taxPointDate;
     private $dueDate;
     private $paymentTerms;
@@ -161,6 +162,24 @@ class Invoice implements XmlSerializable
     public function setInvoiceTypeCode(string $invoiceTypeCode)
     {
         $this->invoiceTypeCode = $invoiceTypeCode;
+        return $this;
+    }
+
+    /**
+     * @return string
+     */
+    public function getNote()
+    {
+        return $this->note;
+    }
+
+    /**
+     * @param string $note
+     * @return Invoice
+     */
+    public function setNote(string $note)
+    {
+        $this->note = $note;
         return $this;
     }
 
@@ -485,6 +504,12 @@ class Invoice implements XmlSerializable
                 'value' => $this->invoiceTypeCode
             ]
         ]);
+
+        if ($this->note !== null) {
+            $writer->write([
+                Schema::CBC . 'Note' => $this->note
+            ]);
+        }
 
         if ($this->taxPointDate !== null) {
             $writer->write([
