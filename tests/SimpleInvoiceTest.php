@@ -32,10 +32,18 @@ class SimpleInvoiceTest extends TestCase
             ->setPhysicalLocation($address)
             ->setPostalAddress($address);
 
+        // Client contact node
+        $clientContact = (new \NumNum\UBL\Contact())
+            ->setName('Client name')
+            ->setElectronicMail('email@client.com')
+            ->setTelephone('0032 472 123 456')
+            ->setTelefax('0032 9 1234 567');
+
         // Client company node
         $clientCompany = (new \NumNum\UBL\Party())
             ->setName('My client')
-            ->setPostalAddress($address);
+            ->setPostalAddress($address)
+            ->setContact($clientContact);
 
         $legalMonetaryTotal = (new \NumNum\UBL\LegalMonetaryTotal())
             ->setPayableAmount(10 + 2)
