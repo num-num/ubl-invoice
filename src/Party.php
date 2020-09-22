@@ -11,10 +11,7 @@ class Party implements XmlSerializable
     private $postalAddress;
     private $physicalLocation;
     private $contact;
-    private $companyId;
-    private $taxCompanyId;
-    private $taxCompanyName;
-    private $taxScheme;
+    private $partyTaxScheme;
     private $legalEntity;
 
     /**
@@ -54,61 +51,6 @@ class Party implements XmlSerializable
     }
 
     /**
-     * @return string
-     */
-    public function getCompanyId()
-    {
-        return $this->companyId;
-    }
-
-    /**
-     * @param string $companyId
-     * @return Party
-     */
-    public function setCompanyId($companyId)
-    {
-        $this->companyId = $companyId;
-    }
-
-    /**
-     * @param string $taxCompanyId
-     */
-    public function setTaxCompanyId($companyId)
-    {
-        $this->taxCompanyId = $companyId;
-        return $this;
-    }
-
-    /**
-     * @param string $taxCompanyName
-     * @return Party
-     */
-    public function setTaxCompanyName($companyName)
-    {
-        $this->taxCompanyName = $companyName;
-        return $this;
-    }
-
-    /**
-     * @param TaxScheme $taxScheme.
-     * @return mixed
-     */
-    public function getTaxScheme()
-    {
-        return $this->taxScheme;
-    }
-
-    /**
-     * @param TaxScheme $taxScheme
-     * @return Party
-     */
-    public function setTaxScheme(TaxScheme $taxScheme)
-    {
-        $this->taxScheme = $taxScheme;
-        return $this;
-    }
-
-    /**
      * @return LegalEntity
      */
     public function getLegalEntity()
@@ -141,6 +83,24 @@ class Party implements XmlSerializable
     public function setPhysicalLocation(Address $physicalLocation)
     {
         $this->physicalLocation = $physicalLocation;
+        return $this;
+    }
+
+    /**
+     * @return PartyTaxScheme
+     */
+    public function getPartyTaxScheme()
+    {
+        return $this->partyTaxScheme;
+    }
+
+    /**
+     * @param PartyTaxScheme $partyTaxScheme
+     * @return Party
+     */
+    public function setPartyTaxScheme($partyTaxScheme)
+    {
+        $this->partyTaxScheme = $partyTaxScheme;
         return $this;
     }
 
@@ -183,21 +143,9 @@ class Party implements XmlSerializable
             ]);
         }
 
-        if ($this->taxScheme !== null) {
-            $partyTaxScheme = [];
-
-            if ($this->taxCompanyName !== null) {
-                $partyTaxScheme[Schema::CBC . 'RegistrationName'] = $this->taxCompanyName;
-            }
-
-            if ($this->taxCompanyId !== null) {
-                $partyTaxScheme[Schema::CBC . 'CompanyID'] = $this->taxCompanyId;
-            }
-
-            $partyTaxScheme[Schema::CAC . 'TaxScheme'] = $this->taxScheme;
-
+        if ($this->partyTaxScheme !== null) {
             $writer->write([
-                Schema::CAC . 'PartyTaxScheme' => $partyTaxScheme
+                Schema::CAC . 'PartyTaxScheme' => $this->partyTaxScheme
             ]);
         }
 

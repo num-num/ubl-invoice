@@ -30,10 +30,6 @@ class EN16931Test extends TestCase
             ->setPostalZone('9000')
             ->setCountry($country);
 
-        $sle = (new \NumNum\UBL\LegalEntity());
-        $sle->setRegistrationName('Supplier Company Name');
-        $sle->setCompanyId('Company Registration');
-
         $financialInstitutionBranch = (new \NumNum\UBL\FinancialInstitutionBranch())
             ->setId('RABONL2U');
 
@@ -49,20 +45,33 @@ class EN16931Test extends TestCase
 
 
         // Supplier company node
+        $supplierLegalEntity = (new \NumNum\UBL\LegalEntity())
+            ->setRegistrationName('Supplier Company Name')
+            ->setCompanyId('BE123456789');
+
+        $supplierPartyTaxScheme = (new \NumNum\UBL\PartyTaxScheme())
+            ->setTaxScheme($taxScheme)
+            ->setCompanyId('BE123456789');
+
         $supplierCompany = (new \NumNum\UBL\Party())
             ->setName('Supplier Company Name')
-            ->setLegalEntity($sle)
+            ->setLegalEntity($supplierLegalEntity)
+            ->setPartyTaxScheme($supplierPartyTaxScheme)
             ->setPostalAddress($address);
-        $supplierCompany->setTaxScheme($taxScheme);
-        $supplierCompany->setTaxCompanyId('BEtax id supplier company');
 
         // Client company node
-        $cle = (new \NumNum\UBL\LegalEntity());
-        $cle->setRegistrationName('My Client');
-        $cle->setCompanyId('Client Company Registration');
+        $clientLegalEntity = (new \NumNum\UBL\LegalEntity())
+            ->setRegistrationName('Client Company Name')
+            ->setCompanyId('Client Company Registration');
+
+        $clientPartyTaxScheme = (new \NumNum\UBL\PartyTaxScheme())
+            ->setTaxScheme($taxScheme)
+            ->setCompanyId('BE123456789');
+
         $clientCompany = (new \NumNum\UBL\Party())
-            ->setName('My client')
-            ->setLegalEntity($cle)
+            ->setName('Client Company Name')
+            ->setLegalEntity($clientLegalEntity)
+            ->setPartyTaxScheme($clientPartyTaxScheme)
             ->setPostalAddress($address);
 
         $legalMonetaryTotal = (new \NumNum\UBL\LegalMonetaryTotal())
@@ -165,9 +174,15 @@ class EN16931Test extends TestCase
         // Use webservice at peppol.helger.com to verify the result
         $wsdl = "http://peppol.helger.com/wsdvs?wsdl=1";
         $client = new \SoapClient($wsdl);
-        $response = $client->validate(array('XML' => $outputXMLString, 'VESID' => 'eu.cen.en16931:ubl:1.3.1'));
-        $this->assertEquals('SUCCESS', $response->mostSevereErrorLevel);
+        $response = $client->validate(['XML' => $outputXMLString, 'VESID' => 'eu.cen.en16931:ubl:1.3.1']);
 
-        // file_put_contents('EN16931Test.xml', $outputXMLString);
+        // Output validation warnings if present
+        if ($response->mostSevereErrorLevel == 'WARN' && isset($response->Result[1]->Item)) {
+            foreach ($response->Result[1]->Item as $responseWarning) {
+                fwrite(STDERR, '*** '.$responseWarning->errorText."\n");
+            }
+        }
+
+        $this->assertEquals('SUCCESS', $response->mostSevereErrorLevel);
     }
 }
