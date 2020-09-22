@@ -4,6 +4,7 @@ namespace NumNum\UBL;
 
 use Sabre\Xml\Writer;
 use Sabre\Xml\XmlSerializable;
+use DateTime;
 
 class Delivery implements XmlSerializable
 {
@@ -12,7 +13,7 @@ class Delivery implements XmlSerializable
     private $deliveryParty;
 
     /**
-     * @return \DateTime
+     * @return DateTime
      */
     public function getActualDeliveryDate()
     {
@@ -23,7 +24,7 @@ class Delivery implements XmlSerializable
      * @param DateTime $actualDeliveryDate
      * @return Delivery
      */
-    public function setActualDeliveryDate($actualDeliveryDate)
+    public function setActualDeliveryDate($actualDeliveryDate): Delivery
     {
         $this->actualDeliveryDate = $actualDeliveryDate;
         return $this;
@@ -41,7 +42,7 @@ class Delivery implements XmlSerializable
      * @param Address $deliveryLocation
      * @return Delivery
      */
-    public function setDeliveryLocation($deliveryLocation)
+    public function setDeliveryLocation($deliveryLocation): Delivery
     {
         $this->deliveryLocation = $deliveryLocation;
         return $this;
@@ -59,7 +60,7 @@ class Delivery implements XmlSerializable
      * @param Party $deliveryParty
      * @return Delivery
      */
-    public function setDeliveryParty($deliveryParty)
+    public function setDeliveryParty($deliveryParty): Delivery
     {
         $this->deliveryParty = $deliveryParty;
         return $this;

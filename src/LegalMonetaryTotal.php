@@ -14,90 +14,90 @@ class LegalMonetaryTotal implements XmlSerializable
     private $payableAmount;
 
     /**
-     * @return mixed
+     * @return float
      */
-    public function getLineExtensionAmount()
+    public function getLineExtensionAmount(): ?float
     {
         return $this->lineExtensionAmount;
     }
 
     /**
-     * @param mixed $lineExtensionAmount
+     * @param float $lineExtensionAmount
      * @return LegalMonetaryTotal
      */
-    public function setLineExtensionAmount($lineExtensionAmount)
+    public function setLineExtensionAmount(?float $lineExtensionAmount): LegalMonetaryTotal
     {
         $this->lineExtensionAmount = $lineExtensionAmount;
         return $this;
     }
 
     /**
-     * @return mixed
+     * @return float
      */
-    public function getTaxExclusiveAmount()
+    public function getTaxExclusiveAmount(): ?float
     {
         return $this->taxExclusiveAmount;
     }
 
     /**
-     * @param mixed $taxExclusiveAmount
+     * @param float $taxExclusiveAmount
      * @return LegalMonetaryTotal
      */
-    public function setTaxExclusiveAmount($taxExclusiveAmount)
+    public function setTaxExclusiveAmount(?float $taxExclusiveAmount): LegalMonetaryTotal
     {
         $this->taxExclusiveAmount = $taxExclusiveAmount;
         return $this;
     }
 
     /**
-     * @return mixed
+     * @return float
      */
-    public function getTaxInclusiveAmount()
+    public function getTaxInclusiveAmount(): ?float
     {
         return $this->taxInclusiveAmount;
     }
 
     /**
-     * @param mixed $taxInclusiveAmount
+     * @param float $taxInclusiveAmount
      * @return LegalMonetaryTotal
      */
-    public function setTaxInclusiveAmount($taxInclusiveAmount)
+    public function setTaxInclusiveAmount(?float $taxInclusiveAmount): LegalMonetaryTotal
     {
         $this->taxInclusiveAmount = $taxInclusiveAmount;
         return $this;
     }
 
     /**
-     * @return mixed
+     * @return float
      */
-    public function getAllowanceTotalAmount()
+    public function getAllowanceTotalAmount(): ?float
     {
         return $this->allowanceTotalAmount;
     }
 
     /**
-     * @param mixed $allowanceTotalAmount
+     * @param float $allowanceTotalAmount
      * @return LegalMonetaryTotal
      */
-    public function setAllowanceTotalAmount($allowanceTotalAmount)
+    public function setAllowanceTotalAmount(?float $allowanceTotalAmount): LegalMonetaryTotal
     {
         $this->allowanceTotalAmount = $allowanceTotalAmount;
         return $this;
     }
 
     /**
-     * @return mixed
+     * @return float
      */
-    public function getPayableAmount()
+    public function getPayableAmount(): ?float
     {
         return $this->payableAmount;
     }
 
     /**
-     * @param mixed $payableAmount
+     * @param float $payableAmount
      * @return LegalMonetaryTotal
      */
-    public function setPayableAmount($payableAmount)
+    public function setPayableAmount(?float $payableAmount): LegalMonetaryTotal
     {
         $this->payableAmount = $payableAmount;
         return $this;

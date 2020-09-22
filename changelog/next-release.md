@@ -2,7 +2,9 @@
 
 ### New features & improvements
 
-- Added PartyTaxScheme & Party->setPartyTaxScheme()
+- Added return type declarations in every class
+- Added PartyTaxScheme
+- Added Party->setPartyTaxScheme()
 
 ### Breaking changes
 

@@ -13,18 +13,18 @@ class Item implements XmlSerializable
     private $classifiedTaxCategory;
 
     /**
-     * @return mixed
+     * @return string
      */
-    public function getDescription()
+    public function getDescription(): ?string
     {
         return $this->description;
     }
 
     /**
-     * @param mixed $description
+     * @param string $description
      * @return Item
      */
-    public function setDescription($description)
+    public function setDescription(?string $description): Item
     {
         $this->description = $description;
         return $this;
@@ -33,7 +33,7 @@ class Item implements XmlSerializable
     /**
      * @return mixed
      */
-    public function getName()
+    public function getName(): ?string
     {
         return $this->name;
     }
@@ -42,7 +42,7 @@ class Item implements XmlSerializable
      * @param mixed $name
      * @return Item
      */
-    public function setName($name)
+    public function setName(?string $name): Item
     {
         $this->name = $name;
         return $this;
@@ -51,7 +51,7 @@ class Item implements XmlSerializable
     /**
      * @return mixed
      */
-    public function getSellersItemIdentification()
+    public function getSellersItemIdentification(): ?string
     {
         return $this->sellersItemIdentification;
     }
@@ -60,7 +60,7 @@ class Item implements XmlSerializable
      * @param mixed $sellersItemIdentification
      * @return Item
      */
-    public function setSellersItemIdentification($sellersItemIdentification)
+    public function setSellersItemIdentification(?string $sellersItemIdentification): Item
     {
         $this->sellersItemIdentification = $sellersItemIdentification;
         return $this;
@@ -69,7 +69,7 @@ class Item implements XmlSerializable
     /**
      * @return ClassifiedTaxCategory
      */
-    public function getClassifiedTaxCategory()
+    public function getClassifiedTaxCategory(): ?ClassifiedTaxCategory
     {
         return $this->classifiedTaxCategory;
     }
@@ -78,7 +78,7 @@ class Item implements XmlSerializable
      * @param ClassifiedTaxCategory $classifiedTaxCategory
      * @return Item
      */
-    public function setClassifiedTaxCategory(ClassifiedTaxCategory $classifiedTaxCategory)
+    public function setClassifiedTaxCategory(?ClassifiedTaxCategory $classifiedTaxCategory): Item
     {
         $this->classifiedTaxCategory = $classifiedTaxCategory;
         return $this;

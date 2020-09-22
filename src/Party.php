@@ -15,18 +15,18 @@ class Party implements XmlSerializable
     private $legalEntity;
 
     /**
-     * @return mixed
+     * @return string
      */
-    public function getName()
+    public function getName(): ?string
     {
         return $this->name;
     }
 
     /**
-     * @param mixed $name
+     * @param string $name
      * @return Party
      */
-    public function setName($name)
+    public function setName(?string $name): Party
     {
         $this->name = $name;
         return $this;
@@ -35,7 +35,7 @@ class Party implements XmlSerializable
     /**
      * @return Address
      */
-    public function getPostalAddress()
+    public function getPostalAddress(): ?Address
     {
         return $this->postalAddress;
     }
@@ -44,7 +44,7 @@ class Party implements XmlSerializable
      * @param Address $postalAddress
      * @return Party
      */
-    public function setPostalAddress($postalAddress)
+    public function setPostalAddress(?Address $postalAddress): Party
     {
         $this->postalAddress = $postalAddress;
         return $this;
@@ -53,7 +53,7 @@ class Party implements XmlSerializable
     /**
      * @return LegalEntity
      */
-    public function getLegalEntity()
+    public function getLegalEntity(): ?LegalEntity
     {
         return $this->legalEntity;
     }
@@ -62,7 +62,7 @@ class Party implements XmlSerializable
      * @param LegalEntity $legalEntity
      * @return Party
      */
-    public function setLegalEntity(LegalEntity $legalEntity)
+    public function setLegalEntity(?LegalEntity $legalEntity): Party
     {
         $this->legalEntity = $legalEntity;
         return $this;
@@ -71,7 +71,7 @@ class Party implements XmlSerializable
     /**
      * @return Address
      */
-    public function getPhysicalLocation()
+    public function getPhysicalLocation(): ?Address
     {
         return $this->physicalLocation;
     }
@@ -80,7 +80,7 @@ class Party implements XmlSerializable
      * @param Address $physicalLocation
      * @return Party
      */
-    public function setPhysicalLocation(Address $physicalLocation)
+    public function setPhysicalLocation(?Address $physicalLocation): Party
     {
         $this->physicalLocation = $physicalLocation;
         return $this;
@@ -89,7 +89,7 @@ class Party implements XmlSerializable
     /**
      * @return PartyTaxScheme
      */
-    public function getPartyTaxScheme()
+    public function getPartyTaxScheme(): ?PartyTaxScheme
     {
         return $this->partyTaxScheme;
     }
@@ -98,25 +98,25 @@ class Party implements XmlSerializable
      * @param PartyTaxScheme $partyTaxScheme
      * @return Party
      */
-    public function setPartyTaxScheme($partyTaxScheme)
+    public function setPartyTaxScheme(PartyTaxScheme $partyTaxScheme)
     {
         $this->partyTaxScheme = $partyTaxScheme;
         return $this;
     }
 
     /**
-     * @return mixed
+     * @return Contact
      */
-    public function getContact()
+    public function getContact(): ?Contact
     {
         return $this->contact;
     }
 
     /**
-     * @param mixed $contact
+     * @param Contact $contact
      * @return Party
      */
-    public function setContact($contact)
+    public function setContact(?Contact $contact): Party
     {
         $this->contact = $contact;
         return $this;

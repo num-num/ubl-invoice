@@ -10,18 +10,18 @@ class FinancialInstitutionBranch implements XmlSerializable
     private $id;
 
     /**
-     * @return mixed
+     * @return string
      */
-    public function getId()
+    public function getId(): ?string
     {
         return $this->id;
     }
 
     /**
-     * @param mixed $id
+     * @param string $id
      * @return FinancialInstitutionBranch
      */
-    public function setId($id)
+    public function setId(?string $id): FinancialInstitutionBranch
     {
         $this->id = $id;
         return $this;

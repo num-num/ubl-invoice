@@ -13,54 +13,54 @@ class PayeeFinancialAccount implements XmlSerializable
 
 
     /**
-     * @return mixed
+     * @return string
      */
-    public function getId()
+    public function getId(): ?string
     {
         return $this->id;
     }
 
     /**
-     * @param mixed $id
+     * @param string $id
      * @return PayeeFinancialAccount
      */
-    public function setId($id)
+    public function setId(?string $id): PayeeFinancialAccount
     {
         $this->id = $id;
         return $this;
     }
 
     /**
-     * @return mixed
+     * @return string
      */
-    public function getName()
+    public function getName(): ?string
     {
         return $this->name;
     }
 
     /**
-     * @param mixed $name
+     * @param string $name
      * @return PayeeFinancialAccount
      */
-    public function setName($name)
+    public function setName(?string $name): PayeeFinancialAccount
     {
         $this->name = $name;
         return $this;
     }
 
     /**
-     * @return mixed
+     * @return FinancialInstitutionBranch
      */
-    public function getFinancialInstitutionBranch()
+    public function getFinancialInstitutionBranch(): ?FinancialInstitutionBranch
     {
         return $this->financialInstitutionBranch;
     }
 
     /**
-     * @param mixed $financialInstitutionBranch
+     * @param FinancialInstitutionBranch $financialInstitutionBranch
      * @return PayeeFinancialAccount
      */
-    public function setFinancialInstitutionBranch($financialInstitutionBranch)
+    public function setFinancialInstitutionBranch(?FinancialInstitutionBranch $financialInstitutionBranch): PayeeFinancialAccount
     {
         $this->financialInstitutionBranch = $financialInstitutionBranch;
         return $this;

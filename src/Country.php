@@ -12,7 +12,7 @@ class Country implements XmlSerializable
     /**
      * @return mixed
      */
-    public function getIdentificationCode()
+    public function getIdentificationCode(): ?string
     {
         return $this->identificationCode;
     }
@@ -21,7 +21,7 @@ class Country implements XmlSerializable
      * @param mixed $identificationCode
      * @return Country
      */
-    public function setIdentificationCode($identificationCode)
+    public function setIdentificationCode(?string $identificationCode): Country
     {
         $this->identificationCode = $identificationCode;
         return $this;

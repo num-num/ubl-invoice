@@ -14,18 +14,18 @@ class PartyTaxScheme implements XmlSerializable
     private $taxScheme;
 
     /**
-     * @return mixed
+     * @return string
      */
-    public function getRegistrationName()
+    public function getRegistrationName(): ?string
     {
         return $this->registrationName;
     }
 
     /**
-     * @param mixed $registrationName
+     * @param string $registrationName
      * @return PartyTaxScheme
      */
-    public function setRegistrationName($registrationName)
+    public function setRegistrationName($registrationName): PartyTaxScheme
     {
         $this->registrationName = $registrationName;
         return $this;
@@ -34,7 +34,7 @@ class PartyTaxScheme implements XmlSerializable
     /**
      * @return string
      */
-    public function getCompanyId()
+    public function getCompanyId(): ?string
     {
         return $this->companyId;
     }
@@ -43,7 +43,7 @@ class PartyTaxScheme implements XmlSerializable
      * @param string $companyId
      * @return PartyTaxScheme
      */
-    public function setCompanyId($companyId)
+    public function setCompanyId($companyId): PartyTaxScheme
     {
         $this->companyId = $companyId;
         return $this;
@@ -53,7 +53,7 @@ class PartyTaxScheme implements XmlSerializable
      * @param TaxScheme $taxScheme.
      * @return mixed
      */
-    public function getTaxScheme()
+    public function getTaxScheme(): ?TaxScheme
     {
         return $this->taxScheme;
     }
@@ -62,7 +62,7 @@ class PartyTaxScheme implements XmlSerializable
      * @param TaxScheme $taxScheme
      * @return PartyTaxScheme
      */
-    public function setTaxScheme(TaxScheme $taxScheme)
+    public function setTaxScheme(TaxScheme $taxScheme): PartyTaxScheme
     {
         $this->taxScheme = $taxScheme;
         return $this;

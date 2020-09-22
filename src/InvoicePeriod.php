@@ -4,6 +4,8 @@ namespace NumNum\UBL;
 
 use Sabre\Xml\Writer;
 use Sabre\Xml\XmlSerializable;
+use DateTime;
+use InvalidArgumentException;
 
 class InvoicePeriod implements XmlSerializable
 {
@@ -13,7 +15,7 @@ class InvoicePeriod implements XmlSerializable
     /**
      * @return DateTime
      */
-    public function getStartDate()
+    public function getStartDate(): ?DateTime
     {
         return $this->startDate;
     }
@@ -22,7 +24,7 @@ class InvoicePeriod implements XmlSerializable
      * @param DateTime $startDate
      * @return InvoicePeriod
      */
-    public function setStartDate(\DateTime $startDate)
+    public function setStartDate(?DateTime $startDate): InvoicePeriod
     {
         $this->startDate = $startDate;
         return $this;
@@ -31,7 +33,7 @@ class InvoicePeriod implements XmlSerializable
     /**
      * @return DateTime
      */
-    public function getEndDate()
+    public function getEndDate(): ?DateTime
     {
         return $this->endDate;
     }
@@ -40,7 +42,7 @@ class InvoicePeriod implements XmlSerializable
      * @param DateTime $endDate
      * @return InvoicePeriod
      */
-    public function setEndDate(\DateTime $endDate)
+    public function setEndDate(?DateTime $endDate): InvoicePeriod
     {
         $this->endDate = $endDate;
         return $this;
@@ -55,10 +57,7 @@ class InvoicePeriod implements XmlSerializable
     public function validate()
     {
         if ($this->startDate === null && $this->endDate === null) {
-            throw new \InvalidArgumentException('Missing startDate');
-        }
-        if ($this->endDate === null && $this->startDate === null) {
-            throw new \InvalidArgumentException('Missing endDate');
+            throw new InvalidArgumentException('Missing startDate or endDate');
         }
     }
 

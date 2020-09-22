@@ -17,7 +17,7 @@ class TaxSubTotal implements XmlSerializable
     /**
      * @return mixed
      */
-    public function getTaxableAmount()
+    public function getTaxableAmount(): ?float
     {
         return $this->taxableAmount;
     }
@@ -26,7 +26,7 @@ class TaxSubTotal implements XmlSerializable
      * @param mixed $taxableAmount
      * @return TaxSubTotal
      */
-    public function setTaxableAmount($taxableAmount)
+    public function setTaxableAmount(?float $taxableAmount): TaxSubTotal
     {
         $this->taxableAmount = $taxableAmount;
         return $this;
@@ -35,7 +35,7 @@ class TaxSubTotal implements XmlSerializable
     /**
      * @return mixed
      */
-    public function getTaxAmount()
+    public function getTaxAmount(): ?float
     {
         return $this->taxAmount;
     }
@@ -44,7 +44,7 @@ class TaxSubTotal implements XmlSerializable
      * @param mixed $taxAmount
      * @return TaxSubTotal
      */
-    public function setTaxAmount($taxAmount)
+    public function setTaxAmount(?float $taxAmount): TaxSubTotal
     {
         $this->taxAmount = $taxAmount;
         return $this;
@@ -53,7 +53,7 @@ class TaxSubTotal implements XmlSerializable
     /**
      * @return TaxCategory
      */
-    public function getTaxCategory()
+    public function getTaxCategory(): ?TaxCategory
     {
         return $this->taxCategory;
     }
@@ -62,7 +62,7 @@ class TaxSubTotal implements XmlSerializable
      * @param TaxCategory $taxCategory
      * @return TaxSubTotal
      */
-    public function setTaxCategory(TaxCategory $taxCategory)
+    public function setTaxCategory(TaxCategory $taxCategory): TaxSubTotal
     {
         $this->taxCategory = $taxCategory;
         return $this;
@@ -71,7 +71,7 @@ class TaxSubTotal implements XmlSerializable
     /**
      * @return float
      */
-    public function getPercent()
+    public function getPercent(): ?float
     {
         return $this->percent;
     }
@@ -80,7 +80,7 @@ class TaxSubTotal implements XmlSerializable
      * @param float $percent
      * @return TaxSubTotal
      */
-    public function setPercent(float $percent)
+    public function setPercent(?float $percent): TaxSubTotal
     {
         $this->percent = $percent;
         return $this;

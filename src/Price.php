@@ -12,55 +12,55 @@ class Price implements XmlSerializable
     private $unitCode = UnitCode::UNIT;
 
     /**
-     * @return mixed
+     * @return float
      */
-    public function getPriceAmount()
+    public function getPriceAmount(): ?float
     {
         return $this->priceAmount;
     }
 
     /**
-     * @param mixed $priceAmount
+     * @param float $priceAmount
      * @return Price
      */
-    public function setPriceAmount($priceAmount)
+    public function setPriceAmount(?float $priceAmount): Price
     {
         $this->priceAmount = $priceAmount;
         return $this;
     }
 
     /**
-     * @return mixed
+     * @return float
      */
-    public function getBaseQuantity()
+    public function getBaseQuantity(): ?float
     {
         return $this->baseQuantity;
     }
 
     /**
-     * @param mixed $baseQuantity
+     * @param float $baseQuantity
      * @return Price
      */
-    public function setBaseQuantity($baseQuantity)
+    public function setBaseQuantity(?float $baseQuantity): Price
     {
         $this->baseQuantity = $baseQuantity;
         return $this;
     }
 
     /**
-     * @return mixed
+     * @return string
      */
-    public function getUnitCode()
+    public function getUnitCode(): ?string
     {
         return $this->unitCode;
     }
 
     /**
-     * @param mixed $unitCode
+     * @param string $unitCode
      * See also: src/UnitCode.php
      * @return Price
      */
-    public function setUnitCode(string $unitCode)
+    public function setUnitCode(?string $unitCode): Price
     {
         $this->unitCode = $unitCode;
         return $this;

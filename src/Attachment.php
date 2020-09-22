@@ -2,6 +2,7 @@
 
 namespace NumNum\UBL;
 
+use Exception;
 use Sabre\Xml\Writer;
 use Sabre\Xml\XmlSerializable;
 
@@ -12,26 +13,31 @@ class Attachment implements XmlSerializable
     private $filePath;
 
     /**
+     * @throws Exception exception when the mime type cannot be determined
      * @return string
      */
-    public function getFileMimeType()
+    public function getFileMimeType(): string
     {
-        return mime_content_type($this->filePath);
+        if (($mime_type = mime_content_type($this->filePath)) !== false) {
+            return $mime_type;
+        }
+
+        throw new Exception('Could not determine mime_type of '.$this->filePath);
     }
 
     /**
      * @return string
      */
-    public function getFilePath()
+    public function getFilePath(): ?string
     {
         return $this->filePath;
     }
 
     /**
      * @param string $filePath
-     * @return AdditionalDocumentReference
+     * @return Attachment
      */
-    public function setFilePath(string $filePath)
+    public function setFilePath(string $filePath): Attachment
     {
         $this->filePath = $filePath;
         return $this;

@@ -18,54 +18,54 @@ class InvoiceLine implements XmlSerializable
     private $accountingCostCode;
 
     /**
-     * @return mixed
+     * @return string
      */
-    public function getId()
+    public function getId(): ?string
     {
         return $this->id;
     }
 
     /**
-     * @param mixed $id
+     * @param string $id
      * @return InvoiceLine
      */
-    public function setId($id)
+    public function setId(?string $id): InvoiceLine
     {
         $this->id = $id;
         return $this;
     }
 
     /**
-     * @return mixed
+     * @return float
      */
-    public function getInvoicedQuantity()
+    public function getInvoicedQuantity(): ?float
     {
         return $this->invoicedQuantity;
     }
 
     /**
-     * @param mixed $invoicedQuantity
+     * @param float $invoicedQuantity
      * @return InvoiceLine
      */
-    public function setInvoicedQuantity($invoicedQuantity)
+    public function setInvoicedQuantity(?float $invoicedQuantity): InvoiceLine
     {
         $this->invoicedQuantity = $invoicedQuantity;
         return $this;
     }
 
     /**
-     * @return mixed
+     * @return float
      */
-    public function getLineExtensionAmount()
+    public function getLineExtensionAmount(): ?float
     {
         return $this->lineExtensionAmount;
     }
 
     /**
-     * @param mixed $lineExtensionAmount
+     * @param float $lineExtensionAmount
      * @return InvoiceLine
      */
-    public function setLineExtensionAmount($lineExtensionAmount)
+    public function setLineExtensionAmount(?float $lineExtensionAmount): InvoiceLine
     {
         $this->lineExtensionAmount = $lineExtensionAmount;
         return $this;
@@ -74,7 +74,7 @@ class InvoiceLine implements XmlSerializable
     /**
      * @return TaxTotal
      */
-    public function getTaxTotal()
+    public function getTaxTotal(): ?TaxTotal
     {
         return $this->taxTotal;
     }
@@ -83,43 +83,43 @@ class InvoiceLine implements XmlSerializable
      * @param TaxTotal $taxTotal
      * @return InvoiceLine
      */
-    public function setTaxTotal(TaxTotal $taxTotal)
+    public function setTaxTotal(?TaxTotal $taxTotal): InvoiceLine
     {
         $this->taxTotal = $taxTotal;
         return $this;
     }
 
     /**
-     * @return mixed
+     * @return string
      */
-    public function getNote()
+    public function getNote(): ?string
     {
         return $this->note;
     }
 
     /**
-     * @param mixed $note
+     * @param string $note
      * @return InvoiceLine
      */
-    public function setNote($note)
+    public function setNote(?string $note): InvoiceLine
     {
         $this->note = $note;
         return $this;
     }
 
     /**
-     * @return mixed
+     * @return Item
      */
-    public function getItem()
+    public function getItem(): ?Item
     {
         return $this->item;
     }
 
     /**
-     * @param mixed $item
+     * @param Item $item
      * @return InvoiceLine
      */
-    public function setItem($item)
+    public function setItem(Item $item): InvoiceLine
     {
         $this->item = $item;
         return $this;
@@ -128,7 +128,7 @@ class InvoiceLine implements XmlSerializable
     /**
      * @return Price
      */
-    public function getPrice()
+    public function getPrice(): ?Price
     {
         return $this->price;
     }
@@ -137,43 +137,43 @@ class InvoiceLine implements XmlSerializable
      * @param Price $price
      * @return InvoiceLine
      */
-    public function setPrice(Price $price)
+    public function setPrice(?Price $price): InvoiceLine
     {
         $this->price = $price;
         return $this;
     }
 
     /**
-     * @return mixed
+     * @return string
      */
-    public function getUnitCode()
+    public function getUnitCode(): ?string
     {
         return $this->unitCode;
     }
 
     /**
-     * @param mixed $unitCode
+     * @param string $unitCode
      * @return InvoiceLine
      */
-    public function setUnitCode($unitCode)
+    public function setUnitCode(?string $unitCode): InvoiceLine
     {
         $this->unitCode = $unitCode;
         return $this;
     }
 
     /**
-     * @return mixed
+     * @return string
      */
-    public function getAccountingCostCode()
+    public function getAccountingCostCode(): ?string
     {
         return $this->accountingCostCode;
     }
 
     /**
-     * @param mixed $accountingCostCode
+     * @param string $accountingCostCode
      * @return InvoiceLine
      */
-    public function setAccountingCostCode($accountingCostCode)
+    public function setAccountingCostCode(?string $accountingCostCode): InvoiceLine
     {
         $this->accountingCostCode = $accountingCostCode;
         return $this;
