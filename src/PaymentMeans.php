@@ -15,6 +15,7 @@ class PaymentMeans implements XmlSerializable
         'listURI' => 'http://docs.oasis-open.org/ubl/os-UBL-2.0-update/cl/gc/default/PaymentMeansCode-2.0.gc'];
     private $paymentDueDate;
     private $instructionId;
+    private $instructionNote;
     private $paymentId;
     private $payeeFinancialAccount;
 
@@ -78,6 +79,24 @@ class PaymentMeans implements XmlSerializable
     /**
      * @return string
      */
+    public function getInstructionNote(): ?string
+    {
+        return $this->instructionNote;
+    }
+
+    /**
+     * @param string $instructionNote
+     * @return PaymentMeans
+     */
+    public function setInstructionNote(?string $instructionNote): PaymentMeans
+    {
+        $this->instructionNote = $instructionNote;
+        return $this;
+    }
+
+    /**
+     * @return string
+     */
     public function getPaymentId(): ?string
     {
         return $this->paymentId;
@@ -128,6 +147,12 @@ class PaymentMeans implements XmlSerializable
         if ($this->getInstructionId() !== null) {
             $writer->write([
                 Schema::CBC . 'InstructionID' => $this->getInstructionId()
+            ]);
+        }
+
+        if ($this->getInstructionNote() !== null) {
+            $writer->write([
+                Schema::CBC . 'InstructionNote' => $this->getInstructionNote()
             ]);
         }
 
