@@ -149,15 +149,15 @@ class Party implements XmlSerializable
             ]);
         }
 
-        if ($this->contact !== null) {
-            $writer->write([
-                Schema::CAC . 'Contact' => $this->contact
-            ]);
-        }
-
         if ($this->legalEntity !== null) {
             $writer->write([
                 Schema::CAC . 'PartyLegalEntity' => $this->legalEntity
+            ]);
+        }
+
+        if ($this->contact !== null) {
+            $writer->write([
+                Schema::CAC . 'Contact' => $this->contact
             ]);
         }
     }
