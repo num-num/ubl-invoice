@@ -199,7 +199,7 @@ class InvoiceLine implements XmlSerializable
         $writer->write([
             [
                 'name' => Schema::CBC . 'InvoicedQuantity',
-                'value' => $this->invoicedQuantity,
+                'value' => number_format($this->invoicedQuantity, 2, '.', ''),
                 'attributes' => [
                     'unitCode' => $this->unitCode
                 ]

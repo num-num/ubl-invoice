@@ -582,9 +582,9 @@ class Invoice implements XmlSerializable
         }
 
         if ($this->allowanceCharges !== null) {
-            foreach ($this->allowanceCharges as $invoiceLine) {
+            foreach ($this->allowanceCharges as $allowanceCharge) {
                 $writer->write([
-                    Schema::CAC . 'AllowanceCharge' => $invoiceLine
+                    Schema::CAC . 'AllowanceCharge' => $allowanceCharge
                 ]);
             }
         }

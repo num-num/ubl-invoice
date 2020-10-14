@@ -77,14 +77,14 @@ class Price implements XmlSerializable
         $writer->write([
             [
                 'name' => Schema::CBC . 'PriceAmount',
-                'value' => $this->priceAmount,
+                'value' => number_format($this->priceAmount, 2, '.', ''),
                 'attributes' => [
                     'currencyID' => Generator::$currencyID
                 ]
             ],
             [
                 'name' => Schema::CBC . 'BaseQuantity',
-                'value' => $this->baseQuantity,
+                'value' => number_format($this->baseQuantity, 2, '.', ''),
                 'attributes' => [
                     'unitCode' => $this->unitCode
                 ]
