@@ -108,6 +108,8 @@ class SimpleUBL22InvoiceTest extends TestCase
         $dom = new \DOMDocument;
         $dom->loadXML($outputXMLString);
 
+        $dom->save('./tests/SimpleUBL22InvoiceTest.xml');
+
         $this->assertEquals(true, $dom->schemaValidate($this->schema));
     }
 }

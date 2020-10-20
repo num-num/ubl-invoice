@@ -115,6 +115,9 @@ class SimpleInvoiceTest extends TestCase
         // used to validate the generate XML
         $dom = new \DOMDocument;
         $dom->loadXML($outputXMLString);
+
+        $dom->save('./tests/SimpleInvoiceTest.xml');
+
         $this->assertEquals(true, $dom->schemaValidate($this->schema));
     }
 }

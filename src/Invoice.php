@@ -499,11 +499,19 @@ class Invoice implements XmlSerializable
 
         $writer->write([
             Schema::CBC . 'IssueDate' => $this->issueDate->format('Y-m-d'),
-            [
-                'name' => Schema::CBC . 'InvoiceTypeCode',
-                'value' => $this->invoiceTypeCode
-            ]
         ]);
+
+        if ($this->dueDate !== null) {
+            $writer->write([
+                Schema::CBC . 'DueDate' => $this->dueDate->format('Y-m-d')
+            ]);
+        }
+
+        if ($this->invoiceTypeCode !== null) {
+            $writer->write([
+                Schema::CBC . 'InvoiceTypeCode' => $this->invoiceTypeCode
+            ]);
+        }
 
         if ($this->note !== null) {
             $writer->write([
@@ -514,12 +522,6 @@ class Invoice implements XmlSerializable
         if ($this->taxPointDate !== null) {
             $writer->write([
                 Schema::CBC . 'TaxPointDate' => $this->taxPointDate->format('Y-m-d')
-            ]);
-        }
-
-        if ($this->dueDate !== null) {
-            $writer->write([
-                Schema::CBC . 'DueDate' => $this->dueDate->format('Y-m-d')
             ]);
         }
 

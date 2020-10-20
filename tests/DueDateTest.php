@@ -2,14 +2,15 @@
 
 namespace NumNum\UBL\Tests;
 
+use NumNum\UBL\InvoiceTypeCode;
 use PHPUnit\Framework\TestCase;
 
 /**
- * Test an UBL2.1 credit note document
+ * Test an UBL2.2 invoice document
  */
-class SimpleCreditNoteTest extends TestCase
+class DueDateTest extends TestCase
 {
-    private $schema = 'http://docs.oasis-open.org/ubl/os-UBL-2.1/xsd/maindoc/UBL-Invoice-2.1.xsd';
+    private $schema = 'http://docs.oasis-open.org/ubl/os-UBL-2.2/xsd/maindoc/UBL-Invoice-2.2.xsd';
 
     /** @test */
     public function testIfXMLIsValid()
@@ -88,15 +89,17 @@ class SimpleCreditNoteTest extends TestCase
 
         // Invoice object
         $invoice = (new \NumNum\UBL\Invoice())
+            ->setUBLVersionID('2.2')
             ->setId(1234)
             ->setCopyIndicator(false)
             ->setIssueDate(new \DateTime())
+            ->setInvoiceTypeCode(\NumNum\UBL\InvoiceTypeCode::INVOICE)
+            ->setDueDate(new \DateTime())
             ->setAccountingSupplierParty($supplierCompany)
             ->setAccountingCustomerParty($clientCompany)
             ->setInvoiceLines($invoiceLines)
             ->setLegalMonetaryTotal($legalMonetaryTotal)
-            ->setTaxTotal($taxTotal)
-            ->setInvoiceTypeCode(\NumNum\UBL\InvoiceTypeCode::CREDIT_NOTE);
+            ->setTaxTotal($taxTotal);
 
         // Test created object
         // Use \NumNum\UBL\Generator to generate an XML string
@@ -108,7 +111,7 @@ class SimpleCreditNoteTest extends TestCase
         $dom = new \DOMDocument;
         $dom->loadXML($outputXMLString);
 
-        $dom->save('./tests/SimpleCreditNoteTest.xml');
+        $dom->save('./tests/DueDateTest.xml');
 
         $this->assertEquals(true, $dom->schemaValidate($this->schema));
     }

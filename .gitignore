@@ -72,3 +72,6 @@ $RECYCLE.BIN/
 
 # Windows shortcuts
 *.lnk
+
+# Generated XML files from tests
+/tests/*.xml
