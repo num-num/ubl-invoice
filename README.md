@@ -14,7 +14,7 @@ $ composer require num-num/ubl-invoice
 
 This library is not 100% UBL feature-complete, in the sense that it doesn't (yet) support **all** UBL XML tags & functionality. "Yet" being the keyword, since this definitely is the long-term goal. All common UBL tags that are required for most invoices are present in the library. This includes tags for discounts, cash discounts, special vat rates, etc...
 
-Please check out [CONTRIBUTING.md](CONTRIBUTING.md) for more information.
+If you are missing functionality, please feel free to add it :-) Adding additional tags & attributes is fairly straight-forward. Check out [CONTRIBUTING.md](CONTRIBUTING.md) for more information.
 
 ## Examples & documentation
 
