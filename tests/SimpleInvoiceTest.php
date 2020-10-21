@@ -56,7 +56,8 @@ class SimpleInvoiceTest extends TestCase
         // Product
         $productItem = (new \NumNum\UBL\Item())
             ->setName('Product Name')
-            ->setDescription('Product Description');
+            ->setDescription('Product Description')
+            ->setSellersItemIdentification('SELLERID');
 
         // Price
         $price = (new \NumNum\UBL\Price())
