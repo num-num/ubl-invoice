@@ -90,12 +90,12 @@ class PartyTaxScheme implements XmlSerializable
     public function xmlSerialize(Writer $writer)
     {
         if ($this->registrationName !== null) {
-             $writer->write([
+            $writer->write([
                 Schema::CBC . 'RegistrationName' => $this->registrationName
             ]);
         }
         if ($this->companyId !== null) {
-             $writer->write([
+            $writer->write([
                 Schema::CBC . 'CompanyID' => $this->companyId
             ]);
         }
