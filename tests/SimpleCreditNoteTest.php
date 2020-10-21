@@ -49,6 +49,7 @@ class SimpleCreditNoteTest extends TestCase
         $productItem = (new \NumNum\UBL\Item())
             ->setName('Product Name')
             ->setDescription('Product Description')
+            ->setSellersItemIdentification('SELLERID')
             ->setBuyersItemIdentification('BUYERID');
 
         // Price
