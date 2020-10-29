@@ -22,6 +22,7 @@ class Invoice implements XmlSerializable
     private $paymentTerms;
     private $accountingSupplierParty;
     private $accountingCustomerParty;
+    private $supplierAssignedAccountID;
     private $paymentMeans;
     private $taxTotal;
     private $legalMonetaryTotal;
@@ -234,6 +235,24 @@ class Invoice implements XmlSerializable
     public function setAccountingSupplierParty(Party $accountingSupplierParty): Invoice
     {
         $this->accountingSupplierParty = $accountingSupplierParty;
+        return $this;
+    }
+
+    /**
+     * @return Party
+     */
+    public function getSupplierAssignedAccountID(): ?string
+    {
+        return $this->supplierAssignedAccountID;
+    }
+
+    /**
+     * @param string $supplierAssignedAccountID
+     * @return Invoice
+     */
+    public function setSupplierAssignedAccountID(string $supplierAssignedAccountID): Invoice
+    {
+        $this->supplierAssignedAccountID = $supplierAssignedAccountID;
         return $this;
     }
 
@@ -559,10 +578,20 @@ class Invoice implements XmlSerializable
             ]);
         }
 
+        if ($this->supplierAssignedAccountID !== null) {
+            $customerParty = [
+                Schema::CBC . 'SupplierAssignedAccountID' => $this->supplierAssignedAccountID,
+                Schema::CAC . "Party" => $this->accountingCustomerParty
+            ];
+        } else {
+            $customerParty = [
+                Schema::CAC . "Party" => $this->accountingCustomerParty
+            ];
+        }
 
         $writer->write([
             Schema::CAC . 'AccountingSupplierParty' => [Schema::CAC . "Party" => $this->accountingSupplierParty],
-            Schema::CAC . 'AccountingCustomerParty' => [Schema::CAC . "Party" => $this->accountingCustomerParty],
+            Schema::CAC . 'AccountingCustomerParty' => $customerParty,
         ]);
 
         if ($this->delivery != null) {
