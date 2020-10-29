@@ -42,5 +42,5 @@ To run a single unit test
 
 ```sh
 $ cd ubl-invoice
-$ composer test test/SimpleInvoiceTest
+$ composer test tests/SimpleInvoiceTest
 ```
