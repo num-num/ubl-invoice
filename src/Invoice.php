@@ -585,9 +585,9 @@ class Invoice implements XmlSerializable
             ]);
         }
 
-        if ($this->buyerReference != null) {
+        if ($this->orderReference != null) {
             $writer->write([
-                Schema::CAC . 'OrderReference' => [Schema::CBC . "ID" => $this->buyerReference]
+                Schema::CAC . 'OrderReference' => $this->orderReference
             ]);
         }
 
