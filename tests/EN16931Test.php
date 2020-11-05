@@ -144,6 +144,10 @@ class EN16931Test extends TestCase
             ->setActualDeliveryDate(new \DateTime())
             ->setDeliveryLocation($deliveryLocation);
 
+        $orderReference = (new \NumNum\UBL\OrderReference())
+            ->setId('5009567')
+            ->setSalesOrderId('tRST-tKhM');
+
         // Invoice object
         $invoice = (new \NumNum\UBL\Invoice())
             ->setCustomizationID('urn:cen.eu:en16931:2017')
@@ -158,6 +162,7 @@ class EN16931Test extends TestCase
             ->setPaymentTerms($paymentTerms)
             ->setInvoicePeriod($invoicePeriod)
             ->setPaymentMeans($paymentMeans)
+            ->setOrderReference($orderReference)
             ->setTaxTotal($taxTotal);
 
         // Test created object
