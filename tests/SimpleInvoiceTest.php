@@ -96,6 +96,10 @@ class SimpleInvoiceTest extends TestCase
             ->addTaxSubTotal($taxSubTotal)
             ->setTaxAmount(2.1);
 
+        $orderReference = (new \NumNum\UBL\OrderReference())
+            ->setId('5009567')
+            ->setSalesOrderId('tRST-tKhM');
+
         // Invoice object
         $invoice = (new \NumNum\UBL\Invoice())
             ->setId(1234)
@@ -106,7 +110,8 @@ class SimpleInvoiceTest extends TestCase
             ->setSupplierAssignedAccountID('10001')
             ->setInvoiceLines($invoiceLines)
             ->setLegalMonetaryTotal($legalMonetaryTotal)
-            ->setTaxTotal($taxTotal);
+            ->setTaxTotal($taxTotal)
+            ->setOrderReference($orderReference);
 
         // Test created object
         // Use \NumNum\UBL\Generator to generate an XML string

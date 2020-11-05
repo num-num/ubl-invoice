@@ -34,6 +34,7 @@ class Invoice implements XmlSerializable
     private $accountingCostCode;
     private $invoicePeriod;
     private $delivery;
+    private $orderReference;
 
 
     /**
@@ -451,6 +452,24 @@ class Invoice implements XmlSerializable
     public function setDelivery(Delivery $delivery): Invoice
     {
         $this->delivery = $delivery;
+        return $this;
+    }
+
+    /**
+     * @return OrderReference
+     */
+    public function getOrderReference(): ?OrderReference
+    {
+        return $this->orderReference;
+    }
+
+    /**
+     * @param OrderReference $orderReference
+     * @return OrderReference
+     */
+    public function setOrderReference(OrderReference $orderReference): Invoice
+    {
+        $this->orderReference = $orderReference;
         return $this;
     }
 
