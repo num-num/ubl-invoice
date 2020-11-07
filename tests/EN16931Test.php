@@ -162,6 +162,7 @@ class EN16931Test extends TestCase
             ->setPaymentTerms($paymentTerms)
             ->setInvoicePeriod($invoicePeriod)
             ->setPaymentMeans($paymentMeans)
+            ->setBuyerReference('BUYER_REF')
             ->setOrderReference($orderReference)
             ->setTaxTotal($taxTotal);
 
