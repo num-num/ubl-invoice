@@ -12,6 +12,7 @@ class InvoiceLine implements XmlSerializable
     private $lineExtensionAmount;
     private $unitCode = 'MON';
     private $taxTotal;
+    private $invoicePeriod;
     private $note;
     private $item;
     private $price;
@@ -104,6 +105,23 @@ class InvoiceLine implements XmlSerializable
     public function setNote(?string $note): InvoiceLine
     {
         $this->note = $note;
+        return $this;
+    }
+
+    /**
+     * @return InvoicePeriod
+     */
+    public function getInvoicePeriod(): ?InvoicePeriod
+    {
+        return $this->invoicePeriod;
+    }
+
+    /**
+     * @param InvoicePeriod $invoicePeriod
+     * @return InvoiceLine
+     */
+    public function setInvoicePeriod(?InvoicePeriod $invoicePeriod){
+        $this->invoicePeriod = $invoicePeriod;
         return $this;
     }
 
@@ -212,7 +230,11 @@ class InvoiceLine implements XmlSerializable
                 ]
             ]
         ]);
-
+        if ($this->invoicePeriod !== null) {
+            $writer->write([
+                Schema::CAC . 'InvoicePeriod' => $this->invoicePeriod
+            ]);
+        }
         if ($this->accountingCostCode !== null) {
             $writer->write([
                 Schema::CBC . 'AccountingCostCode' => $this->accountingCostCode
