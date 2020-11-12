@@ -69,10 +69,15 @@ class SimpleInvoiceTest extends TestCase
         $lineTaxTotal = (new \NumNum\UBL\TaxTotal())
             ->setTaxAmount(2.1);
 
+        // InvoicePeriod
+        $invoicePeriod = (new \NumNum\UBL\InvoicePeriod())
+            ->setStartDate(new \DateTime());
+
         // Invoice Line(s)
         $invoiceLine = (new \NumNum\UBL\InvoiceLine())
             ->setId(0)
             ->setItem($productItem)
+            ->setInvoicePeriod($invoicePeriod)
             ->setPrice($price)
             ->setTaxTotal($lineTaxTotal)
             ->setInvoicedQuantity(1);

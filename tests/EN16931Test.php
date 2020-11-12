@@ -102,11 +102,16 @@ class EN16931Test extends TestCase
         $lineTaxTotal = (new \NumNum\UBL\TaxTotal())
             ->setTaxAmount(2.1);
 
+        // InvoicePeriod
+        $invoicePeriod = (new \NumNum\UBL\InvoicePeriod())
+            ->setStartDate(new \DateTime());
+
         // Invoice Line(s)
         $invoiceLine = (new \NumNum\UBL\InvoiceLine())
             ->setId(0)
             ->setItem($productItem)
             ->setPrice($price)
+            ->setInvoicePeriod($invoicePeriod)
             ->setLineExtensionAmount(10)
             ->setInvoicedQuantity(1);
 
@@ -131,10 +136,6 @@ class EN16931Test extends TestCase
         // Payment Terms
         $paymentTerms = (new \NumNum\UBL\PaymentTerms())
             ->setNote('30 days net');
-
-        // InvoicePeriod
-        $invoicePeriod = (new \NumNum\UBL\InvoicePeriod())
-            ->setStartDate(new \DateTime());
 
         // Delivery
         $deliveryLocation = (new \NumNum\UBL\Address())
