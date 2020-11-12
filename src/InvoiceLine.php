@@ -230,14 +230,14 @@ class InvoiceLine implements XmlSerializable
                 ]
             ]
         ]);
-        if ($this->invoicePeriod !== null) {
-            $writer->write([
-                Schema::CAC . 'InvoicePeriod' => $this->invoicePeriod
-            ]);
-        }
         if ($this->accountingCostCode !== null) {
             $writer->write([
                 Schema::CBC . 'AccountingCostCode' => $this->accountingCostCode
+            ]);
+        }
+        if ($this->invoicePeriod !== null) {
+            $writer->write([
+                Schema::CAC . 'InvoicePeriod' => $this->invoicePeriod
             ]);
         }
         if ($this->taxTotal !== null) {
