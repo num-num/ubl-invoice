@@ -120,7 +120,8 @@ class InvoiceLine implements XmlSerializable
      * @param InvoicePeriod $invoicePeriod
      * @return InvoiceLine
      */
-    public function setInvoicePeriod(?InvoicePeriod $invoicePeriod){
+    public function setInvoicePeriod(?InvoicePeriod $invoicePeriod)
+    {
         $this->invoicePeriod = $invoicePeriod;
         return $this;
     }
