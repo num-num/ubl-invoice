@@ -8,6 +8,7 @@ use Sabre\Xml\XmlSerializable;
 class Address implements XmlSerializable
 {
     private $streetName;
+    private $additionalStreetName;
     private $buildingNumber;
     private $cityName;
     private $postalZone;
@@ -31,6 +32,25 @@ class Address implements XmlSerializable
         return $this;
     }
 
+    /**
+     * @return string
+     */
+    public function getAdditionalStreetName(): ?string
+    {
+        return $this->additionalStreetName;
+    }
+
+    /**
+     * @param string $additionalStreetName
+     * @return Address
+     */
+    public function setAdditionalStreetName(?string $additionalStreetName): Address
+    {
+        $this->additionalStreetName = $additionalStreetName;
+        return $this;
+    }
+
+    /**
     /**
      * @return string
      */
@@ -114,6 +134,11 @@ class Address implements XmlSerializable
         if ($this->streetName !== null) {
             $writer->write([
                 Schema::CBC . 'StreetName' => $this->streetName
+            ]);
+        }
+        if ($this->additionalStreetName !== null) {
+            $writer->write([
+                Schema::CBC . 'AdditionalStreetName' => $this->additionalStreetName
             ]);
         }
         if ($this->buildingNumber !== null) {

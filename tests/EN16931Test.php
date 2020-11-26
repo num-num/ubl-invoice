@@ -26,6 +26,7 @@ class EN16931Test extends TestCase
         // Full address
         $address = (new \NumNum\UBL\Address())
             ->setStreetName('Korenmarkt 1')
+            ->setAdditionalStreetName('Building A')
             ->setCityName('Gent')
             ->setPostalZone('9000')
             ->setCountry($country);
