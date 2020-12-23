@@ -503,10 +503,6 @@ class Invoice implements XmlSerializable
             throw new InvalidArgumentException('Missing invoice id');
         }
 
-        if ($this->id === null) {
-            throw new InvalidArgumentException('Missing invoice id');
-        }
-
         if (!$this->issueDate instanceof DateTime) {
             throw new InvalidArgumentException('Invalid invoice issueDate');
         }
