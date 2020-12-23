@@ -1,5 +1,4 @@
 # Changelog for version [next-release]
 
 ### New features & improvements
-
-### Breaking changes
+* Added new ContractDocumentReference class & tag cac:ContractDocumentReference to Invoice
