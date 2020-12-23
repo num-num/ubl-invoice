@@ -35,7 +35,7 @@ class Invoice implements XmlSerializable
     private $invoicePeriod;
     private $delivery;
     private $orderReference;
-
+    private $contractDocumentReference;
 
     /**
      * @return string
@@ -474,6 +474,24 @@ class Invoice implements XmlSerializable
     }
 
     /**
+     * @return ContractDocumentReference
+     */
+    public function getContractDocumentReference(): ?ContractDocumentReference
+    {
+        return $this->contractDocumentReference;
+    }
+
+    /**
+     * @param string $ContractDocumentReference
+     * @return Invoice
+     */
+    public function setContractDocumentReference(ContractDocumentReference $contractDocumentReference): Invoice
+    {
+        $this->contractDocumentReference = $contractDocumentReference;
+        return $this;
+    }
+
+    /**
      * The validate function that is called during xml writing to valid the data of the object.
      *
      * @return void
@@ -576,6 +594,12 @@ class Invoice implements XmlSerializable
         if ($this->buyerReference != null) {
             $writer->write([
                 Schema::CBC . 'BuyerReference' => $this->buyerReference
+            ]);
+        }
+
+        if ($this->contractDocumentReference !== null) {
+            $writer->write([
+                Schema::CAC . 'ContractDocumentReference' => $this->contractDocumentReference,
             ]);
         }
 
