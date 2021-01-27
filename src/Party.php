@@ -8,6 +8,7 @@ use Sabre\Xml\XmlSerializable;
 class Party implements XmlSerializable
 {
     private $name;
+    private $partyIdentificationId;
     private $postalAddress;
     private $physicalLocation;
     private $contact;
@@ -29,6 +30,24 @@ class Party implements XmlSerializable
     public function setName(?string $name): Party
     {
         $this->name = $name;
+        return $this;
+    }
+
+    /**
+     * @return string
+     */
+    public function getPartyIdentificationId(): ?string
+    {
+        return $this->partyIdentificationId;
+    }
+
+    /**
+     * @param string $partyIdentificationId
+     * @return Party
+     */
+    public function setPartyIdentificationId(?string $partyIdentificationId): Party
+    {
+        $this->partyIdentificationId = $partyIdentificationId;
         return $this;
     }
 
@@ -130,6 +149,14 @@ class Party implements XmlSerializable
      */
     public function xmlSerialize(Writer $writer)
     {
+        if ($this->partyIdentificationId !== null) {
+            $writer->write([
+                Schema::CAC . 'PartyIdentification' => [
+                    Schema::CBC . 'ID' => $this->partyIdentificationId
+                ],
+            ]);
+        }
+
         $writer->write([
             Schema::CAC . 'PartyName' => [
                 Schema::CBC . 'Name' => $this->name

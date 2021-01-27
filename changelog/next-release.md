@@ -2,8 +2,9 @@
 
 ### New features & improvements
 
-- Added new ContractDocumentReference class & tag cac:ContractDocumentReference to Invoice
-- Remove duplicate validation for `id` on invoice
+- Added new ContractDocumentReference class & tag cac:ContractDocumentReference to Invoice — Thanks [@mabjavaid](https://github.com/mabjavaid)
+- Remove duplicate validation for `id` on invoice — Thanks [@mabjavaid](https://github.com/mabjavaid)
+- Added new cac:PartyIdentification tag to cac:Party
 
 ### Breaking changes
 
