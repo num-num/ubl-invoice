@@ -74,7 +74,9 @@ class SimpleInvoiceTest extends TestCase
             ->setStartDate(new \DateTime());
 
         // Invoice Line(s)
-        $invoiceLine = (new \NumNum\UBL\InvoiceLine())
+        $invoiceLines = [];
+
+        $invoiceLines[] = (new \NumNum\UBL\InvoiceLine())
             ->setId(0)
             ->setItem($productItem)
             ->setInvoicePeriod($invoicePeriod)
@@ -82,7 +84,24 @@ class SimpleInvoiceTest extends TestCase
             ->setTaxTotal($lineTaxTotal)
             ->setInvoicedQuantity(1);
 
-        $invoiceLines = [$invoiceLine];
+        $invoiceLines[] = (new \NumNum\UBL\InvoiceLine())
+            ->setId(0)
+            ->setItem($productItem)
+            ->setInvoicePeriod($invoicePeriod)
+            ->setPrice($price)
+            ->setAccountingCost('Product 123')
+            ->setTaxTotal($lineTaxTotal)
+            ->setInvoicedQuantity(1);
+
+        $invoiceLines[] = (new \NumNum\UBL\InvoiceLine())
+            ->setId(0)
+            ->setItem($productItem)
+            ->setInvoicePeriod($invoicePeriod)
+            ->setPrice($price)
+            ->setAccountingCostCode('Product 123')
+            ->setTaxTotal($lineTaxTotal)
+            ->setInvoicedQuantity(1);
+
 
         // Total Taxes
         $taxCategory = (new \NumNum\UBL\TaxCategory())

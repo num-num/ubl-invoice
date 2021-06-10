@@ -17,6 +17,7 @@ class InvoiceLine implements XmlSerializable
     private $item;
     private $price;
     private $accountingCostCode;
+    private $accountingCost;
 
     /**
      * @return string
@@ -199,6 +200,24 @@ class InvoiceLine implements XmlSerializable
     }
 
     /**
+     * @return string
+     */
+    public function getAccountingCost(): ?string
+    {
+        return $this->accountingCost;
+    }
+
+    /**
+     * @param string $accountingCost
+     * @return InvoiceLine
+     */
+    public function setAccountingCost(?string $accountingCost): InvoiceLine
+    {
+        $this->accountingCost = $accountingCost;
+        return $this;
+    }
+
+    /**
      * The xmlSerialize method is called during xml writing.
      * @param Writer $writer
      * @return void
@@ -234,6 +253,11 @@ class InvoiceLine implements XmlSerializable
         if ($this->accountingCostCode !== null) {
             $writer->write([
                 Schema::CBC . 'AccountingCostCode' => $this->accountingCostCode
+            ]);
+        }
+        if ($this->accountingCost !== null) {
+            $writer->write([
+                Schema::CBC . 'AccountingCost' => $this->accountingCost
             ]);
         }
         if ($this->invoicePeriod !== null) {
