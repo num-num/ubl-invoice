@@ -9,6 +9,7 @@ class AdditionalDocumentReference implements XmlSerializable
 {
     private $id;
     private $documentType;
+    private $documentDescription;
     private $attachment;
 
     /**
@@ -48,6 +49,24 @@ class AdditionalDocumentReference implements XmlSerializable
     }
 
     /**
+     * @return string
+     */
+    public function getDocumentDescription(): ?string
+    {
+        return $this->documentDescription;
+    }
+
+    /**
+     * @param string $documentDescription
+     * @return AdditionalDocumentReference
+     */
+    public function setDocumentDescription(string $documentDescription): AdditionalDocumentReference
+    {
+        $this->documentDescription = $documentDescription;
+        return $this;
+    }
+
+    /**
      * @return Attachment
      */
     public function getAttachment(): ?Attachment
@@ -77,6 +96,11 @@ class AdditionalDocumentReference implements XmlSerializable
         if ($this->documentType !== null) {
             $writer->write([
                 Schema::CAC . 'DocumentType' => $this->documentType
+            ]);
+        }
+        if ($this->documentDescription !== null) {
+            $writer->write([
+                Schema::CBC . 'DocumentDescription' => $this->documentDescription
             ]);
         }
         $writer->write([ Schema::CAC . 'Attachment' => $this->attachment ]);
