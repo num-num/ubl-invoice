@@ -10,7 +10,7 @@ class InvoiceLine implements XmlSerializable
     private $id;
     private $invoicedQuantity;
     private $lineExtensionAmount;
-    private $unitCode = 'MON';
+    private $unitCode = UnitCode::UNIT;
     private $taxTotal;
     private $invoicePeriod;
     private $note;
