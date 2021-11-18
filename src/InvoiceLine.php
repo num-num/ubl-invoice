@@ -239,7 +239,8 @@ class InvoiceLine implements XmlSerializable
                 'name' => Schema::CBC . 'InvoicedQuantity',
                 'value' => number_format($this->invoicedQuantity, 2, '.', ''),
                 'attributes' => [
-                    'unitCode' => $this->unitCode
+                    'unitCode' => $this->unitCode,
+                    'unitCodeListID' => 'UNECERec20',
                 ]
             ],
             [
