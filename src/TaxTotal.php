@@ -9,8 +9,8 @@ use InvalidArgumentException;
 
 class TaxTotal implements XmlSerializable
 {
-    private $taxAmount;
-    private $taxSubTotals = [];
+    protected $taxAmount;
+    protected $taxSubTotals = [];
 
     /**
      * @return mixed

@@ -9,14 +9,14 @@ use InvalidArgumentException;
 
 class ClassifiedTaxCategory implements XmlSerializable
 {
-    private $id;
-    private $name;
-    private $percent;
-    private $taxScheme;
-    private $taxExemptionReason;
-    private $taxExemptionReasonCode;
-    private $schemeID;
-    private $schemeName;
+    protected $id;
+    protected $name;
+    protected $percent;
+    protected $taxScheme;
+    protected $taxExemptionReason;
+    protected $taxExemptionReasonCode;
+    protected $schemeID;
+    protected $schemeName;
 
     public const UNCL5305 = 'UNCL5305';
 

@@ -7,11 +7,11 @@ use Sabre\Xml\XmlSerializable;
 
 class Item implements XmlSerializable
 {
-    private $description;
-    private $name;
-    private $buyersItemIdentification;
-    private $sellersItemIdentification;
-    private $classifiedTaxCategory;
+    protected $description;
+    protected $name;
+    protected $buyersItemIdentification;
+    protected $sellersItemIdentification;
+    protected $classifiedTaxCategory;
 
     /**
      * @return string

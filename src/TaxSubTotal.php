@@ -9,10 +9,10 @@ use InvalidArgumentException;
 
 class TaxSubTotal implements XmlSerializable
 {
-    private $taxableAmount;
-    private $taxAmount;
-    private $taxCategory;
-    private $percent;
+    protected $taxableAmount;
+    protected $taxAmount;
+    protected $taxCategory;
+    protected $percent;
 
     /**
      * @return mixed

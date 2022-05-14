@@ -7,17 +7,17 @@ use Sabre\Xml\XmlSerializable;
 
 class InvoiceLine implements XmlSerializable
 {
-    private $id;
-    private $invoicedQuantity;
-    private $lineExtensionAmount;
-    private $unitCode = 'MON';
-    private $taxTotal;
-    private $invoicePeriod;
-    private $note;
-    private $item;
-    private $price;
-    private $accountingCostCode;
-    private $accountingCost;
+    protected $id;
+    protected $invoicedQuantity;
+    protected $lineExtensionAmount;
+    protected $unitCode = 'MON';
+    protected $taxTotal;
+    protected $invoicePeriod;
+    protected $note;
+    protected $item;
+    protected $price;
+    protected $accountingCostCode;
+    protected $accountingCost;
 
     /**
      * @return string

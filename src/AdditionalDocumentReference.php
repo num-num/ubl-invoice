@@ -7,9 +7,9 @@ use Sabre\Xml\XmlSerializable;
 
 class AdditionalDocumentReference implements XmlSerializable
 {
-    private $id;
-    private $documentType;
-    private $attachment;
+    protected $id;
+    protected $documentType;
+    protected $attachment;
 
     /**
      * @return string

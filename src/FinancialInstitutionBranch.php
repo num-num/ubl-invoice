@@ -7,7 +7,7 @@ use Sabre\Xml\XmlSerializable;
 
 class FinancialInstitutionBranch implements XmlSerializable
 {
-    private $id;
+    protected $id;
 
     /**
      * @return string

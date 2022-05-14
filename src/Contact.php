@@ -7,10 +7,10 @@ use Sabre\Xml\XmlSerializable;
 
 class Contact implements XmlSerializable
 {
-    private $name;
-    private $telephone;
-    private $telefax;
-    private $electronicMail;
+    protected $name;
+    protected $telephone;
+    protected $telefax;
+    protected $electronicMail;
 
     /**
      * @return string

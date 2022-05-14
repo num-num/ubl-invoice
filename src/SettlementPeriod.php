@@ -10,8 +10,8 @@ use InvalidArgumentException;
 
 class SettlementPeriod implements XmlSerializable
 {
-    private $startDate;
-    private $endDate;
+    protected $startDate;
+    protected $endDate;
 
     /**
      * @return DateTime

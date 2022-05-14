@@ -7,8 +7,8 @@ use Sabre\Xml\XmlSerializable;
 
 class OrderReference implements XmlSerializable
 {
-    private $id;
-    private $salesOrderId;
+    protected $id;
+    protected $salesOrderId;
 
     /**
      * @return string

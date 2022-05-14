@@ -7,13 +7,13 @@ use Sabre\Xml\XmlSerializable;
 
 class Party implements XmlSerializable
 {
-    private $name;
-    private $partyIdentificationId;
-    private $postalAddress;
-    private $physicalLocation;
-    private $contact;
-    private $partyTaxScheme;
-    private $legalEntity;
+    protected $name;
+    protected $partyIdentificationId;
+    protected $postalAddress;
+    protected $physicalLocation;
+    protected $contact;
+    protected $partyTaxScheme;
+    protected $legalEntity;
 
     /**
      * @return string

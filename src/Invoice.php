@@ -10,32 +10,32 @@ use InvalidArgumentException;
 
 class Invoice implements XmlSerializable
 {
-    private $UBLVersionID = '2.1';
-    private $customizationID = '1.0';
-    private $id;
-    private $copyIndicator;
-    private $issueDate;
-    private $invoiceTypeCode = InvoiceTypeCode::INVOICE;
-    private $note;
-    private $taxPointDate;
-    private $dueDate;
-    private $paymentTerms;
-    private $accountingSupplierParty;
-    private $accountingCustomerParty;
-    private $supplierAssignedAccountID;
-    private $paymentMeans;
-    private $taxTotal;
-    private $legalMonetaryTotal;
-    private $invoiceLines;
-    private $allowanceCharges;
-    private $additionalDocumentReference;
-    private $documentCurrencyCode = 'EUR';
-    private $buyerReference;
-    private $accountingCostCode;
-    private $invoicePeriod;
-    private $delivery;
-    private $orderReference;
-    private $contractDocumentReference;
+    protected $UBLVersionID = '2.1';
+    protected $customizationID = '1.0';
+    protected $id;
+    protected $copyIndicator;
+    protected $issueDate;
+    protected $invoiceTypeCode = InvoiceTypeCode::INVOICE;
+    protected $note;
+    protected $taxPointDate;
+    protected $dueDate;
+    protected $paymentTerms;
+    protected $accountingSupplierParty;
+    protected $accountingCustomerParty;
+    protected $supplierAssignedAccountID;
+    protected $paymentMeans;
+    protected $taxTotal;
+    protected $legalMonetaryTotal;
+    protected $invoiceLines;
+    protected $allowanceCharges;
+    protected $additionalDocumentReference;
+    protected $documentCurrencyCode = 'EUR';
+    protected $buyerReference;
+    protected $accountingCostCode;
+    protected $invoicePeriod;
+    protected $delivery;
+    protected $orderReference;
+    protected $contractDocumentReference;
 
     /**
      * @return string

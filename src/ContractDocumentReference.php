@@ -7,7 +7,7 @@ use Sabre\Xml\XmlSerializable;
 
 class ContractDocumentReference implements XmlSerializable
 {
-    private $id;
+    protected $id;
 
     /**
      * @return string

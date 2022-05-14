@@ -9,8 +9,8 @@ use InvalidArgumentException;
 
 class InvoicePeriod implements XmlSerializable
 {
-    private $startDate;
-    private $endDate;
+    protected $startDate;
+    protected $endDate;
 
     /**
      * @return DateTime

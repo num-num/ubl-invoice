@@ -8,9 +8,9 @@ use DateTime;
 
 class Delivery implements XmlSerializable
 {
-    private $actualDeliveryDate;
-    private $deliveryLocation;
-    private $deliveryParty;
+    protected $actualDeliveryDate;
+    protected $deliveryLocation;
+    protected $deliveryParty;
 
     /**
      * @return DateTime

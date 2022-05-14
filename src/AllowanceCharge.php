@@ -7,14 +7,14 @@ use Sabre\Xml\XmlSerializable;
 
 class AllowanceCharge implements XmlSerializable
 {
-    private $chargeIndicator;
-    private $allowanceChargeReasonCode;
-    private $allowanceChargeReason;
-    private $multiplierFactorNumeric;
-    private $baseAmount;
-    private $amount;
-    private $taxTotal;
-    private $taxCategory;
+    protected $chargeIndicator;
+    protected $allowanceChargeReasonCode;
+    protected $allowanceChargeReason;
+    protected $multiplierFactorNumeric;
+    protected $baseAmount;
+    protected $amount;
+    protected $taxTotal;
+    protected $taxCategory;
 
     /**
      * @return bool
