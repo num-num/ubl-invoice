@@ -642,10 +642,11 @@ class Invoice implements XmlSerializable
         }
 
         if (!empty($this->additionalDocumentReferences)) {
-            foreach ($this->additionalDocumentReferences as $additionalDocumentReference)
-            $writer->write([
-                Schema::CAC . 'AdditionalDocumentReference' => $additionalDocumentReference
-            ]);
+            foreach ($this->additionalDocumentReferences as $additionalDocumentReference) {
+                $writer->write([
+                    Schema::CAC . 'AdditionalDocumentReference' => $additionalDocumentReference
+                ]);
+            }
         }
 
         if ($this->supplierAssignedAccountID !== null) {
