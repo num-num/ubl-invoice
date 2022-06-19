@@ -38,9 +38,6 @@ class Country implements XmlSerializable
         $writer->write([
             'name' => Schema::CBC . 'IdentificationCode',
             'value' => $this->identificationCode,
-            'attributes' => [
-                'listID' => 'ISO3166-1:Alpha2'
-            ]
         ]);
     }
 }

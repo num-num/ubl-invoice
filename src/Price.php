@@ -87,7 +87,6 @@ class Price implements XmlSerializable
                 'value' => number_format($this->baseQuantity, 2, '.', ''),
                 'attributes' => [
                     'unitCode' => $this->unitCode,
-                    'unitCodeListID' => 'UNECERec20',
                 ]
             ]
         ]);

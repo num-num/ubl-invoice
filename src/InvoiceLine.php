@@ -240,7 +240,6 @@ class InvoiceLine implements XmlSerializable
                 'value' => number_format($this->invoicedQuantity, 2, '.', ''),
                 'attributes' => [
                     'unitCode' => $this->unitCode,
-                    'unitCodeListID' => 'UNECERec20',
                 ]
             ],
             [

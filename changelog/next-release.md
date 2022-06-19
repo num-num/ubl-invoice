@@ -8,16 +8,12 @@
    - Added `ExternalReference` (`URI`) as an alternative for an `EmbeddedDocumentBinaryObject`
 3. ClassifiedTaxCategory
    - Fixed the appearing order of `Name` and `Percent`
-4. Country
-   - Added attribute `listID="ISO3166-1:Alpha2"`
-5. Invoice
+4. Invoice
    - Added `ProfileID`
    - Added support for multiple `AdditionalDocumentReference` children
-6. InvoiceLine and Price
-   - Added attribute `unitCodeListID="UNECERec20"`
-7. Item
+5. Item
    - Made `Description` optional
-7. Party
+6. Party
    - Added `EndpointID`
    - Made `PartyName` optional
 
