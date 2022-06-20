@@ -25,6 +25,11 @@ Please try to follow [PSR-12](https://www.php-fig.org/psr/psr-12/) rules when wr
 
 You can also check code style manually by running `composer phpcs` in the projects' root folder on your disk.
 
+```sh
+$ cd ubl-invoice
+$ composer phpcs
+```
+
 ## Unit testing ⚠️
 
 ### A note on unit testing
