@@ -8,8 +8,8 @@ use Sabre\Xml\XmlSerializable;
 class InvoiceLine implements XmlSerializable
 {
     private $id;
-    private $invoicedQuantity;
-    private $lineExtensionAmount;
+    private $invoicedQuantity = 0;
+    private $lineExtensionAmount = 0;
     private $unitCode = 'MON';
     private $taxTotal;
     private $invoicePeriod;
@@ -222,7 +222,7 @@ class InvoiceLine implements XmlSerializable
      * @param Writer $writer
      * @return void
      */
-    public function xmlSerialize(Writer $writer)
+    public function xmlSerialize(Writer $writer): void
     {
         $writer->write([
             Schema::CBC . 'ID' => $this->id

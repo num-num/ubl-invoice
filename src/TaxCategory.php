@@ -171,7 +171,7 @@ class TaxCategory implements XmlSerializable
      * @param Writer $writer
      * @return void
      */
-    public function xmlSerialize(Writer $writer)
+    public function xmlSerialize(Writer $writer): void
     {
         $this->validate();
 
