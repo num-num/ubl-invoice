@@ -1,0 +1,1 @@
+{"version":1,"defects":[],"times":{"NumNum\\UBL\\Tests\\DueDateTest::testIfXMLIsValid":16.183,"NumNum\\UBL\\Tests\\EN16931Test::testIfXMLIsValid":0.308,"NumNum\\UBL\\Tests\\SimpleCreditNoteTest::testIfXMLIsValid":17.122,"NumNum\\UBL\\Tests\\SimpleInvoiceTest::testIfXMLIsValid":17.986,"NumNum\\UBL\\Tests\\SimpleUBL22InvoiceTest::testIfXMLIsValid":16.615}}
