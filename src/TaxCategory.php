@@ -27,21 +27,7 @@ class TaxCategory implements XmlSerializable
      */
     public function getId(): ?string
     {
-        if (!empty($this->id)) {
-            return $this->id;
-        }
-
-        if ($this->getPercent() !== null) {
-            if ($this->getPercent() >= 21) {
-                return 'S';
-            } elseif ($this->getPercent() <= 21 && $this->getPercent() >= 6) {
-                return 'AA';
-            } else {
-                return 'Z';
-            }
-        }
-
-        return null;
+        return $this->id;
     }
 
     /**
