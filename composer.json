@@ -1,5 +1,5 @@
 {
-    "name": "num-num/ubl-invoice",
+    "name": "minicstudio/ubl-invoice",
     "description": "A modern object-oriented PHP library to create valid UBL files",
     "keywords": [
         "ubl",
@@ -12,23 +12,23 @@
         "xml",
         "xml invoice"
     ],
-    "homepage": "https://github.com/num-num/ubl-invoice",
+    "homepage": "https://github.com/minicstudio/ubl-invoice",
     "license": "MIT",
     "authors": [
         {
-            "name": "Bert Devriese",
-            "email": "bert@numnum.be",
-            "homepage": "https://www.numnum.be",
+            "name": "Levente Antal",
+            "email": "antal.levente@minic.ro",
+            "homepage": "https://minic.ro",
             "role": "Developer"
         }
     ],
     "require": {
-        "php": "^7.1||^8.0",
-        "sabre/xml": "^2.1"
+        "php": "^8.0",
+        "sabre/xml": "^4.0"
     },
     "require-dev": {
-        "phpunit/phpunit" : "^7.0",
-        "squizlabs/php_codesniffer": "^3.5"
+        "phpunit/phpunit" : "^9.0",
+        "squizlabs/php_codesniffer": "^3.7"
     },
     "autoload": {
         "psr-4": {

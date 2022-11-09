@@ -66,7 +66,7 @@ class Attachment implements XmlSerializable
      * @param Writer $writer
      * @return void
      */
-    public function xmlSerialize(Writer $writer)
+    public function xmlSerialize(Writer $writer): void
     {
         $fileContents = base64_encode(file_get_contents($this->filePath));
         $mimeType = $this->getFileMimeType();
