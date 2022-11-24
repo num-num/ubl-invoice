@@ -23,7 +23,7 @@
         }
     ],
     "require": {
-        "php": "^8.0",
+        "php": "^7.3 || ^8.0",
         "sabre/xml": "^4.0"
     },
     "require-dev": {
