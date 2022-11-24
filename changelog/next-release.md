@@ -20,6 +20,7 @@
 - Added Address->CountrySubentity()
 - Fixed xmlSerialize() compatibility warnings
 - Fixed number_format null values warning
+- Add support for cac:PartyIdentification schemeId attribute
 
 ### Breaking changes
 
