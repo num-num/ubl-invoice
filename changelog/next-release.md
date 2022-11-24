@@ -2,20 +2,24 @@
 
 ### New features & improvements
 
-1. AdditionalDocumentReference  
-   - Added `DocumentDescription` 
-2. Attachment
+- AdditionalDocumentReference
+   - Added `DocumentDescription`
+- Attachment
    - Added `ExternalReference` (`URI`) as an alternative for an `EmbeddedDocumentBinaryObject`
-3. ClassifiedTaxCategory
+- ClassifiedTaxCategory
    - Fixed the appearing order of `Name` and `Percent`
-4. Invoice
+- Invoice
    - Added `ProfileID`
    - Added support for multiple `AdditionalDocumentReference` children
-5. Item
+- Item
    - Made `Description` optional
-6. Party
+- Party
    - Added `EndpointID`
    - Made `PartyName` optional
+- Added PHP 8 support
+- Added Address->CountrySubentity()
+- Fixed xmlSerialize() compatibility warnings
+- Fixed number_format null values warning
 
 ### Breaking changes
 

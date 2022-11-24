@@ -84,7 +84,7 @@ class PaymentTerms implements XmlSerializable
         return $this;
     }
 
-    public function xmlSerialize(Writer $writer)
+    public function xmlSerialize(Writer $writer): void
     {
         if ($this->note !== null) {
             $writer->write([ Schema::CBC . 'Note' => $this->note ]);

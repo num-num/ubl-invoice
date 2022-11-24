@@ -90,7 +90,7 @@ class AdditionalDocumentReference implements XmlSerializable
      * @param Writer $writer
      * @return void
      */
-    public function xmlSerialize(Writer $writer)
+    public function xmlSerialize(Writer $writer): void
     {
         $writer->write([ Schema::CBC . 'ID' => $this->id ]);
         if ($this->documentType !== null) {

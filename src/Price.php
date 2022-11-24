@@ -92,7 +92,7 @@ class Price implements XmlSerializable
      * @param Writer $writer
      * @return void
      */
-    public function xmlSerialize(Writer $writer)
+    public function xmlSerialize(Writer $writer): void
     {
         $baseQuantityAttributes = [
             'unitCode' => $this->unitCode,

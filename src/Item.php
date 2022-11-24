@@ -109,7 +109,7 @@ class Item implements XmlSerializable
      * @param Writer $writer
      * @return void
      */
-    public function xmlSerialize(Writer $writer)
+    public function xmlSerialize(Writer $writer): void
     {
         if (!empty($this->getDescription())) {
             $writer->write([

@@ -65,7 +65,13 @@ class TaxScheme implements XmlSerializable
         return $this;
     }
 
-    public function xmlSerialize(Writer $writer)
+    /**
+     * The xmlSerialize method is called during xml writing.
+     *
+     * @param Writer $writer
+     * @return void
+     */
+    public function xmlSerialize(Writer $writer): void
     {
         $writer->write([
             Schema::CBC . 'ID' => $this->id
