@@ -10,6 +10,7 @@ class Price implements XmlSerializable
     private $priceAmount;
     private $baseQuantity;
     private $unitCode = UnitCode::UNIT;
+    private $unitCodeListId;
 
     /**
      * @return float
@@ -66,6 +67,25 @@ class Price implements XmlSerializable
         return $this;
     }
 
+
+    /**
+     * @return string
+     */
+    public function getUnitCodeListId(): ?string
+    {
+        return $this->unitCodeListId;
+    }
+
+    /**
+     * @param string $unitCodeListId
+     * @return Price
+     */
+    public function setUnitCodeListId(?string $unitCodeListId): Price
+    {
+        $this->unitCodeListId = $unitCodeListId;
+        return $this;
+    }
+
     /**
      * The xmlSerialize method is called during xml writing.
      *
@@ -74,6 +94,14 @@ class Price implements XmlSerializable
      */
     public function xmlSerialize(Writer $writer)
     {
+        $baseQuantityAttributes = [
+            'unitCode' => $this->unitCode,
+        ];
+
+        if (!empty($this->getUnitCodeListId())) {
+            $baseQuantityAttributes['unitCodeListID'] = $this->getUnitCodeListId();
+        }
+
         $writer->write([
             [
                 'name' => Schema::CBC . 'PriceAmount',
@@ -85,9 +113,7 @@ class Price implements XmlSerializable
             [
                 'name' => Schema::CBC . 'BaseQuantity',
                 'value' => number_format($this->baseQuantity, 2, '.', ''),
-                'attributes' => [
-                    'unitCode' => $this->unitCode,
-                ]
+                'attributes' => $baseQuantityAttributes
             ]
         ]);
     }

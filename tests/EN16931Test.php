@@ -190,7 +190,8 @@ class EN16931Test extends TestCase
         // Output validation warnings if present
         if ($response->mostSevereErrorLevel == 'WARN' && isset($response->Result[1]->Item)) {
             foreach ($response->Result[1]->Item as $responseWarning) {
-                fwrite(STDERR, '*** '.$responseWarning->errorText."\n");
+                // fwrite(STDERR, '*** '.$responseWarning->errorText."\n");
+                fwrite(STDERR, '*** '.json_encode($responseWarning)."\n");
             }
         }
 

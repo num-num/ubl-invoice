@@ -11,6 +11,7 @@ class InvoiceLine implements XmlSerializable
     private $invoicedQuantity;
     private $lineExtensionAmount;
     private $unitCode = UnitCode::UNIT;
+    private $unitCodeListId;
     private $taxTotal;
     private $invoicePeriod;
     private $note;
@@ -184,6 +185,24 @@ class InvoiceLine implements XmlSerializable
     /**
      * @return string
      */
+    public function getUnitCodeListId(): ?string
+    {
+        return $this->unitCodeListId;
+    }
+
+    /**
+     * @param string $unitCodeListId
+     * @return InvoiceLine
+     */
+    public function setUnitCodeListId(?string $unitCodeListId)
+    {
+        $this->unitCodeListId = $unitCodeListId;
+        return $this;
+    }
+
+    /**
+     * @return string
+     */
     public function getAccountingCostCode(): ?string
     {
         return $this->accountingCostCode;
@@ -234,13 +253,19 @@ class InvoiceLine implements XmlSerializable
             ]);
         }
 
+        $invoicedQuantityAttributes = [
+            'unitCode' => $this->unitCode,
+        ];
+
+        if (!empty($this->getUnitCodeListId())) {
+            $invoicedQuantityAttributes['unitCodeListID'] = $this->getUnitCodeListId();
+        }
+
         $writer->write([
             [
                 'name' => Schema::CBC . 'InvoicedQuantity',
                 'value' => number_format($this->invoicedQuantity, 2, '.', ''),
-                'attributes' => [
-                    'unitCode' => $this->unitCode,
-                ]
+                'attributes' => $invoicedQuantityAttributes
             ],
             [
                 'name' => Schema::CBC . 'LineExtensionAmount',
@@ -250,6 +275,7 @@ class InvoiceLine implements XmlSerializable
                 ]
             ]
         ]);
+
         if ($this->accountingCostCode !== null) {
             $writer->write([
                 Schema::CBC . 'AccountingCostCode' => $this->accountingCostCode
@@ -270,6 +296,7 @@ class InvoiceLine implements XmlSerializable
                 Schema::CAC . 'TaxTotal' => $this->taxTotal
             ]);
         }
+
         $writer->write([
             Schema::CAC . 'Item' => $this->item,
         ]);
