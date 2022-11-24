@@ -21,6 +21,7 @@
 - Fixed xmlSerialize() compatibility warnings
 - Fixed number_format null values warning
 - Add support for cac:PartyIdentification schemeId attribute
+- Add support for cac:AllowanceCharge in Price tag
 
 ### Breaking changes
 
