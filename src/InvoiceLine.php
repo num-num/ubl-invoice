@@ -7,8 +7,9 @@ use Sabre\Xml\XmlSerializable;
 
 class InvoiceLine implements XmlSerializable
 {
+    public $xmlTagName = 'InvoiceLine';
     private $id;
-    private $invoicedQuantity;
+    protected $invoicedQuantity;
     private $lineExtensionAmount;
     private $unitCode = UnitCode::UNIT;
     private $unitCodeListId;
@@ -19,6 +20,9 @@ class InvoiceLine implements XmlSerializable
     private $price;
     private $accountingCostCode;
     private $accountingCost;
+
+    // See CreditNoteLine.php
+    protected $isCreditNoteLine = false;
 
     /**
      * @return string
@@ -47,7 +51,7 @@ class InvoiceLine implements XmlSerializable
     }
 
     /**
-     * @param float $invoicedQuantity
+     * @param ?float $invoicedQuantity
      * @return InvoiceLine
      */
     public function setInvoicedQuantity(?float $invoicedQuantity): InvoiceLine
@@ -263,7 +267,8 @@ class InvoiceLine implements XmlSerializable
 
         $writer->write([
             [
-                'name' => Schema::CBC . 'InvoicedQuantity',
+                'name' => Schema::CBC .
+                    ($this->isCreditNoteLine ? 'CreditedQuantity' : 'InvoicedQuantity'),
                 'value' => number_format($this->invoicedQuantity, 2, '.', ''),
                 'attributes' => $invoicedQuantityAttributes
             ],

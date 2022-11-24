@@ -10,13 +10,14 @@ use InvalidArgumentException;
 
 class Invoice implements XmlSerializable
 {
+    public $xmlTagName = 'Invoice';
     private $UBLVersionID = '2.1';
     private $customizationID = '1.0';
     private $profileID;
     private $id;
     private $copyIndicator;
     private $issueDate;
-    private $invoiceTypeCode = InvoiceTypeCode::INVOICE;
+    protected $invoiceTypeCode = InvoiceTypeCode::INVOICE;
     private $note;
     private $taxPointDate;
     private $dueDate;
@@ -27,7 +28,8 @@ class Invoice implements XmlSerializable
     private $paymentMeans;
     private $taxTotal;
     private $legalMonetaryTotal;
-    private $invoiceLines;
+    /** @var InvoiceLine[] $invoiceLines */
+    protected $invoiceLines;
     private $allowanceCharges;
     private $additionalDocumentReferences = [];
     private $documentCurrencyCode = 'EUR';
@@ -583,7 +585,7 @@ class Invoice implements XmlSerializable
             Schema::CBC . 'IssueDate' => $this->issueDate->format('Y-m-d'),
         ]);
 
-        if ($this->dueDate !== null) {
+        if ($this->dueDate !== null && $this->xmlTagName === 'Invoice') {
             $writer->write([
                 Schema::CBC . 'DueDate' => $this->dueDate->format('Y-m-d')
             ]);
@@ -591,7 +593,7 @@ class Invoice implements XmlSerializable
 
         if ($this->invoiceTypeCode !== null) {
             $writer->write([
-                Schema::CBC . 'InvoiceTypeCode' => $this->invoiceTypeCode
+                Schema::CBC . $this->xmlTagName . 'TypeCode' => $this->invoiceTypeCode
             ]);
         }
 
@@ -703,7 +705,7 @@ class Invoice implements XmlSerializable
 
         foreach ($this->invoiceLines as $invoiceLine) {
             $writer->write([
-                Schema::CAC . 'InvoiceLine' => $invoiceLine
+                Schema::CAC . $invoiceLine->xmlTagName => $invoiceLine
             ]);
         }
     }
