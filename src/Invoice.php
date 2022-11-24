@@ -12,6 +12,7 @@ class Invoice implements XmlSerializable
 {
     private $UBLVersionID = '2.1';
     private $customizationID = '1.0';
+    private $profileID;
     private $id;
     private $copyIndicator;
     private $issueDate;
@@ -28,7 +29,7 @@ class Invoice implements XmlSerializable
     private $legalMonetaryTotal;
     private $invoiceLines;
     private $allowanceCharges;
-    private $additionalDocumentReference;
+    private $additionalDocumentReferences = [];
     private $documentCurrencyCode = 'EUR';
     private $buyerReference;
     private $accountingCostCode;
@@ -78,9 +79,19 @@ class Invoice implements XmlSerializable
      * @param mixed $customizationID
      * @return Invoice
      */
-    public function setCustomizationID(?string $id): Invoice
+    public function setCustomizationID(?string $customizationID): Invoice
     {
-        $this->customizationID = $id;
+        $this->customizationID = $customizationID;
+        return $this;
+    }
+
+    /**
+     * @param mixed $profileID
+     * @return Invoice
+     */
+    public function setProfileID(?string $profileID): Invoice
+    {
+        $this->profileID = $profileID;
         return $this;
     }
 
@@ -370,7 +381,7 @@ class Invoice implements XmlSerializable
      */
     public function getAdditionalDocumentReference(): ?AdditionalDocumentReference
     {
-        return $this->additionalDocumentReference;
+        return $this->additionalDocumentReferences[0] ?? null;
     }
 
     /**
@@ -379,7 +390,17 @@ class Invoice implements XmlSerializable
      */
     public function setAdditionalDocumentReference(AdditionalDocumentReference $additionalDocumentReference): Invoice
     {
-        $this->additionalDocumentReference = $additionalDocumentReference;
+        $this->additionalDocumentReferences = [$additionalDocumentReference];
+        return $this;
+    }
+
+    /**
+     * @param AdditionalDocumentReference $additionalDocumentReference
+     * @return Invoice
+     */
+    public function addAdditionalDocumentReference(AdditionalDocumentReference $additionalDocumentReference): Invoice
+    {
+        $this->additionalDocumentReferences[] = $additionalDocumentReference;
         return $this;
     }
 
@@ -540,6 +561,15 @@ class Invoice implements XmlSerializable
         $writer->write([
             Schema::CBC . 'UBLVersionID' => $this->UBLVersionID,
             Schema::CBC . 'CustomizationID' => $this->customizationID,
+        ]);
+
+        if ($this->profileID !== null) {
+            $writer->write([
+                Schema::CBC . 'ProfileID' => $this->profileID
+            ]);
+        }
+
+        $writer->write([
             Schema::CBC . 'ID' => $this->id
         ]);
 
@@ -611,10 +641,12 @@ class Invoice implements XmlSerializable
             ]);
         }
 
-        if ($this->additionalDocumentReference !== null) {
-            $writer->write([
-                Schema::CAC . 'AdditionalDocumentReference' => $this->additionalDocumentReference
-            ]);
+        if (!empty($this->additionalDocumentReferences)) {
+            foreach ($this->additionalDocumentReferences as $additionalDocumentReference) {
+                $writer->write([
+                    Schema::CAC . 'AdditionalDocumentReference' => $additionalDocumentReference
+                ]);
+            }
         }
 
         if ($this->supplierAssignedAccountID !== null) {

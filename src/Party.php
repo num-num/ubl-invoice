@@ -14,6 +14,8 @@ class Party implements XmlSerializable
     private $contact;
     private $partyTaxScheme;
     private $legalEntity;
+    private $endpointID;
+    private $endpointID_schemeID;
 
     /**
      * @return string
@@ -142,6 +144,18 @@ class Party implements XmlSerializable
     }
 
     /**
+     * @param $endpointID
+     * @param int|string $schemeID See list at https://docs.peppol.eu/poacc/billing/3.0/codelist/eas/
+     * @return Party
+     */
+    public function setEndpointID($endpointID, $schemeID): Party
+    {
+        $this->endpointID = $endpointID;
+        $this->endpointID_schemeID = $schemeID;
+        return $this;
+    }
+
+    /**
      * The xmlSerialize method is called during xml writing.
      *
      * @param Writer $writer
@@ -149,6 +163,20 @@ class Party implements XmlSerializable
      */
     public function xmlSerialize(Writer $writer)
     {
+        if ($this->endpointID !== null && $this->endpointID_schemeID !== null) {
+            $writer->write([
+                [
+                    'name' => Schema::CBC . 'EndpointID',
+                    'value' => $this->endpointID,
+                    'attributes' => [
+                        'schemeID' => is_numeric($this->endpointID_schemeID)
+                            ? sprintf('%04d', +$this->endpointID_schemeID)
+                            : $this->endpointID_schemeID
+                    ]
+                ]
+            ]);
+        }
+
         if ($this->partyIdentificationId !== null) {
             $writer->write([
                 Schema::CAC . 'PartyIdentification' => [
@@ -157,10 +185,15 @@ class Party implements XmlSerializable
             ]);
         }
 
+        if ($this->name !== null) {
+            $writer->write([
+                Schema::CAC . 'PartyName' => [
+                    Schema::CBC . 'Name' => $this->name
+                ]
+            ]);
+        }
+
         $writer->write([
-            Schema::CAC . 'PartyName' => [
-                Schema::CBC . 'Name' => $this->name
-            ],
             Schema::CAC . 'PostalAddress' => $this->postalAddress
         ]);
 

@@ -10,7 +10,7 @@ class InvoiceLine implements XmlSerializable
     private $id;
     private $invoicedQuantity;
     private $lineExtensionAmount;
-    private $unitCode = 'MON';
+    private $unitCode = UnitCode::UNIT;
     private $taxTotal;
     private $invoicePeriod;
     private $note;
@@ -239,7 +239,7 @@ class InvoiceLine implements XmlSerializable
                 'name' => Schema::CBC . 'InvoicedQuantity',
                 'value' => number_format($this->invoicedQuantity, 2, '.', ''),
                 'attributes' => [
-                    'unitCode' => $this->unitCode
+                    'unitCode' => $this->unitCode,
                 ]
             ],
             [
