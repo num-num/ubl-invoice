@@ -103,6 +103,11 @@ class AdditionalDocumentReference implements XmlSerializable
                 Schema::CBC . 'DocumentDescription' => $this->documentDescription
             ]);
         }
-        $writer->write([ Schema::CAC . 'Attachment' => $this->attachment ]);
+
+        if ($this->attachment !== null) {
+            $writer->write([
+              Schema::CAC . 'Attachment' => $this->attachment
+            ]);
+        }
     }
 }
