@@ -10,6 +10,7 @@ class Party implements XmlSerializable
     private $name;
     private $partyIdentificationId;
     private $partyIdentificationSchemeId;
+    private $partyIdentificationSchemeName;
     private $postalAddress;
     private $physicalLocation;
     private $contact;
@@ -69,6 +70,24 @@ class Party implements XmlSerializable
     public function setPartyIdentificationSchemeId(?string $partyIdentificationSchemeId): Party
     {
         $this->partyIdentificationSchemeId = $partyIdentificationSchemeId;
+        return $this;
+    }
+
+    /**
+     * @return string
+     */
+    public function getPartyIdentificationSchemeName(): ?string
+    {
+        return $this->partyIdentificationSchemeName;
+    }
+
+    /**
+     * @param string $partyIdentificationSchemeName
+     * @return Party
+     */
+    public function setPartyIdentificationSchemeName(?string $partyIdentificationSchemeName): Party
+    {
+        $this->partyIdentificationSchemeName = $partyIdentificationSchemeName;
         return $this;
     }
 
@@ -201,6 +220,10 @@ class Party implements XmlSerializable
 
             if (!empty($this->getPartyIdentificationSchemeId())) {
                 $partyIdentificationAttributes['schemeID'] = $this->getPartyIdentificationSchemeId();
+            }
+
+            if (!empty($this->getPartyIdentificationSchemeName())) {
+                $partyIdentificationAttributes['schemeName'] = $this->getPartyIdentificationSchemeName();
             }
 
             $writer->write([
