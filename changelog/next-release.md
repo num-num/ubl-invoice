@@ -1,5 +1,7 @@
 # Changelog for version [next-release]
 
+- DocumentType is not a CommonAggregateComponent - Thanks [@christopheg](https://github.com/christopheg)
+
 ### New features & improvements
 - Added the possibility to use <cac:AdditionalDocumentReference /> without <cac:Attachment /> - Thanks [@pjcarly](https://github.com/pjcarly)
 - Added <cbc:DocumentTypeCode /> on <cac:AdditionalDocumentReference />

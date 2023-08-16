@@ -119,7 +119,7 @@ class AdditionalDocumentReference implements XmlSerializable
             ]);
         } else if ($this->documentType !== null) {
             $writer->write([
-                Schema::CAC . 'DocumentType' => $this->documentType
+                Schema::CBC . 'DocumentType' => $this->documentType
             ]);
         }
 
