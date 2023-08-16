@@ -90,6 +90,10 @@ class ContractDocumentReferenceTest extends TestCase
         $contractDocumentReference = (new \NumNum\UBL\ContractDocumentReference())
             ->setId("123Test");
 
+        $invoicePeriod = (new \NumNum\UBL\InvoicePeriod())
+            ->setStartDate(new \DateTime('-31 days'))
+            ->setEndDate(new \DateTime());
+
         // Invoice object
         $invoice = (new \NumNum\UBL\Invoice())
             ->setUBLVersionID('2.2')
@@ -103,7 +107,9 @@ class ContractDocumentReferenceTest extends TestCase
             ->setInvoiceLines($invoiceLines)
             ->setLegalMonetaryTotal($legalMonetaryTotal)
             ->setTaxTotal($taxTotal)
-            ->setContractDocumentReference($contractDocumentReference);
+            ->setContractDocumentReference($contractDocumentReference)
+            ->setBuyerReference("SomeReference")
+            ->setInvoicePeriod($invoicePeriod);
 
         // Test created object
         // Use \NumNum\UBL\Generator to generate an XML string
