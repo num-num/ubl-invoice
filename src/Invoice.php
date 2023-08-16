@@ -380,10 +380,19 @@ class Invoice implements XmlSerializable
 
     /**
      * @return AdditionalDocumentReference
+     * @deprecated Deprecated since v1.16 - Replace implementation with setAdditionalDocumentReference or addAdditionalDocumentReference to add/set a single AdditionalDocumentReference
      */
     public function getAdditionalDocumentReference(): ?AdditionalDocumentReference
     {
         return $this->additionalDocumentReferences[0] ?? null;
+    }
+
+    /**
+     * @return array<AdditionalDocumentReference>
+     */
+    public function getAdditionalDocumentReferences(): array
+    {
+        return $this->additionalDocumentReferences ?? [];
     }
 
     /**
@@ -393,6 +402,16 @@ class Invoice implements XmlSerializable
     public function setAdditionalDocumentReference(AdditionalDocumentReference $additionalDocumentReference): Invoice
     {
         $this->additionalDocumentReferences = [$additionalDocumentReference];
+        return $this;
+    }
+
+    /**
+     * @param AdditionalDocumentReference $additionalDocumentReference
+     * @return Invoice
+     */
+    public function setAdditionalDocumentReferences(array $additionalDocumentReference): Invoice
+    {
+        $this->additionalDocumentReferences = $additionalDocumentReference;
         return $this;
     }
 

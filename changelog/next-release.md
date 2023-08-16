@@ -5,5 +5,6 @@
 - Added <cbc:DocumentTypeCode /> on <cac:AdditionalDocumentReference />
 
 - Added setter/getter InvoicePeriod DescriptionCode (VAT date code UNCL2005 subset)
+- Added deprecation warning for setAdditionalDocumentReference
 
 ### Breaking changes
