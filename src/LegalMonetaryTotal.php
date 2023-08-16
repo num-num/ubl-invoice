@@ -174,7 +174,7 @@ class LegalMonetaryTotal implements XmlSerializable
                         'currencyID' => Generator::$currencyID
                     ]
                 ]
-            ])
+            ]);
         }
 
         $writer->write([

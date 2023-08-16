@@ -4,6 +4,8 @@
 
 - Add `PrepaidAmount` to `LegalMonetaryTotal`
 - Add `IssueDate` to `OrderReference`
+- Add `ICDCode` list to be used in various other places
+- Fixed LegalMonetaryTotal which contained a syntax error
 
 # Changelog for version v1.15
 
