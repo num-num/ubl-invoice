@@ -1,3 +1,9 @@
+# Changelog for version [next-release]
+
+### New features & improvements
+
+- Add `PrepaidAmount` to `LegalMonetaryTotal`
+
 # Changelog for version v1.15
 
 ### New features & improvements
