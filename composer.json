@@ -1,6 +1,6 @@
 {
     "name": "num-num/ubl-invoice",
-    "description": "A modern object-oriented PHP library to create valid UBL files",
+    "description": "A modern object-oriented PHP library to create valid UBL and Peppol BIS 3.0 files",
     "keywords": [
         "ubl",
         "invoice",
@@ -10,7 +10,14 @@
         "electronic invoice",
         "digital invoice",
         "xml",
-        "xml invoice"
+        "xml invoice",
+        "peppol",
+        "peppol bis",
+        "peppolbis",
+        "peppol invoice",
+        "e-invoice",
+        "einvoice",
+        "euinvoice"
     ],
     "homepage": "https://github.com/num-num/ubl-invoice",
     "license": "MIT",
