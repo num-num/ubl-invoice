@@ -8,8 +8,9 @@ use Sabre\Xml\XmlSerializable;
 class TaxScheme implements XmlSerializable
 {
     private $id;
-    private $taxTypeCode;
     private $name;
+    private $taxTypeCode;
+    private $currencyCode;
 
     /**
      * @return string
@@ -26,6 +27,24 @@ class TaxScheme implements XmlSerializable
     public function setId(string $id): TaxScheme
     {
         $this->id = $id;
+        return $this;
+    }
+
+    /**
+     * @return string
+     */
+    public function getName(): ?string
+    {
+        return $this->name;
+    }
+
+    /**
+     * @param string $name
+     * @return TaxScheme
+     */
+    public function setName(?string $name)
+    {
+        $this->name = $name;
         return $this;
     }
 
@@ -50,18 +69,18 @@ class TaxScheme implements XmlSerializable
     /**
      * @return string
      */
-    public function getName(): ?string
+    public function getCurrencyCode(): ?string
     {
-        return $this->name;
+        return $this->currencyCode;
     }
 
     /**
-     * @param string $name
+     * @param string $currencyCode
      * @return TaxScheme
      */
-    public function setName(?string $name)
+    public function setCurrencyCode(?string $currencyCode)
     {
-        $this->name = $name;
+        $this->currencyCode = $currencyCode;
         return $this;
     }
 
@@ -76,14 +95,19 @@ class TaxScheme implements XmlSerializable
         $writer->write([
             Schema::CBC . 'ID' => $this->id
         ]);
+        if ($this->name !== null) {
+            $writer->write([
+                Schema::CBC . 'Name' => $this->name
+            ]);
+        }
         if ($this->taxTypeCode !== null) {
             $writer->write([
                 Schema::CBC . 'TaxTypeCode' => $this->taxTypeCode
             ]);
         }
-        if ($this->name !== null) {
+        if ($this->currencyCode !== null) {
             $writer->write([
-                Schema::CBC . 'Name' => $this->name
+                Schema::CBC . 'CurrencyCode' => $this->currencyCode
             ]);
         }
     }
