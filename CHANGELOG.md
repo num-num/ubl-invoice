@@ -3,6 +3,7 @@
 ### New features & improvements
 
 - Add `PrepaidAmount` to `LegalMonetaryTotal`
+- Add `IssueDate` to `OrderReference`
 
 # Changelog for version v1.15
 
