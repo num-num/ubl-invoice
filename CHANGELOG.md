@@ -1,3 +1,9 @@
+# Changelog for version [next-release]
+
+### New features & improvements
+
+- Added `EASCode` list with additional EAS codes to be used in various implementations
+
 # Changelog for version v1.15.1
 
 ### New features & improvements
