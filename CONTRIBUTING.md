@@ -25,9 +25,16 @@ Please try to follow [PSR-12](https://www.php-fig.org/psr/psr-12/) rules when wr
 
 You can also check code style manually by running `composer phpcs` in the projects' root folder on your disk.
 
-```sh
+```zsh
 $ cd ubl-invoice
 $ composer phpcs
+```
+
+The project also has PHPStan integrated for code checking, which can be triggered with:
+
+```zsh
+$ cd ubl-invoice
+$ composer phpstan
 ```
 
 ## Unit testing ⚠️
@@ -40,14 +47,14 @@ Although unit testing is included, this repository does not provide exhaustive u
 
 To run the complete suite of unit tests
 
-```sh
+```zsh
 $ cd ubl-invoice
 $ composer test
 ```
 
 To run a single unit test
 
-```sh
+```zsh
 $ cd ubl-invoice
-$ composer test tests/SimpleInvoiceTest
+$ composer test tests/SimpleInvoiceTest.php
 ```
