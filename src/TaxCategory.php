@@ -11,7 +11,7 @@ class TaxCategory implements XmlSerializable
 {
     private $id;
     private $idAttributes = [
-        'schemeID' => TaxCategory::UNCL5305,
+        'schemeID'   => UNCL5305::UNCL5305,
         'schemeName' => 'Duty or tax or fee category'
     ];
     private $name;
@@ -19,8 +19,6 @@ class TaxCategory implements XmlSerializable
     private $taxScheme;
     private $taxExemptionReason;
     private $taxExemptionReasonCode;
-
-    public const UNCL5305 = 'UNCL5305';
 
     /**
      * @return string
@@ -31,14 +29,11 @@ class TaxCategory implements XmlSerializable
             return $this->id;
         }
 
+        // Default behaviour, overrrule by using setId()
         if ($this->getPercent() !== null) {
-            if ($this->getPercent() >= 21) {
-                return 'S';
-            } elseif ($this->getPercent() <= 21 && $this->getPercent() >= 6) {
-                return 'AA';
-            } else {
-                return 'Z';
-            }
+            return ($this->getPercent() > 0)
+                ? UNCL5305::STANDARD_RATE
+                : UNCL5305::ZERO_RATED_GOODS;
         }
 
         return null;

@@ -1,3 +1,10 @@
+# Changelog for version [next-release]
+
+### New features & improvements
+
+- Added UNCL5305 codes to be used in various implementations
+- Improved default result for UNCL5305 code in `TaxCategory->getId()` if `TaxCategory->setId()` was not used
+
 # Changelog for version v1.15.3
 
 ### New features & improvements

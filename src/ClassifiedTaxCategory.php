@@ -18,8 +18,6 @@ class ClassifiedTaxCategory implements XmlSerializable
     private $schemeID;
     private $schemeName;
 
-    public const UNCL5305 = 'UNCL5305';
-
     /**
      * @return string
      */
@@ -30,13 +28,9 @@ class ClassifiedTaxCategory implements XmlSerializable
         }
 
         if ($this->getPercent() !== null) {
-            if ($this->getPercent() >= 21) {
-                return 'S';
-            } elseif ($this->getPercent() <= 21 && $this->getPercent() >= 6) {
-                return 'AA';
-            } else {
-                return 'Z';
-            }
+            return ($this->getPercent() > 0)
+                ? UNCL5305::STANDARD_RATE
+                : UNCL5305::ZERO_RATED_GOODS;
         }
 
         return null;
