@@ -1,4 +1,4 @@
-# Changelog for version [next-release]
+# Changelog for version v1.15.4
 
 ### New features & improvements
 
