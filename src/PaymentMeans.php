@@ -34,7 +34,7 @@ class PaymentMeans implements XmlSerializable
      */
     public function setPaymentMeansCode(int|string|null $paymentMeansCode, $attributes = null): PaymentMeans
     {
-        if(is_string($paymentMeansCode) && $paymentMeansCode !="ZZZ")
+        if(is_string($paymentMeansCode) && $paymentMeansCode !="ZZZ" && !is_numeric($paymentMeansCode))
         {
             throw new \InvalidArgumentException("PaymentMeansCode must be an integer or 'ZZZ'");
         }
