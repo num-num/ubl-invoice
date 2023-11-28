@@ -29,10 +29,15 @@ class PaymentMeans implements XmlSerializable
 
     /**
      * @param string $paymentMeansCode
+     * @throws \InvalidArgumentException
      * @return PaymentMeans
      */
-    public function setPaymentMeansCode(?int $paymentMeansCode, $attributes = null): PaymentMeans
+    public function setPaymentMeansCode(int|string|null $paymentMeansCode, $attributes = null): PaymentMeans
     {
+        if(is_string($paymentMeansCode) && $paymentMeansCode !="ZZZ")
+        {
+            throw new \InvalidArgumentException("PaymentMeansCode must be an integer or 'ZZZ'");
+        }
         $this->paymentMeansCode = $paymentMeansCode;
         if (isset($attributes)) {
             $this->paymentMeansCodeAttributes = $attributes;
