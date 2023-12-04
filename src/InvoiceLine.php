@@ -310,10 +310,6 @@ class InvoiceLine implements XmlSerializable
             $writer->write([
                 Schema::CAC . 'Price' => $this->price
             ]);
-        } else {
-            $writer->write([
-                Schema::CAC . 'TaxScheme' => null,
-            ]);
         }
     }
 }

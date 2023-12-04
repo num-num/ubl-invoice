@@ -1,3 +1,9 @@
+# Changelog for version [next-release]
+
+### New features & improvements
+
+- Don't output an InvoiceLine <cac:TaxScheme /> when no <cac:Price /> was set
+
 # Changelog for version v1.15.4
 
 ### New features & improvements
