@@ -2,7 +2,8 @@
 
 ### New features & improvements
 
-- Don't output an InvoiceLine <cac:TaxScheme /> when no <cac:Price /> was set
+- Don't output an InvoiceLine `<cac:TaxScheme />` when no `<cac:Price />` was set
+- Don't output `<cac:Item>` under InvoiceLine unless explicitely set
 
 # Changelog for version v1.15.4
 
