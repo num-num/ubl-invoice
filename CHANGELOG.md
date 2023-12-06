@@ -1,3 +1,10 @@
+# Changelog for version x
+
+### New features & improvements
+
+- Add `<cac:StandardItemIdentification>` to `<cac:Item>`
+- Add `<cac:PayeeParty>` to `<Invoice>`
+
 # Changelog for version 1.15.5
 
 ### New features & improvements

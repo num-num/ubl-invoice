@@ -44,7 +44,6 @@ class EN16931Test extends TestCase
             ->setPaymentMeansCode(31, [])
             ->setPaymentId('our invoice 1234');
 
-
         // Supplier company node
         $supplierLegalEntity = (new \NumNum\UBL\LegalEntity())
             ->setRegistrationName('Supplier Company Name')
@@ -58,6 +57,7 @@ class EN16931Test extends TestCase
             ->setName('Supplier Company Name')
             ->setLegalEntity($supplierLegalEntity)
             ->setPartyTaxScheme($supplierPartyTaxScheme)
+            ->setPartyIdentificationId('BE123456789')
             ->setPostalAddress($address);
 
         // Client company node
@@ -73,6 +73,7 @@ class EN16931Test extends TestCase
             ->setName('Client Company Name')
             ->setLegalEntity($clientLegalEntity)
             ->setPartyTaxScheme($clientPartyTaxScheme)
+            ->setPartyIdentificationId('BE123456789')
             ->setPostalAddress($address);
 
         $legalMonetaryTotal = (new \NumNum\UBL\LegalMonetaryTotal())

@@ -11,6 +11,7 @@ class Item implements XmlSerializable
     private $name;
     private $buyersItemIdentification;
     private $sellersItemIdentification;
+    private $standardItemIdentification;
     private $classifiedTaxCategory;
 
     /**
@@ -64,6 +65,24 @@ class Item implements XmlSerializable
     public function setSellersItemIdentification(?string $sellersItemIdentification): Item
     {
         $this->sellersItemIdentification = $sellersItemIdentification;
+        return $this;
+    }
+
+    /**
+     * @return mixed
+     */
+    public function getStandardItemIdentification(): ?string
+    {
+        return $this->standardItemIdentification;
+    }
+
+    /**
+     * @param mixed $standardItemIdentification
+     * @return Item
+     */
+    public function setStandardItemIdentification(?string $standardItemIdentification): Item
+    {
+        $this->standardItemIdentification = $standardItemIdentification;
         return $this;
     }
 
@@ -133,6 +152,14 @@ class Item implements XmlSerializable
             $writer->write([
                 Schema::CAC . 'SellersItemIdentification' => [
                     Schema::CBC . 'ID' => $this->sellersItemIdentification
+                ],
+            ]);
+        }
+
+        if (!empty($this->getStandardItemIdentification())) {
+            $writer->write([
+                Schema::CAC . 'StandardItemIdentification' => [
+                    Schema::CBC . 'ID' => $this->standardItemIdentification
                 ],
             ]);
         }
