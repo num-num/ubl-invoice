@@ -1,4 +1,4 @@
-# Changelog for version x
+# Changelog for version 1.16.0
 
 ### New features & improvements
 
