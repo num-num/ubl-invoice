@@ -1,3 +1,9 @@
+# Changelog for version x
+
+### New features & improvements
+
+- Add `<cac:StandardItemIdentification>` to `<cac:Item>`
+
 # Changelog for version 1.15.5
 
 ### New features & improvements
