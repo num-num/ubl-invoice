@@ -247,6 +247,7 @@ class InvoiceLine implements XmlSerializable
         return $this->orderLineReference;
     }
 
+    
     public function setOrderLineReference(?string $orderLineReference): InvoiceLine
     {
         $this->orderLineReference = $orderLineReference;
