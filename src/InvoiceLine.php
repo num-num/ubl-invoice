@@ -20,6 +20,7 @@ class InvoiceLine implements XmlSerializable
     private $price;
     private $accountingCostCode;
     private $accountingCost;
+    private $orderLineReference;
 
     // See CreditNoteLine.php
     protected $isCreditNoteLine = false;
@@ -240,6 +241,19 @@ class InvoiceLine implements XmlSerializable
         return $this;
     }
 
+
+    public function getOrderLineReference(): ?string
+    {
+        return $this->orderLineReference;
+    }
+
+    public function setOrderLineReference(?string $orderLineReference): InvoiceLine
+    {
+        $this->orderLineReference = $orderLineReference;
+
+        return $this;
+    }
+
     /**
      * The xmlSerialize method is called during xml writing.
      * @param Writer $writer
@@ -294,6 +308,11 @@ class InvoiceLine implements XmlSerializable
         if ($this->invoicePeriod !== null) {
             $writer->write([
                 Schema::CAC . 'InvoicePeriod' => $this->invoicePeriod
+            ]);
+        }
+        if ($this->orderLineReference !== null) {
+            $writer->write([
+                Schema::CAC . 'OrderLineReference' => $this->orderLineReference
             ]);
         }
         if ($this->taxTotal !== null) {

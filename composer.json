@@ -1,5 +1,5 @@
 {
-    "name": "num-num/ubl-invoice",
+    "name": "jeroencake/ubl-invoice",
     "description": "A modern object-oriented PHP library to create valid UBL and Peppol BIS 3.0 files",
     "keywords": [
         "ubl",
@@ -26,6 +26,12 @@
             "name": "Bert Devriese",
             "email": "bert@numnum.be",
             "homepage": "https://www.numnum.be",
+            "role": "Developer"
+        },
+        {
+            "name": "Jeroen Gevers",
+            "email": "jeroengevers@fruitcake.nl",
+            "homepage": "https://www.fruitcake.nl",
             "role": "Developer"
         }
     ],
