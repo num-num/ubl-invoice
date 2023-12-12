@@ -19,7 +19,7 @@
         "einvoice",
         "euinvoice"
     ],
-    "homepage": "https://github.com/num-num/ubl-invoice",
+    "homepage": "https://github.com/jeroencake/ubl-invoice",
     "license": "MIT",
     "authors": [
         {
@@ -46,10 +46,10 @@
     },
     "autoload": {
         "psr-4": {
-            "NumNum\\UBL\\": [
+            "JeroenCake\\UBL\\": [
                 "src"
             ],
-            "NumNum\\UBL\\Tests\\": [
+            "JeroenCake\\UBL\\Tests\\": [
                 "tests"
             ]
         }
