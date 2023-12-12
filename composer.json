@@ -46,10 +46,10 @@
     },
     "autoload": {
         "psr-4": {
-            "JeroenCake\\UBL\\": [
+            "NumNum\\UBL\\": [
                 "src"
             ],
-            "JeroenCake\\UBL\\Tests\\": [
+            "NumNum\\UBL\\Tests\\": [
                 "tests"
             ]
         }
