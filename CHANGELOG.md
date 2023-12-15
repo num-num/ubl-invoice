@@ -1,4 +1,4 @@
-# Changelog for version X
+# Changelog for version 1.17.0
 
 ### New features & improvements
 
