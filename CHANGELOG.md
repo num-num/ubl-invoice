@@ -1,3 +1,9 @@
+# Changelog for version X
+
+### New features & improvements
+
+- Add list of `VatExemptionCode` options
+
 # Changelog for version 1.16.0
 
 ### New features & improvements
