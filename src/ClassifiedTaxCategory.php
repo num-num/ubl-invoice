@@ -148,7 +148,7 @@ class ClassifiedTaxCategory implements XmlSerializable
             throw new InvalidArgumentException('Missing taxcategory id');
         }
 
-        if ($this->getPercent() === null) {
+        if ($this->getId() !== UNCL5305::OUTSIDE_TAX_SCOPE && $this->getPercent() === null) {
             throw new InvalidArgumentException('Missing taxcategory percent');
         }
     }
@@ -183,9 +183,11 @@ class ClassifiedTaxCategory implements XmlSerializable
             ]);
         }
 
-        $writer->write([
-            Schema::CBC . 'Percent' => number_format($this->percent, 2, '.', ''),
-        ]);
+        if ($this->percent !== null) {
+            $writer->write([
+                Schema::CBC . 'Percent' => number_format($this->percent, 2, '.', ''),
+            ]);
+        }
 
         if ($this->taxExemptionReasonCode !== null) {
             $writer->write([
