@@ -75,7 +75,7 @@ class OrderLineReference implements XmlSerializable
 
         $writer->write([
             [
-                'name' => Schema::CBC . 'SalesOrderLine',
+                'name' => Schema::CBC . 'SalesOrderLineID',
                 'value' => $this->salesOrderLine,
             ],
         ]);
