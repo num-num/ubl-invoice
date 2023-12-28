@@ -34,9 +34,10 @@ class OrderLineReference implements XmlSerializable
     /**
      * @param mixed $lineId
      */
-    public function setLineId($lineId): void
+    public function setLineId($lineId): self
     {
         $this->lineId = $lineId;
+        return $this;
     }
 
     /**
@@ -50,9 +51,10 @@ class OrderLineReference implements XmlSerializable
     /**
      * @param mixed $salesOrderLine
      */
-    public function setSalesOrderLine($salesOrderLine): void
+    public function setSalesOrderLine($salesOrderLine): self
     {
         $this->salesOrderLine = $salesOrderLine;
+        return $this;
     }
 
     /**
