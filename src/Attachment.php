@@ -12,6 +12,9 @@ class Attachment implements XmlSerializable
 {
     private $filePath;
     private $externalReference;
+    private $fileContent;
+	private $fileName;
+    private $mimeType;
 
     /**
      * @throws Exception exception when the mime type cannot be determined
@@ -63,6 +66,60 @@ class Attachment implements XmlSerializable
     }
 
     /**
+     * @return string
+     */
+    public function getFileName(): string
+	{
+		return $this->fileName;
+	}
+
+    /**
+     * @param string $fileName
+     * @return Attachment
+     */
+	public function setFileName(string $fileName): Attachment
+	{
+		$this->fileName = $fileName;
+		return $this;
+	}
+
+    /**
+     * @return string
+     */
+	public function getFileContent(): string
+	{
+		return $this->fileContent;
+	}
+
+    /**
+     * @param string $fileContent
+     * @return Attachment
+     */
+	public function setFileContent(string $fileContent): Attachment
+	{
+		$this->fileContent = $fileContent;
+		return $this;
+	}
+
+    /**
+     * @return string
+     */
+	public function getMimeType(): string
+	{
+		return $this->mimeType;
+	}
+
+    /**
+     * @param string $mimeType
+     * @return Attachment
+     */
+	public function setMimeType(string $mimeType): Attachment
+	{
+		$this->mimeType = $mimeType;
+		return $this;
+	}
+
+    /**
      * The validate function that is called during xml writing to valid the data of the object.
      *
      * @throws InvalidArgumentException An error with information about required data that is missing to write the XML
@@ -70,8 +127,12 @@ class Attachment implements XmlSerializable
      */
     public function validate()
     {
-        if ($this->filePath === null && $this->externalReference === null) {
-            throw new InvalidArgumentException('Attachment must have a filePath or an ExternalReference');
+        if ($this->filePath === null && $this->externalReference === null && $this->fileContent === null) {
+            throw new InvalidArgumentException('Attachment must have a filePath, an ExternalReference, or a fileContent');
+        }
+
+        if ($this->fileContent !== null && $this->mimeType === null) {
+            throw new InvalidArgumentException('Using fileContent, you need to define the mime type');
         }
 
         if ($this->filePath !== null && !file_exists($this->filePath)) {
@@ -89,9 +150,14 @@ class Attachment implements XmlSerializable
     {
         $this->validate();
 
-        if ($this->filePath) {
-            $fileContents = base64_encode(file_get_contents($this->filePath));
-            $mimeType = $this->getFileMimeType();
+        if ($this->filePath || $this->fileContent) {
+            if ($this->filePath) {
+                $fileContents = base64_encode(file_get_contents($this->filePath));
+                $mimeType = $this->getFileMimeType();
+            } else {
+                $fileContents = $this->fileContent;
+                $mimeType = $this->mimeType;
+            }
 
             $writer->write([
                 'name' => Schema::CBC . 'EmbeddedDocumentBinaryObject',
