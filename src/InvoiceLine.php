@@ -20,6 +20,7 @@ class InvoiceLine implements XmlSerializable
     private $price;
     private $accountingCostCode;
     private $accountingCost;
+    private $allowanceCharge;
 
     // See CreditNoteLine.php
     protected $isCreditNoteLine = false;
@@ -241,6 +242,24 @@ class InvoiceLine implements XmlSerializable
     }
 
     /**
+     * @return AllowanceCharge
+     */
+    public function getAllowanceCharge(): ?AllowanceCharge
+    {
+        return $this->allowanceCharge;
+    }
+
+    /**
+     * @param AllowanceCharge $allowanceCharge
+     * @return InvoiceLine
+     */
+    public function setAllowanceCharge(?AllowanceCharge $allowanceCharge): InvoiceLine
+    {
+        $this->allowanceCharge = $allowanceCharge;
+        return $this;
+    }
+
+    /**
      * The xmlSerialize method is called during xml writing.
      * @param Writer $writer
      * @return void
@@ -294,6 +313,11 @@ class InvoiceLine implements XmlSerializable
         if ($this->invoicePeriod !== null) {
             $writer->write([
                 Schema::CAC . 'InvoicePeriod' => $this->invoicePeriod
+            ]);
+        }
+        if ($this->allowanceCharge !== null) {
+            $writer->write([
+                Schema::CAC . 'AllowanceCharge' => $this->allowanceCharge
             ]);
         }
         if ($this->taxTotal !== null) {
