@@ -1,3 +1,9 @@
+# Changelog for version x
+
+### New features & improvements
+
+- Changed `<cbc:MultiplierFactorNumeric />` type from `int` to `float`.
+
 # Changelog for version 1.17.0
 
 ### New features & improvements
