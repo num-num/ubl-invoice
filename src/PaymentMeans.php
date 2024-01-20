@@ -8,6 +8,7 @@ use DateTime;
 
 class PaymentMeans implements XmlSerializable
 {
+    public $xmlTagName = 'PaymentMeans';
     private $paymentMeansCode = 1;
     private $paymentMeansCodeAttributes = [
         'listID' => 'UN/ECE 4461',

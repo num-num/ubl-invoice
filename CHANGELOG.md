@@ -1,3 +1,10 @@
+# Changelog for version x
+
+### New features & improvements
+
+- Add an ability to include multiple `PaymentMeans`
+- Ad unit test for multiple `PaymentMeans`.
+
 # Changelog for version 1.17.0
 
 ### New features & improvements
