@@ -2,7 +2,6 @@
 
 namespace NumNum\UBL\Tests;
 
-use NumNum\UBL\PayeeFinancialAccount;
 use PHPUnit\Framework\TestCase;
 
 /**
