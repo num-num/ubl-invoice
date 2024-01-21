@@ -1,3 +1,9 @@
+# Changelog for version x
+
+### Bugfix
+
+- Fix `InvoiceTypeCode` deadlink
+
 # Changelog for version 1.17.0
 
 ### New features & improvements

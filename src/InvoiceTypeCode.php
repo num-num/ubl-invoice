@@ -4,7 +4,7 @@ namespace NumNum\UBL;
 
 /**
  * All possible Unit Codes that can be used
- * To extend, see also: http://tfig.unece.org/contents/recommendation-20.htm
+ * To extend, see also: https://docs.peppol.eu/poacc/billing/3.0/codelist/UNCL1001-inv/
  */
 class InvoiceTypeCode
 {
