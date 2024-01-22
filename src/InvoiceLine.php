@@ -20,7 +20,7 @@ class InvoiceLine implements XmlSerializable
     private $price;
     private $accountingCostCode;
     private $accountingCost;
-    private $allowanceCharge;
+    private $allowanceCharges;
 
     // See CreditNoteLine.php
     protected $isCreditNoteLine = false;
@@ -242,20 +242,20 @@ class InvoiceLine implements XmlSerializable
     }
 
     /**
-     * @return AllowanceCharge
+     * @return AllowanceCharge[]
      */
-    public function getAllowanceCharge(): ?AllowanceCharge
+    public function getAllowanceCharges(): ?array
     {
-        return $this->allowanceCharge;
+        return $this->allowanceCharges;
     }
 
     /**
-     * @param AllowanceCharge $allowanceCharge
+     * @param AllowanceCharge[] $allowanceCharge
      * @return InvoiceLine
      */
-    public function setAllowanceCharge(?AllowanceCharge $allowanceCharge): InvoiceLine
+    public function setAllowanceCharges(?AllowanceCharge $allowanceCharge): InvoiceLine
     {
-        $this->allowanceCharge = $allowanceCharge;
+        $this->allowanceCharges = $allowanceCharge;
         return $this;
     }
 
@@ -315,10 +315,12 @@ class InvoiceLine implements XmlSerializable
                 Schema::CAC . 'InvoicePeriod' => $this->invoicePeriod
             ]);
         }
-        if ($this->allowanceCharge !== null) {
-            $writer->write([
-                Schema::CAC . 'AllowanceCharge' => $this->allowanceCharge
-            ]);
+        if ($this->allowanceCharges !== null) {
+            foreach ($this->allowanceCharges as $allowanceCharge) {
+                $writer->write([
+                    Schema::CAC . 'AllowanceCharge' => $allowanceCharge
+                ]);
+            }
         }
         if ($this->taxTotal !== null) {
             $writer->write([
