@@ -1,3 +1,9 @@
+# Changelog for version x
+
+### New features & improvements
+
+- Add `<cac:AllowanceCharge>` to `<cac:InvoiceLine>`
+
 # Changelog for version 1.17.0
 
 ### New features & improvements
