@@ -76,13 +76,17 @@ class SimpleInvoiceTest extends TestCase
         // Invoice Line(s)
         $invoiceLines = [];
 
+        $orderLineReference = (new \NumNum\UBL\OrderLineReference)
+            ->setLineId('#ABC123');
+
         $invoiceLines[] = (new \NumNum\UBL\InvoiceLine())
             ->setId(0)
             ->setItem($productItem)
             ->setInvoicePeriod($invoicePeriod)
             ->setPrice($price)
             ->setTaxTotal($lineTaxTotal)
-            ->setInvoicedQuantity(1);
+            ->setInvoicedQuantity(1)
+            ->setOrderLineReference($orderLineReference);
 
         $invoiceLines[] = (new \NumNum\UBL\InvoiceLine())
             ->setId(0)
@@ -91,7 +95,8 @@ class SimpleInvoiceTest extends TestCase
             ->setPrice($price)
             ->setAccountingCost('Product 123')
             ->setTaxTotal($lineTaxTotal)
-            ->setInvoicedQuantity(1);
+            ->setInvoicedQuantity(1)
+            ->setOrderLineReference($orderLineReference);
 
         $invoiceLines[] = (new \NumNum\UBL\InvoiceLine())
             ->setId(0)
@@ -100,7 +105,8 @@ class SimpleInvoiceTest extends TestCase
             ->setPrice($price)
             ->setAccountingCostCode('Product 123')
             ->setTaxTotal($lineTaxTotal)
-            ->setInvoicedQuantity(1);
+            ->setInvoicedQuantity(1)
+            ->setOrderLineReference($orderLineReference);
 
 
         // Total Taxes
