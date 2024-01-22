@@ -2,6 +2,7 @@
 
 namespace NumNum\UBL\Tests;
 
+use NumNum\UBL\UNCL4461;
 use PHPUnit\Framework\TestCase;
 
 /**
@@ -41,7 +42,7 @@ class EN16931Test extends TestCase
 
         $paymentMeans = (new \NumNum\UBL\PaymentMeans())
             ->setPayeeFinancialAccount($payeeFinancialAccount)
-            ->setPaymentMeansCode(31, [])
+            ->setPaymentMeansCode(UNCL4461::DEBIT_TRANSFER, [])
             ->setPaymentId('our invoice 1234');
 
         // Supplier company node
