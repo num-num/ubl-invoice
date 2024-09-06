@@ -12,6 +12,8 @@ class Attachment implements XmlSerializable
 {
     private $filePath;
     private $externalReference;
+    private $fileStream;
+    private $fileName;
 
     /**
      * @throws Exception exception when the mime type cannot be determined
@@ -62,6 +64,22 @@ class Attachment implements XmlSerializable
         return $this;
     }
 
+    public function getFileStream(): ?string
+    {
+        return $this->fileStream;
+    }
+
+    /**
+     * @param string $fileStream
+     * @return Attachment
+     */
+    public function setFileStream(string $fileStream, string $fileName): Attachment
+    {
+        $this->fileStream = $fileStream;
+        $this->fileName = $fileName;
+        return $this;
+    }
+
     /**
      * The validate function that is called during xml writing to valid the data of the object.
      *
@@ -70,8 +88,8 @@ class Attachment implements XmlSerializable
      */
     public function validate()
     {
-        if ($this->filePath === null && $this->externalReference === null) {
-            throw new InvalidArgumentException('Attachment must have a filePath or an ExternalReference');
+        if ($this->filePath === null && $this->externalReference === null && $this->fileStream === null) {
+            throw new InvalidArgumentException('Attachment must have a filePath a fileStream or an ExternalReference');
         }
 
         if ($this->filePath !== null && !file_exists($this->filePath)) {
@@ -109,5 +127,23 @@ class Attachment implements XmlSerializable
                 [ Schema::CBC . 'URI' => $this->externalReference ]
             );
         }
+
+        if ($this->fileStream) {
+            $fileContents = $this->fileStream;
+            $mimeType     = 'application/pdf';
+
+            $data = [
+                'name'       => Schema::CBC . 'EmbeddedDocumentBinaryObject',
+                'value'      => $fileContents,
+                'attributes' => [
+                    'mimeCode' => $mimeType,
+                    'filename' => $this->fileName,
+                ],
+            ];
+
+            $writer->write($data);
+        }
     }
+
+
 }
