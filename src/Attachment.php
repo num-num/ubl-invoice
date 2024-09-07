@@ -71,6 +71,7 @@ class Attachment implements XmlSerializable
 
     /**
      * @param string $fileStream
+     * @param string $fileName
      * @return Attachment
      */
     public function setFileStream(string $fileStream, string $fileName): Attachment
@@ -129,14 +130,11 @@ class Attachment implements XmlSerializable
         }
 
         if ($this->fileStream) {
-            $fileContents = $this->fileStream;
-            $mimeType     = 'application/pdf';
-
             $data = [
                 'name'       => Schema::CBC . 'EmbeddedDocumentBinaryObject',
-                'value'      => $fileContents,
+                'value'      => $this->fileStream,
                 'attributes' => [
-                    'mimeCode' => $mimeType,
+                    'mimeCode' => 'application/pdf',
                     'filename' => $this->fileName,
                 ],
             ];
@@ -144,6 +142,4 @@ class Attachment implements XmlSerializable
             $writer->write($data);
         }
     }
-
-
 }
