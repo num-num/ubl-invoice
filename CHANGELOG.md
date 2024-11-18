@@ -1,3 +1,9 @@
+# Changelog for <next-version>
+
+### New features & improvements
+
+- Support for `<cav:Item>` `<cac:StandardItemIdentification>` --> `cbc:IDPeppol` Scheme identifier - Thanks [@dragonfly4](https://github.com/dragonfly4)
+
 # Changelog for version 1.17.0
 
 ### New features & improvements
