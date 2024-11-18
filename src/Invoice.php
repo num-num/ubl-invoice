@@ -719,9 +719,9 @@ class Invoice implements XmlSerializable
         }
 
         if ($this->paymentMeans !== null) {
-            foreach($this->paymentMeans as $paymentMean){
+            foreach($this->paymentMeans as $paymentMeans) {
                 $writer->write([
-                    Schema::CAC . $paymentMean->xmlTagName => $paymentMean
+                    Schema::CAC . $paymentMeans->xmlTagName => $paymentMeans
                 ]);
             }
         }

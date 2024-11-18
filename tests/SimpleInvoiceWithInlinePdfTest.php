@@ -7,7 +7,7 @@ use PHPUnit\Framework\TestCase;
 /**
  * Test an UBL2.1 invoice document
  */
-class MultiplePaymentMeansTest extends TestCase
+class SimpleInvoiceWithInlinePdfTest extends TestCase
 {
     private $schema = 'http://docs.oasis-open.org/ubl/os-UBL-2.1/xsd/maindoc/UBL-Invoice-2.1.xsd';
 
@@ -76,13 +76,17 @@ class MultiplePaymentMeansTest extends TestCase
         // Invoice Line(s)
         $invoiceLines = [];
 
+        $orderLineReference = (new \NumNum\UBL\OrderLineReference)
+            ->setLineId('#ABC123');
+
         $invoiceLines[] = (new \NumNum\UBL\InvoiceLine())
             ->setId(0)
             ->setItem($productItem)
             ->setInvoicePeriod($invoicePeriod)
             ->setPrice($price)
             ->setTaxTotal($lineTaxTotal)
-            ->setInvoicedQuantity(1);
+            ->setInvoicedQuantity(1)
+            ->setOrderLineReference($orderLineReference);
 
         $invoiceLines[] = (new \NumNum\UBL\InvoiceLine())
             ->setId(0)
@@ -91,7 +95,8 @@ class MultiplePaymentMeansTest extends TestCase
             ->setPrice($price)
             ->setAccountingCost('Product 123')
             ->setTaxTotal($lineTaxTotal)
-            ->setInvoicedQuantity(1);
+            ->setInvoicedQuantity(1)
+            ->setOrderLineReference($orderLineReference);
 
         $invoiceLines[] = (new \NumNum\UBL\InvoiceLine())
             ->setId(0)
@@ -100,7 +105,8 @@ class MultiplePaymentMeansTest extends TestCase
             ->setPrice($price)
             ->setAccountingCostCode('Product 123')
             ->setTaxTotal($lineTaxTotal)
-            ->setInvoicedQuantity(1);
+            ->setInvoicedQuantity(1)
+            ->setOrderLineReference($orderLineReference);
 
 
         // Total Taxes
@@ -120,29 +126,26 @@ class MultiplePaymentMeansTest extends TestCase
             ->addTaxSubTotal($taxSubTotal)
             ->setTaxAmount(2.1);
 
-        $paymentMeans = [];
+        // Example if you have some inline or in-memory filestream/file contents
+        $fileStream = file_get_contents(__DIR__.DIRECTORY_SEPARATOR.'SampleInvoice.pdf'); // this would be your file contents
 
-        $payeeFinancialAccount = (new \NumNum\UBL\PayeeFinancialAccount)->setId('RO123456789012345');
-        $paymentMeans[] = (new \NumNum\UBL\PaymentMeans())
-            ->setPaymentMeansCode(31)
-            ->setPaymentDueDate(new \DateTime())
-            ->setPayeeFinancialAccount($payeeFinancialAccount);
+        $base64EncodedFileStream = base64_encode($fileStream);
 
-        $payeeFinancialAccount = (new \NumNum\UBL\PayeeFinancialAccount)->setId('RO544456789067890');
-        $paymentMeans[] = (new \NumNum\UBL\PaymentMeans())
-            ->setPaymentMeansCode(31)
-            ->setPaymentDueDate(new \DateTime())
-            ->setPayeeFinancialAccount($payeeFinancialAccount);
+        $attachment = (new \NumNum\UBL\Attachment())
+            ->setFileStream($base64EncodedFileStream, 'Invoice.pdf', 'application/pdf');
+
+        $additionalDocumentReference = (new \NumNum\UBL\AdditionalDocumentReference())
+            ->setAttachment($attachment);
 
         // Invoice object
         $invoice = (new \NumNum\UBL\Invoice())
             ->setId(1234)
+            ->setAdditionalDocumentReference($additionalDocumentReference)
             ->setCopyIndicator(false)
             ->setIssueDate(new \DateTime())
             ->setAccountingSupplierParty($supplierCompany)
             ->setAccountingCustomerParty($clientCompany)
             ->setSupplierAssignedAccountID('10001')
-            ->setPaymentMeans($paymentMeans)
             ->setInvoiceLines($invoiceLines)
             ->setLegalMonetaryTotal($legalMonetaryTotal)
             ->setTaxTotal($taxTotal);
@@ -157,7 +160,7 @@ class MultiplePaymentMeansTest extends TestCase
         $dom = new \DOMDocument;
         $dom->loadXML($outputXMLString);
 
-        $dom->save('./tests/MultiplePaymentMeansTest.xml');
+        $dom->save('./tests/SimpleInvoiceWithInlinePdfTest.xml');
 
         $this->assertEquals(true, $dom->schemaValidate($this->schema));
     }

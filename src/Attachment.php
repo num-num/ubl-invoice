@@ -20,7 +20,7 @@ class Attachment implements XmlSerializable
      * @throws Exception exception when the mime type cannot be determined
      * @return string
      */
-    public function getFileMimeType(): string
+    public function getFilePathMimeType(): string
     {
         if (($mime_type = mime_content_type($this->filePath)) !== false) {
             return $mime_type;
@@ -71,7 +71,7 @@ class Attachment implements XmlSerializable
     }
 
     /**
-     * @param string $fileStream
+     * @param string $fileStream Base64 encoded filestream
      * @param string $fileName
      * @return Attachment
      */
@@ -99,24 +99,6 @@ class Attachment implements XmlSerializable
 	public function setFileName(string $fileName): Attachment
 	{
 		$this->fileName = $fileName;
-		return $this;
-	}
-
-    /**
-     * @return string
-     */
-	public function getFileContent(): string
-	{
-		return $this->fileStream;
-	}
-
-    /**
-     * @param string $fileContent
-     * @return Attachment
-     */
-	public function setFileContent(string $fileContent): Attachment
-	{
-		$this->fileStream = $fileContent;
 		return $this;
 	}
 
@@ -169,43 +151,30 @@ class Attachment implements XmlSerializable
     {
         $this->validate();
 
-        if ($this->filePath || $this->fileStream) {
-            if ($this->filePath) {
-                $fileContents = base64_encode(file_get_contents($this->filePath));
-                $mimeType = $this->getFileMimeType();
-            } else {
-                $fileContents = $this->fileStream;
-                $mimeType = $this->mimeType;
-            }
-
-            $writer->write([
-                'name' => Schema::CBC . 'EmbeddedDocumentBinaryObject',
-                'value' => $fileContents,
-                'attributes' => [
-                    'mimeCode' => $mimeType,
-                    'filename' => $this->fileName,
-                ]
-            ]);
+        if (!empty($this->filePath)) {
+            $fileContents = base64_encode(file_get_contents($this->filePath));
+            $fileName     = basename($this->filePath);
+            $mimeType     = $this->getFilePathMimeType();
+        } else {
+            $fileContents = $this->fileStream;
+            $fileName     = $this->fileName;
+            $mimeType     = $this->mimeType;
         }
+
+        $writer->write([
+            'name' => Schema::CBC . 'EmbeddedDocumentBinaryObject',
+            'value' => $fileContents,
+            'attributes' => [
+                'mimeCode' => $mimeType,
+                'filename' => $fileName,
+            ]
+        ]);
 
         if ($this->externalReference) {
             $writer->writeElement(
                 Schema::CAC . 'ExternalReference',
                 [ Schema::CBC . 'URI' => $this->externalReference ]
             );
-        }
-
-        if ($this->fileStream) {
-            $data = [
-                'name'       => Schema::CBC . 'EmbeddedDocumentBinaryObject',
-                'value'      => $this->fileStream,
-                'attributes' => [
-                    'mimeCode' => 'application/pdf',
-                    'filename' => $this->fileName,
-                ],
-            ];
-
-            $writer->write($data);
         }
     }
 }
