@@ -7,6 +7,7 @@
 - Add `<cbc:CompanyLegalForm>` to `<cac:PartyLegalEntity>` - Thanks [@vsadrn](https://github.com/vsadrn)
 - Improved `UNCL4461` support for `<cac:PaymentMeans>` - Thanks [@TSimkus](https://github.com/TSimkus)
 - Add `<cac:OrderLineReference>` support for `<cac:InvoiceLine>` - Thanks [@TSimkus](https://github.com/TSimkus)
+- Add `<cac:AllowanceCharge>` to `<cac:InvoiceLine>` - Thanks [@TSimkus](https://github.com/TSimkus)
 
 #### Bug fixes
 
