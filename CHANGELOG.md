@@ -1,8 +1,10 @@
-# Changelog for version 1.17.1
+# Changelog for <next-version>
 
-### New features and improvements
+### New features & improvements
 
--   Add `<cbc:CompanyLegalForm>` to `<cac>PartyLegalEntity</cac>`
+- Support for `<cav:Item>` `<cac:StandardItemIdentification>` --> `cbc:IDPeppol` Scheme identifier - Thanks [@dragonfly4](https://github.com/dragonfly4)
+- Support to add `<cac:Attachment>` content without having to use an external file ref but by adding it as a fileStream/fileContents - Thanks [@dietercoopman](https://github.com/dietercoopman)
+-   Add `<cbc:CompanyLegalForm>` to `<cac:PartyLegalEntity>` - Thanks [@vsadrn](https://github.com/vsadrn)
 
 # Changelog for version 1.17.0
 
