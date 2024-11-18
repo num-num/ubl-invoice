@@ -8,6 +8,7 @@
 - Improved `UNCL4461` support for `<cac:PaymentMeans>` - Thanks [@TSimkus](https://github.com/TSimkus)
 - Add `<cac:OrderLineReference>` support for `<cac:InvoiceLine>` - Thanks [@TSimkus](https://github.com/TSimkus)
 - Add `<cac:AllowanceCharge>` to `<cac:InvoiceLine>` - Thanks [@TSimkus](https://github.com/TSimkus)
+- Add `<cbc:ChargeTotalAmount>` to `<cac:LegalMonetaryTotal>` - Thanks [@Quazz](https://github.com/Quazz)
 
 #### Bug fixes
 
