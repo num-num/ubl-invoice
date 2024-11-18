@@ -15,11 +15,13 @@ class InvoiceLine implements XmlSerializable
     private $unitCodeListId;
     private $taxTotal;
     private $invoicePeriod;
+    private $orderLineReference;
     private $note;
     private $item;
     private $price;
     private $accountingCostCode;
     private $accountingCost;
+    private $allowanceCharges;
 
     // See CreditNoteLine.php
     protected $isCreditNoteLine = false;
@@ -133,6 +135,24 @@ class InvoiceLine implements XmlSerializable
     }
 
     /**
+     * @return string
+     */
+    public function getOrderLineReference(): ?OrderLineReference
+    {
+        return $this->orderLineReference;
+    }
+
+    /**
+     * @param ?string $orderLineReference
+     * @return OrderLineReference
+     */
+    public function setOrderLineReference(?OrderLineReference $orderLineReference): InvoiceLine
+    {
+        $this->orderLineReference = $orderLineReference;
+        return $this;
+    }
+
+    /**
      * @return Item
      */
     public function getItem(): ?Item
@@ -241,6 +261,24 @@ class InvoiceLine implements XmlSerializable
     }
 
     /**
+     * @return AllowanceCharge[]
+     */
+    public function getAllowanceCharges(): ?array
+    {
+        return $this->allowanceCharges;
+    }
+
+    /**
+     * @param AllowanceCharge[] $allowanceCharge
+     * @return InvoiceLine
+     */
+    public function setAllowanceCharges(?AllowanceCharge $allowanceCharge): InvoiceLine
+    {
+        $this->allowanceCharges = $allowanceCharge;
+        return $this;
+    }
+
+    /**
      * The xmlSerialize method is called during xml writing.
      * @param Writer $writer
      * @return void
@@ -295,6 +333,18 @@ class InvoiceLine implements XmlSerializable
             $writer->write([
                 Schema::CAC . 'InvoicePeriod' => $this->invoicePeriod
             ]);
+        }
+        if ($this->orderLineReference !== null) {
+            $writer->write([
+                Schema::CAC . 'OrderLineReference' => $this->orderLineReference
+            ]);
+        }
+        if ($this->allowanceCharges !== null) {
+            foreach ($this->allowanceCharges as $allowanceCharge) {
+                $writer->write([
+                    Schema::CAC . 'AllowanceCharge' => $allowanceCharge
+                ]);
+            }
         }
         if ($this->taxTotal !== null) {
             $writer->write([
