@@ -15,6 +15,7 @@ class InvoiceLine implements XmlSerializable
     private $unitCodeListId;
     private $taxTotal;
     private $invoicePeriod;
+    private $orderLineReference;
     private $note;
     private $item;
     private $price;
@@ -130,6 +131,24 @@ class InvoiceLine implements XmlSerializable
     public function setInvoicePeriod(?InvoicePeriod $invoicePeriod)
     {
         $this->invoicePeriod = $invoicePeriod;
+        return $this;
+    }
+
+    /**
+     * @return string
+     */
+    public function getOrderLineReference(): ?OrderLineReference
+    {
+        return $this->orderLineReference;
+    }
+
+    /**
+     * @param ?string $orderLineReference
+     * @return OrderLineReference
+     */
+    public function setOrderLineReference(?OrderLineReference $orderLineReference): InvoiceLine
+    {
+        $this->orderLineReference = $orderLineReference;
         return $this;
     }
 
@@ -313,6 +332,11 @@ class InvoiceLine implements XmlSerializable
         if ($this->invoicePeriod !== null) {
             $writer->write([
                 Schema::CAC . 'InvoicePeriod' => $this->invoicePeriod
+            ]);
+        }
+        if ($this->orderLineReference !== null) {
+            $writer->write([
+                Schema::CAC . 'OrderLineReference' => $this->orderLineReference
             ]);
         }
         if ($this->allowanceCharges !== null) {
