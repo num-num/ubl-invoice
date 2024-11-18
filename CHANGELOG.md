@@ -8,6 +8,10 @@
 - Improved `UNCL4461` support for `<cac:PaymentMeans>` - Thanks [@TSimkus](https://github.com/TSimkus)
 - Add `<cac:OrderLineReference>` support for `<cac:InvoiceLine>` - Thanks [@TSimkus](https://github.com/TSimkus)
 
+#### Bug fixes
+
+- Fix `InvoiceTypeCode` documentation dead link - Thanks [@TSimkus](https://github.com/TSimkus)
+
 # Changelog for version 1.17.0
 
 ### New features & improvements
