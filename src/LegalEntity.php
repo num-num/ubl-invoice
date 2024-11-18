@@ -10,6 +10,8 @@ class LegalEntity implements XmlSerializable
     private $registrationName;
     private $companyId;
     private $companyIdAttributes;
+    private $companyLegalForm;
+    private $companyLegalFormAttributes;
 
     /**
      * @return string
@@ -51,6 +53,20 @@ class LegalEntity implements XmlSerializable
     }
 
     /**
+    *
+    * @param string $legalForm
+    * @return LegalEntity
+    */
+    public function setCompanyLegalForm(?string $legalForm, $attributes = null) : LegalEntity
+    {
+        $this->companyLegalForm = $legalForm;
+        if (isset($attributes)) {
+            $this->companyLegalFormAttributes = $attributes;
+        }
+        return $this;
+    }
+
+    /**
      * The xmlSerialize method is called during xml writing.
      *
      * @param Writer $writer
@@ -68,6 +84,15 @@ class LegalEntity implements XmlSerializable
                     'value' => $this->companyId,
                     'attributes' => $this->companyIdAttributes,
                 ],
+            ]);
+        }
+        if ($this->companyLegalForm !== null) {
+            $writer->write([
+                [
+                    'name' => Schema::CBC . 'CompanyLegalForm',
+                    'value' => $this->companyLegalForm,
+                    'attributes' => $this->companyLegalFormAttributes
+                ]
             ]);
         }
     }
