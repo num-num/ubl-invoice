@@ -9,6 +9,7 @@
 - Add `<cac:OrderLineReference>` support for `<cac:InvoiceLine>` - Thanks [@TSimkus](https://github.com/TSimkus)
 - Add `<cac:AllowanceCharge>` to `<cac:InvoiceLine>` - Thanks [@TSimkus](https://github.com/TSimkus)
 - Add support for `<cac:BillingReference>` in Creditnotes - Thanks [@UlusoftConsultancy](https://github.com/UlusoftConsultancy)
+- Add `<cbc:ChargeTotalAmount>` to `<cac:LegalMonetaryTotal>` - Thanks [@Quazz](https://github.com/Quazz)
 
 #### Bug fixes
 
