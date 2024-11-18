@@ -11,6 +11,7 @@
 #### Bug fixes
 
 - Fix `InvoiceTypeCode` documentation dead link - Thanks [@TSimkus](https://github.com/TSimkus)
+- Changed `<cbc:MultiplierFactorNumeric />` type from `int` to `float` - Thanks [@TSimkus](https://github.com/TSimkus)
 
 # Changelog for version 1.17.0
 
