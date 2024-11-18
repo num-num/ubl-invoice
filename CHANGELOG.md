@@ -1,3 +1,25 @@
+# Changelog for <next-version>
+
+### New features & improvements
+
+- Support for `<cav:Item>` `<cac:StandardItemIdentification>` --> `cbc:IDPeppol` Scheme identifier - Thanks [@dragonfly4](https://github.com/dragonfly4)
+- Support to add `<cac:Attachment>` content without having to use an external file ref but by adding it as a fileStream/fileContents - Thanks [@dietercoopman](https://github.com/dietercoopman)
+- Add `<cbc:CompanyLegalForm>` to `<cac:PartyLegalEntity>` - Thanks [@vsadrn](https://github.com/vsadrn)
+- Improved `UNCL4461` support for `<cac:PaymentMeans>` - Thanks [@TSimkus](https://github.com/TSimkus)
+- Add `<cac:OrderLineReference>` support for `<cac:InvoiceLine>` - Thanks [@TSimkus](https://github.com/TSimkus)
+- Add `<cac:AllowanceCharge>` to `<cac:InvoiceLine>` - Thanks [@TSimkus](https://github.com/TSimkus)
+- Add support for `<cac:BillingReference>` in Creditnotes - Thanks [@UlusoftConsultancy](https://github.com/UlusoftConsultancy)
+- Add `<cbc:ChargeTotalAmount>` to `<cac:LegalMonetaryTotal>` - Thanks [@Quazz](https://github.com/Quazz)
+
+### Breaking changes
+
+- Add support to include multiple `PaymentMeans` - Thanks [@Quazz](https://github.com/Quazz)
+
+#### Bug fixes
+
+- Fix `InvoiceTypeCode` documentation dead link - Thanks [@TSimkus](https://github.com/TSimkus)
+- Changed `<cbc:MultiplierFactorNumeric />` type from `int` to `float` - Thanks [@TSimkus](https://github.com/TSimkus)
+
 # Changelog for version 1.17.0
 
 ### New features & improvements
@@ -68,8 +90,8 @@
 - Added `DocumentDescription` in `AdditionalDocumentReference` - Thanks [@JorisDebonnet](https://github.com/JorisDebonnet)
 - Added `ExternalReference` (`URI`) as an alternative for an `EmbeddedDocumentBinaryObject` in `Attachment` - Thanks [@JorisDebonnet](https://github.com/JorisDebonnet)
 - Fixed the appearing order of `Name` and `Percent` in `ClassifiedTaxCategory` - Thanks [@JorisDebonnet](https://github.com/JorisDebonnet)
-- Added `ProfileID` to `Invoice`  - Thanks [@JorisDebonnet](https://github.com/JorisDebonnet)
-- Added support for multiple `AdditionalDocumentReference` children to `Invoice`  - Thanks [@JorisDebonnet](https://github.com/JorisDebonnet)
+- Added `ProfileID` to `Invoice` - Thanks [@JorisDebonnet](https://github.com/JorisDebonnet)
+- Added support for multiple `AdditionalDocumentReference` children to `Invoice` - Thanks [@JorisDebonnet](https://github.com/JorisDebonnet)
 - Made `Description` optional in `Item` - Thanks [@JorisDebonnet](https://github.com/JorisDebonnet)
 - Added `EndpointID` to `Party` - Thanks [@JorisDebonnet](https://github.com/JorisDebonnet)
 - Made `PartyName` optional in `Party` - Thanks [@JorisDebonnet](https://github.com/JorisDebonnet)

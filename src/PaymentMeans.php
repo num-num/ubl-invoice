@@ -8,7 +8,8 @@ use DateTime;
 
 class PaymentMeans implements XmlSerializable
 {
-    private $paymentMeansCode = 1;
+    public $xmlTagName = 'PaymentMeans';
+    private $paymentMeansCode = UNCL4461::INSTRUMENT_NOT_DEFINED;
     private $paymentMeansCodeAttributes = [
         'listID' => 'UN/ECE 4461',
         'listName' => 'Payment Means',
@@ -22,7 +23,7 @@ class PaymentMeans implements XmlSerializable
     /**
      * @return string
      */
-    public function getPaymentMeansCode(): ?int
+    public function getPaymentMeansCode(): ?string
     {
         return $this->paymentMeansCode;
     }
@@ -31,7 +32,7 @@ class PaymentMeans implements XmlSerializable
      * @param string $paymentMeansCode
      * @return PaymentMeans
      */
-    public function setPaymentMeansCode(?int $paymentMeansCode, $attributes = null): PaymentMeans
+    public function setPaymentMeansCode(?string $paymentMeansCode, $attributes = null): PaymentMeans
     {
         $this->paymentMeansCode = $paymentMeansCode;
         if (isset($attributes)) {
