@@ -71,18 +71,18 @@ class AllowanceCharge implements XmlSerializable
     }
 
     /**
-     * @return int
+     * @return float
      */
-    public function getMultiplierFactorNumeric(): ?int
+    public function getMultiplierFactorNumeric(): ?float
     {
         return $this->multiplierFactorNumeric;
     }
 
     /**
-     * @param int $multiplierFactorNumeric
+     * @param float $multiplierFactorNumeric
      * @return AllowanceCharge
      */
-    public function setMultiplierFactorNumeric(?int $multiplierFactorNumeric): AllowanceCharge
+    public function setMultiplierFactorNumeric(?float $multiplierFactorNumeric): AllowanceCharge
     {
         $this->multiplierFactorNumeric = $multiplierFactorNumeric;
         return $this;

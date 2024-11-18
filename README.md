@@ -5,7 +5,7 @@ A modern object-oriented PHP library to create valid UBL and Peppol BIS 3.0 file
 [![Latest Version on Packagist](https://img.shields.io/packagist/v/num-num/ubl-invoice.svg?style=rounded-square)](https://packagist.org/packages/num-num/ubl-invoice)
 [![Total Downloads](https://img.shields.io/packagist/dt/num-num/ubl-invoice.svg?style=rounded-square)](https://packagist.org/packages/num-num/ubl-invoice)
 
-![Num•Num UBL Invoice](https://i.imgur.com/UsmeVtI.png)
+![Num•Num UBL Invoice](https://i.imgur.com/JPyFBYQ.png)
 
 ## Installation and usage
 

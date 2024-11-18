@@ -2,6 +2,7 @@
 
 namespace NumNum\UBL\Tests;
 
+use NumNum\UBL\UNCL4461;
 use PHPUnit\Framework\TestCase;
 
 /**
@@ -41,9 +42,8 @@ class EN16931Test extends TestCase
 
         $paymentMeans = (new \NumNum\UBL\PaymentMeans())
             ->setPayeeFinancialAccount($payeeFinancialAccount)
-            ->setPaymentMeansCode(31, [])
+            ->setPaymentMeansCode(UNCL4461::DEBIT_TRANSFER, [])
             ->setPaymentId('our invoice 1234');
-
 
         // Supplier company node
         $supplierLegalEntity = (new \NumNum\UBL\LegalEntity())
@@ -58,6 +58,7 @@ class EN16931Test extends TestCase
             ->setName('Supplier Company Name')
             ->setLegalEntity($supplierLegalEntity)
             ->setPartyTaxScheme($supplierPartyTaxScheme)
+            ->setPartyIdentificationId('BE123456789')
             ->setPostalAddress($address);
 
         // Client company node
@@ -73,6 +74,7 @@ class EN16931Test extends TestCase
             ->setName('Client Company Name')
             ->setLegalEntity($clientLegalEntity)
             ->setPartyTaxScheme($clientPartyTaxScheme)
+            ->setPartyIdentificationId('BE123456789')
             ->setPostalAddress($address);
 
         $legalMonetaryTotal = (new \NumNum\UBL\LegalMonetaryTotal())
