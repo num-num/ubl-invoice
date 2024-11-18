@@ -1,3 +1,9 @@
+# Changelog for <next-version>
+
+### New features & improvements
+
+- Support to add `<cac:Attachment>` content without having to use an external file ref but by adding it as a fileStream/fileContents - Thanks [@dietercoopman](https://github.com/dietercoopman)
+
 # Changelog for version 1.17.0
 
 ### New features & improvements
