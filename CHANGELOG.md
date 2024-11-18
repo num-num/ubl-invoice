@@ -3,6 +3,7 @@
 ### New features & improvements
 
 - Support for `<cav:Item>` `<cac:StandardItemIdentification>` --> `cbc:IDPeppol` Scheme identifier - Thanks [@dragonfly4](https://github.com/dragonfly4)
+- Support to add `<cac:Attachment>` content without having to use an external file ref but by adding it as a fileStream/fileContents - Thanks [@dietercoopman](https://github.com/dietercoopman)
 
 # Changelog for version 1.17.0
 
