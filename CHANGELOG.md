@@ -3,13 +3,14 @@
 ### New features & improvements
 
 - Support for `<cav:Item>` `<cac:StandardItemIdentification>` --> `cbc:IDPeppol` Scheme identifier - Thanks [@dragonfly4](https://github.com/dragonfly4)
-- Support to add `<cac:Attachment>` content without having to use an external file ref but by adding it as a fileStream/fileContents - Thanks [@dietercoopman](https://github.com/dietercoopman)
+- Support to add `<cac:Attachment>` content without having to use an external file ref but by adding it as a fileStream/fileContents - Thanks [@dietercoopman](https://github.com/dietercoopman), [@bagulho](https://github.com/bagulho)
 - Add `<cbc:CompanyLegalForm>` to `<cac:PartyLegalEntity>` - Thanks [@vsadrn](https://github.com/vsadrn)
-- Improved `UNCL4461` support for `<cac:PaymentMeans>` - Thanks [@TSimkus](https://github.com/TSimkus)
+- Improved `UNCL4461` support for `<cac:PaymentMeans>` - Thanks [@TSimkus](https://github.com/TSimkus), [@TecsiAron](https://github.com/TecsiAron)
 - Add `<cac:OrderLineReference>` support for `<cac:InvoiceLine>` - Thanks [@TSimkus](https://github.com/TSimkus)
 - Add `<cac:AllowanceCharge>` to `<cac:InvoiceLine>` - Thanks [@TSimkus](https://github.com/TSimkus)
 - Add support for `<cac:BillingReference>` in Creditnotes - Thanks [@UlusoftConsultancy](https://github.com/UlusoftConsultancy)
 - Add `<cbc:ChargeTotalAmount>` to `<cac:LegalMonetaryTotal>` - Thanks [@Quazz](https://github.com/Quazz)
+- Add support for TaxExemptionReason and TaxExemptionReasonCode to `<cac:ClassifiedTaxCategory>` - Thanks [@bagulho](https://github.com/bagulho)
 
 ### Breaking changes
 
