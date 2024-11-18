@@ -11,6 +11,10 @@
 - Add support for `<cac:BillingReference>` in Creditnotes - Thanks [@UlusoftConsultancy](https://github.com/UlusoftConsultancy)
 - Add `<cbc:ChargeTotalAmount>` to `<cac:LegalMonetaryTotal>` - Thanks [@Quazz](https://github.com/Quazz)
 
+### Breaking changes
+
+- Add support to include multiple `PaymentMeans` - Thanks [@Quazz](https://github.com/Quazz)
+
 #### Bug fixes
 
 - Fix `InvoiceTypeCode` documentation dead link - Thanks [@TSimkus](https://github.com/TSimkus)
