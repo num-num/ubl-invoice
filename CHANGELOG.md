@@ -1,4 +1,4 @@
-# Changelog for <next-version>
+# Changelog for 1.18.0
 
 ### New features & improvements
 
