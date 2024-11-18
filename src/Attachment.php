@@ -75,10 +75,12 @@ class Attachment implements XmlSerializable
      * @param string $fileName
      * @return Attachment
      */
-    public function setFileStream(string $fileStream, string $fileName): Attachment
+    public function setFileStream(string $fileStream, string $fileName, ?string $mimeType): Attachment
     {
         $this->fileStream = $fileStream;
         $this->fileName = $fileName;
+        $this->mimeType = $mimeType;
+
         return $this;
     }
 
@@ -119,18 +121,18 @@ class Attachment implements XmlSerializable
 	}
 
     /**
-     * @return string
+     * @return ?string
      */
-	public function getMimeType(): string
+	public function getMimeType(): ?string
 	{
 		return $this->mimeType;
 	}
 
     /**
-     * @param string $mimeType
+     * @param ?string $mimeType
      * @return Attachment
      */
-	public function setMimeType(string $mimeType): Attachment
+	public function setMimeType(?string $mimeType): Attachment
 	{
 		$this->mimeType = $mimeType;
 		return $this;
@@ -181,7 +183,7 @@ class Attachment implements XmlSerializable
                 'value' => $fileContents,
                 'attributes' => [
                     'mimeCode' => $mimeType,
-                    'filename' => basename($this->filePath)
+                    'filename' => $this->fileName,
                 ]
             ]);
         }
