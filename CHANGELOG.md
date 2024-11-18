@@ -6,6 +6,7 @@
 - Support to add `<cac:Attachment>` content without having to use an external file ref but by adding it as a fileStream/fileContents - Thanks [@dietercoopman](https://github.com/dietercoopman)
 - Add `<cbc:CompanyLegalForm>` to `<cac:PartyLegalEntity>` - Thanks [@vsadrn](https://github.com/vsadrn)
 - Improved `UNCL4461` support for `<cac:PaymentMeans>` - Thanks [@TSimkus](https://github.com/TSimkus)
+- Add `<cac:OrderLineReference>` support for `<cac:InvoiceLine>` - Thanks [@TSimkus](https://github.com/TSimkus)
 
 # Changelog for version 1.17.0
 
