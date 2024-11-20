@@ -1,8 +1,8 @@
-# Changelog for next-version
+# Changelog for v1.18.1
 
 #### Bug fixes
 
-- Fix Creditnote `<cac:BillingReference>`, this tag should be optional
+- Fix Creditnote `<cac:BillingReference>` validation issues, this tag should be optional
 
 # Changelog for 1.18.0
 
