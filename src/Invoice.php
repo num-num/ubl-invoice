@@ -38,6 +38,7 @@ class Invoice implements XmlSerializable
     private $buyerReference;
     private $accountingCostCode;
     private $invoicePeriod;
+    private $billingReference;
     private $delivery;
     private $orderReference;
     private $contractDocumentReference;
@@ -500,6 +501,27 @@ class Invoice implements XmlSerializable
     }
 
     /**
+     * Get the reference to the invoice that is being credited
+     *
+     * @return ?BillingReference
+     */
+    public function getBillingReference(): ?BillingReference
+    {
+        return $this->billingReference;
+    }
+
+    /**
+     * Set the reference to the invoice that is being credited
+     *
+     * @return CreditNote
+     */
+    public function setBillingReference($billingReference): CreditNote
+    {
+        $this->billingReference = $billingReference;
+        return $this;
+    }
+
+    /**
      * @return Delivery
      */
     public function getDelivery(): ?Delivery
@@ -673,6 +695,12 @@ class Invoice implements XmlSerializable
         if ($this->orderReference != null) {
             $writer->write([
                 Schema::CAC . 'OrderReference' => $this->orderReference
+            ]);
+        }
+
+        if ($this->billingReference != null) {
+            $writer->write([
+                Schema::CAC . 'BillingReference' => $this->billingReference
             ]);
         }
 
