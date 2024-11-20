@@ -9,7 +9,7 @@ use PHPUnit\Framework\TestCase;
  */
 class SimpleCreditNoteTest extends TestCase
 {
-    private $schema = 'http://docs.oasis-open.org/ubl/os-UBL-2.1/xsd/maindoc/UBL-Invoice-2.1.xsd';
+    private $schema = 'http://docs.oasis-open.org/ubl/os-UBL-2.1/xsd/maindoc/UBL-CreditNote-2.1.xsd';
 
     /** @test */
     public function testIfXMLIsValid()
@@ -63,14 +63,14 @@ class SimpleCreditNoteTest extends TestCase
             ->setTaxAmount(2.1);
 
         // Invoice Line(s)
-        $invoiceLine = (new \NumNum\UBL\InvoiceLine())
+        $creditNoteLine = (new \NumNum\UBL\CreditNoteLine())
             ->setId(0)
             ->setItem($productItem)
             ->setPrice($price)
             ->setTaxTotal($lineTaxTotal)
             ->setInvoicedQuantity(1);
 
-        $invoiceLines = [$invoiceLine];
+        $creditNoteLines = [$creditNoteLine];
 
         // Total Taxes
         $taxCategory = (new \NumNum\UBL\TaxCategory())
@@ -89,13 +89,13 @@ class SimpleCreditNoteTest extends TestCase
             ->setTaxAmount(2.1);
 
         // Invoice object
-        $invoice = (new \NumNum\UBL\Invoice())
+        $creditNote = (new \NumNum\UBL\CreditNote())
             ->setId(1234)
             ->setCopyIndicator(false)
             ->setIssueDate(new \DateTime())
             ->setAccountingSupplierParty($supplierCompany)
             ->setAccountingCustomerParty($clientCompany)
-            ->setInvoiceLines($invoiceLines)
+            ->setCreditNoteLines($creditNoteLines)
             ->setLegalMonetaryTotal($legalMonetaryTotal)
             ->setTaxTotal($taxTotal)
             ->setInvoiceTypeCode(\NumNum\UBL\InvoiceTypeCode::CREDIT_NOTE);
@@ -103,7 +103,7 @@ class SimpleCreditNoteTest extends TestCase
         // Test created object
         // Use \NumNum\UBL\Generator to generate an XML string
         $generator = new \NumNum\UBL\Generator();
-        $outputXMLString = $generator->invoice($invoice);
+        $outputXMLString = $generator->creditNote($creditNote);
 
         // Create PHP Native DomDocument object, that can be
         // used to validate the generate XML
