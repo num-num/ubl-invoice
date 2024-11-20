@@ -31,7 +31,7 @@ class CreditNote extends Invoice implements XmlSerializable
 
     /**
      * Get the reference to the invoice that is being credited
-     * 
+     *
      * @return ?BillingReference
      */
     public function getBillingReference(): ?BillingReference
@@ -41,7 +41,7 @@ class CreditNote extends Invoice implements XmlSerializable
 
     /**
      * Set the reference to the invoice that is being credited
-     * 
+     *
      * @return CreditNote
      */
     public function setBillingReference($billingReference): CreditNote
@@ -59,8 +59,10 @@ class CreditNote extends Invoice implements XmlSerializable
     {
         Invoice::xmlSerialize($writer);
 
-        $writer->write([
-            Schema::CAC . 'BillingReference' => $this->billingReference
-        ]);
+        if (!empty($this->billingReference)) {
+            $writer->write([
+                Schema::CAC . 'BillingReference' => $this->billingReference
+            ]);
+        }
     }
 }
