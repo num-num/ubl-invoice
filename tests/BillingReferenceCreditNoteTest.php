@@ -7,7 +7,7 @@ use PHPUnit\Framework\TestCase;
 /**
  * Test an UBL2.1 credit note document
  */
-class SimpleCreditNoteTest extends TestCase
+class BillingReferenceCreditNoteTest extends TestCase
 {
     private $schema = 'http://docs.oasis-open.org/ubl/os-UBL-2.1/xsd/maindoc/UBL-CreditNote-2.1.xsd';
 
@@ -88,6 +88,12 @@ class SimpleCreditNoteTest extends TestCase
             ->addTaxSubTotal($taxSubTotal)
             ->setTaxAmount(2.1);
 
+        $billingReference = (new \NumNum\UBL\BillingReference())
+            ->setInvoiceDocumentReference((new \NumNum\UBL\InvoiceDocumentReference())
+                    ->setOriginalInvoiceId(1234)
+                    ->setIssueDate(new \DateTime()));
+
+
         // Invoice object
         $creditNote = (new \NumNum\UBL\CreditNote())
             ->setId(1234)
@@ -95,6 +101,7 @@ class SimpleCreditNoteTest extends TestCase
             ->setIssueDate(new \DateTime())
             ->setAccountingSupplierParty($supplierCompany)
             ->setAccountingCustomerParty($clientCompany)
+            ->setBillingReference($billingReference)
             ->setCreditNoteLines($creditNoteLines)
             ->setLegalMonetaryTotal($legalMonetaryTotal)
             ->setTaxTotal($taxTotal)
