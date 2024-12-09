@@ -1,3 +1,9 @@
+# Changelog for v1.18.2
+
+#### Bug fixes
+
+- Fix parameter type for `<cac:AllowanceCharge>` on `<cac:InvoiceLine>` to array
+
 # Changelog for v1.18.1
 
 #### Bug fixes
