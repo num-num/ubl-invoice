@@ -21,6 +21,7 @@ class InvoiceLine implements XmlSerializable
     private $price;
     private $accountingCostCode;
     private $accountingCost;
+    /** @var AllowanceCharge[] $allowanceCharges */
     private $allowanceCharges;
 
     // See CreditNoteLine.php
@@ -269,12 +270,12 @@ class InvoiceLine implements XmlSerializable
     }
 
     /**
-     * @param AllowanceCharge[] $allowanceCharge
+     * @param AllowanceCharge[] $allowanceCharges
      * @return InvoiceLine
      */
-    public function setAllowanceCharges(?AllowanceCharge $allowanceCharge): InvoiceLine
+    public function setAllowanceCharges(array $allowanceCharges): InvoiceLine
     {
-        $this->allowanceCharges = $allowanceCharge;
+        $this->allowanceCharges = $allowanceCharges;
         return $this;
     }
 
