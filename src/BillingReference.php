@@ -2,17 +2,16 @@
 
 namespace NumNum\UBL;
 
+use InvalidArgumentException;
 use Sabre\Xml\Writer;
 use Sabre\Xml\XmlSerializable;
-
-use InvalidArgumentException;
 
 class BillingReference implements XmlSerializable
 {
     private $invoiceDocumentReference;
 
     /**
-     * 
+     *
      * @return ?InvoiceDocumentReference
      */
     public function getInvoiceDocumentReference(): ?InvoiceDocumentReference
@@ -21,7 +20,7 @@ class BillingReference implements XmlSerializable
     }
 
     /**
-     * 
+     *
      * @return BillingReference
      */
     public function setInvoiceDocumentReference($invoiceDocumentReference): BillingReference

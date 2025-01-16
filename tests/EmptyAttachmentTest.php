@@ -124,12 +124,12 @@ class EmptyAttachmentTest extends TestCase
         $attachment = (new \NumNum\UBL\Attachment())
             ->setFilePath(__DIR__.DIRECTORY_SEPARATOR.'SampleInvoice.pdf');
 
-		$additionalDocumentReference = new \NumNum\UBL\AdditionalDocumentReference();
-		$additionalDocumentReference->setId('SomeID');
-		$additionalDocumentReference->setDocumentTypeCode(130);
+        $additionalDocumentReference = new \NumNum\UBL\AdditionalDocumentReference();
+        $additionalDocumentReference->setId('SomeID');
+        $additionalDocumentReference->setDocumentTypeCode(130);
 
         // Not adding an attachment to AdditionalDocumentReference should not trigger an error
-		// $additionalDocumentReference->setAttachment($attachment);
+        // $additionalDocumentReference->setAttachment($attachment);
 
         // Invoice object
         $invoice = (new \NumNum\UBL\Invoice())
@@ -151,7 +151,7 @@ class EmptyAttachmentTest extends TestCase
 
         // Create PHP Native DomDocument object, that can be
         // used to validate the generate XML
-        $dom = new \DOMDocument;
+        $dom = new \DOMDocument();
         $dom->loadXML($outputXMLString);
 
         $dom->save('./tests/EmptyAttachmentTest.xml');

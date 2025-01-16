@@ -109,7 +109,7 @@ class SimpleUBL22InvoiceTest extends TestCase
 
         // Create PHP Native DomDocument object, that can be
         // used to validate the generate XML
-        $dom = new \DOMDocument;
+        $dom = new \DOMDocument();
         $dom->loadXML($outputXMLString);
 
         $dom->save('./tests/SimpleUBL22InvoiceTest.xml');

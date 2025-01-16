@@ -2,13 +2,18 @@
 
 namespace NumNum\UBL;
 
-use Sabre\Xml\Writer;
-use Sabre\Xml\XmlSerializable;
-
+use Carbon\Carbon;
 use DateTime;
 use InvalidArgumentException;
 
-class SettlementPeriod implements XmlSerializable
+use function Sabre\Xml\Deserializer\keyValue;
+
+use Sabre\Xml\Reader;
+use Sabre\Xml\Writer;
+use Sabre\Xml\XmlDeserializable;
+use Sabre\Xml\XmlSerializable;
+
+class SettlementPeriod implements XmlSerializable, XmlDeserializable
 {
     private $startDate;
     private $endDate;
@@ -89,5 +94,19 @@ class SettlementPeriod implements XmlSerializable
                 ]
             ]
         ]);
+    }
+
+    /**
+     * The xmlDeserialize method is called during xml reading.
+     * @param Reader $xml
+     * @return SettlementPeriod
+     */
+    public static function xmlDeserialize(Reader $reader)
+    {
+        $keyValues = keyValue($reader);
+
+        return (new self())
+            ->setStartDate(Carbon::parse($keyValues[Schema::CBC . 'StartDate'])->toDateTime())
+            ->setEndDate(Carbon::parse($keyValues[Schema::CBC . 'EndDate'])->toDateTime());
     }
 }

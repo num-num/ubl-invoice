@@ -2,7 +2,6 @@
 
 namespace NumNum\UBL;
 
-use Sabre\Xml\Writer;
 use Sabre\Xml\XmlSerializable;
 
 class CreditNote extends Invoice implements XmlSerializable

@@ -54,10 +54,10 @@ class LegalEntity implements XmlSerializable
 
     /**
     *
-    * @param string $legalForm
-    * @return LegalEntity
+     * @param string $legalForm
+     * @return LegalEntity
     */
-    public function setCompanyLegalForm(?string $legalForm, $attributes = null) : LegalEntity
+    public function setCompanyLegalForm(?string $legalForm, $attributes = null): LegalEntity
     {
         $this->companyLegalForm = $legalForm;
         if (isset($attributes)) {

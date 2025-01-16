@@ -2,10 +2,9 @@
 
 namespace NumNum\UBL;
 
+use InvalidArgumentException;
 use Sabre\Xml\Writer;
 use Sabre\Xml\XmlSerializable;
-
-use InvalidArgumentException;
 
 class ClassifiedTaxCategory implements XmlSerializable
 {
@@ -139,38 +138,38 @@ class ClassifiedTaxCategory implements XmlSerializable
     /**
      * @return string
      */
-	public function getTaxExemptionReason(): ?string
-	{
-		return $this->taxExemptionReason;
-	}
+    public function getTaxExemptionReason(): ?string
+    {
+        return $this->taxExemptionReason;
+    }
 
     /**
      * @param string $taxExemptionReason
      * @return ClassifiedTaxCategory
      */
-	public function setTaxExemptionReason(?string $taxExemptionReason): ClassifiedTaxCategory
-	{
-		$this->taxExemptionReason = $taxExemptionReason;
-		return $this;
-	}
+    public function setTaxExemptionReason(?string $taxExemptionReason): ClassifiedTaxCategory
+    {
+        $this->taxExemptionReason = $taxExemptionReason;
+        return $this;
+    }
 
     /**
      * @return string
      */
-	public function getTaxExemptionReasonCode(): ?string
-	{
-		return $this->taxExemptionReasonCode;
-	}
+    public function getTaxExemptionReasonCode(): ?string
+    {
+        return $this->taxExemptionReasonCode;
+    }
 
     /**
      * @param string $taxExemptionReasonCode
      * @return ClassifiedTaxCategory
      */
     public function setTaxExemptionReasonCode(?string $taxExemptionReasonCode): ClassifiedTaxCategory
-	{
-		$this->taxExemptionReasonCode = $taxExemptionReasonCode;
-		return $this;
-	}
+    {
+        $this->taxExemptionReasonCode = $taxExemptionReasonCode;
+        return $this;
+    }
 
     /**
      * The validate function that is called during xml writing to valid the data of the object.

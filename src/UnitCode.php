@@ -8,24 +8,24 @@ namespace NumNum\UBL;
  */
 class UnitCode
 {
-    const UNIT = 'C62';
-    const PIECE = 'H87';
+    public const UNIT = 'C62';
+    public const PIECE = 'H87';
 
-    const ARE = 'ARE';
-    const HECTARE = 'HAR';
+    public const ARE = 'ARE';
+    public const HECTARE = 'HAR';
 
-    const SQUARE_METRE = 'MTK';
-    const SQUARE_KILOMETRE = 'KMK';
-    const SQUARE_FOOT = 'FTK';
-    const SQUARE_YARD = 'YDK';
-    const SQUARE_MILE = 'MIK';
+    public const SQUARE_METRE = 'MTK';
+    public const SQUARE_KILOMETRE = 'KMK';
+    public const SQUARE_FOOT = 'FTK';
+    public const SQUARE_YARD = 'YDK';
+    public const SQUARE_MILE = 'MIK';
 
-    const LITRE = 'LTR';
+    public const LITRE = 'LTR';
 
-    const SECOND = 'SEC';
-    const MINUTE = 'MIN';
-    const HOUR = 'HUR';
-    const DAY = 'DAY';
-    const MONTH = 'MON';
-    const YEAR = 'ANN';
+    public const SECOND = 'SEC';
+    public const MINUTE = 'MIN';
+    public const HOUR = 'HUR';
+    public const DAY = 'DAY';
+    public const MONTH = 'MON';
+    public const YEAR = 'ANN';
 }

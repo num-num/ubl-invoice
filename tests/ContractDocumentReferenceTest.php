@@ -2,7 +2,6 @@
 
 namespace NumNum\UBL\Tests;
 
-use NumNum\UBL\InvoiceTypeCode;
 use PHPUnit\Framework\TestCase;
 
 /**
@@ -118,7 +117,7 @@ class ContractDocumentReferenceTest extends TestCase
 
         // Create PHP Native DomDocument object, that can be
         // used to validate the generate XML
-        $dom = new \DOMDocument;
+        $dom = new \DOMDocument();
         $dom->loadXML($outputXMLString);
 
         $dom->save('./tests/ContractDocumentReferenceTest.xml');

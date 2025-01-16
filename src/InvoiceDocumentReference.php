@@ -2,11 +2,10 @@
 
 namespace NumNum\UBL;
 
-use Sabre\Xml\Writer;
-use Sabre\Xml\XmlSerializable;
-
 use DateTime;
 use InvalidArgumentException;
+use Sabre\Xml\Writer;
+use Sabre\Xml\XmlSerializable;
 
 class InvoiceDocumentReference implements XmlSerializable
 {
@@ -24,7 +23,7 @@ class InvoiceDocumentReference implements XmlSerializable
 
     /**
      * Set the id of the invoice that is being credited
-     * 
+     *
      * @return InvoiceDocumentReference
      */
     public function setOriginalInvoiceId(string $invoiceRef): InvoiceDocumentReference
@@ -35,7 +34,7 @@ class InvoiceDocumentReference implements XmlSerializable
 
     /**
      * Get the issue date of the original invoice that is being credited
-     * 
+     *
      * @return ?DateTime
      */
     public function getIssueDate(): ?DateTime
@@ -45,7 +44,7 @@ class InvoiceDocumentReference implements XmlSerializable
 
     /**
      * Set the issue date of the original invoice that is being credited
-     * 
+     *
      * @return InvoiceDocumentReference
      */
     public function setIssueDate(DateTime $issueDate): InvoiceDocumentReference
@@ -83,8 +82,7 @@ class InvoiceDocumentReference implements XmlSerializable
             ]
         ]);
 
-        if ($this->issueDate != null)
-        {
+        if ($this->issueDate != null) {
             $writer->write([
                 [
                     'name' => Schema::CBC . 'IssueDate',

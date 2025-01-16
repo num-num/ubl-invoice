@@ -2,10 +2,9 @@
 
 namespace NumNum\UBL;
 
+use InvalidArgumentException;
 use Sabre\Xml\Writer;
 use Sabre\Xml\XmlSerializable;
-
-use InvalidArgumentException;
 
 class PartyTaxScheme implements XmlSerializable
 {

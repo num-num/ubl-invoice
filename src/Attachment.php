@@ -3,10 +3,9 @@
 namespace NumNum\UBL;
 
 use Exception;
+use InvalidArgumentException;
 use Sabre\Xml\Writer;
 use Sabre\Xml\XmlSerializable;
-
-use InvalidArgumentException;
 
 class Attachment implements XmlSerializable
 {
@@ -88,37 +87,37 @@ class Attachment implements XmlSerializable
      * @return string
      */
     public function getFileName(): string
-	{
-		return $this->fileName;
-	}
+    {
+        return $this->fileName;
+    }
 
     /**
      * @param string $fileName
      * @return Attachment
      */
-	public function setFileName(string $fileName): Attachment
-	{
-		$this->fileName = $fileName;
-		return $this;
-	}
+    public function setFileName(string $fileName): Attachment
+    {
+        $this->fileName = $fileName;
+        return $this;
+    }
 
     /**
      * @return ?string
      */
-	public function getMimeType(): ?string
-	{
-		return $this->mimeType;
-	}
+    public function getMimeType(): ?string
+    {
+        return $this->mimeType;
+    }
 
     /**
      * @param ?string $mimeType
      * @return Attachment
      */
-	public function setMimeType(?string $mimeType): Attachment
-	{
-		$this->mimeType = $mimeType;
-		return $this;
-	}
+    public function setMimeType(?string $mimeType): Attachment
+    {
+        $this->mimeType = $mimeType;
+        return $this;
+    }
 
     /**
      * The validate function that is called during xml writing to valid the data of the object.

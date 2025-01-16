@@ -123,7 +123,7 @@ class Address implements XmlSerializable
         $this->countrySubentity = $countrySubentity;
         return $this;
     }
-    
+
     /**
      * @return Country
      */

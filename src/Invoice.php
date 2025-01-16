@@ -2,13 +2,18 @@
 
 namespace NumNum\UBL;
 
-use Sabre\Xml\Writer;
-use Sabre\Xml\XmlSerializable;
-
+use Carbon\Carbon;
 use DateTime;
 use InvalidArgumentException;
 
-class Invoice implements XmlSerializable
+use function Sabre\Xml\Deserializer\keyValue;
+
+use Sabre\Xml\Reader;
+use Sabre\Xml\Writer;
+use Sabre\Xml\XmlDeserializable;
+use Sabre\Xml\XmlSerializable;
+
+class Invoice implements XmlSerializable, XmlDeserializable
 {
     public $xmlTagName = 'Invoice';
     private $UBLVersionID = '2.1';
@@ -53,7 +58,7 @@ class Invoice implements XmlSerializable
 
     /**
      * @param string $UBLVersionID
-     * eg. '2.0', '2.1', '2.2', ...
+     *                             eg. '2.0', '2.1', '2.2', ...
      * @return Invoice
      */
     public function setUBLVersionID(?string $UBLVersionID): Invoice
@@ -174,7 +179,7 @@ class Invoice implements XmlSerializable
 
     /**
      * @param string $invoiceTypeCode
-     * See also: src/InvoiceTypeCode.php
+     *                                See also: src/InvoiceTypeCode.php
      * @return Invoice
      */
     public function setInvoiceTypeCode(string $invoiceTypeCode): Invoice
@@ -192,10 +197,10 @@ class Invoice implements XmlSerializable
     }
 
     /**
-     * @param string $note
+     * @param ?string $note
      * @return Invoice
      */
-    public function setNote(string $note)
+    public function setNote(?string $note)
     {
         $this->note = $note;
         return $this;
@@ -228,10 +233,10 @@ class Invoice implements XmlSerializable
     }
 
     /**
-     * @param PaymentTerms $paymentTerms
+     * @param ?PaymentTerms $paymentTerms
      * @return Invoice
      */
-    public function setPaymentTerms(PaymentTerms $paymentTerms): Invoice
+    public function setPaymentTerms(?PaymentTerms $paymentTerms): Invoice
     {
         $this->paymentTerms = $paymentTerms;
         return $this;
@@ -456,7 +461,7 @@ class Invoice implements XmlSerializable
         return $this;
     }
 
-      /**
+    /**
      * @return string buyerReference
      */
     public function getBuyerReference(): ?string
@@ -747,7 +752,7 @@ class Invoice implements XmlSerializable
         }
 
         if ($this->paymentMeans !== null) {
-            foreach($this->paymentMeans as $paymentMeans) {
+            foreach ($this->paymentMeans as $paymentMeans) {
                 $writer->write([
                     Schema::CAC . $paymentMeans->xmlTagName => $paymentMeans
                 ]);
@@ -783,5 +788,29 @@ class Invoice implements XmlSerializable
                 Schema::CAC . $invoiceLine->xmlTagName => $invoiceLine
             ]);
         }
+    }
+
+    /**
+     * The xmlDeserialize method is called during xml reading.
+     * @param Reader $xml
+     * @return Invoice
+     */
+    public static function xmlDeserialize(Reader $reader)
+    {
+        $keyValue = keyValue($reader);
+
+        return (new self())
+            ->setUBLVersionID($keyValue[Schema::CBC.'UBLVersionID'])
+            ->setId($keyValue[Schema::CBC.'ID'])
+            ->setCustomizationID($keyValue[Schema::CBC.'CustomizationID'])
+            ->setProfileID($keyValue[Schema::CBC.'ProfileID'] ?? null)
+            ->setCopyIndicator($keyValue[Schema::CBC.'CopyIndicator'] ?? false)
+            ->setIssueDate(Carbon::parse($keyValue[Schema::CBC.'IssueDate'])->toDateTime())
+            ->setDueDate(Carbon::parse($keyValue[Schema::CBC.'DueDate'] ?? null)->toDateTime())
+            ->setDocumentCurrencyCode($keyValue[Schema::CBC.'DocumentCurrencyCode'])
+            ->setInvoiceTypeCode($keyValue[Schema::CBC.'InvoiceTypeCode'])
+            ->setNote($keyValue[Schema::CBC.'Note'] ?? null)
+            ->setTaxPointDate(Carbon::parse($keyValue[Schema::CBC.'TaxPointDate'])->toDateTime())
+            ->setPaymentTerms($keyValue[Schema::CAC.'PaymentTerms'] ?? null);
     }
 }

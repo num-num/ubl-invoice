@@ -1,15 +1,36 @@
 ; This file is for unifying the coding style for different editors and IDEs.
 ; More information at http://editorconfig.org
-
 root = true
 
+# Default settings for all files
 [*]
 charset = utf-8
-indent_size = 4
 indent_style = space
+indent_size = 4
 end_of_line = lf
 insert_final_newline = true
 trim_trailing_whitespace = true
 
+# Match PHP files specifically
+[*.php]
+indent_style = space
+indent_size = 4
+
+# Match JSON files (e.g., composer.json)
+[*.json]
+indent_style = space
+indent_size = 4
+
+# Match Markdown files (e.g., README.md)
 [*.md]
 trim_trailing_whitespace = false
+
+# Match YAML files (e.g., .github/workflows/*.yml)
+[*.yml]
+indent_style = space
+indent_size = 2
+
+# Match YAML files (alternative extension)
+[*.yaml]
+indent_style = space
+indent_size = 2

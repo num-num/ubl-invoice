@@ -122,13 +122,13 @@ class MultiplePaymentMeansTest extends TestCase
 
         $paymentMeans = [];
 
-        $payeeFinancialAccount = (new \NumNum\UBL\PayeeFinancialAccount)->setId('RO123456789012345');
+        $payeeFinancialAccount = (new \NumNum\UBL\PayeeFinancialAccount())->setId('RO123456789012345');
         $paymentMeans[] = (new \NumNum\UBL\PaymentMeans())
             ->setPaymentMeansCode(31)
             ->setPaymentDueDate(new \DateTime())
             ->setPayeeFinancialAccount($payeeFinancialAccount);
 
-        $payeeFinancialAccount = (new \NumNum\UBL\PayeeFinancialAccount)->setId('RO544456789067890');
+        $payeeFinancialAccount = (new \NumNum\UBL\PayeeFinancialAccount())->setId('RO544456789067890');
         $paymentMeans[] = (new \NumNum\UBL\PaymentMeans())
             ->setPaymentMeansCode(31)
             ->setPaymentDueDate(new \DateTime())
@@ -154,7 +154,7 @@ class MultiplePaymentMeansTest extends TestCase
 
         // Create PHP Native DomDocument object, that can be
         // used to validate the generate XML
-        $dom = new \DOMDocument;
+        $dom = new \DOMDocument();
         $dom->loadXML($outputXMLString);
 
         $dom->save('./tests/MultiplePaymentMeansTest.xml');

@@ -2,10 +2,14 @@
 
 namespace NumNum\UBL;
 
+use function Sabre\Xml\Deserializer\keyValue;
+
+use Sabre\Xml\Reader;
 use Sabre\Xml\Writer;
+use Sabre\Xml\XmlDeserializable;
 use Sabre\Xml\XmlSerializable;
 
-class PaymentTerms implements XmlSerializable
+class PaymentTerms implements XmlSerializable, XmlDeserializable
 {
     private $note;
     private $settlementDiscountPercent;
@@ -109,5 +113,21 @@ class PaymentTerms implements XmlSerializable
         if ($this->settlementPeriod !== null) {
             $writer->write([ Schema::CAC . 'SettlementPeriod' => $this->settlementPeriod ]);
         }
+    }
+
+    /**
+     * The xmlDeserialize method is called during xml reading.
+     * @param Reader $xml
+     * @return PaymentTerms
+     */
+    public static function xmlDeserialize(Reader $reader)
+    {
+        $keyValues = keyValue($reader);
+
+        return (new self())
+            ->setNote($keyValues[Schema::CBC . 'Note'] ?? null)
+            ->setSettlementDiscountPercent($keyValues[Schema::CBC . 'SettlementDiscountPercent'] ?? null)
+            ->setAmount($keyValues[Schema::CBC . 'Amount'] ?? null)
+            ->setSettlementPeriod($keyValues[Schema::CAC . 'SettlementPeriod'] ?? null);
     }
 }

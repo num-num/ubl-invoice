@@ -117,7 +117,7 @@ class AdditionalDocumentReference implements XmlSerializable
             $writer->write([
                 Schema::CBC . 'DocumentTypeCode' => $this->documentTypeCode
             ]);
-        } else if ($this->documentType !== null) {
+        } elseif ($this->documentType !== null) {
             $writer->write([
                 Schema::CBC . 'DocumentType' => $this->documentType
             ]);
