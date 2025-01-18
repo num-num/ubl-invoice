@@ -2,6 +2,9 @@
 
 namespace NumNum\UBL;
 
+use function Sabre\Xml\Deserializer\mixedContent;
+
+use Sabre\Xml\Reader;
 use Sabre\Xml\Writer;
 use Sabre\Xml\XmlSerializable;
 
@@ -26,9 +29,9 @@ class AllowanceCharge implements XmlSerializable
 
     /**
      * @param bool $chargeIndicator
-     * @return AllowanceCharge
+     * @return static
      */
-    public function setChargeIndicator(bool $chargeIndicator): AllowanceCharge
+    public function setChargeIndicator(bool $chargeIndicator)
     {
         $this->chargeIndicator = $chargeIndicator;
         return $this;
@@ -44,9 +47,9 @@ class AllowanceCharge implements XmlSerializable
 
     /**
      * @param int $allowanceChargeReasonCode
-     * @return AllowanceCharge
+     * @return static
      */
-    public function setAllowanceChargeReasonCode(?int $allowanceChargeReasonCode): AllowanceCharge
+    public function setAllowanceChargeReasonCode(?int $allowanceChargeReasonCode)
     {
         $this->allowanceChargeReasonCode = $allowanceChargeReasonCode;
         return $this;
@@ -62,9 +65,9 @@ class AllowanceCharge implements XmlSerializable
 
     /**
      * @param string $allowanceChargeReason
-     * @return AllowanceCharge
+     * @return static
      */
-    public function setAllowanceChargeReason(?string $allowanceChargeReason): AllowanceCharge
+    public function setAllowanceChargeReason(?string $allowanceChargeReason)
     {
         $this->allowanceChargeReason = $allowanceChargeReason;
         return $this;
@@ -80,9 +83,9 @@ class AllowanceCharge implements XmlSerializable
 
     /**
      * @param float $multiplierFactorNumeric
-     * @return AllowanceCharge
+     * @return static
      */
-    public function setMultiplierFactorNumeric(?float $multiplierFactorNumeric): AllowanceCharge
+    public function setMultiplierFactorNumeric(?float $multiplierFactorNumeric)
     {
         $this->multiplierFactorNumeric = $multiplierFactorNumeric;
         return $this;
@@ -98,9 +101,9 @@ class AllowanceCharge implements XmlSerializable
 
     /**
      * @param float $baseAmount
-     * @return AllowanceCharge
+     * @return static
      */
-    public function setBaseAmount(?float $baseAmount): AllowanceCharge
+    public function setBaseAmount(?float $baseAmount)
     {
         $this->baseAmount = $baseAmount;
         return $this;
@@ -116,9 +119,9 @@ class AllowanceCharge implements XmlSerializable
 
     /**
      * @param float $amount
-     * @return AllowanceCharge
+     * @return static
      */
-    public function setAmount(?float $amount): AllowanceCharge
+    public function setAmount(?float $amount)
     {
         $this->amount = $amount;
         return $this;
@@ -134,9 +137,9 @@ class AllowanceCharge implements XmlSerializable
 
     /**
      * @param TaxCategory $taxCategory
-     * @return AllowanceCharge
+     * @return static
      */
-    public function setTaxCategory(?TaxCategory $taxCategory): AllowanceCharge
+    public function setTaxCategory(?TaxCategory $taxCategory)
     {
         $this->taxCategory = $taxCategory;
         return $this;
@@ -152,9 +155,9 @@ class AllowanceCharge implements XmlSerializable
 
     /**
      * @param TaxTotal $taxTotal
-     * @return AllowanceCharge
+     * @return static
      */
-    public function setTaxtotal(?TaxTotal $taxTotal): AllowanceCharge
+    public function setTaxtotal(?TaxTotal $taxTotal)
     {
         $this->taxTotal = $taxTotal;
         return $this;
@@ -192,8 +195,8 @@ class AllowanceCharge implements XmlSerializable
 
         $writer->write([
             [
-                'name' => Schema::CBC . 'Amount',
-                'value' => $this->amount,
+                'name'       => Schema::CBC . 'Amount',
+                'value'      => $this->amount,
                 'attributes' => [
                     'currencyID' => Generator::$currencyID
                 ]
@@ -215,13 +218,41 @@ class AllowanceCharge implements XmlSerializable
         if ($this->baseAmount !== null) {
             $writer->write([
                 [
-                    'name' => Schema::CBC . 'BaseAmount',
-                    'value' => $this->baseAmount,
+                    'name'       => Schema::CBC . 'BaseAmount',
+                    'value'      => $this->baseAmount,
                     'attributes' => [
                         'currencyID' => Generator::$currencyID
                     ]
                 ]
             ]);
         }
+    }
+
+    /**
+     * The xmlDeserialize method is called during xml reading.
+     * @param Reader $xml
+     * @return static
+     */
+    public static function xmlDeserialize(Reader $reader)
+    {
+        $mixedContent = mixedContent($reader);
+
+        $chargeIndicatorTag = array_values(array_filter($mixedContent, fn ($element) => $element['name'] === Schema::CBC . 'ChargeIndicator'))[0] ?? null;
+        $allowanceChargeReasonCodeTag = array_values(array_filter($mixedContent, fn ($element) => $element['name'] === Schema::CBC . 'AllowanceChargeReasonCode'))[0] ?? null;
+        $allowanceChargeReasonTag = array_values(array_filter($mixedContent, fn ($element) => $element['name'] === Schema::CBC . 'AllowanceChargeReason'))[0] ?? null;
+        $multiplierFactorNumericTag = array_values(array_filter($mixedContent, fn ($element) => $element['name'] === Schema::CBC . 'MultiplierFactorNumeric'))[0] ?? null;
+        $baseAmountTag = array_values(array_filter($mixedContent, fn ($element) => $element['name'] === Schema::CBC . 'BaseAmount'))[0] ?? null;
+        $amountTag = array_values(array_filter($mixedContent, fn ($element) => $element['name'] === Schema::CBC . 'Amount'))[0] ?? null;
+        $taxTotalTag = array_values(array_filter($mixedContent, fn ($element) => $element['name'] === Schema::CAC . 'TaxTotal'))[0] ?? null;
+
+        return (new static())
+            ->setChargeIndicator(isset($chargeIndicatorTag) ? $chargeIndicatorTag['value'] === 'true' : null)
+            ->setAllowanceChargeReasonCode(isset($allowanceChargeReasonCodeTag) ? intval($allowanceChargeReasonCodeTag['value']) : null)
+            ->setAllowanceChargeReason(isset($allowanceChargeReasonTag) ? $allowanceChargeReasonTag['value'] : null)
+            ->setMultiplierFactorNumeric(isset($multiplierFactorNumericTag) ? floatval($multiplierFactorNumericTag['value']) : null)
+            ->setBaseAmount(isset($baseAmountTag) ? floatval($baseAmountTag['value']) : null)
+            ->setAmount(isset($amountTag) ? floatval($amountTag['value']) : null)
+            ->setTaxTotal($taxTotalTag['value'] ?? null)
+        ;
     }
 }

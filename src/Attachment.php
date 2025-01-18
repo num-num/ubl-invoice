@@ -4,14 +4,19 @@ namespace NumNum\UBL;
 
 use Exception;
 use InvalidArgumentException;
+
+use function Sabre\Xml\Deserializer\mixedContent;
+
+use Sabre\Xml\Reader;
 use Sabre\Xml\Writer;
+use Sabre\Xml\XmlDeserializable;
 use Sabre\Xml\XmlSerializable;
 
-class Attachment implements XmlSerializable
+class Attachment implements XmlSerializable, XmlDeserializable
 {
     private $filePath;
     private $externalReference;
-    private $fileStream;
+    private $base64Content;
     private $fileName;
     private $mimeType;
 
@@ -38,9 +43,9 @@ class Attachment implements XmlSerializable
 
     /**
      * @param string $filePath
-     * @return Attachment
+     * @return static
      */
-    public function setFilePath(string $filePath): Attachment
+    public function setFilePath(string $filePath)
     {
         $this->filePath = $filePath;
         return $this;
@@ -56,27 +61,27 @@ class Attachment implements XmlSerializable
 
     /**
      * @param string $externalReference
-     * @return Attachment
+     * @return static
      */
-    public function setExternalReference(string $externalReference): Attachment
+    public function setExternalReference(string $externalReference)
     {
         $this->externalReference = $externalReference;
         return $this;
     }
 
-    public function getFileStream(): ?string
+    public function getBase64Content(): ?string
     {
-        return $this->fileStream;
+        return $this->base64Content;
     }
 
     /**
-     * @param string $fileStream Base64 encoded filestream
+     * @param string $base64Content Base64 encoded base64Content
      * @param string $fileName
-     * @return Attachment
+     * @return static
      */
-    public function setFileStream(string $fileStream, string $fileName, ?string $mimeType): Attachment
+    public function setBase64Content(string $base64Content, string $fileName, ?string $mimeType)
     {
-        $this->fileStream = $fileStream;
+        $this->base64Content = $base64Content;
         $this->fileName = $fileName;
         $this->mimeType = $mimeType;
 
@@ -93,9 +98,9 @@ class Attachment implements XmlSerializable
 
     /**
      * @param string $fileName
-     * @return Attachment
+     * @return static
      */
-    public function setFileName(string $fileName): Attachment
+    public function setFileName(string $fileName)
     {
         $this->fileName = $fileName;
         return $this;
@@ -111,9 +116,9 @@ class Attachment implements XmlSerializable
 
     /**
      * @param ?string $mimeType
-     * @return Attachment
+     * @return static
      */
-    public function setMimeType(?string $mimeType): Attachment
+    public function setMimeType(?string $mimeType)
     {
         $this->mimeType = $mimeType;
         return $this;
@@ -127,12 +132,12 @@ class Attachment implements XmlSerializable
      */
     public function validate()
     {
-        if ($this->filePath === null && $this->externalReference === null && $this->fileStream === null) {
+        if ($this->filePath === null && $this->externalReference === null && $this->base64Content === null) {
             throw new InvalidArgumentException('Attachment must have a filePath, an externalReference, or a fileContent');
         }
 
-        if ($this->fileStream !== null && $this->mimeType === null) {
-            throw new InvalidArgumentException('Using fileStream, you need to define a mimeType by also using setFileMimeType');
+        if ($this->base64Content !== null && $this->mimeType === null) {
+            throw new InvalidArgumentException('Using base64Content, you need to define a mimeType by also using setFileMimeType');
         }
 
         if ($this->filePath !== null && !file_exists($this->filePath)) {
@@ -152,17 +157,17 @@ class Attachment implements XmlSerializable
 
         if (!empty($this->filePath)) {
             $fileContents = base64_encode(file_get_contents($this->filePath));
-            $fileName     = basename($this->filePath);
-            $mimeType     = $this->getFilePathMimeType();
+            $fileName = basename($this->filePath);
+            $mimeType = $this->getFilePathMimeType();
         } else {
-            $fileContents = $this->fileStream;
-            $fileName     = $this->fileName;
-            $mimeType     = $this->mimeType;
+            $fileContents = $this->base64Content;
+            $fileName = $this->fileName;
+            $mimeType = $this->mimeType;
         }
 
         $writer->write([
-            'name' => Schema::CBC . 'EmbeddedDocumentBinaryObject',
-            'value' => $fileContents,
+            'name'       => Schema::CBC . 'EmbeddedDocumentBinaryObject',
+            'value'      => $fileContents,
             'attributes' => [
                 'mimeCode' => $mimeType,
                 'filename' => $fileName,
@@ -175,5 +180,19 @@ class Attachment implements XmlSerializable
                 [ Schema::CBC . 'URI' => $this->externalReference ]
             );
         }
+    }
+
+    /**
+     * The xmlDeserialize method is called during xml reading.
+     * @param Reader $xml
+     * @return static
+     */
+    public static function xmlDeserialize(Reader $reader)
+    {
+        $mixedContent = mixedContent($reader);
+
+        return (new static())
+
+        ;
     }
 }

@@ -3,10 +3,15 @@
 namespace NumNum\UBL;
 
 use InvalidArgumentException;
+
+use function Sabre\Xml\Deserializer\keyValue;
+
+use Sabre\Xml\Reader;
 use Sabre\Xml\Writer;
+use Sabre\Xml\XmlDeserializable;
 use Sabre\Xml\XmlSerializable;
 
-class TaxTotal implements XmlSerializable
+class TaxTotal implements XmlSerializable, XmlDeserializable
 {
     private $taxAmount;
     private $taxSubTotals = [];
@@ -21,9 +26,9 @@ class TaxTotal implements XmlSerializable
 
     /**
      * @param mixed $taxAmount
-     * @return TaxTotal
+     * @return static
      */
-    public function setTaxAmount(?float $taxAmount): TaxTotal
+    public function setTaxAmount(?float $taxAmount)
     {
         $this->taxAmount = $taxAmount;
         return $this;
@@ -38,10 +43,20 @@ class TaxTotal implements XmlSerializable
     }
 
     /**
-     * @param TaxSubTotal $taxSubTotal
-     * @return TaxTotal
+     * @param array<TaxSubTotal> $taxSubTotal
+     * @return static
      */
-    public function addTaxSubTotal(TaxSubTotal $taxSubTotal): TaxTotal
+    public function setTaxSubTotals(array $taxSubTotals)
+    {
+        $this->taxSubTotals = $taxSubTotals;
+        return $this;
+    }
+
+    /**
+     * @param TaxSubTotal $taxSubTotal
+     * @return static
+     */
+    public function addTaxSubTotal(TaxSubTotal $taxSubTotal)
     {
         $this->taxSubTotals[] = $taxSubTotal;
         return $this;
@@ -71,8 +86,8 @@ class TaxTotal implements XmlSerializable
 
         $writer->write([
             [
-                'name' => Schema::CBC . 'TaxAmount',
-                'value' => number_format($this->taxAmount, 2, '.', ''),
+                'name'       => Schema::CBC . 'TaxAmount',
+                'value'      => number_format($this->taxAmount, 2, '.', ''),
                 'attributes' => [
                     'currencyID' => Generator::$currencyID
                 ]
@@ -82,5 +97,22 @@ class TaxTotal implements XmlSerializable
         foreach ($this->taxSubTotals as $taxSubTotal) {
             $writer->write([Schema::CAC . 'TaxSubtotal' => $taxSubTotal]);
         }
+    }
+
+    /**
+     * The xmlDeserialize method is called during xml reading.
+     * @param Reader $xml
+     * @return static
+     */
+    public static function xmlDeserialize(Reader $reader)
+    {
+        $keyValues = keyValue($reader);
+
+        $taxSubTotals = array_values(array_filter($keyValues, fn ($value, $key) => $key === Schema::CAC . 'TaxSubtotal', ARRAY_FILTER_USE_BOTH));
+
+        return (new static())
+            ->setTaxAmount(isset($keyValues[Schema::CBC.'TaxAmount']) ? floatval($keyValues[Schema::CBC.'TaxAmount']) : null)
+            ->setTaxSubTotals($taxSubTotals);
+        ;
     }
 }

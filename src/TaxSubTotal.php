@@ -3,10 +3,15 @@
 namespace NumNum\UBL;
 
 use InvalidArgumentException;
+
+use function Sabre\Xml\Deserializer\keyValue;
+
+use Sabre\Xml\Reader;
 use Sabre\Xml\Writer;
+use Sabre\Xml\XmlDeserializable;
 use Sabre\Xml\XmlSerializable;
 
-class TaxSubTotal implements XmlSerializable
+class TaxSubTotal implements XmlSerializable, XmlDeserializable
 {
     private $taxableAmount;
     private $taxAmount;
@@ -23,9 +28,9 @@ class TaxSubTotal implements XmlSerializable
 
     /**
      * @param mixed $taxableAmount
-     * @return TaxSubTotal
+     * @return static
      */
-    public function setTaxableAmount(?float $taxableAmount): TaxSubTotal
+    public function setTaxableAmount(?float $taxableAmount)
     {
         $this->taxableAmount = $taxableAmount;
         return $this;
@@ -41,9 +46,9 @@ class TaxSubTotal implements XmlSerializable
 
     /**
      * @param mixed $taxAmount
-     * @return TaxSubTotal
+     * @return static
      */
-    public function setTaxAmount(?float $taxAmount): TaxSubTotal
+    public function setTaxAmount(?float $taxAmount)
     {
         $this->taxAmount = $taxAmount;
         return $this;
@@ -59,9 +64,9 @@ class TaxSubTotal implements XmlSerializable
 
     /**
      * @param TaxCategory $taxCategory
-     * @return TaxSubTotal
+     * @return static
      */
-    public function setTaxCategory(TaxCategory $taxCategory): TaxSubTotal
+    public function setTaxCategory(?TaxCategory $taxCategory)
     {
         $this->taxCategory = $taxCategory;
         return $this;
@@ -77,9 +82,9 @@ class TaxSubTotal implements XmlSerializable
 
     /**
      * @param float $percent
-     * @return TaxSubTotal
+     * @return static
      */
-    public function setPercent(?float $percent): TaxSubTotal
+    public function setPercent(?float $percent)
     {
         $this->percent = $percent;
         return $this;
@@ -117,15 +122,15 @@ class TaxSubTotal implements XmlSerializable
 
         $writer->write([
             [
-                'name' => Schema::CBC . 'TaxableAmount',
-                'value' => number_format($this->taxableAmount, 2, '.', ''),
+                'name'       => Schema::CBC . 'TaxableAmount',
+                'value'      => number_format($this->taxableAmount, 2, '.', ''),
                 'attributes' => [
                     'currencyID' => Generator::$currencyID
                 ]
             ],
             [
-                'name' => Schema::CBC . 'TaxAmount',
-                'value' => number_format($this->taxAmount, 2, '.', ''),
+                'name'       => Schema::CBC . 'TaxAmount',
+                'value'      => number_format($this->taxAmount, 2, '.', ''),
                 'attributes' => [
                     'currencyID' => Generator::$currencyID
                 ]
@@ -141,5 +146,22 @@ class TaxSubTotal implements XmlSerializable
         $writer->write([
             Schema::CAC . 'TaxCategory' => $this->taxCategory
         ]);
+    }
+
+    /**
+     * The xmlDeserialize method is called during xml reading.
+     * @param Reader $xml
+     * @return static
+     */
+    public static function xmlDeserialize(Reader $reader)
+    {
+        $keyValues = keyValue($reader);
+
+        return (new static())
+            ->setTaxableAmount(isset($keyValues[Schema::CBC . 'TaxableAmount']) ? floatval($keyValues[Schema::CBC . 'TaxableAmount']) : null)
+            ->setTaxAmount(isset($keyValues[Schema::CBC . 'TaxAmount']) ? floatval($keyValues[Schema::CBC . 'TaxAmount']) : null)
+            ->setTaxCategory($keyvalues[Schema::CAC . 'TaxCategory'] ?? null)
+            ->setPercent(isset($keyValues[Schema::CBC . 'Percent']) ? floatval($keyValues[Schema::CBC . 'Percent']) : null)
+        ;
     }
 }

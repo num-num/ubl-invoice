@@ -1,15 +1,15 @@
 <?php
 
-namespace NumNum\UBL\Tests;
+namespace NumNum\UBL\Tests\Write;
 
 use PHPUnit\Framework\TestCase;
 
 /**
  * Test an UBL2.1 invoice document
  */
-class SimpleInvoiceWithInlinePdfTest extends TestCase
+class DocumentTypeTest extends TestCase
 {
-    private $schema = 'http://docs.oasis-open.org/ubl/os-UBL-2.1/xsd/maindoc/UBL-Invoice-2.1.xsd';
+    private $schema = 'http://docs.oasis-open.org/ubl/os-UBL-2.2/xsd/maindoc/UBL-Invoice-2.2.xsd';
 
     /** @test */
     public function testIfXMLIsValid()
@@ -76,17 +76,13 @@ class SimpleInvoiceWithInlinePdfTest extends TestCase
         // Invoice Line(s)
         $invoiceLines = [];
 
-        $orderLineReference = (new \NumNum\UBL\OrderLineReference())
-            ->setLineId('#ABC123');
-
         $invoiceLines[] = (new \NumNum\UBL\InvoiceLine())
             ->setId(0)
             ->setItem($productItem)
             ->setInvoicePeriod($invoicePeriod)
             ->setPrice($price)
             ->setTaxTotal($lineTaxTotal)
-            ->setInvoicedQuantity(1)
-            ->setOrderLineReference($orderLineReference);
+            ->setInvoicedQuantity(1);
 
         $invoiceLines[] = (new \NumNum\UBL\InvoiceLine())
             ->setId(0)
@@ -95,8 +91,7 @@ class SimpleInvoiceWithInlinePdfTest extends TestCase
             ->setPrice($price)
             ->setAccountingCost('Product 123')
             ->setTaxTotal($lineTaxTotal)
-            ->setInvoicedQuantity(1)
-            ->setOrderLineReference($orderLineReference);
+            ->setInvoicedQuantity(1);
 
         $invoiceLines[] = (new \NumNum\UBL\InvoiceLine())
             ->setId(0)
@@ -105,8 +100,7 @@ class SimpleInvoiceWithInlinePdfTest extends TestCase
             ->setPrice($price)
             ->setAccountingCostCode('Product 123')
             ->setTaxTotal($lineTaxTotal)
-            ->setInvoicedQuantity(1)
-            ->setOrderLineReference($orderLineReference);
+            ->setInvoicedQuantity(1);
 
 
         // Total Taxes
@@ -126,29 +120,32 @@ class SimpleInvoiceWithInlinePdfTest extends TestCase
             ->addTaxSubTotal($taxSubTotal)
             ->setTaxAmount(2.1);
 
-        // Example if you have some inline or in-memory filestream/file contents
-        $fileStream = file_get_contents(__DIR__.DIRECTORY_SEPARATOR.'SampleInvoice.pdf'); // this would be your file contents
-
-        $base64EncodedFileStream = base64_encode($fileStream);
-
+        // Attachment
         $attachment = (new \NumNum\UBL\Attachment())
-            ->setFileStream($base64EncodedFileStream, 'Invoice.pdf', 'application/pdf');
+            ->setFilePath(__DIR__.DIRECTORY_SEPARATOR.'..'.DIRECTORY_SEPARATOR.'Files'.DIRECTORY_SEPARATOR.'SampleInvoice.pdf');
 
-        $additionalDocumentReference = (new \NumNum\UBL\AdditionalDocumentReference())
-            ->setAttachment($attachment);
+        $additionalDocumentReference = new \NumNum\UBL\AdditionalDocumentReference();
+        $additionalDocumentReference->setId('SomeID');
+        $additionalDocumentReference->setDocumentType("CommercialInvoice");
+
+        $accountingSupplierParty = (new \NumNum\UBL\AccountingParty())
+            ->setParty($supplierCompany);
+
+        $accountingCustomerParty = (new \NumNum\UBL\AccountingParty())
+            ->setSupplierAssignedAccountID('10001')
+            ->setParty($clientCompany);
 
         // Invoice object
         $invoice = (new \NumNum\UBL\Invoice())
             ->setId(1234)
-            ->setAdditionalDocumentReference($additionalDocumentReference)
             ->setCopyIndicator(false)
             ->setIssueDate(new \DateTime())
-            ->setAccountingSupplierParty($supplierCompany)
-            ->setAccountingCustomerParty($clientCompany)
-            ->setSupplierAssignedAccountID('10001')
+            ->setAccountingSupplierParty($accountingSupplierParty)
+            ->setAccountingCustomerParty($accountingCustomerParty)
             ->setInvoiceLines($invoiceLines)
             ->setLegalMonetaryTotal($legalMonetaryTotal)
-            ->setTaxTotal($taxTotal);
+            ->setTaxTotal($taxTotal)
+            ->setAdditionalDocumentReference($additionalDocumentReference);
 
         // Test created object
         // Use \NumNum\UBL\Generator to generate an XML string
@@ -160,7 +157,7 @@ class SimpleInvoiceWithInlinePdfTest extends TestCase
         $dom = new \DOMDocument();
         $dom->loadXML($outputXMLString);
 
-        $dom->save('./tests/SimpleInvoiceWithInlinePdfTest.xml');
+        $dom->save('./tests/EmptyAttachmentTest.xml');
 
         $this->assertEquals(true, $dom->schemaValidate($this->schema));
     }

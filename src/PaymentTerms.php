@@ -26,9 +26,9 @@ class PaymentTerms implements XmlSerializable, XmlDeserializable
 
     /**
      * @param string $note
-     * @return PaymentTerms
+     * @return static
      */
-    public function setNote(?string $note): PaymentTerms
+    public function setNote(?string $note)
     {
         $this->note = $note;
         return $this;
@@ -44,9 +44,9 @@ class PaymentTerms implements XmlSerializable, XmlDeserializable
 
     /**
      * @param float $settlementDiscountPercent
-     * @return PaymentTerms
+     * @return static
      */
-    public function setSettlementDiscountPercent(?float $settlementDiscountPercent): PaymentTerms
+    public function setSettlementDiscountPercent(?float $settlementDiscountPercent)
     {
         $this->settlementDiscountPercent = $settlementDiscountPercent;
         return $this;
@@ -62,9 +62,9 @@ class PaymentTerms implements XmlSerializable, XmlDeserializable
 
     /**
      * @param float $amount
-     * @return PaymentTerms
+     * @return static
      */
-    public function setAmount(?float $amount): PaymentTerms
+    public function setAmount(?float $amount)
     {
         $this->amount = $amount;
         return $this;
@@ -80,9 +80,9 @@ class PaymentTerms implements XmlSerializable, XmlDeserializable
 
     /**
      * @param SettlementPeriod $settlementPeriod
-     * @return PaymentTerms
+     * @return static
      */
-    public function setSettlementPeriod(?SettlementPeriod $settlementPeriod): PaymentTerms
+    public function setSettlementPeriod(?SettlementPeriod $settlementPeriod)
     {
         $this->settlementPeriod = $settlementPeriod;
         return $this;
@@ -101,8 +101,8 @@ class PaymentTerms implements XmlSerializable, XmlDeserializable
         if ($this->amount !== null) {
             $writer->write([
                 [
-                    'name' => Schema::CBC . 'Amount',
-                    'value' => number_format($this->amount, 2, '.', ''),
+                    'name'       => Schema::CBC . 'Amount',
+                    'value'      => number_format($this->amount, 2, '.', ''),
                     'attributes' => [
                         'currencyID' => 'EUR'
                     ]
@@ -118,16 +118,17 @@ class PaymentTerms implements XmlSerializable, XmlDeserializable
     /**
      * The xmlDeserialize method is called during xml reading.
      * @param Reader $xml
-     * @return PaymentTerms
+     * @return static
      */
     public static function xmlDeserialize(Reader $reader)
     {
         $keyValues = keyValue($reader);
 
-        return (new self())
+        return (new static())
             ->setNote($keyValues[Schema::CBC . 'Note'] ?? null)
             ->setSettlementDiscountPercent($keyValues[Schema::CBC . 'SettlementDiscountPercent'] ?? null)
             ->setAmount($keyValues[Schema::CBC . 'Amount'] ?? null)
-            ->setSettlementPeriod($keyValues[Schema::CAC . 'SettlementPeriod'] ?? null);
+            ->setSettlementPeriod($keyValues[Schema::CAC . 'SettlementPeriod'] ?? null)
+        ;
     }
 }

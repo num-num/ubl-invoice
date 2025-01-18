@@ -2,10 +2,14 @@
 
 namespace NumNum\UBL;
 
+use function Sabre\Xml\Deserializer\keyValue;
+
+use Sabre\Xml\Reader;
 use Sabre\Xml\Writer;
+use Sabre\Xml\XmlDeserializable;
 use Sabre\Xml\XmlSerializable;
 
-class Country implements XmlSerializable
+class Country implements XmlSerializable, XmlDeserializable
 {
     private $identificationCode;
     private $listId;
@@ -20,9 +24,9 @@ class Country implements XmlSerializable
 
     /**
      * @param mixed $identificationCode
-     * @return Country
+     * @return static
      */
-    public function setIdentificationCode(?string $identificationCode): Country
+    public function setIdentificationCode(?string $identificationCode)
     {
         $this->identificationCode = $identificationCode;
         return $this;
@@ -38,9 +42,9 @@ class Country implements XmlSerializable
 
     /**
      * @param mixed $listId
-     * @return Country
+     * @return static
      */
-    public function setListId(?string $listId): Country
+    public function setListId(?string $listId)
     {
         $this->listId = $listId;
         return $this;
@@ -61,9 +65,24 @@ class Country implements XmlSerializable
         }
 
         $writer->write([
-            'name' => Schema::CBC . 'IdentificationCode',
-            'value' => $this->identificationCode,
+            'name'       => Schema::CBC . 'IdentificationCode',
+            'value'      => $this->identificationCode,
             'attributes' => $attributes
         ]);
+    }
+
+    /**
+     * The xmlDeserialize method is called during xml reading.
+     * @param Reader $xml
+     * @return static
+     */
+    public static function xmlDeserialize(Reader $reader)
+    {
+        $keyValues = keyValue($reader);
+
+        return (new static())
+            ->setIdentificationCode($keyValues[Schema::CBC . 'IdentificationCode'])
+            ->setListId($keyValues[Schema::CBC . 'IdentificationCode']['attributes']['listID'] ?? null)
+        ;
     }
 }

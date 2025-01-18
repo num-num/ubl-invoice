@@ -1,6 +1,21 @@
+# Changelog for v2.0.0-beta
+
+### New features & improvements
+
+- Possibility to deserialize XML into object tree
+
+### Breaking changes ⚠️
+
+- `Invoice::setAccountingSupplierParty` now requires an `AccountingParty` instead of a `Party` object
+- `Invoice::setAccountingCustomerParty` now requires an `AccountingParty` instead of a `Party` object
+- `Invoice::getAccountingSupplierParty` now returns an `AccountingParty` instead of a `Party` object
+- `Invoice::getAccountingCustomerParty` now returns an `AccountingParty` instead of a `Party` object
+- `Invoice::setSupplierAssignedAccountID`/`Invoice::getSupplierAssignedAccountID` no longer exists and has moved to `AccountingParty::setSupplierAssignedAccountID`/`AccountingParty::getSupplierAssignedAccountID`
+- `Attachment::setFileStream` / `Attachment::getFileStream` to manually set the Attachment xml tag base 64 string content, has been renamed to `Attachment::setBase64Content` / `Attachment::getBase64Content`
+
 # Changelog for v1.18.1
 
-#### Bug fixes
+### Bug fixes
 
 - Fix Creditnote `<cac:BillingReference>` validation issues, this tag should be optional
 
@@ -22,7 +37,7 @@
 
 - Add support to include multiple `PaymentMeans` - Thanks [@Quazz](https://github.com/Quazz)
 
-#### Bug fixes
+### Bug fixes
 
 - Fix `InvoiceTypeCode` documentation dead link - Thanks [@TSimkus](https://github.com/TSimkus)
 - Changed `<cbc:MultiplierFactorNumeric />` type from `int` to `float` - Thanks [@TSimkus](https://github.com/TSimkus)

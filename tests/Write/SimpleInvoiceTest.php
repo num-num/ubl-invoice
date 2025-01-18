@@ -1,15 +1,15 @@
 <?php
 
-namespace NumNum\UBL\Tests;
+namespace NumNum\UBL\Tests\Write;
 
 use PHPUnit\Framework\TestCase;
 
 /**
  * Test an UBL2.1 invoice document
  */
-class EmptyAttachmentTest extends TestCase
+class SimpleInvoiceTest extends TestCase
 {
-    private $schema = 'http://docs.oasis-open.org/ubl/os-UBL-2.2/xsd/maindoc/UBL-Invoice-2.2.xsd';
+    private $schema = 'http://docs.oasis-open.org/ubl/os-UBL-2.1/xsd/maindoc/UBL-Invoice-2.1.xsd';
 
     /** @test */
     public function testIfXMLIsValid()
@@ -76,13 +76,17 @@ class EmptyAttachmentTest extends TestCase
         // Invoice Line(s)
         $invoiceLines = [];
 
+        $orderLineReference = (new \NumNum\UBL\OrderLineReference())
+            ->setLineId('#ABC123');
+
         $invoiceLines[] = (new \NumNum\UBL\InvoiceLine())
             ->setId(0)
             ->setItem($productItem)
             ->setInvoicePeriod($invoicePeriod)
             ->setPrice($price)
             ->setTaxTotal($lineTaxTotal)
-            ->setInvoicedQuantity(1);
+            ->setInvoicedQuantity(1)
+            ->setOrderLineReference($orderLineReference);
 
         $invoiceLines[] = (new \NumNum\UBL\InvoiceLine())
             ->setId(0)
@@ -91,7 +95,8 @@ class EmptyAttachmentTest extends TestCase
             ->setPrice($price)
             ->setAccountingCost('Product 123')
             ->setTaxTotal($lineTaxTotal)
-            ->setInvoicedQuantity(1);
+            ->setInvoicedQuantity(1)
+            ->setOrderLineReference($orderLineReference);
 
         $invoiceLines[] = (new \NumNum\UBL\InvoiceLine())
             ->setId(0)
@@ -100,7 +105,8 @@ class EmptyAttachmentTest extends TestCase
             ->setPrice($price)
             ->setAccountingCostCode('Product 123')
             ->setTaxTotal($lineTaxTotal)
-            ->setInvoicedQuantity(1);
+            ->setInvoicedQuantity(1)
+            ->setOrderLineReference($orderLineReference);
 
 
         // Total Taxes
@@ -120,29 +126,23 @@ class EmptyAttachmentTest extends TestCase
             ->addTaxSubTotal($taxSubTotal)
             ->setTaxAmount(2.1);
 
-        // Attachment
-        $attachment = (new \NumNum\UBL\Attachment())
-            ->setFilePath(__DIR__.DIRECTORY_SEPARATOR.'SampleInvoice.pdf');
+        $accountingSupplierParty = (new \NumNum\UBL\AccountingParty())
+            ->setParty($supplierCompany);
 
-        $additionalDocumentReference = new \NumNum\UBL\AdditionalDocumentReference();
-        $additionalDocumentReference->setId('SomeID');
-        $additionalDocumentReference->setDocumentTypeCode(130);
-
-        // Not adding an attachment to AdditionalDocumentReference should not trigger an error
-        // $additionalDocumentReference->setAttachment($attachment);
+        $accountingCustomerParty = (new \NumNum\UBL\AccountingParty())
+            ->setSupplierAssignedAccountID('10001')
+            ->setParty($clientCompany);
 
         // Invoice object
         $invoice = (new \NumNum\UBL\Invoice())
             ->setId(1234)
             ->setCopyIndicator(false)
             ->setIssueDate(new \DateTime())
-            ->setAccountingSupplierParty($supplierCompany)
-            ->setAccountingCustomerParty($clientCompany)
-            ->setSupplierAssignedAccountID('10001')
+            ->setAccountingSupplierParty($accountingSupplierParty)
+            ->setAccountingCustomerParty($accountingCustomerParty)
             ->setInvoiceLines($invoiceLines)
             ->setLegalMonetaryTotal($legalMonetaryTotal)
-            ->setTaxTotal($taxTotal)
-            ->setAdditionalDocumentReference($additionalDocumentReference);
+            ->setTaxTotal($taxTotal);
 
         // Test created object
         // Use \NumNum\UBL\Generator to generate an XML string
@@ -154,7 +154,7 @@ class EmptyAttachmentTest extends TestCase
         $dom = new \DOMDocument();
         $dom->loadXML($outputXMLString);
 
-        $dom->save('./tests/EmptyAttachmentTest.xml');
+        $dom->save('./tests/SimpleInvoiceTest.xml');
 
         $this->assertEquals(true, $dom->schemaValidate($this->schema));
     }

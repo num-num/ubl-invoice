@@ -2,10 +2,14 @@
 
 namespace NumNum\UBL;
 
+use function Sabre\Xml\Deserializer\keyValue;
+
+use Sabre\Xml\Reader;
 use Sabre\Xml\Writer;
+use Sabre\Xml\XmlDeserializable;
 use Sabre\Xml\XmlSerializable;
 
-class Contact implements XmlSerializable
+class Contact implements XmlSerializable, XmlDeserializable
 {
     private $name;
     private $telephone;
@@ -22,9 +26,9 @@ class Contact implements XmlSerializable
 
     /**
      * @param mixed $name
-     * @return Contact
+     * @return static
      */
-    public function setName($name): Contact
+    public function setName($name)
     {
         $this->name = $name;
         return $this;
@@ -40,9 +44,9 @@ class Contact implements XmlSerializable
 
     /**
      * @param string $telephone
-     * @return Contact
+     * @return static
      */
-    public function setTelephone(?string $telephone): Contact
+    public function setTelephone(?string $telephone)
     {
         $this->telephone = $telephone;
         return $this;
@@ -58,9 +62,9 @@ class Contact implements XmlSerializable
 
     /**
      * @param string $telefax
-     * @return Contact
+     * @return static
      */
-    public function setTelefax(?string $telefax): Contact
+    public function setTelefax(?string $telefax)
     {
         $this->telefax = $telefax;
         return $this;
@@ -76,9 +80,9 @@ class Contact implements XmlSerializable
 
     /**
      * @param string $electronicMail
-     * @return Contact
+     * @return static
      */
-    public function setElectronicMail(?string $electronicMail): Contact
+    public function setElectronicMail(?string $electronicMail)
     {
         $this->electronicMail = $electronicMail;
         return $this;
@@ -115,5 +119,22 @@ class Contact implements XmlSerializable
                 Schema::CBC . 'ElectronicMail' => $this->electronicMail
             ]);
         }
+    }
+
+    /**
+     * The xmlDeserialize method is called during xml reading.
+     * @param Reader $xml
+     * @return static
+     */
+    public static function xmlDeserialize(Reader $reader)
+    {
+        $keyValues = keyValue($reader);
+
+        return (new static())
+            ->setName($keyValues[Schema::CBC . 'Name'] ?? null)
+            ->setTelephone($keyValues[Schema::CBC . 'Telephone'] ?? null)
+            ->setTelefax($keyValues[Schema::CBC . 'Telefax'] ?? null)
+            ->setElectronicMail($keyValues[Schema::CBC . 'ElectronicMail'] ?? null);
+        ;
     }
 }

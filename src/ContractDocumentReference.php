@@ -2,6 +2,9 @@
 
 namespace NumNum\UBL;
 
+use function Sabre\Xml\Deserializer\keyValue;
+
+use Sabre\Xml\Reader;
 use Sabre\Xml\Writer;
 use Sabre\Xml\XmlSerializable;
 
@@ -19,9 +22,9 @@ class ContractDocumentReference implements XmlSerializable
 
     /**
      * @param string $id
-     * @return ContractDocumentReference
+     * @return static
      */
-    public function setId(string $id): ContractDocumentReference
+    public function setId(string $id)
     {
         $this->id = $id;
         return $this;
@@ -38,5 +41,19 @@ class ContractDocumentReference implements XmlSerializable
         if ($this->id !== null) {
             $writer->write([ Schema::CBC . 'ID' => $this->id ]);
         }
+    }
+
+    /**
+     * The xmlDeserialize method is called during xml reading.
+     * @param Reader $xml
+     * @return static
+     */
+    public static function xmlDeserialize(Reader $reader)
+    {
+        $mixedContent = keyValue($reader);
+
+        return (new static())
+            ->setId($mixedContent[Schema::CBC . 'ID'] ?? null)
+        ;
     }
 }

@@ -16,8 +16,8 @@ class Generator
 
         $xmlService->namespaceMap = [
             'urn:oasis:names:specification:ubl:schema:xsd:' . $invoice->xmlTagName . '-2' => '',
-            'urn:oasis:names:specification:ubl:schema:xsd:CommonBasicComponents-2' => 'cbc',
-            'urn:oasis:names:specification:ubl:schema:xsd:CommonAggregateComponents-2' => 'cac'
+            'urn:oasis:names:specification:ubl:schema:xsd:CommonBasicComponents-2'        => 'cbc',
+            'urn:oasis:names:specification:ubl:schema:xsd:CommonAggregateComponents-2'    => 'cac'
         ];
 
         return $xmlService->write($invoice->xmlTagName, [
@@ -33,8 +33,8 @@ class Generator
 
         $xmlService->namespaceMap = [
             'urn:oasis:names:specification:ubl:schema:xsd:' . $creditNote->xmlTagName . '-2' => '',
-            'urn:oasis:names:specification:ubl:schema:xsd:CommonBasicComponents-2' => 'cbc',
-            'urn:oasis:names:specification:ubl:schema:xsd:CommonAggregateComponents-2' => 'cac'
+            'urn:oasis:names:specification:ubl:schema:xsd:CommonBasicComponents-2'           => 'cbc',
+            'urn:oasis:names:specification:ubl:schema:xsd:CommonAggregateComponents-2'       => 'cac'
         ];
 
         return $xmlService->write($creditNote->xmlTagName, [

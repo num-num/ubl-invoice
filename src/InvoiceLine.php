@@ -2,10 +2,14 @@
 
 namespace NumNum\UBL;
 
+use function Sabre\Xml\Deserializer\mixedContent;
+
+use Sabre\Xml\Reader;
 use Sabre\Xml\Writer;
+use Sabre\Xml\XmlDeserializable;
 use Sabre\Xml\XmlSerializable;
 
-class InvoiceLine implements XmlSerializable
+class InvoiceLine implements XmlSerializable, XmlDeserializable
 {
     public $xmlTagName = 'InvoiceLine';
     private $id;
@@ -23,8 +27,10 @@ class InvoiceLine implements XmlSerializable
     private $accountingCost;
     private $allowanceCharges;
 
-    // See CreditNoteLine.php
-    protected $isCreditNoteLine = false;
+    private function isCreditNoteLine(): bool
+    {
+        return $this->xmlTagName === 'CreditNoteLine';
+    }
 
     /**
      * @return string
@@ -36,9 +42,9 @@ class InvoiceLine implements XmlSerializable
 
     /**
      * @param string $id
-     * @return InvoiceLine
+     * @return static
      */
-    public function setId(?string $id): InvoiceLine
+    public function setId(?string $id)
     {
         $this->id = $id;
         return $this;
@@ -54,9 +60,9 @@ class InvoiceLine implements XmlSerializable
 
     /**
      * @param ?float $invoicedQuantity
-     * @return InvoiceLine
+     * @return static
      */
-    public function setInvoicedQuantity(?float $invoicedQuantity): InvoiceLine
+    public function setInvoicedQuantity(?float $invoicedQuantity)
     {
         $this->invoicedQuantity = $invoicedQuantity;
         return $this;
@@ -72,9 +78,9 @@ class InvoiceLine implements XmlSerializable
 
     /**
      * @param float $lineExtensionAmount
-     * @return InvoiceLine
+     * @return static
      */
-    public function setLineExtensionAmount(?float $lineExtensionAmount): InvoiceLine
+    public function setLineExtensionAmount(?float $lineExtensionAmount)
     {
         $this->lineExtensionAmount = $lineExtensionAmount;
         return $this;
@@ -90,9 +96,9 @@ class InvoiceLine implements XmlSerializable
 
     /**
      * @param TaxTotal $taxTotal
-     * @return InvoiceLine
+     * @return static
      */
-    public function setTaxTotal(?TaxTotal $taxTotal): InvoiceLine
+    public function setTaxTotal(?TaxTotal $taxTotal)
     {
         $this->taxTotal = $taxTotal;
         return $this;
@@ -108,9 +114,9 @@ class InvoiceLine implements XmlSerializable
 
     /**
      * @param string $note
-     * @return InvoiceLine
+     * @return static
      */
-    public function setNote(?string $note): InvoiceLine
+    public function setNote(?string $note)
     {
         $this->note = $note;
         return $this;
@@ -126,7 +132,7 @@ class InvoiceLine implements XmlSerializable
 
     /**
      * @param InvoicePeriod $invoicePeriod
-     * @return InvoiceLine
+     * @return static
      */
     public function setInvoicePeriod(?InvoicePeriod $invoicePeriod)
     {
@@ -144,9 +150,9 @@ class InvoiceLine implements XmlSerializable
 
     /**
      * @param ?string $orderLineReference
-     * @return OrderLineReference
+     * @return static
      */
-    public function setOrderLineReference(?OrderLineReference $orderLineReference): InvoiceLine
+    public function setOrderLineReference(?OrderLineReference $orderLineReference)
     {
         $this->orderLineReference = $orderLineReference;
         return $this;
@@ -162,9 +168,9 @@ class InvoiceLine implements XmlSerializable
 
     /**
      * @param Item $item
-     * @return InvoiceLine
+     * @return static
      */
-    public function setItem(Item $item): InvoiceLine
+    public function setItem(?Item $item)
     {
         $this->item = $item;
         return $this;
@@ -180,9 +186,9 @@ class InvoiceLine implements XmlSerializable
 
     /**
      * @param Price $price
-     * @return InvoiceLine
+     * @return static
      */
-    public function setPrice(?Price $price): InvoiceLine
+    public function setPrice(?Price $price)
     {
         $this->price = $price;
         return $this;
@@ -198,9 +204,9 @@ class InvoiceLine implements XmlSerializable
 
     /**
      * @param string $unitCode
-     * @return InvoiceLine
+     * @return static
      */
-    public function setUnitCode(?string $unitCode): InvoiceLine
+    public function setUnitCode(?string $unitCode)
     {
         $this->unitCode = $unitCode;
         return $this;
@@ -216,7 +222,7 @@ class InvoiceLine implements XmlSerializable
 
     /**
      * @param string $unitCodeListId
-     * @return InvoiceLine
+     * @return static
      */
     public function setUnitCodeListId(?string $unitCodeListId)
     {
@@ -234,9 +240,9 @@ class InvoiceLine implements XmlSerializable
 
     /**
      * @param string $accountingCostCode
-     * @return InvoiceLine
+     * @return static
      */
-    public function setAccountingCostCode(?string $accountingCostCode): InvoiceLine
+    public function setAccountingCostCode(?string $accountingCostCode)
     {
         $this->accountingCostCode = $accountingCostCode;
         return $this;
@@ -252,9 +258,9 @@ class InvoiceLine implements XmlSerializable
 
     /**
      * @param string $accountingCost
-     * @return InvoiceLine
+     * @return static
      */
-    public function setAccountingCost(?string $accountingCost): InvoiceLine
+    public function setAccountingCost(?string $accountingCost)
     {
         $this->accountingCost = $accountingCost;
         return $this;
@@ -270,9 +276,9 @@ class InvoiceLine implements XmlSerializable
 
     /**
      * @param AllowanceCharge[] $allowanceCharge
-     * @return InvoiceLine
+     * @return static
      */
-    public function setAllowanceCharges(?AllowanceCharge $allowanceCharge): InvoiceLine
+    public function setAllowanceCharges(?AllowanceCharge $allowanceCharge)
     {
         $this->allowanceCharges = $allowanceCharge;
         return $this;
@@ -304,18 +310,16 @@ class InvoiceLine implements XmlSerializable
         }
 
         $writer->write([
-            [
-                'name' => Schema::CBC .
-                    ($this->isCreditNoteLine ? 'CreditedQuantity' : 'InvoicedQuantity'),
-                'value' => number_format($this->invoicedQuantity, 2, '.', ''),
-                'attributes' => $invoicedQuantityAttributes
-            ],
-            [
-                'name' => Schema::CBC . 'LineExtensionAmount',
-                'value' => number_format($this->lineExtensionAmount, 2, '.', ''),
-                'attributes' => [
-                    'currencyID' => Generator::$currencyID
-                ]
+            'name'       => Schema::CBC .($this->isCreditNoteLine() ? 'CreditedQuantity' : 'InvoicedQuantity'),
+            'value'      => number_format($this->invoicedQuantity, 2, '.', ''),
+            'attributes' => $invoicedQuantityAttributes
+        ]);
+
+        $writer->write([
+            'name'       => Schema::CBC . 'LineExtensionAmount',
+            'value'      => number_format($this->lineExtensionAmount ?? 0, 2, '.', ''),
+            'attributes' => [
+                'currencyID' => Generator::$currencyID
             ]
         ]);
 
@@ -363,5 +367,56 @@ class InvoiceLine implements XmlSerializable
                 Schema::CAC . 'Price' => $this->price
             ]);
         }
+    }
+
+    /**
+     * The xmlDeserialize method is called during xml reading.
+     * @param Reader $xml
+     * @return static
+     */
+    public static function xmlDeserialize(Reader $reader)
+    {
+        $mixedContent = mixedContent($reader);
+
+        return static::deserializedTag($mixedContent);
+    }
+
+    /**
+     * @param array $mixedContent
+     * @return static
+     */
+    protected static function deserializedTag(array $mixedContent)
+    {
+        $idTag = array_values(array_filter($mixedContent, fn ($element) => $element['name'] === Schema::CBC . 'ID'))[0] ?? null;
+        $invoicedQuantityTag = array_values(array_filter($mixedContent, fn ($element) => $element['name'] === Schema::CBC . 'InvoicedQuantity'))[0] ?? null;
+        $lineExtensionAmountTag = array_values(array_filter($mixedContent, fn ($element) => $element['name'] === Schema::CBC . 'LineExtensionAmount'))[0] ?? null;
+        $taxTotalTag = array_values(array_filter($mixedContent, fn ($element) => $element['name'] === Schema::CAC . 'TaxTotal'))[0] ?? null;
+        $noteTag = array_values(array_filter($mixedContent, fn ($element) => $element['name'] === Schema::CBC . 'Note'))[0] ?? null;
+        $invoicePeriodTag = array_values(array_filter($mixedContent, fn ($element) => $element['name'] === Schema::CAC . 'InvoicePeriod'))[0] ?? null;
+        $orderLineReferenceTag = array_values(array_filter($mixedContent, fn ($element) => $element['name'] === Schema::CAC . 'OrderLineReference'))[0] ?? null;
+        $itemTag = array_values(array_filter($mixedContent, fn ($element) => $element['name'] === Schema::CAC . 'Item'))[0] ?? null;
+        $priceTag = array_values(array_filter($mixedContent, fn ($element) => $element['name'] === Schema::CAC . 'Price'))[0] ?? null;
+        $unitCodeTag = array_values(array_filter($mixedContent, fn ($element) => $element['name'] === Schema::CBC . 'UnitCode'))[0] ?? null;
+        $unitCodeListIdTag = array_values(array_filter($mixedContent, fn ($element) => $element['name'] === Schema::CBC . 'UnitCodeListID'))[0] ?? null;
+        $accountingCostCodeTag = array_values(array_filter($mixedContent, fn ($element) => $element['name'] === Schema::CBC . 'AccountingCostCode'))[0] ?? null;
+        $accountingCostTag = array_values(array_filter($mixedContent, fn ($element) => $element['name'] === Schema::CBC . 'AccountingCost'))[0] ?? null;
+        $allowanceChargeTag = array_values(array_filter($mixedContent, fn ($element) => $element['name'] === Schema::CAC . 'AllowanceCharge'))[0] ?? [];
+
+        return (new static())
+            ->setId($idTag['value'] ?? null)
+            ->setInvoicedQuantity(isset($invoicedQuantityTag) ? floatval($invoicedQuantityTag['value']) : null)
+            ->setLineExtensionAmount(isset($lineExtensionAmountTag) ? floatval($lineExtensionAmountTag['value']) : null)
+            ->setTaxTotal($taxTotalTag['value'] ?? null)
+            ->setNote($noteTag['value'] ?? null)
+            ->setInvoicePeriod($invoicePeriodTag['value'] ?? null)
+            ->setOrderLineReference($orderLineReferenceTag['value'] ?? null)
+            ->setItem($itemTag['value'] ?? null)
+            ->setPrice($priceTag['value'] ?? null)
+            ->setUnitCode($unitCodeTag['value'] ?? null)
+            ->setUnitCodeListId($unitCodeListIdTag['value'] ?? null)
+            ->setAccountingCostCode($accountingCostCodeTag['value'] ?? null)
+            ->setAccountingCost($accountingCostTag['value'] ?? null)
+            ->setAllowanceCharges($allowanceChargeTag['value'] ?? null)
+        ;
     }
 }

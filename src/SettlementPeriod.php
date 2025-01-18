@@ -28,9 +28,9 @@ class SettlementPeriod implements XmlSerializable, XmlDeserializable
 
     /**
      * @param DateTime $startDate
-     * @return SettlementPeriod
+     * @return static
      */
-    public function setStartDate(DateTime $startDate): SettlementPeriod
+    public function setStartDate(DateTime $startDate)
     {
         $this->startDate = $startDate;
         return $this;
@@ -46,9 +46,9 @@ class SettlementPeriod implements XmlSerializable, XmlDeserializable
 
     /**
      * @param DateTime $endDate
-     * @return SettlementPeriod
+     * @return static
      */
-    public function setEndDate(DateTime $endDate): SettlementPeriod
+    public function setEndDate(DateTime $endDate)
     {
         $this->endDate = $endDate;
         return $this;
@@ -82,13 +82,13 @@ class SettlementPeriod implements XmlSerializable, XmlDeserializable
 
         $writer->write([
             Schema::CBC . 'StartDate' => $this->startDate->format('Y-m-d'),
-            Schema::CBC . 'EndDate' => $this->endDate->format('Y-m-d'),
+            Schema::CBC . 'EndDate'   => $this->endDate->format('Y-m-d'),
         ]);
 
         $writer->write([
             [
-                'name' => Schema::CBC . 'DurationMeasure',
-                'value' => $this->endDate->diff($this->startDate)->format('%d'),
+                'name'       => Schema::CBC . 'DurationMeasure',
+                'value'      => $this->endDate->diff($this->startDate)->format('%d'),
                 'attributes' => [
                     'unitCode' => 'DAY'
                 ]
@@ -99,14 +99,15 @@ class SettlementPeriod implements XmlSerializable, XmlDeserializable
     /**
      * The xmlDeserialize method is called during xml reading.
      * @param Reader $xml
-     * @return SettlementPeriod
+     * @return static
      */
     public static function xmlDeserialize(Reader $reader)
     {
         $keyValues = keyValue($reader);
 
-        return (new self())
+        return (new static())
             ->setStartDate(Carbon::parse($keyValues[Schema::CBC . 'StartDate'])->toDateTime())
-            ->setEndDate(Carbon::parse($keyValues[Schema::CBC . 'EndDate'])->toDateTime());
+            ->setEndDate(Carbon::parse($keyValues[Schema::CBC . 'EndDate'])->toDateTime())
+        ;
     }
 }

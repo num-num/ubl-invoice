@@ -1,13 +1,13 @@
 <?php
 
-namespace NumNum\UBL\Tests;
+namespace NumNum\UBL\Tests\Write;
 
 use PHPUnit\Framework\TestCase;
 
 /**
- * Test an UBL2.1 invoice document
+ * Test an UBL2.2 invoice document
  */
-class DocumentTypeTest extends TestCase
+class PartyIdentificationSchemeNameTest extends TestCase
 {
     private $schema = 'http://docs.oasis-open.org/ubl/os-UBL-2.2/xsd/maindoc/UBL-Invoice-2.2.xsd';
 
@@ -30,20 +30,13 @@ class DocumentTypeTest extends TestCase
         $supplierCompany = (new \NumNum\UBL\Party())
             ->setName('Supplier Company Name')
             ->setPhysicalLocation($address)
-            ->setPostalAddress($address);
-
-        // Client contact node
-        $clientContact = (new \NumNum\UBL\Contact())
-            ->setName('Client name')
-            ->setElectronicMail('email@client.com')
-            ->setTelephone('0032 472 123 456')
-            ->setTelefax('0032 9 1234 567');
+            ->setPostalAddress($address)
+            ->setPartyIdentificationSchemeName("SomeScheme");
 
         // Client company node
         $clientCompany = (new \NumNum\UBL\Party())
             ->setName('My client')
-            ->setPostalAddress($address)
-            ->setContact($clientContact);
+            ->setPostalAddress($address);
 
         $legalMonetaryTotal = (new \NumNum\UBL\LegalMonetaryTotal())
             ->setPayableAmount(10 + 2)
@@ -56,8 +49,7 @@ class DocumentTypeTest extends TestCase
         // Product
         $productItem = (new \NumNum\UBL\Item())
             ->setName('Product Name')
-            ->setDescription('Product Description')
-            ->setSellersItemIdentification('SELLERID');
+            ->setDescription('Product Description');
 
         // Price
         $price = (new \NumNum\UBL\Price())
@@ -69,39 +61,15 @@ class DocumentTypeTest extends TestCase
         $lineTaxTotal = (new \NumNum\UBL\TaxTotal())
             ->setTaxAmount(2.1);
 
-        // InvoicePeriod
-        $invoicePeriod = (new \NumNum\UBL\InvoicePeriod())
-            ->setStartDate(new \DateTime());
-
         // Invoice Line(s)
-        $invoiceLines = [];
-
-        $invoiceLines[] = (new \NumNum\UBL\InvoiceLine())
+        $invoiceLine = (new \NumNum\UBL\InvoiceLine())
             ->setId(0)
             ->setItem($productItem)
-            ->setInvoicePeriod($invoicePeriod)
             ->setPrice($price)
             ->setTaxTotal($lineTaxTotal)
             ->setInvoicedQuantity(1);
 
-        $invoiceLines[] = (new \NumNum\UBL\InvoiceLine())
-            ->setId(0)
-            ->setItem($productItem)
-            ->setInvoicePeriod($invoicePeriod)
-            ->setPrice($price)
-            ->setAccountingCost('Product 123')
-            ->setTaxTotal($lineTaxTotal)
-            ->setInvoicedQuantity(1);
-
-        $invoiceLines[] = (new \NumNum\UBL\InvoiceLine())
-            ->setId(0)
-            ->setItem($productItem)
-            ->setInvoicePeriod($invoicePeriod)
-            ->setPrice($price)
-            ->setAccountingCostCode('Product 123')
-            ->setTaxTotal($lineTaxTotal)
-            ->setInvoicedQuantity(1);
-
+        $invoiceLines = [$invoiceLine];
 
         // Total Taxes
         $taxCategory = (new \NumNum\UBL\TaxCategory())
@@ -115,31 +83,39 @@ class DocumentTypeTest extends TestCase
             ->setTaxAmount(2.1)
             ->setTaxCategory($taxCategory);
 
-
         $taxTotal = (new \NumNum\UBL\TaxTotal())
             ->addTaxSubTotal($taxSubTotal)
             ->setTaxAmount(2.1);
 
-        // Attachment
-        $attachment = (new \NumNum\UBL\Attachment())
-            ->setFilePath(__DIR__.DIRECTORY_SEPARATOR.'SampleInvoice.pdf');
+        $contractDocumentReference = (new \NumNum\UBL\ContractDocumentReference())
+            ->setId("123Test");
 
-        $additionalDocumentReference = new \NumNum\UBL\AdditionalDocumentReference();
-        $additionalDocumentReference->setId('SomeID');
-        $additionalDocumentReference->setDocumentType("CommercialInvoice");
+        $invoicePeriod = (new \NumNum\UBL\InvoicePeriod())
+            ->setStartDate(new \DateTime('-31 days'))
+            ->setEndDate(new \DateTime());
+
+        $accountingSupplierParty = (new \NumNum\UBL\AccountingParty())
+            ->setParty($supplierCompany);
+
+        $accountingCustomerParty = (new \NumNum\UBL\AccountingParty())
+            ->setParty($clientCompany);
 
         // Invoice object
         $invoice = (new \NumNum\UBL\Invoice())
+            ->setUBLVersionID('2.2')
             ->setId(1234)
             ->setCopyIndicator(false)
             ->setIssueDate(new \DateTime())
-            ->setAccountingSupplierParty($supplierCompany)
-            ->setAccountingCustomerParty($clientCompany)
-            ->setSupplierAssignedAccountID('10001')
+            ->setInvoiceTypeCode(\NumNum\UBL\InvoiceTypeCode::INVOICE)
+            ->setDueDate(new \DateTime())
+            ->setAccountingSupplierParty($accountingSupplierParty)
+            ->setAccountingCustomerParty($accountingCustomerParty)
             ->setInvoiceLines($invoiceLines)
             ->setLegalMonetaryTotal($legalMonetaryTotal)
             ->setTaxTotal($taxTotal)
-            ->setAdditionalDocumentReference($additionalDocumentReference);
+            ->setContractDocumentReference($contractDocumentReference)
+            ->setBuyerReference("SomeReference")
+            ->setInvoicePeriod($invoicePeriod);
 
         // Test created object
         // Use \NumNum\UBL\Generator to generate an XML string
@@ -151,7 +127,7 @@ class DocumentTypeTest extends TestCase
         $dom = new \DOMDocument();
         $dom->loadXML($outputXMLString);
 
-        $dom->save('./tests/EmptyAttachmentTest.xml');
+        $dom->save('./tests/PartyIdentificationSchemeNameTest.xml');
 
         $this->assertEquals(true, $dom->schemaValidate($this->schema));
     }

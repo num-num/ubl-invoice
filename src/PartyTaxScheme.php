@@ -3,10 +3,15 @@
 namespace NumNum\UBL;
 
 use InvalidArgumentException;
+
+use function Sabre\Xml\Deserializer\keyValue;
+
+use Sabre\Xml\Reader;
 use Sabre\Xml\Writer;
+use Sabre\Xml\XmlDeserializable;
 use Sabre\Xml\XmlSerializable;
 
-class PartyTaxScheme implements XmlSerializable
+class PartyTaxScheme implements XmlSerializable, XmlDeserializable
 {
     private $registrationName;
     private $companyId;
@@ -22,9 +27,9 @@ class PartyTaxScheme implements XmlSerializable
 
     /**
      * @param string $registrationName
-     * @return PartyTaxScheme
+     * @return static
      */
-    public function setRegistrationName($registrationName): PartyTaxScheme
+    public function setRegistrationName($registrationName)
     {
         $this->registrationName = $registrationName;
         return $this;
@@ -40,17 +45,16 @@ class PartyTaxScheme implements XmlSerializable
 
     /**
      * @param string $companyId
-     * @return PartyTaxScheme
+     * @return static
      */
-    public function setCompanyId($companyId): PartyTaxScheme
+    public function setCompanyId($companyId)
     {
         $this->companyId = $companyId;
         return $this;
     }
 
     /**
-     * @param TaxScheme $taxScheme.
-     * @return mixed
+     * @return ?TaxScheme
      */
     public function getTaxScheme(): ?TaxScheme
     {
@@ -59,9 +63,9 @@ class PartyTaxScheme implements XmlSerializable
 
     /**
      * @param TaxScheme $taxScheme
-     * @return PartyTaxScheme
+     * @return static
      */
-    public function setTaxScheme(TaxScheme $taxScheme): PartyTaxScheme
+    public function setTaxScheme(?TaxScheme $taxScheme)
     {
         $this->taxScheme = $taxScheme;
         return $this;
@@ -98,9 +102,26 @@ class PartyTaxScheme implements XmlSerializable
                 Schema::CBC . 'CompanyID' => $this->companyId
             ]);
         }
+        if ($this->taxScheme !== null) {
+            $writer->write([
+                Schema::CAC . 'TaxScheme' => $this->taxScheme
+            ]);
+        }
+    }
 
-        $writer->write([
-            Schema::CAC . 'TaxScheme' => $this->taxScheme
-        ]);
+    /**
+     * The xmlDeserialize method is called during xml reading.
+     * @param Reader $xml
+     * @return static
+     */
+    public static function xmlDeserialize(Reader $reader)
+    {
+        $keyValues = keyValue($reader);
+
+        return (new static())
+            ->setRegistrationName($keyValues[Schema::CBC . 'RegistrationName'] ?? null)
+            ->setCompanyId($keyValues[Schema::CBC . 'CompanyID'] ?? null)
+            ->setTaxScheme($keyValues[Schema::CAC . 'TaxScheme'] ?? null)
+        ;
     }
 }

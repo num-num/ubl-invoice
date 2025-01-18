@@ -2,10 +2,14 @@
 
 namespace NumNum\UBL;
 
+use function Sabre\Xml\Deserializer\mixedContent;
+
+use Sabre\Xml\Reader;
 use Sabre\Xml\Writer;
+use Sabre\Xml\XmlDeserializable;
 use Sabre\Xml\XmlSerializable;
 
-class Price implements XmlSerializable
+class Price implements XmlSerializable, XmlDeserializable
 {
     private $priceAmount;
     private $baseQuantity;
@@ -23,9 +27,9 @@ class Price implements XmlSerializable
 
     /**
      * @param float $priceAmount
-     * @return Price
+     * @return static
      */
-    public function setPriceAmount(?float $priceAmount): Price
+    public function setPriceAmount(?float $priceAmount)
     {
         $this->priceAmount = $priceAmount;
         return $this;
@@ -41,9 +45,9 @@ class Price implements XmlSerializable
 
     /**
      * @param float $baseQuantity
-     * @return Price
+     * @return static
      */
-    public function setBaseQuantity(?float $baseQuantity): Price
+    public function setBaseQuantity(?float $baseQuantity)
     {
         $this->baseQuantity = $baseQuantity;
         return $this;
@@ -60,9 +64,9 @@ class Price implements XmlSerializable
     /**
      * @param string $unitCode
      *                         See also: src/UnitCode.php
-     * @return Price
+     * @return static
      */
-    public function setUnitCode(?string $unitCode): Price
+    public function setUnitCode(?string $unitCode)
     {
         $this->unitCode = $unitCode;
         return $this;
@@ -79,9 +83,9 @@ class Price implements XmlSerializable
 
     /**
      * @param string $unitCodeListId
-     * @return Price
+     * @return static
      */
-    public function setUnitCodeListId(?string $unitCodeListId): Price
+    public function setUnitCodeListId(?string $unitCodeListId)
     {
         $this->unitCodeListId = $unitCodeListId;
         return $this;
@@ -97,9 +101,9 @@ class Price implements XmlSerializable
 
     /**
      * @param AllowanceCharge $allowanceCharge
-     * @return Price
+     * @return static
      */
-    public function setAllowanceCharge(?AllowanceCharge $allowanceCharge): Price
+    public function setAllowanceCharge(?AllowanceCharge $allowanceCharge)
     {
         $this->allowanceCharge = $allowanceCharge;
         return $this;
@@ -123,15 +127,15 @@ class Price implements XmlSerializable
 
         $writer->write([
             [
-                'name' => Schema::CBC . 'PriceAmount',
-                'value' => number_format($this->priceAmount, 2, '.', ''),
+                'name'       => Schema::CBC . 'PriceAmount',
+                'value'      => number_format($this->priceAmount, 2, '.', ''),
                 'attributes' => [
                     'currencyID' => Generator::$currencyID
                 ]
             ],
             [
-                'name' => Schema::CBC . 'BaseQuantity',
-                'value' => number_format($this->baseQuantity, 2, '.', ''),
+                'name'       => Schema::CBC . 'BaseQuantity',
+                'value'      => number_format($this->baseQuantity, 2, '.', ''),
                 'attributes' => $baseQuantityAttributes
             ]
         ]);
@@ -142,4 +146,27 @@ class Price implements XmlSerializable
             ]);
         }
     }
+
+    /**
+     * The xmlDeserialize method is called during xml reading.
+     * @param Reader $xml
+     * @return static
+     */
+    public static function xmlDeserialize(Reader $reader)
+    {
+        $mixedContent = mixedContent($reader);
+
+        $priceAmountTag = array_values(array_filter($mixedContent, fn ($element) => $element['name'] === Schema::CBC . 'PriceAmount'))[0] ?? null;
+        $baseQuantityTag = array_values(array_filter($mixedContent, fn ($element) => $element['name'] === Schema::CBC . 'BaseQuantity'))[0] ?? null;
+        $allowanceChargeTag = array_values(array_filter($mixedContent, fn ($element) => $element['name'] === Schema::CAC . 'AllowanceCharge'))[0] ?? null;
+
+        return (new Price())
+            ->setPriceAmount(isset($priceAmountTag) ? floatval($priceAmountTag['value']) : null)
+            ->setBaseQuantity(isset($baseQuantityTag) ? floatval($baseQuantityTag['value']) : null)
+            ->setUnitCode($baseQuantityTag['attributes']['unitCode'] ?? null)
+            ->setUnitCodeListId($baseQuantityTag['attributes']['unitCodeListID'] ?? null)
+            ->setAllowanceCharge($allowanceChargeTag['value'] ?? null)
+        ;
+    }
+
 }

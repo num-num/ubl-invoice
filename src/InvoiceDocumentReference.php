@@ -24,9 +24,9 @@ class InvoiceDocumentReference implements XmlSerializable
     /**
      * Set the id of the invoice that is being credited
      *
-     * @return InvoiceDocumentReference
+     * @return static
      */
-    public function setOriginalInvoiceId(string $invoiceRef): InvoiceDocumentReference
+    public function setOriginalInvoiceId(string $invoiceRef)
     {
         $this->originalInvoiceId = $invoiceRef;
         return $this;
@@ -45,9 +45,9 @@ class InvoiceDocumentReference implements XmlSerializable
     /**
      * Set the issue date of the original invoice that is being credited
      *
-     * @return InvoiceDocumentReference
+     * @return static
      */
-    public function setIssueDate(DateTime $issueDate): InvoiceDocumentReference
+    public function setIssueDate(DateTime $issueDate)
     {
         $this->issueDate = $issueDate;
         return $this;
@@ -77,7 +77,7 @@ class InvoiceDocumentReference implements XmlSerializable
 
         $writer->write([
             [
-                'name' => Schema::CBC . 'ID',
+                'name'  => Schema::CBC . 'ID',
                 'value' => $this->originalInvoiceId
             ]
         ]);
@@ -85,7 +85,7 @@ class InvoiceDocumentReference implements XmlSerializable
         if ($this->issueDate != null) {
             $writer->write([
                 [
-                    'name' => Schema::CBC . 'IssueDate',
+                    'name'  => Schema::CBC . 'IssueDate',
                     'value' => $this->issueDate->format('Y-m-d')
                 ]
             ]);

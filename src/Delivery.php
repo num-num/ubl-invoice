@@ -2,9 +2,13 @@
 
 namespace NumNum\UBL;
 
+use DateTime;
+
+use function Sabre\Xml\Deserializer\keyValue;
+
+use Sabre\Xml\Reader;
 use Sabre\Xml\Writer;
 use Sabre\Xml\XmlSerializable;
-use DateTime;
 
 class Delivery implements XmlSerializable
 {
@@ -22,9 +26,9 @@ class Delivery implements XmlSerializable
 
     /**
      * @param DateTime $actualDeliveryDate
-     * @return Delivery
+     * @return static
      */
-    public function setActualDeliveryDate($actualDeliveryDate): Delivery
+    public function setActualDeliveryDate($actualDeliveryDate)
     {
         $this->actualDeliveryDate = $actualDeliveryDate;
         return $this;
@@ -40,9 +44,9 @@ class Delivery implements XmlSerializable
 
     /**
      * @param Address $deliveryLocation
-     * @return Delivery
+     * @return static
      */
-    public function setDeliveryLocation($deliveryLocation): Delivery
+    public function setDeliveryLocation($deliveryLocation)
     {
         $this->deliveryLocation = $deliveryLocation;
         return $this;
@@ -58,9 +62,9 @@ class Delivery implements XmlSerializable
 
     /**
      * @param Party $deliveryParty
-     * @return Delivery
+     * @return static
      */
-    public function setDeliveryParty($deliveryParty): Delivery
+    public function setDeliveryParty($deliveryParty)
     {
         $this->deliveryParty = $deliveryParty;
         return $this;
@@ -89,5 +93,21 @@ class Delivery implements XmlSerializable
                Schema::CAC . 'DeliveryParty' => $this->deliveryParty
             ]);
         }
+    }
+
+    /**
+     * The xmlDeserialize method is called during xml reading.
+     * @param Reader $xml
+     * @return static
+     */
+    public static function xmlDeserialize(Reader $reader)
+    {
+        $keyValues = keyValue($reader);
+
+        return (new static())
+            ->setActualDeliveryDate($keyValues[Schema::CBC . 'ActualDeliveryDate'] ?? null)
+            ->setDeliveryLocation($keyValues[Schema::CAC . 'DeliveryLocation'] ?? null)
+            ->setDeliveryParty($keyValues[Schema::CAC . 'DeliveryParty'] ?? null)
+        ;
     }
 }

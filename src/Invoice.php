@@ -6,7 +6,7 @@ use Carbon\Carbon;
 use DateTime;
 use InvalidArgumentException;
 
-use function Sabre\Xml\Deserializer\keyValue;
+use function Sabre\Xml\Deserializer\mixedContent;
 
 use Sabre\Xml\Reader;
 use Sabre\Xml\Writer;
@@ -30,7 +30,6 @@ class Invoice implements XmlSerializable, XmlDeserializable
     private $accountingSupplierParty;
     private $accountingCustomerParty;
     private $payeeParty;
-    private $supplierAssignedAccountID;
     /** @var PaymentMeans[] $paymentMeans */
     private $paymentMeans;
     private $taxTotal;
@@ -59,9 +58,9 @@ class Invoice implements XmlSerializable, XmlDeserializable
     /**
      * @param string $UBLVersionID
      *                             eg. '2.0', '2.1', '2.2', ...
-     * @return Invoice
+     * @return static
      */
-    public function setUBLVersionID(?string $UBLVersionID): Invoice
+    public function setUBLVersionID(?string $UBLVersionID)
     {
         $this->UBLVersionID = $UBLVersionID;
         return $this;
@@ -77,9 +76,9 @@ class Invoice implements XmlSerializable, XmlDeserializable
 
     /**
      * @param mixed $id
-     * @return Invoice
+     * @return static
      */
-    public function setId(?string $id): Invoice
+    public function setId(?string $id)
     {
         $this->id = $id;
         return $this;
@@ -87,9 +86,9 @@ class Invoice implements XmlSerializable, XmlDeserializable
 
     /**
      * @param mixed $customizationID
-     * @return Invoice
+     * @return static
      */
-    public function setCustomizationID(?string $customizationID): Invoice
+    public function setCustomizationID(?string $customizationID)
     {
         $this->customizationID = $customizationID;
         return $this;
@@ -97,9 +96,9 @@ class Invoice implements XmlSerializable, XmlDeserializable
 
     /**
      * @param mixed $profileID
-     * @return Invoice
+     * @return static
      */
-    public function setProfileID(?string $profileID): Invoice
+    public function setProfileID(?string $profileID)
     {
         $this->profileID = $profileID;
         return $this;
@@ -115,9 +114,9 @@ class Invoice implements XmlSerializable, XmlDeserializable
 
     /**
      * @param bool $copyIndicator
-     * @return Invoice
+     * @return static
      */
-    public function setCopyIndicator(bool $copyIndicator): Invoice
+    public function setCopyIndicator(bool $copyIndicator)
     {
         $this->copyIndicator = $copyIndicator;
         return $this;
@@ -133,9 +132,9 @@ class Invoice implements XmlSerializable, XmlDeserializable
 
     /**
      * @param DateTime $issueDate
-     * @return Invoice
+     * @return static
      */
-    public function setIssueDate(DateTime $issueDate): Invoice
+    public function setIssueDate(?DateTime $issueDate)
     {
         $this->issueDate = $issueDate;
         return $this;
@@ -151,9 +150,9 @@ class Invoice implements XmlSerializable, XmlDeserializable
 
     /**
      * @param DateTime $dueDate
-     * @return Invoice
+     * @return static
      */
-    public function setDueDate(DateTime $dueDate): Invoice
+    public function setDueDate(DateTime $dueDate)
     {
         $this->dueDate = $dueDate;
         return $this;
@@ -161,9 +160,9 @@ class Invoice implements XmlSerializable, XmlDeserializable
 
     /**
      * @param mixed $currencyCode
-     * @return Invoice
+     * @return static
      */
-    public function setDocumentCurrencyCode(string $currencyCode = 'EUR'): Invoice
+    public function setDocumentCurrencyCode(?string $currencyCode = 'EUR')
     {
         $this->documentCurrencyCode = $currencyCode;
         return $this;
@@ -180,9 +179,9 @@ class Invoice implements XmlSerializable, XmlDeserializable
     /**
      * @param string $invoiceTypeCode
      *                                See also: src/InvoiceTypeCode.php
-     * @return Invoice
+     * @return static
      */
-    public function setInvoiceTypeCode(string $invoiceTypeCode): Invoice
+    public function setInvoiceTypeCode(string $invoiceTypeCode)
     {
         $this->invoiceTypeCode = $invoiceTypeCode;
         return $this;
@@ -198,7 +197,7 @@ class Invoice implements XmlSerializable, XmlDeserializable
 
     /**
      * @param ?string $note
-     * @return Invoice
+     * @return static
      */
     public function setNote(?string $note)
     {
@@ -216,9 +215,9 @@ class Invoice implements XmlSerializable, XmlDeserializable
 
     /**
      * @param DateTime $taxPointDate
-     * @return Invoice
+     * @return static
      */
-    public function setTaxPointDate(DateTime $taxPointDate): Invoice
+    public function setTaxPointDate(DateTime $taxPointDate)
     {
         $this->taxPointDate = $taxPointDate;
         return $this;
@@ -234,63 +233,45 @@ class Invoice implements XmlSerializable, XmlDeserializable
 
     /**
      * @param ?PaymentTerms $paymentTerms
-     * @return Invoice
+     * @return static
      */
-    public function setPaymentTerms(?PaymentTerms $paymentTerms): Invoice
+    public function setPaymentTerms(?PaymentTerms $paymentTerms)
     {
         $this->paymentTerms = $paymentTerms;
         return $this;
     }
 
     /**
-     * @return Party
+     * @return AccountingParty
      */
-    public function getAccountingSupplierParty(): ?Party
+    public function getAccountingSupplierParty(): ?AccountingParty
     {
         return $this->accountingSupplierParty;
     }
 
     /**
-     * @param Party $accountingSupplierParty
-     * @return Invoice
+     * @param AccountingParty $accountingSupplierParty
+     * @return static
      */
-    public function setAccountingSupplierParty(Party $accountingSupplierParty): Invoice
+    public function setAccountingSupplierParty(AccountingParty $accountingSupplierParty)
     {
         $this->accountingSupplierParty = $accountingSupplierParty;
         return $this;
     }
 
     /**
-     * @return Party
+     * @return AccountingParty
      */
-    public function getSupplierAssignedAccountID(): ?string
-    {
-        return $this->supplierAssignedAccountID;
-    }
-
-    /**
-     * @param string $supplierAssignedAccountID
-     * @return Invoice
-     */
-    public function setSupplierAssignedAccountID(string $supplierAssignedAccountID): Invoice
-    {
-        $this->supplierAssignedAccountID = $supplierAssignedAccountID;
-        return $this;
-    }
-
-    /**
-     * @return Party
-     */
-    public function getAccountingCustomerParty(): ?Party
+    public function getAccountingCustomerParty(): ?AccountingParty
     {
         return $this->accountingCustomerParty;
     }
 
     /**
-     * @param Party $accountingCustomerParty
-     * @return Invoice
+     * @param AccountingParty $accountingCustomerParty
+     * @return static
      */
-    public function setAccountingCustomerParty(Party $accountingCustomerParty): Invoice
+    public function setAccountingCustomerParty(AccountingParty $accountingCustomerParty)
     {
         $this->accountingCustomerParty = $accountingCustomerParty;
         return $this;
@@ -306,9 +287,9 @@ class Invoice implements XmlSerializable, XmlDeserializable
 
     /**
      * @param Party $payeeParty
-     * @return Invoice
+     * @return static
      */
-    public function setPayeeParty(Party $payeeParty): Invoice
+    public function setPayeeParty(?Party $payeeParty)
     {
         $this->payeeParty = $payeeParty;
         return $this;
@@ -324,9 +305,9 @@ class Invoice implements XmlSerializable, XmlDeserializable
 
     /**
      * @param PaymentMeans[] $paymentMeans
-     * @return Invoice
+     * @return static
      */
-    public function setPaymentMeans(array $paymentMeans): Invoice
+    public function setPaymentMeans(array $paymentMeans)
     {
         $this->paymentMeans = $paymentMeans;
         return $this;
@@ -342,9 +323,9 @@ class Invoice implements XmlSerializable, XmlDeserializable
 
     /**
      * @param TaxTotal $taxTotal
-     * @return Invoice
+     * @return static
      */
-    public function setTaxTotal(TaxTotal $taxTotal): Invoice
+    public function setTaxTotal(TaxTotal $taxTotal)
     {
         $this->taxTotal = $taxTotal;
         return $this;
@@ -360,16 +341,16 @@ class Invoice implements XmlSerializable, XmlDeserializable
 
     /**
      * @param LegalMonetaryTotal $legalMonetaryTotal
-     * @return Invoice
+     * @return static
      */
-    public function setLegalMonetaryTotal(LegalMonetaryTotal $legalMonetaryTotal): Invoice
+    public function setLegalMonetaryTotal(LegalMonetaryTotal $legalMonetaryTotal)
     {
         $this->legalMonetaryTotal = $legalMonetaryTotal;
         return $this;
     }
 
     /**
-     * @return InvoiceLine[]
+     * @return staticLine[]
      */
     public function getInvoiceLines(): ?array
     {
@@ -378,9 +359,9 @@ class Invoice implements XmlSerializable, XmlDeserializable
 
     /**
      * @param InvoiceLine[] $invoiceLines
-     * @return Invoice
+     * @return static
      */
-    public function setInvoiceLines(array $invoiceLines): Invoice
+    public function setInvoiceLines(array $invoiceLines)
     {
         $this->invoiceLines = $invoiceLines;
         return $this;
@@ -396,9 +377,9 @@ class Invoice implements XmlSerializable, XmlDeserializable
 
     /**
      * @param AllowanceCharge[] $allowanceCharges
-     * @return Invoice
+     * @return static
      */
-    public function setAllowanceCharges(array $allowanceCharges): Invoice
+    public function setAllowanceCharges(array $allowanceCharges)
     {
         $this->allowanceCharges = $allowanceCharges;
         return $this;
@@ -423,9 +404,9 @@ class Invoice implements XmlSerializable, XmlDeserializable
 
     /**
      * @param AdditionalDocumentReference $additionalDocumentReference
-     * @return Invoice
+     * @return static
      */
-    public function setAdditionalDocumentReference(AdditionalDocumentReference $additionalDocumentReference): Invoice
+    public function setAdditionalDocumentReference(AdditionalDocumentReference $additionalDocumentReference)
     {
         $this->additionalDocumentReferences = [$additionalDocumentReference];
         return $this;
@@ -433,9 +414,9 @@ class Invoice implements XmlSerializable, XmlDeserializable
 
     /**
      * @param AdditionalDocumentReference $additionalDocumentReference
-     * @return Invoice
+     * @return static
      */
-    public function setAdditionalDocumentReferences(array $additionalDocumentReference): Invoice
+    public function setAdditionalDocumentReferences(array $additionalDocumentReference)
     {
         $this->additionalDocumentReferences = $additionalDocumentReference;
         return $this;
@@ -443,9 +424,9 @@ class Invoice implements XmlSerializable, XmlDeserializable
 
     /**
      * @param AdditionalDocumentReference $additionalDocumentReference
-     * @return Invoice
+     * @return static
      */
-    public function addAdditionalDocumentReference(AdditionalDocumentReference $additionalDocumentReference): Invoice
+    public function addAdditionalDocumentReference(AdditionalDocumentReference $additionalDocumentReference)
     {
         $this->additionalDocumentReferences[] = $additionalDocumentReference;
         return $this;
@@ -453,9 +434,9 @@ class Invoice implements XmlSerializable, XmlDeserializable
 
     /**
      * @param string $buyerReference
-     * @return Invoice
+     * @return static
      */
-    public function setBuyerReference(string $buyerReference): Invoice
+    public function setBuyerReference(?string $buyerReference)
     {
         $this->buyerReference = $buyerReference;
         return $this;
@@ -479,16 +460,16 @@ class Invoice implements XmlSerializable, XmlDeserializable
 
     /**
      * @param mixed $accountingCostCode
-     * @return Invoice
+     * @return static
      */
-    public function setAccountingCostCode(string $accountingCostCode): Invoice
+    public function setAccountingCostCode(?string $accountingCostCode)
     {
         $this->accountingCostCode = $accountingCostCode;
         return $this;
     }
 
     /**
-     * @return InvoicePeriod
+     * @return staticPeriod
      */
     public function getInvoicePeriod(): ?InvoicePeriod
     {
@@ -497,9 +478,9 @@ class Invoice implements XmlSerializable, XmlDeserializable
 
     /**
      * @param InvoicePeriod $invoicePeriod
-     * @return Invoice
+     * @return static
      */
-    public function setInvoicePeriod(InvoicePeriod $invoicePeriod): Invoice
+    public function setInvoicePeriod(?InvoicePeriod $invoicePeriod)
     {
         $this->invoicePeriod = $invoicePeriod;
         return $this;
@@ -518,9 +499,9 @@ class Invoice implements XmlSerializable, XmlDeserializable
     /**
      * Set the reference to the invoice that is being credited
      *
-     * @return CreditNote
+     * @return static
      */
-    public function setBillingReference($billingReference): CreditNote
+    public function setBillingReference(?BillingReference $billingReference)
     {
         $this->billingReference = $billingReference;
         return $this;
@@ -536,9 +517,9 @@ class Invoice implements XmlSerializable, XmlDeserializable
 
     /**
      * @param Delivery $delivery
-     * @return Invoice
+     * @return static
      */
-    public function setDelivery(Delivery $delivery): Invoice
+    public function setDelivery(?Delivery $delivery)
     {
         $this->delivery = $delivery;
         return $this;
@@ -554,9 +535,9 @@ class Invoice implements XmlSerializable, XmlDeserializable
 
     /**
      * @param OrderReference $orderReference
-     * @return OrderReference
+     * @return static
      */
-    public function setOrderReference(OrderReference $orderReference): Invoice
+    public function setOrderReference(?OrderReference $orderReference)
     {
         $this->orderReference = $orderReference;
         return $this;
@@ -571,10 +552,10 @@ class Invoice implements XmlSerializable, XmlDeserializable
     }
 
     /**
-     * @param string $ContractDocumentReference
-     * @return Invoice
+     * @param ContractDocumentReference $ContractDocumentReference
+     * @return static
      */
-    public function setContractDocumentReference(ContractDocumentReference $contractDocumentReference): Invoice
+    public function setContractDocumentReference(?ContractDocumentReference $contractDocumentReference)
     {
         $this->contractDocumentReference = $contractDocumentReference;
         return $this;
@@ -627,7 +608,7 @@ class Invoice implements XmlSerializable, XmlDeserializable
         $this->validate();
 
         $writer->write([
-            Schema::CBC . 'UBLVersionID' => $this->UBLVersionID,
+            Schema::CBC . 'UBLVersionID'    => $this->UBLVersionID,
             Schema::CBC . 'CustomizationID' => $this->customizationID,
         ]);
 
@@ -723,20 +704,9 @@ class Invoice implements XmlSerializable, XmlDeserializable
             }
         }
 
-        if ($this->supplierAssignedAccountID !== null) {
-            $customerParty = [
-                Schema::CBC . 'SupplierAssignedAccountID' => $this->supplierAssignedAccountID,
-                Schema::CAC . "Party" => $this->accountingCustomerParty
-            ];
-        } else {
-            $customerParty = [
-                Schema::CAC . "Party" => $this->accountingCustomerParty
-            ];
-        }
-
         $writer->write([
-            Schema::CAC . 'AccountingSupplierParty' => [Schema::CAC . "Party" => $this->accountingSupplierParty],
-            Schema::CAC . 'AccountingCustomerParty' => $customerParty,
+            Schema::CAC . 'AccountingSupplierParty' => $this->accountingSupplierParty,
+            Schema::CAC . 'AccountingCustomerParty' => $this->accountingCustomerParty,
         ]);
 
         if ($this->payeeParty != null) {
@@ -793,24 +763,75 @@ class Invoice implements XmlSerializable, XmlDeserializable
     /**
      * The xmlDeserialize method is called during xml reading.
      * @param Reader $xml
-     * @return Invoice
+     * @return static
      */
     public static function xmlDeserialize(Reader $reader)
     {
-        $keyValue = keyValue($reader);
+        $mixedContent = mixedContent($reader);
 
-        return (new self())
-            ->setUBLVersionID($keyValue[Schema::CBC.'UBLVersionID'])
-            ->setId($keyValue[Schema::CBC.'ID'])
-            ->setCustomizationID($keyValue[Schema::CBC.'CustomizationID'])
-            ->setProfileID($keyValue[Schema::CBC.'ProfileID'] ?? null)
-            ->setCopyIndicator($keyValue[Schema::CBC.'CopyIndicator'] ?? false)
-            ->setIssueDate(Carbon::parse($keyValue[Schema::CBC.'IssueDate'])->toDateTime())
-            ->setDueDate(Carbon::parse($keyValue[Schema::CBC.'DueDate'] ?? null)->toDateTime())
-            ->setDocumentCurrencyCode($keyValue[Schema::CBC.'DocumentCurrencyCode'])
-            ->setInvoiceTypeCode($keyValue[Schema::CBC.'InvoiceTypeCode'])
-            ->setNote($keyValue[Schema::CBC.'Note'] ?? null)
-            ->setTaxPointDate(Carbon::parse($keyValue[Schema::CBC.'TaxPointDate'])->toDateTime())
-            ->setPaymentTerms($keyValue[Schema::CAC.'PaymentTerms'] ?? null);
+        return static::deserializedTag($mixedContent);
+    }
+
+    protected static function deserializedTag(array $mixedContent)
+    {
+        $ublVersionIdTag = array_values(array_filter($mixedContent, fn ($element) => $element['name'] === Schema::CBC . 'UBLVersionID'))[0] ?? null;
+        $idTag = array_values(array_filter($mixedContent, fn ($element) => $element['name'] === Schema::CBC . 'ID'))[0] ?? null;
+        $customizationIdTag = array_values(array_filter($mixedContent, fn ($element) => $element['name'] === Schema::CBC . 'CustomizationID'))[0] ?? null;
+        $profileIdTag = array_values(array_filter($mixedContent, fn ($element) => $element['name'] === Schema::CBC . 'ProfileID'))[0] ?? null;
+        $copyIndicatorTag = array_values(array_filter($mixedContent, fn ($element) => $element['name'] === Schema::CBC . 'CopyIndicator'))[0] ?? null;
+        $issueDateTag = array_values(array_filter($mixedContent, fn ($element) => $element['name'] === Schema::CBC . 'IssueDate'))[0] ?? null;
+        $dueDateTag = array_values(array_filter($mixedContent, fn ($element) => $element['name'] === Schema::CBC . 'DueDate'))[0] ?? null;
+        $documentCurrencyCodeTag = array_values(array_filter($mixedContent, fn ($element) => $element['name'] === Schema::CBC . 'DocumentCurrencyCode'))[0] ?? null;
+        $invoiceTypeCodeTag = array_values(array_filter($mixedContent, fn ($element) => $element['name'] === Schema::CBC . 'InvoiceTypeCode'))[0] ?? null;
+        $noteTag = array_values(array_filter($mixedContent, fn ($element) => $element['name'] === Schema::CBC . 'Note'))[0] ?? null;
+        $taxPointDateTag = array_values(array_filter($mixedContent, fn ($element) => $element['name'] === Schema::CBC . 'TaxPointDate'))[0] ?? null;
+        $paymentTermsTag = array_values(array_filter($mixedContent, fn ($element) => $element['name'] === Schema::CAC . 'PaymentTerms'))[0] ?? null;
+        $accountingSupplierPartyTag = array_values(array_filter($mixedContent, fn ($element) => $element['name'] === Schema::CAC . 'AccountingSupplierParty'))[0] ?? null;
+        $accountingCustomerPartyTag = array_values(array_filter($mixedContent, fn ($element) => $element['name'] === Schema::CAC . 'AccountingCustomerParty'))[0] ?? null;
+        $payeePartyTag = array_values(array_filter($mixedContent, fn ($element) => $element['name'] === Schema::CAC . 'PayeeParty'))[0] ?? null;
+        $paymentMeansTags = array_values(array_filter($mixedContent, fn ($element) => $element['name'] === Schema::CAC . 'PaymentMeans')) ?? [];
+        $taxTotalTag = array_values(array_filter($mixedContent, fn ($element) => $element['name'] === Schema::CAC . 'TaxTotal'))[0] ?? null;
+        $legalMonetaryTotalTag = array_values(array_filter($mixedContent, fn ($element) => $element['name'] === Schema::CAC . 'LegalMonetaryTotal'))[0] ?? null;
+        $invoiceLineTags = array_values(array_filter($mixedContent, fn ($element) => $element['name'] === Schema::CAC . 'InvoiceLine')) ?? [];
+        $allowanceChargesTags = array_values(array_filter($mixedContent, fn ($element) => $element['name'] === Schema::CAC . 'AllowanceCharge')) ?? [];
+        $additionalDocumentReferenceTags = array_values(array_filter($mixedContent, fn ($element) => $element['name'] === Schema::CAC . 'AdditionalDocumentReference')) ?? [];
+        $buyerReferenceTag = array_values(array_filter($mixedContent, fn ($element) => $element['name'] === Schema::CBC . 'BuyerReference'))[0] ?? null;
+        $accountingCostCodeTag = array_values(array_filter($mixedContent, fn ($element) => $element['name'] === Schema::CBC . 'AccountingCostCode'))[0] ?? null;
+        $invoicePeriodTag = array_values(array_filter($mixedContent, fn ($element) => $element['name'] === Schema::CAC . 'InvoicePeriod'))[0] ?? null;
+        $billingReferenceTag = array_values(array_filter($mixedContent, fn ($element) => $element['name'] === Schema::CAC . 'BillingReference'))[0] ?? null;
+        $deliveryTag = array_values(array_filter($mixedContent, fn ($element) => $element['name'] === Schema::CAC . 'Delivery'))[0] ?? null;
+        $orderReferenceTag = array_values(array_filter($mixedContent, fn ($element) => $element['name'] === Schema::CAC . 'OrderReference'))[0] ?? null;
+        $contractDocumentReferenceTag = array_values(array_filter($mixedContent, fn ($element) => $element['name'] === Schema::CAC . 'ContractDocumentReference'))[0] ?? null;
+
+        return (new static())
+            ->setUBLVersionID($ublVersionIdTag['value'] ?? null)
+            ->setId($idTag['value'] ?? null)
+            ->setCustomizationID($customizationIdTag['value'] ?? null)
+            ->setProfileID($profileIdTag['value'] ?? null)
+            ->setCopyIndicator($copyIndicatorTag['value'] ?? false)
+            ->setIssueDate(Carbon::parse($issueDateTag['value'])->toDateTime())
+            ->setDueDate(Carbon::parse($dueDateTag['value'] ?? null)->toDateTime())
+            ->setDocumentCurrencyCode($documentCurrencyCodeTag['value'] ?? null)
+            ->setInvoiceTypeCode($invoiceTypeCodeTag['value'] ?? null)
+            ->setNote($noteTag['value'] ?? null)
+            ->setTaxPointDate(Carbon::parse($taxPointDateTag['value'])->toDateTime())
+            ->setPaymentTerms($paymentTermsTag['value'] ?? null)
+            ->setAccountingSupplierParty($accountingSupplierPartyTag['value'] ?? null)
+            ->setAccountingCustomerParty($accountingCustomerPartyTag['value'] ?? null)
+            ->setPayeeParty($payeePartyTag['value'] ?? null)
+            ->setPaymentMeans(!empty($paymentMeansTags) ? array_map(fn ($pm) => $pm['value'], $paymentMeansTags) : null)
+            ->setTaxTotal($taxTotalTag['value'] ?? null)
+            ->setLegalMonetaryTotal($legalMonetaryTotalTag['value'] ?? null)
+            ->setInvoiceLines(!empty($invoiceLineTags) ? array_map(fn ($il) => $il['value'], $invoiceLineTags) : [])
+            ->setAllowanceCharges(array_map(fn ($ac) => $ac['value'], $allowanceChargesTags))
+            ->setAdditionalDocumentReferences(array_map(fn ($adr) => $adr['value'], $additionalDocumentReferenceTags))
+            ->setBuyerReference($buyerReferenceTag['value'] ?? null)
+            ->setAccountingCostCode($accountingCostCodeTag['value'] ?? null)
+            ->setInvoicePeriod($invoicePeriodTag['value'] ?? null)
+            ->setBillingReference($billingReferenceTag['value'] ?? null)
+            ->setDelivery($deliveryTag['value'] ?? null)
+            ->setOrderReference($orderReferenceTag['value'] ?? null)
+            ->setContractDocumentReference($contractDocumentReferenceTag['value'] ?? null)
+        ;
     }
 }

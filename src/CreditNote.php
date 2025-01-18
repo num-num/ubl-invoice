@@ -19,9 +19,9 @@ class CreditNote extends Invoice implements XmlSerializable
 
     /**
      * @param CreditNoteLine[] $creditNoteLines
-     * @return CreditNote
+     * @return static
      */
-    public function setCreditNoteLines(array $creditNoteLines): CreditNote
+    public function setCreditNoteLines(array $creditNoteLines)
     {
         $this->invoiceLines = $creditNoteLines;
         return $this;

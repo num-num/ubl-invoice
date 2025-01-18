@@ -2,18 +2,24 @@
 
 namespace NumNum\UBL;
 
-use Sabre\Xml\Writer;
-use Sabre\Xml\XmlSerializable;
+use Carbon\Carbon;
 use DateTime;
 
-class PaymentMeans implements XmlSerializable
+use function Sabre\Xml\Deserializer\keyValue;
+
+use Sabre\Xml\Reader;
+use Sabre\Xml\Writer;
+use Sabre\Xml\XmlDeserializable;
+use Sabre\Xml\XmlSerializable;
+
+class PaymentMeans implements XmlSerializable, XmlDeserializable
 {
     public $xmlTagName = 'PaymentMeans';
     private $paymentMeansCode = UNCL4461::INSTRUMENT_NOT_DEFINED;
     private $paymentMeansCodeAttributes = [
-        'listID' => 'UN/ECE 4461',
+        'listID'   => 'UN/ECE 4461',
         'listName' => 'Payment Means',
-        'listURI' => 'http://docs.oasis-open.org/ubl/os-UBL-2.0-update/cl/gc/default/PaymentMeansCode-2.0.gc'];
+        'listURI'  => 'http://docs.oasis-open.org/ubl/os-UBL-2.0-update/cl/gc/default/PaymentMeansCode-2.0.gc'];
     private $paymentDueDate;
     private $instructionId;
     private $instructionNote;
@@ -30,9 +36,9 @@ class PaymentMeans implements XmlSerializable
 
     /**
      * @param string $paymentMeansCode
-     * @return PaymentMeans
+     * @return static
      */
-    public function setPaymentMeansCode(?string $paymentMeansCode, $attributes = null): PaymentMeans
+    public function setPaymentMeansCode(?string $paymentMeansCode, $attributes = null)
     {
         $this->paymentMeansCode = $paymentMeansCode;
         if (isset($attributes)) {
@@ -51,9 +57,9 @@ class PaymentMeans implements XmlSerializable
 
     /**
      * @param DateTime $paymentDueDate
-     * @return PaymentMeans
+     * @return static
      */
-    public function setPaymentDueDate(?DateTime $paymentDueDate): PaymentMeans
+    public function setPaymentDueDate(?DateTime $paymentDueDate)
     {
         $this->paymentDueDate = $paymentDueDate;
         return $this;
@@ -69,9 +75,9 @@ class PaymentMeans implements XmlSerializable
 
     /**
      * @param string $instructionId
-     * @return PaymentMeans
+     * @return static
      */
-    public function setInstructionId(?string $instructionId): PaymentMeans
+    public function setInstructionId(?string $instructionId)
     {
         $this->instructionId = $instructionId;
         return $this;
@@ -87,9 +93,9 @@ class PaymentMeans implements XmlSerializable
 
     /**
      * @param string $instructionNote
-     * @return PaymentMeans
+     * @return static
      */
-    public function setInstructionNote(?string $instructionNote): PaymentMeans
+    public function setInstructionNote(?string $instructionNote)
     {
         $this->instructionNote = $instructionNote;
         return $this;
@@ -105,9 +111,9 @@ class PaymentMeans implements XmlSerializable
 
     /**
      * @param string $paymentId
-     * @return PaymentMeans
+     * @return static
      */
-    public function setPaymentId(?string $paymentId): PaymentMeans
+    public function setPaymentId(?string $paymentId)
     {
         $this->paymentId = $paymentId;
         return $this;
@@ -123,9 +129,9 @@ class PaymentMeans implements XmlSerializable
 
     /**
      * @param mixed $payeeFinancialAccount
-     * @return PaymentMeans
+     * @return static
      */
-    public function setPayeeFinancialAccount(?PayeeFinancialAccount $payeeFinancialAccount): PaymentMeans
+    public function setPayeeFinancialAccount(?PayeeFinancialAccount $payeeFinancialAccount)
     {
         $this->payeeFinancialAccount = $payeeFinancialAccount;
         return $this;
@@ -134,8 +140,8 @@ class PaymentMeans implements XmlSerializable
     public function xmlSerialize(Writer $writer): void
     {
         $writer->write([
-            'name' => Schema::CBC . 'PaymentMeansCode',
-            'value' => $this->paymentMeansCode,
+            'name'       => Schema::CBC . 'PaymentMeansCode',
+            'value'      => $this->paymentMeansCode,
             'attributes' => $this->paymentMeansCodeAttributes
         ]);
 
@@ -168,5 +174,23 @@ class PaymentMeans implements XmlSerializable
                 Schema::CAC . 'PayeeFinancialAccount' => $this->getPayeeFinancialAccount()
             ]);
         }
+    }
+
+    /**
+     * The xmlDeserialize method is called during xml reading.
+     * @param Reader $xml
+     * @return static
+     */
+    public static function xmlDeserialize(Reader $reader)
+    {
+        $keyValues = keyValue($reader);
+
+        return (new static())
+            ->setPaymentMeansCode($keyValues[Schema::CBC . 'PaymentMeansCode'] ?? null)
+            ->setPaymentDueDate(isset($keyValues[Schema::CBC . 'PaymentDueDate']) ? Carbon::parse($keyValues[Schema::CBC . 'PaymentDueDate'])->toDateTime() : null)
+            ->setInstructionId($keyValues[Schema::CBC . 'InstructionID'] ?? null)
+            ->setInstructionNote($keyValues[Schema::CBC . 'InstructionNote'] ?? null)
+            ->setPaymentId($keyValues[Schema::CBC . 'PaymentID'] ?? null)
+            ->setPayeeFinancialAccount($keyValues[Schema::CAC . 'PayeeFinancialAccount'] ?? null);
     }
 }

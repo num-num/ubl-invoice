@@ -2,11 +2,17 @@
 
 namespace NumNum\UBL;
 
+use Carbon\Carbon;
 use DateTime;
+
+use function Sabre\Xml\Deserializer\keyValue;
+
+use Sabre\Xml\Reader;
 use Sabre\Xml\Writer;
+use Sabre\Xml\XmlDeserializable;
 use Sabre\Xml\XmlSerializable;
 
-class OrderReference implements XmlSerializable
+class OrderReference implements XmlSerializable, XmlDeserializable
 {
     private $id;
     private $salesOrderId;
@@ -22,9 +28,9 @@ class OrderReference implements XmlSerializable
 
     /**
      * @param string $id
-     * @return OrderReference
+     * @return static
      */
-    public function setId(string $id): OrderReference
+    public function setId(string $id)
     {
         $this->id = $id;
         return $this;
@@ -48,9 +54,9 @@ class OrderReference implements XmlSerializable
 
     /**
      * @param DateTime $issueDate
-     * @return OrderReference
+     * @return static
      */
-    public function setIssueDate(DateTime $issueDate): OrderReference
+    public function setIssueDate(?DateTime $issueDate)
     {
         $this->issueDate = $issueDate;
         return $this;
@@ -58,9 +64,9 @@ class OrderReference implements XmlSerializable
 
     /**
      * @param string $salesOrderId
-     * @return OrderReference
+     * @return static
      */
-    public function setSalesOrderId(string $salesOrderId): OrderReference
+    public function setSalesOrderId(?string $salesOrderId)
     {
         $this->salesOrderId = $salesOrderId;
         return $this;
@@ -85,5 +91,21 @@ class OrderReference implements XmlSerializable
                 Schema::CBC . 'IssueDate' => $this->issueDate->format('Y-m-d'),
             ]);
         }
+    }
+
+    /**
+     * The xmlDeserialize method is called during xml reading.
+     * @param Reader $xml
+     * @return static
+     */
+    public static function xmlDeserialize(Reader $reader)
+    {
+        $keyValues = keyValue($reader);
+
+        return (new static())
+            ->setId($keyValues[Schema::CBC . 'ID'] ?? null)
+            ->setIssueDate(isset($keyValues[Schema::CBC . 'IssueDate']) ? Carbon::parse($keyValues[Schema::CBC . 'IssueDate'])->toDateTime() : null)
+            ->setSalesOrderId($keyValues[Schema::CBC . 'SalesOrderID'] ?? null)
+        ;
     }
 }

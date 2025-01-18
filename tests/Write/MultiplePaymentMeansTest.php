@@ -1,13 +1,13 @@
 <?php
 
-namespace NumNum\UBL\Tests;
+namespace NumNum\UBL\Tests\Write;
 
 use PHPUnit\Framework\TestCase;
 
 /**
  * Test an UBL2.1 invoice document
  */
-class SimpleInvoiceTest extends TestCase
+class MultiplePaymentMeansTest extends TestCase
 {
     private $schema = 'http://docs.oasis-open.org/ubl/os-UBL-2.1/xsd/maindoc/UBL-Invoice-2.1.xsd';
 
@@ -76,17 +76,13 @@ class SimpleInvoiceTest extends TestCase
         // Invoice Line(s)
         $invoiceLines = [];
 
-        $orderLineReference = (new \NumNum\UBL\OrderLineReference())
-            ->setLineId('#ABC123');
-
         $invoiceLines[] = (new \NumNum\UBL\InvoiceLine())
             ->setId(0)
             ->setItem($productItem)
             ->setInvoicePeriod($invoicePeriod)
             ->setPrice($price)
             ->setTaxTotal($lineTaxTotal)
-            ->setInvoicedQuantity(1)
-            ->setOrderLineReference($orderLineReference);
+            ->setInvoicedQuantity(1);
 
         $invoiceLines[] = (new \NumNum\UBL\InvoiceLine())
             ->setId(0)
@@ -95,8 +91,7 @@ class SimpleInvoiceTest extends TestCase
             ->setPrice($price)
             ->setAccountingCost('Product 123')
             ->setTaxTotal($lineTaxTotal)
-            ->setInvoicedQuantity(1)
-            ->setOrderLineReference($orderLineReference);
+            ->setInvoicedQuantity(1);
 
         $invoiceLines[] = (new \NumNum\UBL\InvoiceLine())
             ->setId(0)
@@ -105,8 +100,7 @@ class SimpleInvoiceTest extends TestCase
             ->setPrice($price)
             ->setAccountingCostCode('Product 123')
             ->setTaxTotal($lineTaxTotal)
-            ->setInvoicedQuantity(1)
-            ->setOrderLineReference($orderLineReference);
+            ->setInvoicedQuantity(1);
 
 
         // Total Taxes
@@ -126,14 +120,35 @@ class SimpleInvoiceTest extends TestCase
             ->addTaxSubTotal($taxSubTotal)
             ->setTaxAmount(2.1);
 
+        $paymentMeans = [];
+
+        $payeeFinancialAccount = (new \NumNum\UBL\PayeeFinancialAccount())->setId('RO123456789012345');
+        $paymentMeans[] = (new \NumNum\UBL\PaymentMeans())
+            ->setPaymentMeansCode(31)
+            ->setPaymentDueDate(new \DateTime())
+            ->setPayeeFinancialAccount($payeeFinancialAccount);
+
+        $payeeFinancialAccount = (new \NumNum\UBL\PayeeFinancialAccount())->setId('RO544456789067890');
+        $paymentMeans[] = (new \NumNum\UBL\PaymentMeans())
+            ->setPaymentMeansCode(31)
+            ->setPaymentDueDate(new \DateTime())
+            ->setPayeeFinancialAccount($payeeFinancialAccount);
+
+        $accountingSupplierParty = (new \NumNum\UBL\AccountingParty())
+            ->setParty($supplierCompany);
+
+        $accountingCustomerParty = (new \NumNum\UBL\AccountingParty())
+            ->setSupplierAssignedAccountID('10001')
+            ->setParty($clientCompany);
+
         // Invoice object
         $invoice = (new \NumNum\UBL\Invoice())
             ->setId(1234)
             ->setCopyIndicator(false)
             ->setIssueDate(new \DateTime())
-            ->setAccountingSupplierParty($supplierCompany)
-            ->setAccountingCustomerParty($clientCompany)
-            ->setSupplierAssignedAccountID('10001')
+            ->setAccountingSupplierParty($accountingSupplierParty)
+            ->setAccountingCustomerParty($accountingCustomerParty)
+            ->setPaymentMeans($paymentMeans)
             ->setInvoiceLines($invoiceLines)
             ->setLegalMonetaryTotal($legalMonetaryTotal)
             ->setTaxTotal($taxTotal);
@@ -148,7 +163,7 @@ class SimpleInvoiceTest extends TestCase
         $dom = new \DOMDocument();
         $dom->loadXML($outputXMLString);
 
-        $dom->save('./tests/SimpleInvoiceTest.xml');
+        $dom->save('./tests/MultiplePaymentMeansTest.xml');
 
         $this->assertEquals(true, $dom->schemaValidate($this->schema));
     }

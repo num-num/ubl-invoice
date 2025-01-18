@@ -2,14 +2,19 @@
 
 namespace NumNum\UBL;
 
-use Sabre\Xml\Writer;
 use InvalidArgumentException;
+
+use function Sabre\Xml\Deserializer\keyValue;
+
+use Sabre\Xml\Reader;
+use Sabre\Xml\Writer;
+use Sabre\Xml\XmlDeserializable;
 use Sabre\Xml\XmlSerializable;
 
 /**
  * @see https://docs.peppol.eu/poacc/billing/3.0/syntax/ubl-invoice/cac-InvoiceLine/cac-OrderLineReference/
  */
-class OrderLineReference implements XmlSerializable
+class OrderLineReference implements XmlSerializable, XmlDeserializable
 {
     private $lineId;
 
@@ -23,9 +28,9 @@ class OrderLineReference implements XmlSerializable
 
     /**
      * @param string $lineId
-     * @return OrderLineReference
+     * @return static
      */
-    public function setLineId(?string $lineId): OrderLineReference
+    public function setLineId(?string $lineId)
     {
         $this->lineId = $lineId;
         return $this;
@@ -51,5 +56,19 @@ class OrderLineReference implements XmlSerializable
         $writer->write([
             Schema::CBC . 'LineID' => $this->lineId
         ]);
+    }
+
+    /**
+     * The xmlDeserialize method is called during xml reading.
+     * @param Reader $xml
+     * @return static
+     */
+    public static function xmlDeserialize(Reader $reader)
+    {
+        $keyValues = keyValue($reader);
+
+        return (new static())
+            ->setLineId($keyValues[Schema::CBC . 'LineID'] ?? null)
+        ;
     }
 }

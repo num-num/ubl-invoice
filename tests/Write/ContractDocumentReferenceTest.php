@@ -1,15 +1,15 @@
 <?php
 
-namespace NumNum\UBL\Tests;
+namespace NumNum\UBL\Tests\Write;
 
 use PHPUnit\Framework\TestCase;
 
 /**
- * Test an UBL2.1 credit note document
+ * Test an UBL2.2 invoice document
  */
-class BillingReferenceCreditNoteTest extends TestCase
+class ContractDocumentReferenceTest extends TestCase
 {
-    private $schema = 'http://docs.oasis-open.org/ubl/os-UBL-2.1/xsd/maindoc/UBL-CreditNote-2.1.xsd';
+    private $schema = 'http://docs.oasis-open.org/ubl/os-UBL-2.2/xsd/maindoc/UBL-Invoice-2.2.xsd';
 
     /** @test */
     public function testIfXMLIsValid()
@@ -48,9 +48,7 @@ class BillingReferenceCreditNoteTest extends TestCase
         // Product
         $productItem = (new \NumNum\UBL\Item())
             ->setName('Product Name')
-            ->setDescription('Product Description')
-            ->setSellersItemIdentification('SELLERID')
-            ->setBuyersItemIdentification('BUYERID');
+            ->setDescription('Product Description');
 
         // Price
         $price = (new \NumNum\UBL\Price())
@@ -63,14 +61,14 @@ class BillingReferenceCreditNoteTest extends TestCase
             ->setTaxAmount(2.1);
 
         // Invoice Line(s)
-        $creditNoteLine = (new \NumNum\UBL\CreditNoteLine())
+        $invoiceLine = (new \NumNum\UBL\InvoiceLine())
             ->setId(0)
             ->setItem($productItem)
             ->setPrice($price)
             ->setTaxTotal($lineTaxTotal)
             ->setInvoicedQuantity(1);
 
-        $creditNoteLines = [$creditNoteLine];
+        $invoiceLines = [$invoiceLine];
 
         // Total Taxes
         $taxCategory = (new \NumNum\UBL\TaxCategory())
@@ -88,36 +86,47 @@ class BillingReferenceCreditNoteTest extends TestCase
             ->addTaxSubTotal($taxSubTotal)
             ->setTaxAmount(2.1);
 
-        $billingReference = (new \NumNum\UBL\BillingReference())
-            ->setInvoiceDocumentReference((new \NumNum\UBL\InvoiceDocumentReference())
-                    ->setOriginalInvoiceId(1234)
-                    ->setIssueDate(new \DateTime()));
+        $contractDocumentReference = (new \NumNum\UBL\ContractDocumentReference())
+            ->setId("123Test");
 
+        $invoicePeriod = (new \NumNum\UBL\InvoicePeriod())
+            ->setStartDate(new \DateTime('-31 days'))
+            ->setEndDate(new \DateTime());
+
+        $accountingSupplierParty = (new \NumNum\UBL\AccountingParty())
+            ->setParty($supplierCompany);
+
+        $accountingCustomerParty = (new \NumNum\UBL\AccountingParty())
+            ->setParty($clientCompany);
 
         // Invoice object
-        $creditNote = (new \NumNum\UBL\CreditNote())
+        $invoice = (new \NumNum\UBL\Invoice())
+            ->setUBLVersionID('2.2')
             ->setId(1234)
             ->setCopyIndicator(false)
             ->setIssueDate(new \DateTime())
-            ->setAccountingSupplierParty($supplierCompany)
-            ->setAccountingCustomerParty($clientCompany)
-            ->setBillingReference($billingReference)
-            ->setCreditNoteLines($creditNoteLines)
+            ->setInvoiceTypeCode(\NumNum\UBL\InvoiceTypeCode::INVOICE)
+            ->setDueDate(new \DateTime())
+            ->setAccountingSupplierParty($accountingSupplierParty)
+            ->setAccountingCustomerParty($accountingCustomerParty)
+            ->setInvoiceLines($invoiceLines)
             ->setLegalMonetaryTotal($legalMonetaryTotal)
             ->setTaxTotal($taxTotal)
-            ->setInvoiceTypeCode(\NumNum\UBL\InvoiceTypeCode::CREDIT_NOTE);
+            // ->setContractDocumentReference($contractDocumentReference)
+            ->setBuyerReference("SomeReference")
+            ->setInvoicePeriod($invoicePeriod);
 
         // Test created object
         // Use \NumNum\UBL\Generator to generate an XML string
         $generator = new \NumNum\UBL\Generator();
-        $outputXMLString = $generator->creditNote($creditNote);
+        $outputXMLString = $generator->invoice($invoice);
 
         // Create PHP Native DomDocument object, that can be
         // used to validate the generate XML
         $dom = new \DOMDocument();
         $dom->loadXML($outputXMLString);
 
-        $dom->save('./tests/SimpleCreditNoteTest.xml');
+        $dom->save('./tests/ContractDocumentReferenceTest.xml');
 
         $this->assertEquals(true, $dom->schemaValidate($this->schema));
     }

@@ -3,10 +3,15 @@
 namespace NumNum\UBL;
 
 use InvalidArgumentException;
+
+use function Sabre\Xml\Deserializer\mixedContent;
+
+use Sabre\Xml\Reader;
 use Sabre\Xml\Writer;
+use Sabre\Xml\XmlDeserializable;
 use Sabre\Xml\XmlSerializable;
 
-class TaxCategory implements XmlSerializable
+class TaxCategory implements XmlSerializable, XmlDeserializable
 {
     private $id;
     private $idAttributes = [
@@ -41,9 +46,9 @@ class TaxCategory implements XmlSerializable
     /**
      * @param string $id
      * @param array $attributes
-     * @return TaxCategory
+     * @return static
      */
-    public function setId(?string $id, $attributes = null): TaxCategory
+    public function setId(?string $id, $attributes = null)
     {
         $this->id = $id;
         if (isset($attributes)) {
@@ -62,9 +67,9 @@ class TaxCategory implements XmlSerializable
 
     /**
      * @param string $name
-     * @return TaxCategory
+     * @return static
      */
-    public function setName(?string $name): TaxCategory
+    public function setName(?string $name)
     {
         $this->name = $name;
         return $this;
@@ -80,9 +85,9 @@ class TaxCategory implements XmlSerializable
 
     /**
      * @param string $percent
-     * @return TaxCategory
+     * @return static
      */
-    public function setPercent(?float $percent): TaxCategory
+    public function setPercent(?float $percent)
     {
         $this->percent = $percent;
         return $this;
@@ -98,9 +103,9 @@ class TaxCategory implements XmlSerializable
 
     /**
      * @param TaxScheme $taxScheme
-     * @return TaxCategory
+     * @return static
      */
-    public function setTaxScheme(?TaxScheme $taxScheme): TaxCategory
+    public function setTaxScheme(?TaxScheme $taxScheme)
     {
         $this->taxScheme = $taxScheme;
         return $this;
@@ -116,9 +121,9 @@ class TaxCategory implements XmlSerializable
 
     /**
      * @param string $taxExemptionReason
-     * @return TaxCategory
+     * @return static
      */
-    public function setTaxExemptionReason(?string $taxExemptionReason): TaxCategory
+    public function setTaxExemptionReason(?string $taxExemptionReason)
     {
         $this->taxExemptionReason = $taxExemptionReason;
         return $this;
@@ -134,9 +139,9 @@ class TaxCategory implements XmlSerializable
 
     /**
      * @param string $taxExemptionReason
-     * @return TaxCategory
+     * @return static
      */
-    public function setTaxExemptionReasonCode(?string $taxExemptionReasonCode): TaxCategory
+    public function setTaxExemptionReasonCode(?string $taxExemptionReasonCode)
     {
         $this->taxExemptionReasonCode = $taxExemptionReasonCode;
         return $this;
@@ -171,17 +176,17 @@ class TaxCategory implements XmlSerializable
 
         $writer->write([
             [
-                'name' => Schema::CBC . 'ID',
-                'value' => $this->getId(),
+                'name'       => Schema::CBC . 'ID',
+                'value'      => $this->getId(),
                 'attributes' => $this->idAttributes,
             ],
         ]);
-
         if ($this->name !== null) {
             $writer->write([
                 Schema::CBC . 'Name' => $this->name,
             ]);
         }
+
         $writer->write([
             Schema::CBC . 'Percent' => number_format($this->percent, 2, '.', ''),
         ]);
@@ -191,13 +196,11 @@ class TaxCategory implements XmlSerializable
                 Schema::CBC . 'TaxExemptionReasonCode' => $this->taxExemptionReasonCode,
             ]);
         }
-
         if ($this->taxExemptionReason !== null) {
             $writer->write([
                 Schema::CBC . 'TaxExemptionReason' => $this->taxExemptionReason,
             ]);
         }
-
         if ($this->taxScheme !== null) {
             $writer->write([Schema::CAC . 'TaxScheme' => $this->taxScheme]);
         } else {
@@ -205,5 +208,33 @@ class TaxCategory implements XmlSerializable
                 Schema::CAC . 'TaxScheme' => null,
             ]);
         }
+    }
+
+
+
+    /**
+     * The xmlDeserialize method is called during xml reading.
+     * @param Reader $xml
+     * @return static
+     */
+    public static function xmlDeserialize(Reader $reader)
+    {
+        $mixedContent = mixedContent($reader);
+
+        $idTag = array_values(array_filter($mixedContent, fn ($element) => $element['name'] == Schema::CBC.'ID'))[0] ?? null;
+        $nameTag = array_values(array_filter($mixedContent, fn ($element) => $element['name'] == Schema::CBC.'Name'))[0] ?? null;
+        $percentTag = array_values(array_filter($mixedContent, fn ($element) => $element['name'] == Schema::CBC.'Percent'))[0] ?? null;
+        $taxSchemeTag = array_values(array_filter($mixedContent, fn ($element) => $element['name'] == Schema::CAC.'TaxScheme'))[0] ?? null;
+        $taxExemptionReasonTag = array_values(array_filter($mixedContent, fn ($element) => $element['name'] == Schema::CAC.'TaxExemptionReason'))[0] ?? null;
+        $taxExemptionReasonCodeTag = array_values(array_filter($mixedContent, fn ($element) => $element['name'] == Schema::CAC.'TaxExemptionReasonCode'))[0] ?? null;
+
+        return (new static())
+            ->setId($idTag['value'] ?? null, $idTag['attributes'] ?? null)
+            ->setName($nameTag['value'] ?? null)
+            ->setPercent(isset($percentTag['value']) ? floatval($percentTag['value']) : null)
+            ->setTaxScheme(isset($taxSchemeTag['value']) ? $taxSchemeTag['value'] : null)
+            ->setTaxExemptionReason($taxExemptionReasonTag['value'] ?? null)
+            ->setTaxExemptionReasonCode($taxExemptionReasonCodeTag['value'] ?? null)
+        ;
     }
 }

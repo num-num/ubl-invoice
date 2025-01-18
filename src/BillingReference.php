@@ -3,6 +3,10 @@
 namespace NumNum\UBL;
 
 use InvalidArgumentException;
+
+use function Sabre\Xml\Deserializer\keyValue;
+
+use Sabre\Xml\Reader;
 use Sabre\Xml\Writer;
 use Sabre\Xml\XmlSerializable;
 
@@ -21,9 +25,9 @@ class BillingReference implements XmlSerializable
 
     /**
      *
-     * @return BillingReference
+     * @return static
      */
-    public function setInvoiceDocumentReference($invoiceDocumentReference): BillingReference
+    public function setInvoiceDocumentReference($invoiceDocumentReference)
     {
         $this->invoiceDocumentReference = $invoiceDocumentReference;
         return $this;
@@ -52,5 +56,19 @@ class BillingReference implements XmlSerializable
         $this->validate();
 
         $writer->write([Schema::CAC . 'InvoiceDocumentReference' => $this->invoiceDocumentReference]);
+    }
+
+    /**
+     * The xmlDeserialize method is called during xml reading.
+     * @param Reader $xml
+     * @return InvoiceLine
+     */
+    public static function xmlDeserialize(Reader $reader)
+    {
+        $mixedContent = keyValue($reader);
+
+        return (new static())
+            ->setInvoiceDocumentReference($mixedContent[Schema::CAC . 'InvoiceDocumentReference'] ?? null)
+        ;
     }
 }

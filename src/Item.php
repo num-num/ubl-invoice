@@ -2,10 +2,14 @@
 
 namespace NumNum\UBL;
 
+use function Sabre\Xml\Deserializer\mixedContent;
+
+use Sabre\Xml\Reader;
 use Sabre\Xml\Writer;
+use Sabre\Xml\XmlDeserializable;
 use Sabre\Xml\XmlSerializable;
 
-class Item implements XmlSerializable
+class Item implements XmlSerializable, XmlDeserializable
 {
     private $description;
     private $name;
@@ -25,9 +29,9 @@ class Item implements XmlSerializable
 
     /**
      * @param string $description
-     * @return Item
+     * @return static
      */
-    public function setDescription(?string $description): Item
+    public function setDescription(?string $description)
     {
         $this->description = $description;
         return $this;
@@ -43,9 +47,9 @@ class Item implements XmlSerializable
 
     /**
      * @param mixed $name
-     * @return Item
+     * @return static
      */
-    public function setName(?string $name): Item
+    public function setName(?string $name)
     {
         $this->name = $name;
         return $this;
@@ -61,9 +65,9 @@ class Item implements XmlSerializable
 
     /**
      * @param mixed $sellersItemIdentification
-     * @return Item
+     * @return static
      */
-    public function setSellersItemIdentification(?string $sellersItemIdentification): Item
+    public function setSellersItemIdentification(?string $sellersItemIdentification)
     {
         $this->sellersItemIdentification = $sellersItemIdentification;
         return $this;
@@ -79,9 +83,9 @@ class Item implements XmlSerializable
 
     /**
      * @param mixed $standardItemIdentification
-     * @return Item
+     * @return static
      */
-    public function setStandardItemIdentification(?string $standardItemIdentification, $attributes = null): Item
+    public function setStandardItemIdentification(?string $standardItemIdentification, $attributes = null)
     {
         $this->standardItemIdentification = $standardItemIdentification;
         if (isset($attributes)) {
@@ -100,9 +104,9 @@ class Item implements XmlSerializable
 
     /**
      * @param mixed $buyersItemIdentification
-     * @return Item
+     * @return static
      */
-    public function setBuyersItemIdentification(?string $buyersItemIdentification): Item
+    public function setBuyersItemIdentification(?string $buyersItemIdentification)
     {
         $this->buyersItemIdentification = $buyersItemIdentification;
         return $this;
@@ -118,9 +122,9 @@ class Item implements XmlSerializable
 
     /**
      * @param ClassifiedTaxCategory $classifiedTaxCategory
-     * @return Item
+     * @return static
      */
-    public function setClassifiedTaxCategory(?ClassifiedTaxCategory $classifiedTaxCategory): Item
+    public function setClassifiedTaxCategory(?ClassifiedTaxCategory $classifiedTaxCategory)
     {
         $this->classifiedTaxCategory = $classifiedTaxCategory;
         return $this;
@@ -164,8 +168,8 @@ class Item implements XmlSerializable
             $writer->write([
                 Schema::CAC . 'StandardItemIdentification' => [
                     Schema::CBC . 'ID' => [
-                    'value' => $this->standardItemIdentification,
-                    'attributes' => $this->standardItemIdentificationAttributes
+                        'value'      => $this->standardItemIdentification,
+                        'attributes' => $this->standardItemIdentificationAttributes
                     ]
                 ]
             ]);
@@ -176,5 +180,37 @@ class Item implements XmlSerializable
                 Schema::CAC . 'ClassifiedTaxCategory' => $this->getClassifiedTaxCategory()
             ]);
         }
+    }
+
+    /**
+     * The xmlDeserialize method is called during xml reading.
+     * @param Reader $xml
+     * @return static
+     */
+    public static function xmlDeserialize(Reader $reader)
+    {
+        $mixedContent = mixedContent($reader);
+
+        $descriptionTag = array_values(array_filter($mixedContent, fn ($element) => $element['name'] === Schema::CBC . 'Description'))[0] ?? null;
+        $nameTag = array_values(array_filter($mixedContent, fn ($element) => $element['name'] === Schema::CBC . 'Name'))[0] ?? null;
+        $classifiedTaxCategoryTag = array_values(array_filter($mixedContent, fn ($element) => $element['name'] === Schema::CAC . 'ClassifiedTaxCategory'))[0] ?? null;
+
+        $buyersItemIdentificationTag = array_values(array_filter($mixedContent, fn ($element) => $element['name'] === Schema::CAC . 'BuyersItemIdentification'))[0] ?? null;
+        $buyersItemIdentificationIdTag = array_values(array_filter($buyersItemIdentificationTag['value'] ?? [], fn ($element) => $element['name'] === Schema::CBC . 'ID'))[0] ?? null;
+
+        $sellersItemIdentificationTag = array_values(array_filter($mixedContent, fn ($element) => $element['name'] === Schema::CAC . 'SellersItemIdentification'))[0] ?? null;
+        $sellersItemIdentificationIdTag = array_values(array_filter($sellersItemIdentificationTag['value'] ?? [], fn ($element) => $element['name'] === Schema::CBC . 'ID'))[0] ?? null;
+
+        $standardItemIdentificationTag = array_values(array_filter($mixedContent, fn ($element) => $element['name'] === Schema::CAC . 'StandardItemIdentification'))[0] ?? null;
+        $standardItemIdentificationIdTag = array_values(array_filter($standardItemIdentificationTag['value'] ?? [], fn ($element) => $element['name'] === Schema::CBC . 'ID'))[0] ?? null;
+
+        return (new static())
+            ->setDescription($descriptionTag['value'] ?? null)
+            ->setName($nameTag['value'] ?? null)
+            ->setBuyersItemIdentification($buyersItemIdentificationIdTag['value'] ?? null)
+            ->setSellersItemIdentification($sellersItemIdentificationIdTag['value'] ?? null)
+            ->setStandardItemIdentification($standardItemIdentificationIdTag['value'] ?? null, $standardItemIdentificationIdTag['attributes'] ?? null)
+            ->setClassifiedTaxCategory($classifiedTaxCategoryTag['value'] ?? null)
+        ;
     }
 }
