@@ -137,7 +137,7 @@ class Address implements XmlSerializable, XmlDeserializable
 
     /**
      * @param Country $country
-     * @return Country
+     * @return static
      */
     public function setCountry(?Country $country)
     {
