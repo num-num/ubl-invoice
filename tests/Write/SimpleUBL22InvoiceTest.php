@@ -67,7 +67,7 @@ class SimpleUBL22InvoiceTest extends TestCase
             ->setId(0)
             ->setItem($productItem)
             ->setUnitCode('C62')
-            ->setUnitCodeListID('UNECERec20')
+            ->setUnitCodeListId('UNECERec20')
             ->setPrice($price)
             ->setTaxTotal($lineTaxTotal)
             ->setInvoicedQuantity(1);
@@ -98,7 +98,7 @@ class SimpleUBL22InvoiceTest extends TestCase
 
         // Invoice object
         $invoice = (new \NumNum\UBL\Invoice())
-            ->setUBLVersionID('2.2')
+            ->setUBLVersionId('2.2')
             ->setId(1234)
             ->setCopyIndicator(false)
             ->setIssueDate(new \DateTime())

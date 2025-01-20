@@ -136,7 +136,7 @@ class SimpleInvoiceWithFilePathPdfTest extends TestCase
             ->setParty($supplierCompany);
 
         $accountingCustomerParty = (new \NumNum\UBL\AccountingParty())
-            ->setSupplierAssignedAccountID('10001')
+            ->setSupplierAssignedAccountId('10001')
             ->setParty($clientCompany);
 
         // Invoice object

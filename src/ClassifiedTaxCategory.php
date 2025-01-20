@@ -107,7 +107,7 @@ class ClassifiedTaxCategory implements XmlSerializable, XmlDeserializable
     /**
      * @return string
      */
-    public function getSchemeID(): ?string
+    public function getSchemeId(): ?string
     {
         return $this->schemeID;
     }
@@ -116,7 +116,7 @@ class ClassifiedTaxCategory implements XmlSerializable, XmlDeserializable
      * @param string $id
      * @return static
      */
-    public function setSchemeID(?string $id)
+    public function setSchemeId(?string $id)
     {
         $this->schemeID = $id;
         return $this;
@@ -269,7 +269,7 @@ class ClassifiedTaxCategory implements XmlSerializable, XmlDeserializable
             ->setTaxScheme($taxSchemeTag['value'] ?? null)
             ->setTaxExemptionReason($taxExemptionReasonTag['value'] ?? null)
             ->setTaxExemptionReasonCode($taxExemptionReasonCodeTag['value'] ?? null)
-            ->setSchemeID($idTag['attributes']['schemeID'] ?? null)
+            ->setSchemeId($idTag['attributes']['schemeID'] ?? null)
             ->setSchemeName($idTag['attributes']['schemeName'] ?? null)
         ;
     }

@@ -160,7 +160,7 @@ class EN16931Test extends TestCase
 
         // Invoice object
         $invoice = (new \NumNum\UBL\Invoice())
-            ->setCustomizationID('urn:cen.eu:en16931:2017')
+            ->setCustomizationId('urn:cen.eu:en16931:2017')
             ->setId(1234)
             ->setIssueDate(new \DateTime())
             ->setNote('invoice note')

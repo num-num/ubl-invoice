@@ -102,7 +102,7 @@ class PartyIdentificationSchemeNameTest extends TestCase
 
         // Invoice object
         $invoice = (new \NumNum\UBL\Invoice())
-            ->setUBLVersionID('2.2')
+            ->setUBLVersionId('2.2')
             ->setId(1234)
             ->setCopyIndicator(false)
             ->setIssueDate(new \DateTime())

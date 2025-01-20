@@ -50,7 +50,7 @@ class Invoice implements XmlSerializable, XmlDeserializable
     /**
      * @return string
      */
-    public function getUBLVersionID(): ?string
+    public function getUBLVersionId(): ?string
     {
         return $this->UBLVersionID;
     }
@@ -60,7 +60,7 @@ class Invoice implements XmlSerializable, XmlDeserializable
      *                             eg. '2.0', '2.1', '2.2', ...
      * @return static
      */
-    public function setUBLVersionID(?string $UBLVersionID)
+    public function setUBLVersionId(?string $UBLVersionID)
     {
         $this->UBLVersionID = $UBLVersionID;
         return $this;
@@ -88,7 +88,7 @@ class Invoice implements XmlSerializable, XmlDeserializable
      * @param mixed $customizationID
      * @return static
      */
-    public function setCustomizationID(?string $customizationID)
+    public function setCustomizationId(?string $customizationID)
     {
         $this->customizationID = $customizationID;
         return $this;
@@ -98,7 +98,7 @@ class Invoice implements XmlSerializable, XmlDeserializable
      * @param mixed $profileID
      * @return static
      */
-    public function setProfileID(?string $profileID)
+    public function setProfileId(?string $profileID)
     {
         $this->profileID = $profileID;
         return $this;
@@ -804,10 +804,10 @@ class Invoice implements XmlSerializable, XmlDeserializable
         $contractDocumentReferenceTag = array_values(array_filter($mixedContent, fn ($element) => $element['name'] === Schema::CAC . 'ContractDocumentReference'))[0] ?? null;
 
         return (new static())
-            ->setUBLVersionID($ublVersionIdTag['value'] ?? null)
+            ->setUBLVersionId($ublVersionIdTag['value'] ?? null)
             ->setId($idTag['value'] ?? null)
-            ->setCustomizationID($customizationIdTag['value'] ?? null)
-            ->setProfileID($profileIdTag['value'] ?? null)
+            ->setCustomizationId($customizationIdTag['value'] ?? null)
+            ->setProfileId($profileIdTag['value'] ?? null)
             ->setCopyIndicator($copyIndicatorTag['value'] ?? false)
             ->setIssueDate(Carbon::parse($issueDateTag['value'])->toDateTime())
             ->setDueDate(Carbon::parse($dueDateTag['value'] ?? null)->toDateTime())

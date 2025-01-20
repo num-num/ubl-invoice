@@ -17,7 +17,7 @@ class AccountingParty implements XmlSerializable, XmlDeserializable
     /**
      * @return string
      */
-    public function getSupplierAssignedAccountID(): ?string
+    public function getSupplierAssignedAccountId(): ?string
     {
         return $this->supplierAssignedAccountID;
     }
@@ -26,7 +26,7 @@ class AccountingParty implements XmlSerializable, XmlDeserializable
      * @param string $supplierAssignedAccountID
      * @return static
      */
-    public function setSupplierAssignedAccountID(?string $supplierAssignedAccountID)
+    public function setSupplierAssignedAccountId(?string $supplierAssignedAccountID)
     {
         $this->supplierAssignedAccountID = $supplierAssignedAccountID;
         return $this;
@@ -81,7 +81,7 @@ class AccountingParty implements XmlSerializable, XmlDeserializable
 
         return (new static())
             ->setParty($keyValues[Schema::CAC . 'Party'] ?? null)
-            ->setSupplierAssignedAccountID($keyValues[Schema::CBC . 'SupplierAssignedAccountID'] ?? null)
+            ->setSupplierAssignedAccountId($keyValues[Schema::CBC . 'SupplierAssignedAccountID'] ?? null)
         ;
     }
 }
