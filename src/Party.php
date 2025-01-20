@@ -3,6 +3,7 @@
 namespace NumNum\UBL;
 
 use function Sabre\Xml\Deserializer\keyValue;
+use function Sabre\Xml\Deserializer\mixedContent;
 
 use Sabre\Xml\Reader;
 use Sabre\Xml\Writer;
@@ -187,14 +188,24 @@ class Party implements XmlSerializable, XmlDeserializable
 
     /**
      * @param $endpointID
-     * @param int|string $schemeID See list at https://docs.peppol.eu/poacc/billing/3.0/codelist/eas/
+     * @param string|int $schemeID See list at https://docs.peppol.eu/poacc/billing/3.0/codelist/eas/ and use \NumNum\UBL\EASCode
      * @return static
      */
-    public function setEndpointID($endpointID, $schemeID)
+    public function setEndpointId($endpointID, $schemeID)
     {
         $this->endpointID = $endpointID;
         $this->endpointID_schemeID = $schemeID;
         return $this;
+    }
+
+    public function getEndpointId(): ?string
+    {
+        return $this->endpointID;
+    }
+
+    public function getEndpointIDSchemeId(): ?string
+    {
+        return $this->endpointID_schemeID;
     }
 
     /**
@@ -280,26 +291,33 @@ class Party implements XmlSerializable, XmlDeserializable
      */
     public static function xmlDeserialize(Reader $reader)
     {
-        $keyValues = keyValue($reader);
+        $mixedContent = mixedContent($reader);
 
-        // Add more complex logic due to the fact that Party + child Elements are nested
-        $childPartyName = $keyValues[Schema::CAC.'PartyName'] ?? null;
-        $childPartyNameName = array_values(array_filter($childPartyName ?? [], fn ($element) => $element['name'] == Schema::CBC . 'Name'))[0] ?? null;
+        $partyName = array_values(array_filter($mixedContent, fn ($element) => $element['name'] === Schema::CAC . 'PartyName'))[0] ?? null;
+        $partyNameName = array_values(array_filter($partyName['value'] ?? [], fn ($element) => $element['name'] == Schema::CBC . 'Name'))[0] ?? null;
 
-        $childPhysicalLocation = $keyValues[Schema::CAC.'PhysicalLocation'] ?? null;
-        $childPhysicalLocationAddress = array_values(array_filter($childPhysicalLocation ?? [], fn ($element) => $element['name'] == Schema::CAC . 'Address'))[0] ?? null;
+        $endpointId = array_values(array_filter($mixedContent, fn ($element) => $element['name'] === Schema::CBC . 'EndpointID'))[0] ?? null;
+        $postalAddress = array_values(array_filter($mixedContent, fn ($element) => $element['name'] === Schema::CAC . 'PostalAddress'))[0] ?? null;
+        $physicalLocation = array_values(array_filter($mixedContent, fn ($element) => $element['name'] === Schema::CAC . 'PhysicalLocation'))[0] ?? null;
+        $physicalLocationAddress = array_values(array_filter($physicalLocation['value'] ?? [], fn ($element) => $element['name'] === Schema::CAC . 'Address'))[0] ?? null;
+        $partyTaxScheme = array_values(array_filter($mixedContent, fn ($element) => $element['name'] === Schema::CAC . 'PartyTaxScheme'))[0] ?? null;
+        $partyLegalEntity = array_values(array_filter($mixedContent, fn ($element) => $element['name'] === Schema::CAC . 'PartyLegalEntity'))[0] ?? null;
+        $partyContact = array_values(array_filter($mixedContent, fn ($element) => $element['name'] === Schema::CAC . 'Contact'))[0] ?? null;
+
+        $partyIdentification = array_values(array_filter($mixedContent, fn ($element) => $element['name'] === Schema::CAC . 'PartyIdentification'))[0] ?? null;
+        $partyIdentificationId = array_values(array_filter($partyIdentification['value'] ?? [], fn ($element) => $element['name'] === Schema::CBC . 'ID'))[0] ?? null;
 
         return (new static())
-            ->setName($childPartyNameName['value'] ?? null)
-            ->setPostalAddress($keyValues[Schema::CAC . 'PostalAddress'] ?? null)
-            ->setPhysicalLocation($childPhysicalLocationAddress['value'] ?? null)
-            ->setPartyTaxScheme($childPartyTaxScheme['value'] ?? null)
-            ->setLegalEntity($keyValues[Schema::CAC.'PartyLegalEntity'] ?? null)
-            ->setContact($keyValues[Schema::CAC.'Contact'] ?? null)
-        // @todo PartyIdentificationId
-        //     ->setPartyIdentificationId($keyValues[Schema::CAC . 'PartyIdentification'][0][Schema::CBC . 'ID'] ?? null)
-        //     ->setPartyIdentificationSchemeId($keyValues[Schema::CAC . 'PartyIdentification'][0][Schema::CBC . 'ID']['attributes']['schemeID'] ?? null)
-        //     ->setPartyIdentificationSchemeName($keyValues[Schema::CAC . 'PartyIdentification'][0][Schema::CBC . 'ID']['attributes']['schemeName'] ?? null)
+            ->setName($partyNameName['value'] ?? null)
+            ->setPostalAddress($postalAddress['value'] ?? null)
+            ->setPhysicalLocation($physicalLocationAddress['value'] ?? null)
+            ->setPartyTaxScheme($partyTaxScheme['value'] ?? null)
+            ->setLegalEntity($partyLegalEntity['value'] ?? null)
+            ->setContact($partyContact['value'] ?? null)
+            ->setEndpointId($endpointId['value'] ?? null, $endpointId['attributes']['schemeID'] ?? null)
+            ->setPartyIdentificationId($partyIdentificationId['value'] ?? null)
+            ->setPartyIdentificationSchemeId($partyIdentificationId['attributes']['schemeID'] ?? null)
+            ->setPartyIdentificationSchemeName($partyIdentificationId['attributes']['schemeName'] ?? null)
         ;
     }
 }
