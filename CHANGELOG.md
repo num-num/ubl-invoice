@@ -12,6 +12,12 @@
 - `Invoice::getAccountingCustomerParty` now returns an `AccountingParty` instead of a `Party` object
 - `Invoice::setSupplierAssignedAccountID`/`Invoice::getSupplierAssignedAccountID` no longer exists and has moved to `AccountingParty::setSupplierAssignedAccountID`/`AccountingParty::getSupplierAssignedAccountID`
 - `Attachment::setFileStream` / `Attachment::getFileStream` to manually set the Attachment xml tag base 64 string content, has been renamed to `Attachment::setBase64Content` / `Attachment::getBase64Content`
+- Functions `setUBLVersionID`/`getUBLVersionID` have been renamed to `setUBLVersionId`/`getUBLVersionId`
+- Functions `setSupplierAssignedAccountID`/`getSupplierAssignedAccountID` have been renamed to `setSupplierAssignedAccountId`/`getSupplierAssignedAccountId`
+- Functions `setUnitCodeListID`/`getUnitCodeListID` have been renamed to `setUnitCodeListId`/`getUnitCodeListId`
+- Functions `setSchemeID`/`getSchemeID` have been renamed to `setSchemeId`/`getSchemeId`
+- Functions `setCustomizationID`/`getCustomizationID` have been renamed to `setCustomizationId`/`getCustomizationId`
+- Functions `setProfileID`/`getProfileID` have been renamed to `setProfileId`/`getProfileId`
 
 # Changelog for v1.18.1
 
