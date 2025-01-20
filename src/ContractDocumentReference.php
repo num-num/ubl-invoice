@@ -6,9 +6,10 @@ use function Sabre\Xml\Deserializer\keyValue;
 
 use Sabre\Xml\Reader;
 use Sabre\Xml\Writer;
+use Sabre\Xml\XmlDeserializable;
 use Sabre\Xml\XmlSerializable;
 
-class ContractDocumentReference implements XmlSerializable
+class ContractDocumentReference implements XmlSerializable, XmlDeserializable
 {
     private $id;
 

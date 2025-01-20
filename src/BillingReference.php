@@ -8,9 +8,10 @@ use function Sabre\Xml\Deserializer\keyValue;
 
 use Sabre\Xml\Reader;
 use Sabre\Xml\Writer;
+use Sabre\Xml\XmlDeserializable;
 use Sabre\Xml\XmlSerializable;
 
-class BillingReference implements XmlSerializable
+class BillingReference implements XmlSerializable, XmlDeserializable
 {
     private $invoiceDocumentReference;
 
@@ -61,7 +62,7 @@ class BillingReference implements XmlSerializable
     /**
      * The xmlDeserialize method is called during xml reading.
      * @param Reader $xml
-     * @return InvoiceLine
+     * @return static
      */
     public static function xmlDeserialize(Reader $reader)
     {

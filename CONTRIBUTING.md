@@ -41,11 +41,11 @@ $ composer phpstan
 
 ### A note on unit testing
 
-Although unit testing is included, this repository does not provide exhaustive unit testing for *all* possibilities the library offers. This is definitely a long-term goal. So please try to add unit tests for new functionality that you add.
+Although unit testing is included, this repository does not provide exhaustive unit testing for *all* possibilities the library offers. This is definitely a long-term goal. So please try to add read & write unit tests for new functionality that you add. This library uses PHPUnit for unit testing, combined with ParaTest to make the tests run in parallel.
 
 ### Running the unit tests
 
-To run the complete suite of unit tests
+To run the complete suite of unit tests.
 
 ```zsh
 $ cd ubl-invoice
@@ -56,5 +56,5 @@ To run a single unit test
 
 ```zsh
 $ cd ubl-invoice
-$ composer test tests/SimpleInvoiceTest.php
+$ composer test tests/Read/SimpleInvoiceTest.php
 ```
