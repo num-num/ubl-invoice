@@ -33,9 +33,11 @@ class FinancialInstitutionBranch implements XmlSerializable, XmlDeserializable
 
     public function xmlSerialize(Writer $writer): void
     {
-        $writer->write([
-            Schema::CBC . 'ID' => $this->id
-        ]);
+        if ($this->id !== null) {
+            $writer->write([
+                Schema::CBC . 'ID' => $this->id
+            ]);
+        }
     }
 
     /**
@@ -48,6 +50,6 @@ class FinancialInstitutionBranch implements XmlSerializable, XmlDeserializable
         $keyValues = keyValue($reader);
 
         return (new static())
-            ->setId($keyValues['ID']);
+            ->setId($keyValues['ID'] ?? null);
     }
 }

@@ -168,5 +168,4 @@ class Price implements XmlSerializable, XmlDeserializable
             ->setAllowanceCharge($allowanceChargeTag['value'] ?? null)
         ;
     }
-
 }
