@@ -35,7 +35,7 @@ class TaxTotal implements XmlSerializable, XmlDeserializable
     }
 
     /**
-     * @return array
+     * @return array<TaxSubTotal>
      */
     public function getTaxSubTotals(): array
     {

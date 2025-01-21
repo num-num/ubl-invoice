@@ -191,8 +191,14 @@ class Attachment implements XmlSerializable, XmlDeserializable
     {
         $mixedContent = mixedContent($reader);
 
-        return (new static())
+        $embeddedDocumentBinaryObject = array_values(array_filter($mixedContent, fn ($element) => $element['name'] === Schema::CBC . 'EmbeddedDocumentBinaryObject'))[0] ?? null;
 
+        return (new static())
+            ->setBase64Content(
+                $embeddedDocumentBinaryObject['value'] ?? null,
+                $embeddedDocumentBinaryObject['attributes']['filename'] ?? null,
+                $embeddedDocumentBinaryObject['attributes']['mimeCode'] ?? null
+            )
         ;
     }
 }
