@@ -5,6 +5,7 @@ namespace NumNum\UBL;
 use function Sabre\Xml\Deserializer\keyValue;
 use function Sabre\Xml\Deserializer\mixedContent;
 
+use Doctrine\Common\Collections\ArrayCollection;
 use Sabre\Xml\Reader;
 use Sabre\Xml\Writer;
 use Sabre\Xml\XmlDeserializable;
@@ -292,20 +293,22 @@ class Party implements XmlSerializable, XmlDeserializable
     public static function xmlDeserialize(Reader $reader)
     {
         $mixedContent = mixedContent($reader);
+        $collection = new ArrayCollection($mixedContent);
 
-        $partyName = array_values(array_filter($mixedContent, fn ($element) => $element['name'] === Schema::CAC . 'PartyName'))[0] ?? null;
-        $partyNameName = array_values(array_filter($partyName['value'] ?? [], fn ($element) => $element['name'] == Schema::CBC . 'Name'))[0] ?? null;
+        $partyName = ReaderHelper::getTag(Schema::CAC . 'PartyName', $collection);
+        $partyNameName = ReaderHelper::getTag(Schema::CBC . 'Name', new ArrayCollection($partyName['value'] ?? []));
 
-        $endpointId = array_values(array_filter($mixedContent, fn ($element) => $element['name'] === Schema::CBC . 'EndpointID'))[0] ?? null;
-        $postalAddress = array_values(array_filter($mixedContent, fn ($element) => $element['name'] === Schema::CAC . 'PostalAddress'))[0] ?? null;
-        $physicalLocation = array_values(array_filter($mixedContent, fn ($element) => $element['name'] === Schema::CAC . 'PhysicalLocation'))[0] ?? null;
-        $physicalLocationAddress = array_values(array_filter($physicalLocation['value'] ?? [], fn ($element) => $element['name'] === Schema::CAC . 'Address'))[0] ?? null;
-        $partyTaxScheme = array_values(array_filter($mixedContent, fn ($element) => $element['name'] === Schema::CAC . 'PartyTaxScheme'))[0] ?? null;
-        $partyLegalEntity = array_values(array_filter($mixedContent, fn ($element) => $element['name'] === Schema::CAC . 'PartyLegalEntity'))[0] ?? null;
-        $partyContact = array_values(array_filter($mixedContent, fn ($element) => $element['name'] === Schema::CAC . 'Contact'))[0] ?? null;
+        $endpointId = ReaderHelper::getTag(Schema::CBC . 'EndpointID', $collection);
+        $postalAddress = ReaderHelper::getTag(Schema::CAC . 'PostalAddress', $collection);
+        $physicalLocation = ReaderHelper::getTag(Schema::CAC . 'PhysicalLocation', $collection);
+        $physicalLocationAddress = ReaderHelper::getTag(Schema::CAC . 'Address', new ArrayCollection($physicalLocation['value'] ?? []));
 
-        $partyIdentification = array_values(array_filter($mixedContent, fn ($element) => $element['name'] === Schema::CAC . 'PartyIdentification'))[0] ?? null;
-        $partyIdentificationId = array_values(array_filter($partyIdentification['value'] ?? [], fn ($element) => $element['name'] === Schema::CBC . 'ID'))[0] ?? null;
+        $partyTaxScheme = ReaderHelper::getTag(Schema::CAC . 'PartyTaxScheme', $collection);
+        $partyLegalEntity = ReaderHelper::getTag(Schema::CAC . 'PartyLegalEntity', $collection);
+        $partyContact = ReaderHelper::getTag(Schema::CAC . 'Contact', $collection);
+
+        $partyIdentification = ReaderHelper::getTag(Schema::CAC . 'PartyIdentification', $collection);
+        $partyIdentificationId = ReaderHelper::getTag(Schema::CBC . 'ID', new ArrayCollection($partyIdentification['value'] ?? []));
 
         return (new static())
             ->setName($partyNameName['value'] ?? null)

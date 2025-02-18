@@ -5,14 +5,13 @@ namespace NumNum\UBL;
 use Carbon\Carbon;
 use DateTime;
 use InvalidArgumentException;
-
-use function Sabre\Xml\Deserializer\mixedContent;
-
 use Sabre\Xml\Reader;
 use Sabre\Xml\Writer;
 use Sabre\Xml\XmlDeserializable;
 use Sabre\Xml\XmlSerializable;
+use Doctrine\Common\Collections\ArrayCollection;
 
+use function Sabre\Xml\Deserializer\mixedContent;
 class Invoice implements XmlSerializable, XmlDeserializable
 {
     public $xmlTagName = 'Invoice';
@@ -774,64 +773,48 @@ class Invoice implements XmlSerializable, XmlDeserializable
 
     protected static function deserializedTag(array $mixedContent)
     {
-        $ublVersionIdTag = array_values(array_filter($mixedContent, fn ($element) => $element['name'] === Schema::CBC . 'UBLVersionID'))[0] ?? null;
-        $idTag = array_values(array_filter($mixedContent, fn ($element) => $element['name'] === Schema::CBC . 'ID'))[0] ?? null;
-        $customizationIdTag = array_values(array_filter($mixedContent, fn ($element) => $element['name'] === Schema::CBC . 'CustomizationID'))[0] ?? null;
-        $profileIdTag = array_values(array_filter($mixedContent, fn ($element) => $element['name'] === Schema::CBC . 'ProfileID'))[0] ?? null;
-        $copyIndicatorTag = array_values(array_filter($mixedContent, fn ($element) => $element['name'] === Schema::CBC . 'CopyIndicator'))[0] ?? null;
-        $issueDateTag = array_values(array_filter($mixedContent, fn ($element) => $element['name'] === Schema::CBC . 'IssueDate'))[0] ?? null;
-        $dueDateTag = array_values(array_filter($mixedContent, fn ($element) => $element['name'] === Schema::CBC . 'DueDate'))[0] ?? null;
-        $documentCurrencyCodeTag = array_values(array_filter($mixedContent, fn ($element) => $element['name'] === Schema::CBC . 'DocumentCurrencyCode'))[0] ?? null;
-        $invoiceTypeCodeTag = array_values(array_filter($mixedContent, fn ($element) => $element['name'] === Schema::CBC . 'InvoiceTypeCode'))[0] ?? null;
-        $noteTag = array_values(array_filter($mixedContent, fn ($element) => $element['name'] === Schema::CBC . 'Note'))[0] ?? null;
-        $taxPointDateTag = array_values(array_filter($mixedContent, fn ($element) => $element['name'] === Schema::CBC . 'TaxPointDate'))[0] ?? null;
-        $paymentTermsTag = array_values(array_filter($mixedContent, fn ($element) => $element['name'] === Schema::CAC . 'PaymentTerms'))[0] ?? null;
-        $accountingSupplierPartyTag = array_values(array_filter($mixedContent, fn ($element) => $element['name'] === Schema::CAC . 'AccountingSupplierParty'))[0] ?? null;
-        $accountingCustomerPartyTag = array_values(array_filter($mixedContent, fn ($element) => $element['name'] === Schema::CAC . 'AccountingCustomerParty'))[0] ?? null;
-        $payeePartyTag = array_values(array_filter($mixedContent, fn ($element) => $element['name'] === Schema::CAC . 'PayeeParty'))[0] ?? null;
-        $paymentMeansTags = array_values(array_filter($mixedContent, fn ($element) => $element['name'] === Schema::CAC . 'PaymentMeans')) ?? [];
-        $taxTotalTag = array_values(array_filter($mixedContent, fn ($element) => $element['name'] === Schema::CAC . 'TaxTotal'))[0] ?? null;
-        $legalMonetaryTotalTag = array_values(array_filter($mixedContent, fn ($element) => $element['name'] === Schema::CAC . 'LegalMonetaryTotal'))[0] ?? null;
-        $invoiceLineTags = array_values(array_filter($mixedContent, fn ($element) => $element['name'] === Schema::CAC . 'InvoiceLine')) ?? [];
-        $allowanceChargesTags = array_values(array_filter($mixedContent, fn ($element) => $element['name'] === Schema::CAC . 'AllowanceCharge')) ?? [];
-        $additionalDocumentReferenceTags = array_values(array_filter($mixedContent, fn ($element) => $element['name'] === Schema::CAC . 'AdditionalDocumentReference')) ?? [];
-        $buyerReferenceTag = array_values(array_filter($mixedContent, fn ($element) => $element['name'] === Schema::CBC . 'BuyerReference'))[0] ?? null;
-        $accountingCostCodeTag = array_values(array_filter($mixedContent, fn ($element) => $element['name'] === Schema::CBC . 'AccountingCostCode'))[0] ?? null;
-        $invoicePeriodTag = array_values(array_filter($mixedContent, fn ($element) => $element['name'] === Schema::CAC . 'InvoicePeriod'))[0] ?? null;
-        $billingReferenceTag = array_values(array_filter($mixedContent, fn ($element) => $element['name'] === Schema::CAC . 'BillingReference'))[0] ?? null;
-        $deliveryTag = array_values(array_filter($mixedContent, fn ($element) => $element['name'] === Schema::CAC . 'Delivery'))[0] ?? null;
-        $orderReferenceTag = array_values(array_filter($mixedContent, fn ($element) => $element['name'] === Schema::CAC . 'OrderReference'))[0] ?? null;
-        $contractDocumentReferenceTag = array_values(array_filter($mixedContent, fn ($element) => $element['name'] === Schema::CAC . 'ContractDocumentReference'))[0] ?? null;
+        $collection = new ArrayCollection($mixedContent);
+
+        /** @var ?AccountingParty $accountingSupplierParty */
+        $accountingSupplierParty = ReaderHelper::getTagValue(Schema::CAC . 'AccountingSupplierParty', $collection);
+
+        /** @var ?AccountingParty $accountingCustomerParty */
+        $accountingCustomerParty = ReaderHelper::getTagValue(Schema::CAC . 'AccountingCustomerParty', $collection);
+
+        /** @var ?TaxTotal $taxTotal */
+        $taxTotal = ReaderHelper::getTagValue(Schema::CAC . 'TaxTotal', $collection);
+
+        /** @var ?LegalMonetaryTotal $legalMonetaryTotal */
+        $legalMonetaryTotal = ReaderHelper::getTagValue(Schema::CAC . 'LegalMonetaryTotal', $collection);
 
         return (new static())
-            ->setUBLVersionId($ublVersionIdTag['value'] ?? null)
-            ->setId($idTag['value'] ?? null)
-            ->setCustomizationId($customizationIdTag['value'] ?? null)
-            ->setProfileId($profileIdTag['value'] ?? null)
-            ->setCopyIndicator($copyIndicatorTag['value'] ?? false)
-            ->setIssueDate(Carbon::parse($issueDateTag['value'])->toDateTime())
-            ->setDueDate(Carbon::parse($dueDateTag['value'] ?? null)->toDateTime())
-            ->setDocumentCurrencyCode($documentCurrencyCodeTag['value'] ?? null)
-            ->setInvoiceTypeCode($invoiceTypeCodeTag['value'] ?? null)
-            ->setNote($noteTag['value'] ?? null)
-            ->setTaxPointDate(Carbon::parse($taxPointDateTag['value'])->toDateTime())
-            ->setPaymentTerms($paymentTermsTag['value'] ?? null)
-            ->setAccountingSupplierParty($accountingSupplierPartyTag['value'] ?? null)
-            ->setAccountingCustomerParty($accountingCustomerPartyTag['value'] ?? null)
-            ->setPayeeParty($payeePartyTag['value'] ?? null)
-            ->setPaymentMeans(!empty($paymentMeansTags) ? array_map(fn ($pm) => $pm['value'], $paymentMeansTags) : null)
-            ->setTaxTotal($taxTotalTag['value'] ?? null)
-            ->setLegalMonetaryTotal($legalMonetaryTotalTag['value'] ?? null)
-            ->setInvoiceLines(!empty($invoiceLineTags) ? array_map(fn ($il) => $il['value'], $invoiceLineTags) : [])
-            ->setAllowanceCharges(array_map(fn ($ac) => $ac['value'], $allowanceChargesTags))
-            ->setAdditionalDocumentReferences(array_map(fn ($adr) => $adr['value'], $additionalDocumentReferenceTags))
-            ->setBuyerReference($buyerReferenceTag['value'] ?? null)
-            ->setAccountingCostCode($accountingCostCodeTag['value'] ?? null)
-            ->setInvoicePeriod($invoicePeriodTag['value'] ?? null)
-            ->setBillingReference($billingReferenceTag['value'] ?? null)
-            ->setDelivery($deliveryTag['value'] ?? null)
-            ->setOrderReference($orderReferenceTag['value'] ?? null)
-            ->setContractDocumentReference($contractDocumentReferenceTag['value'] ?? null)
-        ;
+            ->setUBLVersionId(ReaderHelper::getTagValue(Schema::CBC . 'UBLVersionID', $collection))
+            ->setId(ReaderHelper::getTagValue(Schema::CBC . 'ID', $collection))
+            ->setCustomizationId(ReaderHelper::getTagValue(Schema::CBC . 'CustomizationID', $collection))
+            ->setProfileId(ReaderHelper::getTagValue(Schema::CBC . 'ProfileID', $collection))
+            ->setCopyIndicator(ReaderHelper::getTagValue(Schema::CBC . 'CopyIndicator', $collection) ?? false)
+            ->setIssueDate(Carbon::parse(ReaderHelper::getTagValue(Schema::CBC . 'IssueDate', $collection))->toDateTime())
+            ->setDueDate(Carbon::parse(ReaderHelper::getTagValue(Schema::CBC . 'DueDate', $collection))->toDateTime())
+            ->setDocumentCurrencyCode(ReaderHelper::getTagValue(Schema::CBC . 'DocumentCurrencyCode', $collection))
+            ->setInvoiceTypeCode(ReaderHelper::getTagValue(Schema::CBC . 'InvoiceTypeCode', $collection))
+            ->setNote(ReaderHelper::getTagValue(Schema::CBC . 'Note', $collection))
+            ->setTaxPointDate(Carbon::parse(ReaderHelper::getTagValue(Schema::CBC . 'TaxPointDate', $collection))->toDateTime())
+            ->setPaymentTerms(ReaderHelper::getTagValue(Schema::CAC . 'PaymentTerms', $collection))
+            ->setAccountingSupplierParty($accountingSupplierParty)
+            ->setAccountingCustomerParty($accountingCustomerParty)
+            ->setPayeeParty(ReaderHelper::getTagValue(Schema::CAC . 'PayeeParty', $collection))
+            ->setPaymentMeans(ReaderHelper::getArrayValue(Schema::CAC . 'PaymentMeans', $collection))
+            ->setTaxTotal($taxTotal)
+            ->setLegalMonetaryTotal($legalMonetaryTotal)
+            ->setInvoiceLines(ReaderHelper::getArrayValue(Schema::CAC . 'InvoiceLine', $collection))
+            ->setAllowanceCharges(ReaderHelper::getArrayValue(Schema::CAC . 'AllowanceCharge', $collection))
+            ->setAdditionalDocumentReferences(ReaderHelper::getArrayValue(Schema::CAC . 'AdditionalDocumentReference', $collection))
+            ->setBuyerReference(ReaderHelper::getTagValue(Schema::CBC . 'BuyerReference', $collection))
+            ->setAccountingCostCode(ReaderHelper::getTagValue(Schema::CBC . 'AccountingCostCode', $collection))
+            ->setInvoicePeriod(ReaderHelper::getTagValue(Schema::CAC . 'InvoicePeriod', $collection))
+            ->setBillingReference(ReaderHelper::getTagValue(Schema::CAC . 'BillingReference', $collection))
+            ->setDelivery(ReaderHelper::getTagValue(Schema::CAC . 'Delivery', $collection))
+            ->setOrderReference(ReaderHelper::getTagValue(Schema::CAC . 'OrderReference', $collection))
+            ->setContractDocumentReference(ReaderHelper::getTagValue(Schema::CAC . 'ContractDocumentReference', $collection));
     }
 }

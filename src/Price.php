@@ -4,6 +4,7 @@ namespace NumNum\UBL;
 
 use function Sabre\Xml\Deserializer\mixedContent;
 
+use Doctrine\Common\Collections\ArrayCollection;
 use Sabre\Xml\Reader;
 use Sabre\Xml\Writer;
 use Sabre\Xml\XmlDeserializable;
@@ -155,10 +156,11 @@ class Price implements XmlSerializable, XmlDeserializable
     public static function xmlDeserialize(Reader $reader)
     {
         $mixedContent = mixedContent($reader);
+        $collection = new ArrayCollection($mixedContent);
 
-        $priceAmountTag = array_values(array_filter($mixedContent, fn ($element) => $element['name'] === Schema::CBC . 'PriceAmount'))[0] ?? null;
-        $baseQuantityTag = array_values(array_filter($mixedContent, fn ($element) => $element['name'] === Schema::CBC . 'BaseQuantity'))[0] ?? null;
-        $allowanceChargeTag = array_values(array_filter($mixedContent, fn ($element) => $element['name'] === Schema::CAC . 'AllowanceCharge'))[0] ?? null;
+        $priceAmountTag = ReaderHelper::getTag(Schema::CBC . 'PriceAmount', $collection);
+        $baseQuantityTag = ReaderHelper::getTag(Schema::CBC . 'BaseQuantity', $collection);
+        $allowanceChargeTag = ReaderHelper::getTag(Schema::CAC . 'AllowanceCharge', $collection);
 
         return (new Price())
             ->setPriceAmount(isset($priceAmountTag) ? floatval($priceAmountTag['value']) : null)

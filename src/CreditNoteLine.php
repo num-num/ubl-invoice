@@ -4,6 +4,7 @@ namespace NumNum\UBL;
 
 use function Sabre\Xml\Deserializer\mixedContent;
 
+use Doctrine\Common\Collections\ArrayCollection;
 use Sabre\Xml\Reader;
 
 class CreditNoteLine extends InvoiceLine
@@ -36,8 +37,9 @@ class CreditNoteLine extends InvoiceLine
     public static function xmlDeserialize(Reader $reader)
     {
         $mixedContent = mixedContent($reader);
+        $collection = new ArrayCollection($mixedContent);
 
-        $creditedQuantityTag = array_values(array_filter($mixedContent, fn ($element) => $element['name'] === Schema::CBC . 'CreditedQuantity'))[0] ?? null;
+        $creditedQuantityTag = ReaderHelper::getTag(Schema::CBC . 'CreditedQuantity', $collection);
 
         return (static::deserializedTag($mixedContent))
             ->setCreditedQuantity(isset($creditedQuantityTag) ? floatval($creditedQuantityTag['value']) : null)

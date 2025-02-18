@@ -2,6 +2,7 @@
 
 namespace NumNum\UBL;
 
+use Doctrine\Common\Collections\ArrayCollection;
 use Exception;
 use InvalidArgumentException;
 
@@ -190,14 +191,15 @@ class Attachment implements XmlSerializable, XmlDeserializable
     public static function xmlDeserialize(Reader $reader)
     {
         $mixedContent = mixedContent($reader);
+        $collection = new ArrayCollection($mixedContent);
 
-        $embeddedDocumentBinaryObject = array_values(array_filter($mixedContent, fn ($element) => $element['name'] === Schema::CBC . 'EmbeddedDocumentBinaryObject'))[0] ?? null;
+        $embeddedBinObj = ReaderHelper::getTag(Schema::CBC . 'EmbeddedDocumentBinaryObject', $collection);
 
         return (new static())
             ->setBase64Content(
-                $embeddedDocumentBinaryObject['value'] ?? null,
-                $embeddedDocumentBinaryObject['attributes']['filename'] ?? null,
-                $embeddedDocumentBinaryObject['attributes']['mimeCode'] ?? null
+                $embeddedBinObj['value'] ?? null,
+                $embeddedBinObj['attributes']['filename'] ?? null,
+                $embeddedBinObj['attributes']['mimeCode'] ?? null
             )
         ;
     }

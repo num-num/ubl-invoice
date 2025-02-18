@@ -4,6 +4,7 @@ namespace NumNum\UBL;
 
 use function Sabre\Xml\Deserializer\mixedContent;
 
+use Doctrine\Common\Collections\ArrayCollection;
 use Sabre\Xml\Reader;
 use Sabre\Xml\Writer;
 use Sabre\Xml\XmlDeserializable;
@@ -113,15 +114,22 @@ class LegalEntity implements XmlSerializable, XmlDeserializable
     public static function xmlDeserialize(Reader $reader)
     {
         $mixedContent = mixedContent($reader);
+        $collection = new ArrayCollection($mixedContent);
 
-        $registrationName = array_values(array_filter($mixedContent ?? [], fn ($element) => $element['name'] === Schema::CBC . 'RegistrationName'))[0] ?? null;
-        $companyId = array_values(array_filter($mixedContent ?? [], fn ($element) => $element['name'] === Schema::CBC . 'CompanyID'))[0] ?? null;
-        $companyLegalForm = array_values(array_filter($mixedContent ?? [], fn ($element) => $element['name'] === Schema::CBC . 'CompanyLegalForm'))[0] ?? null;
+        $registrationName = ReaderHelper::getTag(Schema::CBC . 'RegistrationName', $collection);
+        $companyId = ReaderHelper::getTag(Schema::CBC . 'CompanyID', $collection);
+        $companyLegalForm = ReaderHelper::getTag(Schema::CBC . 'CompanyLegalForm', $collection);
 
         return (new static())
             ->setRegistrationName($registrationName['value'] ?? null)
-            ->setCompanyId($companyId['value'] ?? null, $companyId['attributes'] ?? null)
-            ->setCompanyLegalForm($companyLegalForm['value'] ?? null, $companyLegalForm['attributes'] ?? null)
+            ->setCompanyId(
+                $companyId['value'] ?? null,
+                $companyId['attributes'] ?? null
+            )
+            ->setCompanyLegalForm(
+                $companyLegalForm['value'] ?? null,
+                $companyLegalForm['attributes'] ?? null
+            )
         ;
     }
 }

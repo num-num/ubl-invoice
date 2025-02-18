@@ -4,6 +4,7 @@ namespace NumNum\UBL;
 
 use function Sabre\Xml\Deserializer\mixedContent;
 
+use Doctrine\Common\Collections\ArrayCollection;
 use Sabre\Xml\Reader;
 use Sabre\Xml\Writer;
 use Sabre\Xml\XmlDeserializable;
@@ -190,19 +191,29 @@ class Item implements XmlSerializable, XmlDeserializable
     public static function xmlDeserialize(Reader $reader)
     {
         $mixedContent = mixedContent($reader);
+        $collection = new ArrayCollection($mixedContent);
 
-        $descriptionTag = array_values(array_filter($mixedContent, fn ($element) => $element['name'] === Schema::CBC . 'Description'))[0] ?? null;
-        $nameTag = array_values(array_filter($mixedContent, fn ($element) => $element['name'] === Schema::CBC . 'Name'))[0] ?? null;
-        $classifiedTaxCategoryTag = array_values(array_filter($mixedContent, fn ($element) => $element['name'] === Schema::CAC . 'ClassifiedTaxCategory'))[0] ?? null;
+        $descriptionTag = ReaderHelper::getTag(Schema::CBC . 'Description', $collection);
+        $nameTag = ReaderHelper::getTag(Schema::CBC . 'Name', $collection);
+        $classifiedTaxCategoryTag = ReaderHelper::getTag(Schema::CAC . 'ClassifiedTaxCategory', $collection);
 
-        $buyersItemIdentificationTag = array_values(array_filter($mixedContent, fn ($element) => $element['name'] === Schema::CAC . 'BuyersItemIdentification'))[0] ?? null;
-        $buyersItemIdentificationIdTag = array_values(array_filter($buyersItemIdentificationTag['value'] ?? [], fn ($element) => $element['name'] === Schema::CBC . 'ID'))[0] ?? null;
+        $buyersItemIdentificationTag = ReaderHelper::getTag(Schema::CAC . 'BuyersItemIdentification', $collection);
+        $buyersItemIdentificationIdTag = ReaderHelper::getTag(
+            Schema::CBC . 'ID',
+            new ArrayCollection($buyersItemIdentificationTag['value'] ?? [])
+        );
 
-        $sellersItemIdentificationTag = array_values(array_filter($mixedContent, fn ($element) => $element['name'] === Schema::CAC . 'SellersItemIdentification'))[0] ?? null;
-        $sellersItemIdentificationIdTag = array_values(array_filter($sellersItemIdentificationTag['value'] ?? [], fn ($element) => $element['name'] === Schema::CBC . 'ID'))[0] ?? null;
+        $sellersItemIdentificationTag = ReaderHelper::getTag(Schema::CAC . 'SellersItemIdentification', $collection);
+        $sellersItemIdentificationIdTag = ReaderHelper::getTag(
+            Schema::CBC . 'ID',
+            new ArrayCollection($sellersItemIdentificationTag['value'] ?? [])
+        );
 
-        $standardItemIdentificationTag = array_values(array_filter($mixedContent, fn ($element) => $element['name'] === Schema::CAC . 'StandardItemIdentification'))[0] ?? null;
-        $standardItemIdentificationIdTag = array_values(array_filter($standardItemIdentificationTag['value'] ?? [], fn ($element) => $element['name'] === Schema::CBC . 'ID'))[0] ?? null;
+        $standardItemIdentificationTag = ReaderHelper::getTag(Schema::CAC . 'StandardItemIdentification', $collection);
+        $standardItemIdentificationIdTag = ReaderHelper::getTag(
+            Schema::CBC . 'ID',
+            new ArrayCollection($standardItemIdentificationTag['value'] ?? [])
+        );
 
         return (new static())
             ->setDescription($descriptionTag['value'] ?? null)

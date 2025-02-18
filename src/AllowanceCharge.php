@@ -4,6 +4,7 @@ namespace NumNum\UBL;
 
 use function Sabre\Xml\Deserializer\mixedContent;
 
+use Doctrine\Common\Collections\ArrayCollection;
 use Sabre\Xml\Reader;
 use Sabre\Xml\Writer;
 use Sabre\Xml\XmlDeserializable;
@@ -237,23 +238,15 @@ class AllowanceCharge implements XmlSerializable, XmlDeserializable
     public static function xmlDeserialize(Reader $reader)
     {
         $mixedContent = mixedContent($reader);
-
-        $chargeIndicatorTag = array_values(array_filter($mixedContent, fn ($element) => $element['name'] === Schema::CBC . 'ChargeIndicator'))[0] ?? null;
-        $allowanceChargeReasonCodeTag = array_values(array_filter($mixedContent, fn ($element) => $element['name'] === Schema::CBC . 'AllowanceChargeReasonCode'))[0] ?? null;
-        $allowanceChargeReasonTag = array_values(array_filter($mixedContent, fn ($element) => $element['name'] === Schema::CBC . 'AllowanceChargeReason'))[0] ?? null;
-        $multiplierFactorNumericTag = array_values(array_filter($mixedContent, fn ($element) => $element['name'] === Schema::CBC . 'MultiplierFactorNumeric'))[0] ?? null;
-        $baseAmountTag = array_values(array_filter($mixedContent, fn ($element) => $element['name'] === Schema::CBC . 'BaseAmount'))[0] ?? null;
-        $amountTag = array_values(array_filter($mixedContent, fn ($element) => $element['name'] === Schema::CBC . 'Amount'))[0] ?? null;
-        $taxTotalTag = array_values(array_filter($mixedContent, fn ($element) => $element['name'] === Schema::CAC . 'TaxTotal'))[0] ?? null;
+        $collection = new ArrayCollection($mixedContent);
 
         return (new static())
-            ->setChargeIndicator(isset($chargeIndicatorTag) ? $chargeIndicatorTag['value'] === 'true' : null)
-            ->setAllowanceChargeReasonCode(isset($allowanceChargeReasonCodeTag) ? intval($allowanceChargeReasonCodeTag['value']) : null)
-            ->setAllowanceChargeReason(isset($allowanceChargeReasonTag) ? $allowanceChargeReasonTag['value'] : null)
-            ->setMultiplierFactorNumeric(isset($multiplierFactorNumericTag) ? floatval($multiplierFactorNumericTag['value']) : null)
-            ->setBaseAmount(isset($baseAmountTag) ? floatval($baseAmountTag['value']) : null)
-            ->setAmount(isset($amountTag) ? floatval($amountTag['value']) : null)
-            ->setTaxTotal($taxTotalTag['value'] ?? null)
-        ;
+            ->setChargeIndicator(ReaderHelper::getTagValue(Schema::CBC . 'ChargeIndicator', $collection) === 'true')
+            ->setAllowanceChargeReasonCode(ReaderHelper::getTagValue(Schema::CBC . 'AllowanceChargeReasonCode', $collection) !== null ? intval(ReaderHelper::getTagValue(Schema::CBC . 'AllowanceChargeReasonCode', $collection)) : null)
+            ->setAllowanceChargeReason(ReaderHelper::getTagValue(Schema::CBC . 'AllowanceChargeReason', $collection))
+            ->setMultiplierFactorNumeric(ReaderHelper::getTagValue(Schema::CBC . 'MultiplierFactorNumeric', $collection) !== null ? floatval(ReaderHelper::getTagValue(Schema::CBC . 'MultiplierFactorNumeric', $collection)) : null)
+            ->setBaseAmount(ReaderHelper::getTagValue(Schema::CBC . 'BaseAmount', $collection) !== null ? floatval(ReaderHelper::getTagValue(Schema::CBC . 'BaseAmount', $collection)) : null)
+            ->setAmount(ReaderHelper::getTagValue(Schema::CBC . 'Amount', $collection) !== null ? floatval(ReaderHelper::getTagValue(Schema::CBC . 'Amount', $collection)) : null)
+            ->setTaxTotal(ReaderHelper::getTagValue(Schema::CAC . 'TaxTotal', $collection));
     }
 }

@@ -108,7 +108,12 @@ class TaxTotal implements XmlSerializable, XmlDeserializable
     {
         $keyValues = keyValue($reader);
 
-        $taxSubTotals = array_values(array_filter($keyValues, fn ($value, $key) => $key === Schema::CAC . 'TaxSubtotal', ARRAY_FILTER_USE_BOTH));
+        $taxSubTotals = array_values(
+            array_filter(
+                $keyValues,
+                fn ($value, $key) => $key === Schema::CAC . 'TaxSubtotal', ARRAY_FILTER_USE_BOTH
+            )
+        );
 
         return (new static())
             ->setTaxAmount(isset($keyValues[Schema::CBC.'TaxAmount']) ? floatval($keyValues[Schema::CBC.'TaxAmount']) : null)

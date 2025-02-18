@@ -4,6 +4,7 @@ namespace NumNum\UBL;
 
 use function Sabre\Xml\Deserializer\mixedContent;
 
+use Doctrine\Common\Collections\ArrayCollection;
 use Sabre\Xml\Reader;
 use Sabre\Xml\Writer;
 use Sabre\Xml\XmlDeserializable;
@@ -275,12 +276,12 @@ class InvoiceLine implements XmlSerializable, XmlDeserializable
     }
 
     /**
-     * @param AllowanceCharge[] $allowanceCharge
+     * @param AllowanceCharge[] $allowanceCharges
      * @return static
      */
-    public function setAllowanceCharges(?AllowanceCharge $allowanceCharge)
+    public function setAllowanceCharges(array $allowanceCharges)
     {
-        $this->allowanceCharges = $allowanceCharge;
+        $this->allowanceCharges = $allowanceCharges;
         return $this;
     }
 
@@ -371,7 +372,7 @@ class InvoiceLine implements XmlSerializable, XmlDeserializable
 
     /**
      * The xmlDeserialize method is called during xml reading.
-     * @param Reader $xml
+     * @param Reader $reader
      * @return static
      */
     public static function xmlDeserialize(Reader $reader)
@@ -387,36 +388,25 @@ class InvoiceLine implements XmlSerializable, XmlDeserializable
      */
     protected static function deserializedTag(array $mixedContent)
     {
-        $idTag = array_values(array_filter($mixedContent, fn ($element) => $element['name'] === Schema::CBC . 'ID'))[0] ?? null;
-        $invoicedQuantityTag = array_values(array_filter($mixedContent, fn ($element) => $element['name'] === Schema::CBC . 'InvoicedQuantity'))[0] ?? null;
-        $lineExtensionAmountTag = array_values(array_filter($mixedContent, fn ($element) => $element['name'] === Schema::CBC . 'LineExtensionAmount'))[0] ?? null;
-        $taxTotalTag = array_values(array_filter($mixedContent, fn ($element) => $element['name'] === Schema::CAC . 'TaxTotal'))[0] ?? null;
-        $noteTag = array_values(array_filter($mixedContent, fn ($element) => $element['name'] === Schema::CBC . 'Note'))[0] ?? null;
-        $invoicePeriodTag = array_values(array_filter($mixedContent, fn ($element) => $element['name'] === Schema::CAC . 'InvoicePeriod'))[0] ?? null;
-        $orderLineReferenceTag = array_values(array_filter($mixedContent, fn ($element) => $element['name'] === Schema::CAC . 'OrderLineReference'))[0] ?? null;
-        $itemTag = array_values(array_filter($mixedContent, fn ($element) => $element['name'] === Schema::CAC . 'Item'))[0] ?? null;
-        $priceTag = array_values(array_filter($mixedContent, fn ($element) => $element['name'] === Schema::CAC . 'Price'))[0] ?? null;
-        $unitCodeTag = array_values(array_filter($mixedContent, fn ($element) => $element['name'] === Schema::CBC . 'UnitCode'))[0] ?? null;
-        $unitCodeListIdTag = array_values(array_filter($mixedContent, fn ($element) => $element['name'] === Schema::CBC . 'UnitCodeListID'))[0] ?? null;
-        $accountingCostCodeTag = array_values(array_filter($mixedContent, fn ($element) => $element['name'] === Schema::CBC . 'AccountingCostCode'))[0] ?? null;
-        $accountingCostTag = array_values(array_filter($mixedContent, fn ($element) => $element['name'] === Schema::CBC . 'AccountingCost'))[0] ?? null;
-        $allowanceChargeTag = array_values(array_filter($mixedContent, fn ($element) => $element['name'] === Schema::CAC . 'AllowanceCharge'))[0] ?? [];
+        $collection = new ArrayCollection($mixedContent);
+
+        /** @var ?AllowanceCharge[] ReaderHelper::getArrayValue */
+        $allowanceCharges = ReaderHelper::getArrayValue(Schema::CAC . 'AllowanceCharge', $collection);
 
         return (new static())
-            ->setId($idTag['value'] ?? null)
-            ->setInvoicedQuantity(isset($invoicedQuantityTag) ? floatval($invoicedQuantityTag['value']) : null)
-            ->setLineExtensionAmount(isset($lineExtensionAmountTag) ? floatval($lineExtensionAmountTag['value']) : null)
-            ->setTaxTotal($taxTotalTag['value'] ?? null)
-            ->setNote($noteTag['value'] ?? null)
-            ->setInvoicePeriod($invoicePeriodTag['value'] ?? null)
-            ->setOrderLineReference($orderLineReferenceTag['value'] ?? null)
-            ->setItem($itemTag['value'] ?? null)
-            ->setPrice($priceTag['value'] ?? null)
-            ->setUnitCode($unitCodeTag['value'] ?? null)
-            ->setUnitCodeListId($unitCodeListIdTag['value'] ?? null)
-            ->setAccountingCostCode($accountingCostCodeTag['value'] ?? null)
-            ->setAccountingCost($accountingCostTag['value'] ?? null)
-            ->setAllowanceCharges($allowanceChargeTag['value'] ?? null)
-        ;
+            ->setId(ReaderHelper::getTagValue(Schema::CBC . 'ID', $collection))
+            ->setInvoicedQuantity(ReaderHelper::getTagValue(Schema::CBC . 'InvoicedQuantity', $collection) !== null ? floatval(ReaderHelper::getTagValue(Schema::CBC . 'InvoicedQuantity', $collection)) : null)
+            ->setLineExtensionAmount(ReaderHelper::getTagValue(Schema::CBC . 'LineExtensionAmount', $collection) !== null ? floatval(ReaderHelper::getTagValue(Schema::CBC . 'LineExtensionAmount', $collection)) : null)
+            ->setTaxTotal(ReaderHelper::getTagValue(Schema::CAC . 'TaxTotal', $collection))
+            ->setNote(ReaderHelper::getTagValue(Schema::CBC . 'Note', $collection))
+            ->setInvoicePeriod(ReaderHelper::getTagValue(Schema::CAC . 'InvoicePeriod', $collection))
+            ->setOrderLineReference(ReaderHelper::getTagValue(Schema::CAC . 'OrderLineReference', $collection))
+            ->setItem(ReaderHelper::getTagValue(Schema::CAC . 'Item', $collection))
+            ->setPrice(ReaderHelper::getTagValue(Schema::CAC . 'Price', $collection))
+            ->setUnitCode(ReaderHelper::getTagValue(Schema::CBC . 'UnitCode', $collection))
+            ->setUnitCodeListId(ReaderHelper::getTagValue(Schema::CBC . 'UnitCodeListID', $collection))
+            ->setAccountingCostCode(ReaderHelper::getTagValue(Schema::CBC . 'AccountingCostCode', $collection))
+            ->setAccountingCost(ReaderHelper::getTagValue(Schema::CBC . 'AccountingCost', $collection))
+            ->setAllowanceCharges($allowanceCharges);
     }
 }

@@ -66,10 +66,10 @@ class BillingReference implements XmlSerializable, XmlDeserializable
      */
     public static function xmlDeserialize(Reader $reader)
     {
-        $mixedContent = keyValue($reader);
+        $keyValues = keyValue($reader);
 
         return (new static())
-            ->setInvoiceDocumentReference($mixedContent[Schema::CAC . 'InvoiceDocumentReference'] ?? null)
+            ->setInvoiceDocumentReference($keyValues[Schema::CAC . 'InvoiceDocumentReference'] ?? null)
         ;
     }
 }

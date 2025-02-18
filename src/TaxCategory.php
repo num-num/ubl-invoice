@@ -2,6 +2,7 @@
 
 namespace NumNum\UBL;
 
+use Doctrine\Common\Collections\ArrayCollection;
 use InvalidArgumentException;
 
 use function Sabre\Xml\Deserializer\mixedContent;
@@ -220,13 +221,14 @@ class TaxCategory implements XmlSerializable, XmlDeserializable
     public static function xmlDeserialize(Reader $reader)
     {
         $mixedContent = mixedContent($reader);
+        $collection = new ArrayCollection($mixedContent);
 
-        $idTag = array_values(array_filter($mixedContent, fn ($element) => $element['name'] == Schema::CBC.'ID'))[0] ?? null;
-        $nameTag = array_values(array_filter($mixedContent, fn ($element) => $element['name'] == Schema::CBC.'Name'))[0] ?? null;
-        $percentTag = array_values(array_filter($mixedContent, fn ($element) => $element['name'] == Schema::CBC.'Percent'))[0] ?? null;
-        $taxSchemeTag = array_values(array_filter($mixedContent, fn ($element) => $element['name'] == Schema::CAC.'TaxScheme'))[0] ?? null;
-        $taxExemptionReasonTag = array_values(array_filter($mixedContent, fn ($element) => $element['name'] == Schema::CAC.'TaxExemptionReason'))[0] ?? null;
-        $taxExemptionReasonCodeTag = array_values(array_filter($mixedContent, fn ($element) => $element['name'] == Schema::CAC.'TaxExemptionReasonCode'))[0] ?? null;
+        $idTag = ReaderHelper::getTag(Schema::CBC . 'ID', $collection);
+        $nameTag = ReaderHelper::getTag(Schema::CBC . 'Name', $collection);
+        $percentTag = ReaderHelper::getTag(Schema::CBC . 'Percent', $collection);
+        $taxSchemeTag = ReaderHelper::getTag(Schema::CAC . 'TaxScheme', $collection);
+        $taxExemptionReasonTag = ReaderHelper::getTag(Schema::CBC . 'TaxExemptionReason', $collection);
+        $taxExemptionReasonCodeTag = ReaderHelper::getTag(Schema::CBC . 'TaxExemptionReasonCode', $collection);
 
         return (new static())
             ->setId($idTag['value'] ?? null, $idTag['attributes'] ?? null)
