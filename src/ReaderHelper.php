@@ -16,11 +16,12 @@ class ReaderHelper
      */
     public static function getTag(string $name, ArrayCollection $collection)
     {
-        return $collection
+        $tags = $collection
             ->filter(function ($element) use ($name) {
                 return $element['name'] === $name;
-            })
-            ->first() ?? null;
+            });
+
+        return $tags->count() > 0 ? $tags->first() : null;
     }
 
     /**
