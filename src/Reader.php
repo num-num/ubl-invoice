@@ -56,7 +56,7 @@ class Reader
             Schema::CAC.    'SettlementPeriod'            => fn ($reader) => SettlementPeriod::xmlDeserialize($reader),
             Schema::CAC.    'TaxCategory'                 => fn ($reader) => TaxCategory::xmlDeserialize($reader),
             Schema::CAC.    'TaxScheme'                   => fn ($reader) => TaxScheme::xmlDeserialize($reader),
-            Schema::CAC.    'TaxSubtotal'                 => fn ($reader) => TaxSubtotal::xmlDeserialize($reader),
+            Schema::CAC.    'TaxSubtotal'                 => fn ($reader) => TaxSubTotal::xmlDeserialize($reader),
             Schema::CAC.    'TaxTotal'                    => fn ($reader) => TaxTotal::xmlDeserialize($reader),
         ];
 
