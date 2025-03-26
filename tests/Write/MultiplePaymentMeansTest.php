@@ -53,11 +53,18 @@ class MultiplePaymentMeansTest extends TestCase
         $taxScheme = (new \NumNum\UBL\TaxScheme())
             ->setId(0);
 
+        $commodityClassification = (new \NumNum\UBL\CommodityClassification())
+            ->setItemClassificationCode('123456')
+            ->setItemClassificationListId('urn:ean.ucc:eanucc:2:2')
+            ->setItemClassificationListVersionId('16');
+
         // Product
         $productItem = (new \NumNum\UBL\Item())
             ->setName('Product Name')
             ->setDescription('Product Description')
-            ->setSellersItemIdentification('SELLERID');
+            ->setSellersItemIdentification('SELLERID')
+            ->setCommodityClassification($commodityClassification);
+
 
         // Price
         $price = (new \NumNum\UBL\Price())

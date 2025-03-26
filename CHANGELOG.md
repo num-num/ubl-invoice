@@ -19,6 +19,12 @@
 - Functions `setCustomizationID`/`getCustomizationID` have been renamed to `setCustomizationId`/`getCustomizationId`
 - Functions `setProfileID`/`getProfileID` have been renamed to `setProfileId`/`getProfileId`
 
+# Changelog for v1.19.0
+
+### New features & improvements
+
+- Add `<cac:CommodityClassification />` to `<cac:Item>`
+-
 # Changelog for v1.18.2
 
 ### New features & improvements
