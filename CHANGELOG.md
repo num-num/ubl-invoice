@@ -1,3 +1,9 @@
+# Changelog for v1.19.0
+
+### New features & improvements
+
+- Add `<cac:CommodityClassification />` to `<cac:Item>`
+-
 # Changelog for v1.18.2
 
 ### New features & improvements
