@@ -193,12 +193,24 @@ class AllowanceCharge implements XmlSerializable
         $writer->write([
             [
                 'name' => Schema::CBC . 'Amount',
-                'value' => $this->amount,
+                'value' => number_format($this->amount, 2, '.', ''),
                 'attributes' => [
                     'currencyID' => Generator::$currencyID
                 ]
             ],
         ]);
+
+        if ($this->baseAmount !== null) {
+            $writer->write([
+                [
+                    'name' => Schema::CBC . 'BaseAmount',
+                    'value' => number_format($this->baseAmount, 2, '.', ''),
+                    'attributes' => [
+                        'currencyID' => Generator::$currencyID
+                    ]
+                ]
+            ]);
+        }
 
         if ($this->taxCategory !== null) {
             $writer->write([
@@ -209,18 +221,6 @@ class AllowanceCharge implements XmlSerializable
         if ($this->taxTotal !== null) {
             $writer->write([
                 Schema::CAC . 'TaxTotal' => $this->taxTotal
-            ]);
-        }
-
-        if ($this->baseAmount !== null) {
-            $writer->write([
-                [
-                    'name' => Schema::CBC . 'BaseAmount',
-                    'value' => $this->baseAmount,
-                    'attributes' => [
-                        'currencyID' => Generator::$currencyID
-                    ]
-                ]
             ]);
         }
     }

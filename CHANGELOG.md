@@ -1,7 +1,8 @@
-# Changelog for v1.18.2
+# Upcoming version
 
 #### Bug fixes
 
+- Fix Amount, BaseAmount, TaxCategory tag sort in <cac:AllowanceCharge />
 - Fix parameter type for `<cac:AllowanceCharge>` on `<cac:InvoiceLine>` to array
 
 # Changelog for v1.18.1
