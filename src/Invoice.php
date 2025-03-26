@@ -34,6 +34,7 @@ class Invoice implements XmlSerializable
     protected $invoiceLines;
     private $allowanceCharges;
     private $additionalDocumentReferences = [];
+    private $projectReference;
     private $documentCurrencyCode = 'EUR';
     private $buyerReference;
     private $accountingCostCode;
@@ -447,6 +448,24 @@ class Invoice implements XmlSerializable
     }
 
     /**
+     * @param ProjectReference $projectReference
+     * @return Invoice
+     */
+    public function setProjectReference(ProjectReference $projectReference): Invoice
+    {
+        $this->projectReference = $projectReference;
+        return $this;
+    }
+
+      /**
+     * @return ProjectReference projectReference
+     */
+    public function getProjectReference(): ?ProjectReference
+    {
+        return $this->projectReference;
+    }
+
+    /**
      * @param string $buyerReference
      * @return Invoice
      */
@@ -549,7 +568,7 @@ class Invoice implements XmlSerializable
 
     /**
      * @param OrderReference $orderReference
-     * @return OrderReference
+     * @return Invoice
      */
     public function setOrderReference(OrderReference $orderReference): Invoice
     {
@@ -716,6 +735,12 @@ class Invoice implements XmlSerializable
                     Schema::CAC . 'AdditionalDocumentReference' => $additionalDocumentReference
                 ]);
             }
+        }
+
+        if ($this->projectReference != null) {
+            $writer->write([
+                Schema::CAC . 'ProjectReference' => $this->projectReference
+            ]);
         }
 
         if ($this->supplierAssignedAccountID !== null) {

@@ -1,8 +1,12 @@
 # Upcoming version
 
+### New features & improvements
+
+- Add `<cac:ProjectReference />` to Invoice/Creditnote root tag
+
 #### Bug fixes
 
-- Fix Amount, BaseAmount, TaxCategory tag sort in <cac:AllowanceCharge />
+- Fix Amount, BaseAmount, TaxCategory tag sort in `<cac:AllowanceCharge />`
 - Fix parameter type for `<cac:AllowanceCharge>` on `<cac:InvoiceLine>` to array
 
 # Changelog for v1.18.1
