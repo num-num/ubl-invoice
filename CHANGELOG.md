@@ -1,8 +1,8 @@
-# Upcoming version
+# Changelog for v1.18.2
 
 ### New features & improvements
 
-- Add `<cac:ProjectReference />` to Invoice/Creditnote root tag
+- Add `<cac:ProjectReference />` to `<Invoice>`
 
 #### Bug fixes
 
