@@ -221,6 +221,7 @@ class Item implements XmlSerializable, XmlDeserializable
         $descriptionTag = ReaderHelper::getTag(Schema::CBC . 'Description', $collection);
         $nameTag = ReaderHelper::getTag(Schema::CBC . 'Name', $collection);
         $classifiedTaxCategoryTag = ReaderHelper::getTag(Schema::CAC . 'ClassifiedTaxCategory', $collection);
+        $commodityClassification = ReaderHelper::getTag(Schema::CAC . 'CommodityClassification', $collection);
 
         $buyersItemIdentificationTag = ReaderHelper::getTag(Schema::CAC . 'BuyersItemIdentification', $collection);
         $buyersItemIdentificationIdTag = ReaderHelper::getTag(
@@ -247,6 +248,7 @@ class Item implements XmlSerializable, XmlDeserializable
             ->setSellersItemIdentification($sellersItemIdentificationIdTag['value'] ?? null)
             ->setStandardItemIdentification($standardItemIdentificationIdTag['value'] ?? null, $standardItemIdentificationIdTag['attributes'] ?? null)
             ->setClassifiedTaxCategory($classifiedTaxCategoryTag['value'] ?? null)
+            ->setCommodityClassification($commodityClassification['value'] ?? null)
         ;
     }
 }

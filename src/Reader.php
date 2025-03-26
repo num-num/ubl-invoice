@@ -31,6 +31,7 @@ class Reader
             Schema::CAC.     'Attachment'                  => fn ($reader) => Attachment::xmlDeserialize($reader),
             Schema::CAC.     'BillingReference'            => fn ($reader) => BillingReference::xmlDeserialize($reader),
             Schema::CAC.     'ClassifiedTaxCategory'       => fn ($reader) => ClassifiedTaxCategory::xmlDeserialize($reader),
+            Schema::CAC.     'CommodityClassification'     => fn ($reader) => CommodityClassification::xmlDeserialize($reader),
             Schema::CAC.     'Contact'                     => fn ($reader) => Contact::xmlDeserialize($reader),
             Schema::CAC.     'ContractDocumentReference'   => fn ($reader) => ContractDocumentReference::xmlDeserialize($reader),
             Schema::CAC.     'Country'                     => fn ($reader) => Country::xmlDeserialize($reader),
