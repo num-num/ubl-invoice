@@ -122,7 +122,7 @@ class BillingReferenceCreditNoteTest extends TestCase
         $dom = new \DOMDocument();
         $dom->loadXML($outputXMLString);
 
-        $dom->save('./tests/SimpleCreditNoteTest.xml');
+        $dom->save('./tests/BillingReferenceTest.xml');
 
         $this->assertEquals(true, $dom->schemaValidate($this->schema));
     }

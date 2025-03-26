@@ -1,6 +1,6 @@
 <?php
 
-namespace NumNum\UBL\Tests;
+namespace NumNum\UBL\Tests\Write;
 
 use NumNum\UBL\UNCL4461;
 use PHPUnit\Framework\TestCase;

@@ -2,12 +2,16 @@
 
 namespace NumNum\UBL;
 
+use function Sabre\Xml\Deserializer\keyValue;
+
 use DateTime;
 use InvalidArgumentException;
+use Sabre\Xml\Reader;
 use Sabre\Xml\Writer;
+use Sabre\Xml\XmlDeserializable;
 use Sabre\Xml\XmlSerializable;
 
-class InvoiceDocumentReference implements XmlSerializable
+class InvoiceDocumentReference implements XmlSerializable, XmlDeserializable
 {
     private $originalInvoiceId;
     private $issueDate;
@@ -90,5 +94,20 @@ class InvoiceDocumentReference implements XmlSerializable
                 ]
             ]);
         }
+    }
+
+    /**
+     * The xmlDeserialize method is called during xml reading.
+     * @param Reader $xml
+     * @return static
+     */
+    public static function xmlDeserialize(Reader $reader)
+    {
+        $mixedContent = keyValue($reader);
+
+        return (new static())
+            ->setOriginalInvoiceId($mixedContent[Schema::CBC . 'ID'] ?? null)
+            ->setIssueDate(isset($mixedContent[Schema::CBC . 'IssueDate']) ? new DateTime($mixedContent[Schema::CBC . 'IssueDate']) : null)
+        ;
     }
 }
