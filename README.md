@@ -1,27 +1,37 @@
 # UBL-Invoice
 
-A modern object-oriented PHP library to create and read valid UBL and Peppol BIS 3.0 files. Please feel free to [contribute](https://github.com/num-num/ubl-invoice/pulls) if you are missing features or tags.
+A modern object-oriented PHP library to **create** and **read** valid UBL and Peppol BIS 3.0 files. Please feel free to [contribute](https://github.com/num-num/ubl-invoice/pulls) if you are missing features or tags.
 
 [![Latest Version on Packagist](https://img.shields.io/packagist/v/num-num/ubl-invoice.svg?style=rounded-square)](https://packagist.org/packages/num-num/ubl-invoice)
 [![Total Downloads](https://img.shields.io/packagist/dt/num-num/ubl-invoice.svg?style=rounded-square)](https://packagist.org/packages/num-num/ubl-invoice)
+
 
 ![Num•Num UBL Invoice](https://i.imgur.com/JPyFBYQ.png)
 
 ## Installation and usage
 
-This package requires PHP 7.4 or higher and is fully compatible with PHP8. Installation can be done through [composer](https://www.getcomposer.org).
-
+This package is fully compatible with **PHP 8.x** and also supports **PHP 7.4**. You can install it using [Composer](https://www.getcomposer.org).
 ```zsh
-$ composer require num-num/ubl-invoice:^2.0@alpha
+$ composer require num-num/ubl-invoice:^2.0@beta
 ```
 
-### Creating UBL files
+#### Creating UBL files
 
-Please check some of the example code in the `tests/Write` folder to see how you can quickly create an UBL file.
+```php
+$invoice = (new \NumNum\UBL\Invoice())
+    ->setUBLVersionId('2.4')
+    ->setId(123);
+    // ... etc, all other props you need
 
-### Reading UBL files
+$generator = new \NumNum\UBL\Generator();
+$ublXml = $generator->invoice($invoice);
+```
 
-Reading UBL files is very straightforward:
+Please check some of the example code in the `tests/Write` folder to see how you can quickly create an UBL file and use all included properties.
+
+#### Reading UBL files ✨
+
+Need to quickly read UBL files? As of version 2.0, this library now supports UBL file reading. It's simple and easy to use:
 
 ```php
 $ublReader = \NumNum\UBL\Reader::ubl();
@@ -40,11 +50,13 @@ To upgrade from 1.0, there are a few small, but breaking changes that need to be
 Please check the changelog!
 
 
-## Contributing
+## Contributing - bug reporting
 
 This library is **not 100% UBL/Peppol feature-complete**, in the sense that it doesn't (yet) support **all** UBL XML tags & functionality. "Yet" being the keyword, since this definitely is the long-term goal. However, **all common UBL tags that are required to create and read most common invoices and creditnotes** are present in the library. This includes tags for discounts, cash discounts, special vat rates, etc...
 
 If you are missing functionality, please feel free to add it :-) Adding additional tags & attributes is *very* straight-forward. Check out [CONTRIBUTING.md](CONTRIBUTING.md) for more information.
+
+Are you experiencing a bug? Please feel free to open an issue in the issue tracker!
 
 ## Examples & documentation
 
