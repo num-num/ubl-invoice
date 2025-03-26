@@ -26,6 +26,7 @@ class InvoiceLine implements XmlSerializable, XmlDeserializable
     private $price;
     private $accountingCostCode;
     private $accountingCost;
+    /** @var AllowanceCharge[] $allowanceCharges */
     private $allowanceCharges;
 
     private function isCreditNoteLine(): bool

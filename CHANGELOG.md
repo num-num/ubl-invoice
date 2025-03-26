@@ -19,6 +19,17 @@
 - Functions `setCustomizationID`/`getCustomizationID` have been renamed to `setCustomizationId`/`getCustomizationId`
 - Functions `setProfileID`/`getProfileID` have been renamed to `setProfileId`/`getProfileId`
 
+# Changelog for v1.18.2
+
+### New features & improvements
+
+- Add `<cac:ProjectReference />` to `<Invoice>`
+
+#### Bug fixes
+
+- Fix Amount, BaseAmount, TaxCategory tag sort in `<cac:AllowanceCharge />`
+- Fix parameter type for `<cac:AllowanceCharge>` on `<cac:InvoiceLine>` to array
+
 # Changelog for v1.18.1
 
 ### Bug fixes
