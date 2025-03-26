@@ -1,3 +1,9 @@
+# Upcoming version
+
+#### Bug fixes
+
+- Fix Amount, BaseAmount, TaxCategory tag sort in <cac:AllowanceCharge />
+
 # Changelog for v1.18.1
 
 #### Bug fixes
