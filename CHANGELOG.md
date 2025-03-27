@@ -1,3 +1,9 @@
+# Changelog for <next-version>
+
+### New features & improvements
+
+- Add `<cbc:PayableRoundingAmount />` to `<cac:LegalMonetaryTotal>`
+
 # Changelog for v1.19.0
 
 ### New features & improvements
