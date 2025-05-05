@@ -51,7 +51,7 @@ class InvoiceDocumentReference implements XmlSerializable, XmlDeserializable
      *
      * @return static
      */
-    public function setIssueDate(DateTime $issueDate)
+    public function setIssueDate(?DateTime $issueDate)
     {
         $this->issueDate = $issueDate;
         return $this;
