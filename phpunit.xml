@@ -10,10 +10,10 @@
         </include>
     </coverage>
     <testsuites>
-        <testsuite name="Num–Num UBL-invoice Write UBL Files  Test Suite">
+        <testsuite name="write">
             <directory>tests/Write</directory>
         </testsuite>
-        <testsuite name="Num–Num UBL-invoice Read UBL Files  Test Suite">
+        <testsuite name="read">
             <directory>tests/Read</directory>
         </testsuite>
     </testsuites>
