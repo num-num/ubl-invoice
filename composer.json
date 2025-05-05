@@ -53,6 +53,7 @@
     },
     "scripts": {
         "test": "vendor/bin/paratest --processes=8 --configuration=phpunit.xml",
+        "phpunit": "vendor/bin/phpunit --configuration=phpunit.xml",
         "phpstan": "vendor/bin/phpstan analyse src tests",
         "phpcs": "vendor/bin/phpcs -n --standard=phpcs.xml ./src/"
     }
