@@ -181,7 +181,7 @@ class Invoice implements XmlSerializable, XmlDeserializable
      *                                See also: src/InvoiceTypeCode.php
      * @return static
      */
-    public function setInvoiceTypeCode(string $invoiceTypeCode)
+    public function setInvoiceTypeCode(?string $invoiceTypeCode)
     {
         $this->invoiceTypeCode = $invoiceTypeCode;
         return $this;

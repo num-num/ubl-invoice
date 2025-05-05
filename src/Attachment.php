@@ -77,10 +77,11 @@ class Attachment implements XmlSerializable, XmlDeserializable
 
     /**
      * @param string $base64Content Base64 encoded base64Content
-     * @param string $fileName
+     * @param ?string $fileName
+     * @param ?string $mimeType
      * @return static
      */
-    public function setBase64Content(string $base64Content, string $fileName, ?string $mimeType)
+    public function setBase64Content(string $base64Content, ?string $fileName, ?string $mimeType)
     {
         $this->base64Content = $base64Content;
         $this->fileName = $fileName;
@@ -90,18 +91,18 @@ class Attachment implements XmlSerializable, XmlDeserializable
     }
 
     /**
-     * @return string
+     * @return ?string
      */
-    public function getFileName(): string
+    public function getFileName(): ?string
     {
         return $this->fileName;
     }
 
     /**
-     * @param string $fileName
+     * @param ?string $fileName
      * @return static
      */
-    public function setFileName(string $fileName)
+    public function setFileName(?string $fileName)
     {
         $this->fileName = $fileName;
         return $this;
@@ -195,12 +196,17 @@ class Attachment implements XmlSerializable, XmlDeserializable
 
         $embeddedBinObj = ReaderHelper::getTag(Schema::CBC . 'EmbeddedDocumentBinaryObject', $collection);
 
-        return (new static())
-            ->setBase64Content(
+        $result_obj = new static();
+
+
+        if ($embeddedBinObj !== null) {
+            $result_obj->setBase64Content(
                 $embeddedBinObj['value'] ?? null,
                 $embeddedBinObj['attributes']['filename'] ?? null,
                 $embeddedBinObj['attributes']['mimeCode'] ?? null
-            )
-        ;
+            );
+        }
+
+        return $result_obj;
     }
 }
