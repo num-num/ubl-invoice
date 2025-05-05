@@ -156,6 +156,12 @@ class ProjectReferenceTest extends TestCase
         $projectReference = (new \NumNum\UBL\ProjectReference())
             ->setId('Project1234');
 
+        $accountingSupplierParty = (new \NumNum\UBL\AccountingParty())
+            ->setParty($supplierCompany);
+
+        $accountingCustomerParty = (new \NumNum\UBL\AccountingParty())
+            ->setParty($clientCompany);
+
         // Invoice object
         $invoice = (new \NumNum\UBL\Invoice())
             ->setCustomizationID('urn:cen.eu:en16931:2017')
@@ -163,8 +169,8 @@ class ProjectReferenceTest extends TestCase
             ->setIssueDate(new \DateTime())
             ->setNote('invoice note')
             ->setDelivery($delivery)
-            ->setAccountingSupplierParty($supplierCompany)
-            ->setAccountingCustomerParty($clientCompany)
+            ->setAccountingSupplierParty($accountingSupplierParty)
+            ->setAccountingCustomerParty($accountingCustomerParty)
             ->setInvoiceLines($invoiceLines)
             ->setLegalMonetaryTotal($legalMonetaryTotal)
             ->setPaymentTerms($paymentTerms)

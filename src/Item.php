@@ -108,7 +108,7 @@ class Item implements XmlSerializable, XmlDeserializable
      * @param mixed $commodityClassification
      * @return Item
      */
-    public function setCommodityClassification(CommodityClassification $commodityClassification): Item
+    public function setCommodityClassification(?CommodityClassification $commodityClassification): Item
     {
         $this->commodityClassification = $commodityClassification;
         return $this;
