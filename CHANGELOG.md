@@ -19,6 +19,12 @@
 - Functions `setCustomizationID`/`getCustomizationID` have been renamed to `setCustomizationId`/`getCustomizationId`
 - Functions `setProfileID`/`getProfileID` have been renamed to `setProfileId`/`getProfileId`
 
+# Changelog for v1.19.1
+
+### New features & improvements
+
+- Add `<cbc:PayableRoundingAmount />` to `<cac:LegalMonetaryTotal>` - Thanks [@ronaldsgailis](https://github.com/ronaldsgailis)
+
 # Changelog for v1.19.0
 
 ### New features & improvements

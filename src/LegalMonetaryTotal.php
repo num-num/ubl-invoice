@@ -18,6 +18,7 @@ class LegalMonetaryTotal implements XmlSerializable, XmlDeserializable
     private $chargeTotalAmount = 0;
     private $prepaidAmount;
     private $payableAmount = 0;
+    private $payableRoundingAmount;
 
     /**
      * @return float
@@ -145,6 +146,21 @@ class LegalMonetaryTotal implements XmlSerializable, XmlDeserializable
         return $this;
     }
 
+    public function getPayableRoundingAmount(): ?float
+    {
+        return $this->payableRoundingAmount;
+    }
+
+    /**
+     * @param float|null $payableRoundingAmount
+     * @return LegalMonetaryTotal
+     */
+    public function setPayableRoundingAmount(?float $payableRoundingAmount): LegalMonetaryTotal
+    {
+        $this->payableRoundingAmount = $payableRoundingAmount;
+        return $this;
+    }
+
     /**
      * The xmlSerialize method is called during xml writing.
      *
@@ -208,6 +224,18 @@ class LegalMonetaryTotal implements XmlSerializable, XmlDeserializable
             ]);
         }
 
+        if ($this->payableRoundingAmount !== null) {
+            $writer->write([
+                [
+                    'name' => Schema::CBC . 'PayableRoundingAmount',
+                    'value' => number_format($this->payableRoundingAmount, 2, '.', ''),
+                    'attributes' => [
+                        'currencyID' => Generator::$currencyID
+                    ]
+                ],
+            ]);
+        }
+
         $writer->write([
             [
                 'name'       => Schema::CBC . 'PayableAmount',
@@ -237,6 +265,7 @@ class LegalMonetaryTotal implements XmlSerializable, XmlDeserializable
             ->setAllowanceTotalAmount(isset($keyValues[Schema::CBC . 'AllowanceTotalAmount']) ? floatval($keyValues[Schema::CBC . 'AllowanceTotalAmount']) : null)
             ->setChargeTotalAmount(isset($keyValues[Schema::CBC . 'ChargeTotalAmount']) ? floatval($keyValues[Schema::CBC . 'ChargeTotalAmount']) : null)
             ->setPrepaidAmount(isset($keyValues[Schema::CBC . 'PrepaidAmount']) ? floatval($keyValues[Schema::CBC . 'PrepaidAmount']) : null)
+            ->setPayableRoundingAmount(isset($keyValues[Schema::CBC . 'PayableAmount']) ? floatval($keyValues[Schema::CBC . 'PayableAmount']) : null)
             ->setPayableAmount(isset($keyValues[Schema::CBC . 'PayableAmount']) ? floatval($keyValues[Schema::CBC . 'PayableAmount']) : null)
         ;
     }
