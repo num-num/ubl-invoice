@@ -79,6 +79,7 @@ class EN16931Test extends TestCase
 
         $legalMonetaryTotal = (new \NumNum\UBL\LegalMonetaryTotal())
             ->setPayableAmount(10 + 2.1)
+            ->setPayableRoundingAmount(12.1)
             ->setAllowanceTotalAmount(0)
             ->setTaxInclusiveAmount(10 + 2.1)
             ->setLineExtensionAmount(10)
