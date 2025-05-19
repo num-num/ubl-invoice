@@ -13,7 +13,7 @@ class NumberFormatterTest extends TestCase
     /**
      * @dataProvider formattedNumbersProvider
      */
-    public function __testNumberFormatterRounding($number, string $formattedNumber, ?int $decimals)
+    public function testNumberFormatterRounding($number, string $formattedNumber, ?int $decimals)
     {
         $result = NumberFormatter::format($number, $decimals);
         return $this->assertEqualsCanonicalizing($formattedNumber, $result);
