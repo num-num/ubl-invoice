@@ -193,7 +193,7 @@ class AllowanceCharge implements XmlSerializable
         $writer->write([
             [
                 'name' => Schema::CBC . 'Amount',
-                'value' => NumberFormatter::format($this->amount),
+                'value' => NumberFormatter::format($this->amount, 2),
                 'attributes' => [
                     'currencyID' => Generator::$currencyID
                 ]
@@ -204,7 +204,7 @@ class AllowanceCharge implements XmlSerializable
             $writer->write([
                 [
                     'name' => Schema::CBC . 'BaseAmount',
-                    'value' => NumberFormatter::format($this->baseAmount),
+                    'value' => NumberFormatter::format($this->baseAmount, 2),
                     'attributes' => [
                         'currencyID' => Generator::$currencyID
                     ]

@@ -168,7 +168,7 @@ class LegalMonetaryTotal implements XmlSerializable
         $writer->write([
             [
                 'name' => Schema::CBC . 'LineExtensionAmount',
-                'value' => NumberFormatter::format($this->lineExtensionAmount),
+                'value' => NumberFormatter::format($this->lineExtensionAmount, 2),
                 'attributes' => [
                     'currencyID' => Generator::$currencyID
                 ]
@@ -176,7 +176,7 @@ class LegalMonetaryTotal implements XmlSerializable
             ],
             [
                 'name' => Schema::CBC . 'TaxExclusiveAmount',
-                'value' => NumberFormatter::format($this->taxExclusiveAmount),
+                'value' => NumberFormatter::format($this->taxExclusiveAmount, 2),
                 'attributes' => [
                     'currencyID' => Generator::$currencyID
                 ]
@@ -184,7 +184,7 @@ class LegalMonetaryTotal implements XmlSerializable
             ],
             [
                 'name' => Schema::CBC . 'TaxInclusiveAmount',
-                'value' => NumberFormatter::format($this->taxInclusiveAmount),
+                'value' => NumberFormatter::format($this->taxInclusiveAmount, 2),
                 'attributes' => [
                     'currencyID' => Generator::$currencyID
                 ]
@@ -192,7 +192,7 @@ class LegalMonetaryTotal implements XmlSerializable
             ],
             [
                 'name' => Schema::CBC . 'AllowanceTotalAmount',
-                'value' => NumberFormatter::format($this->allowanceTotalAmount),
+                'value' => NumberFormatter::format($this->allowanceTotalAmount,2),
                 'attributes' => [
                     'currencyID' => Generator::$currencyID
                 ]
@@ -200,7 +200,7 @@ class LegalMonetaryTotal implements XmlSerializable
             ],
             [
                 'name' => Schema::CBC . 'ChargeTotalAmount',
-                'value' => NumberFormatter::format($this->chargeTotalAmount),
+                'value' => NumberFormatter::format($this->chargeTotalAmount, 2),
                 'attributes' => [
                     'currencyID' => Generator::$currencyID
                 ]
@@ -212,7 +212,7 @@ class LegalMonetaryTotal implements XmlSerializable
             $writer->write([
                 [
                     'name' => Schema::CBC . 'PrepaidAmount',
-                    'value' => NumberFormatter::format($this->prepaidAmount),
+                    'value' => NumberFormatter::format($this->prepaidAmount, 2),
                     'attributes' => [
                         'currencyID' => Generator::$currencyID
                     ]
@@ -224,7 +224,7 @@ class LegalMonetaryTotal implements XmlSerializable
             $writer->write([
                 [
                     'name' => Schema::CBC . 'PayableRoundingAmount',
-                    'value' => NumberFormatter::format($this->payableRoundingAmount),
+                    'value' => NumberFormatter::format($this->payableRoundingAmount, 2),
                     'attributes' => [
                         'currencyID' => Generator::$currencyID
                     ]
@@ -235,7 +235,7 @@ class LegalMonetaryTotal implements XmlSerializable
         $writer->write([
             [
                 'name' => Schema::CBC . 'PayableAmount',
-                'value' => NumberFormatter::format($this->payableAmount),
+                'value' => NumberFormatter::format($this->payableAmount, 2),
                 'attributes' => [
                     'currencyID' => Generator::$currencyID
                 ]

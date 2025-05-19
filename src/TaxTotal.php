@@ -73,7 +73,7 @@ class TaxTotal implements XmlSerializable
         $writer->write([
             [
                 'name' => Schema::CBC . 'TaxAmount',
-                'value' => NumberFormatter::format($this->taxAmount),
+                'value' => NumberFormatter::format($this->taxAmount, 2),
                 'attributes' => [
                     'currencyID' => Generator::$currencyID
                 ]

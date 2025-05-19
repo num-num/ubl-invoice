@@ -98,7 +98,7 @@ class PaymentTerms implements XmlSerializable
             $writer->write([
                 [
                     'name' => Schema::CBC . 'Amount',
-                    'value' => NumberFormatter::format($this->amount),
+                    'value' => NumberFormatter::format($this->amount, 2),
                     'attributes' => [
                         'currencyID' => 'EUR'
                     ]
