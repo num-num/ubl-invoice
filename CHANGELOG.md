@@ -1,4 +1,4 @@
-# Changelog for v1.20.1
+# Changelog for v1.20.0
 
 ### New features & improvements
 
