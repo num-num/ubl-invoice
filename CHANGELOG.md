@@ -1,3 +1,9 @@
+# Changelog for v1.20.1
+
+### New features & improvements
+
+- General change: don't round numbers to two decimals, always use the amount of provided decimals
+
 # Changelog for v1.19.1
 
 ### New features & improvements
