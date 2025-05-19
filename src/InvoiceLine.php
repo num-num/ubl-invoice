@@ -312,7 +312,7 @@ class InvoiceLine implements XmlSerializable, XmlDeserializable
         }
 
         $writer->write([
-            'name'       => Schema::CBC . $this->isCreditNoteLine() ? 'CreditedQuantity' : 'InvoicedQuantity',
+            'name'       => Schema::CBC . ($this->isCreditNoteLine() ? 'CreditedQuantity' : 'InvoicedQuantity'),
             'value'      => NumberFormatter::format($this->invoicedQuantity),
             'attributes' => $invoicedQuantityAttributes
         ]);
