@@ -50,6 +50,6 @@ class FinancialInstitutionBranch implements XmlSerializable, XmlDeserializable
         $keyValues = keyValue($reader);
 
         return (new static())
-            ->setId($keyValues['ID'] ?? null);
+            ->setId($keyValues[Schema::CBC . 'ID'] ?? null);
     }
 }
