@@ -1,3 +1,9 @@
+# Changelog for <next-release>
+
+### New features & improvements
+
+- Add missing ICD Code list. See also https://docs.peppol.eu/poacc/billing/3.0/codelist/ICD/
+
 # Changelog for v1.20.0
 
 ### New features & improvements
