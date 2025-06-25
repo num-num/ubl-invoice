@@ -3,6 +3,7 @@
 ### New features & improvements
 
 - Add missing ICD Code list. See also https://docs.peppol.eu/poacc/billing/3.0/codelist/ICD/
+- Make <cac:ClassifiedTaxCategory> <cbc:Percent> optional - Thanks [@chipco](https://github.com/chipco)
 
 # Changelog for v1.20.0
 
