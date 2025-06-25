@@ -1,3 +1,9 @@
+# Changelog for v1.21.1
+
+#### Bug fixes
+
+- <cac:Price> <cbc:PriceAmount> should not be rounded to zero decimals
+
 # Changelog for v1.21.0
 
 ### New features & improvements
