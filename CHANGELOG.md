@@ -1,3 +1,12 @@
+# Changelog for <next-release>
+
+### New features & improvements
+
+- Add missing ICD Code list. See also https://docs.peppol.eu/poacc/billing/3.0/codelist/ICD/
+- Make <cac:ClassifiedTaxCategory> <cbc:Percent> optional - Thanks [@chipco](https://github.com/chipco)
+- Add <cac:AccountingContact> to <Invoice> - Thanks [@tgeorgel](https://github.com/tgeorgel)
+- Add <cbc:ID> to <cac:Contact> - Thanks [@tgeorgel](https://github.com/tgeorgel)
+
 # Changelog for v1.20.0
 
 ### New features & improvements
