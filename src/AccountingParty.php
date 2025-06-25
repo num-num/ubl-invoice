@@ -13,6 +13,7 @@ class AccountingParty implements XmlSerializable, XmlDeserializable
 {
     private $supplierAssignedAccountID;
     private $party;
+    private $accountingContact;
 
     /**
      * @return string
@@ -51,6 +52,25 @@ class AccountingParty implements XmlSerializable, XmlDeserializable
     }
 
     /**
+     * @return ?Contact
+     */
+    public function getAccountingContact(): ?Contact
+    {
+        return $this->accountingContact;
+    }
+
+    /**
+     * @param Contact $accountingContact
+     * @return AccountingParty
+     */
+    public function setAccountingContact(Contact $accountingContact): AccountingParty
+    {
+        $this->accountingContact = $accountingContact;
+        return $this;
+    }
+
+
+    /**
      * The xmlSerialize method is called during xml writing.
      *
      * @param Writer $writer
@@ -63,9 +83,16 @@ class AccountingParty implements XmlSerializable, XmlDeserializable
                 Schema::CBC . 'SupplierAssignedAccountID' => $this->supplierAssignedAccountID,
             ]);
         }
+
         if (!empty($this->party)) {
             $writer->write([
                 Schema::CAC . 'Party' => $this->party,
+            ]);
+        }
+
+        if (!empty($this->accountingContact)) {
+            $writer->write([
+                Schema::CAC . 'AccountingContact' => $this->accountingContact,
             ]);
         }
     }
@@ -82,6 +109,7 @@ class AccountingParty implements XmlSerializable, XmlDeserializable
         return (new static())
             ->setParty($keyValues[Schema::CAC . 'Party'] ?? null)
             ->setSupplierAssignedAccountId($keyValues[Schema::CBC . 'SupplierAssignedAccountID'] ?? null)
+            ->setAccountingContact($keyValues[Schema::CBC . 'AccountingContact'] ?? null)
         ;
     }
 }
