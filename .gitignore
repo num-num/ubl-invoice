@@ -79,5 +79,5 @@ $RECYCLE.BIN/
 # Test cache
 .phpunit.result.cache
 
-# Editor settings
+# Editors
 .vscode/

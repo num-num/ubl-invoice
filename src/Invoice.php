@@ -28,6 +28,7 @@ class Invoice implements XmlSerializable, XmlDeserializable
     private $paymentTerms;
     private $accountingSupplierParty;
     private $accountingCustomerParty;
+    private $accountingCustomerPartyContact;
     private $payeeParty;
     /** @var PaymentMeans[] $paymentMeans */
     private $paymentMeans;
@@ -260,6 +261,24 @@ class Invoice implements XmlSerializable, XmlDeserializable
     }
 
     /**
+     * @return string
+     */
+    public function getSupplierAssignedAccountID(): ?string
+    {
+        return $this->supplierAssignedAccountID;
+    }
+
+    /**
+     * @param string $supplierAssignedAccountID
+     * @return Invoice
+     */
+    public function setSupplierAssignedAccountID(string $supplierAssignedAccountID): Invoice
+    {
+        $this->supplierAssignedAccountID = $supplierAssignedAccountID;
+        return $this;
+    }
+
+    /**
      * @return AccountingParty
      */
     public function getAccountingCustomerParty(): ?AccountingParty
@@ -274,6 +293,24 @@ class Invoice implements XmlSerializable, XmlDeserializable
     public function setAccountingCustomerParty(AccountingParty $accountingCustomerParty)
     {
         $this->accountingCustomerParty = $accountingCustomerParty;
+        return $this;
+    }
+
+    /**
+     * @return ?Contact
+     */
+    public function getAccountingCustomerPartyContact(): ?Contact
+    {
+        return $this->accountingCustomerPartyContact;
+    }
+
+    /**
+     * @param Contact $accountingCustomerPartyContact
+     * @return Invoice
+     */
+    public function setAccountingCustomerPartyContact(Contact $accountingCustomerPartyContact): Invoice
+    {
+        $this->accountingCustomerPartyContact = $accountingCustomerPartyContact;
         return $this;
     }
 
@@ -727,6 +764,12 @@ class Invoice implements XmlSerializable, XmlDeserializable
                 Schema::CAC . 'ProjectReference' => $this->projectReference
             ]);
         }
+
+        $customerParty = array_filter([
+            Schema::CBC . 'SupplierAssignedAccountID' => $this->supplierAssignedAccountID,
+            Schema::CAC . 'Party' => $this->accountingCustomerParty,
+            Schema::CAC . 'AccountingContact' => $this->accountingCustomerPartyContact,
+        ]);
 
         $writer->write([
             Schema::CAC . 'AccountingSupplierParty' => $this->accountingSupplierParty,

@@ -19,7 +19,23 @@
 - Functions `setCustomizationID`/`getCustomizationID` have been renamed to `setCustomizationId`/`getCustomizationId`
 - Functions `setProfileID`/`getProfileID` have been renamed to `setProfileId`/`getProfileId`
 
-# Changelog for v1.20.1
+# Changelog for v1.21.1
+
+#### Bug fixes
+
+- <cac:Price> <cbc:PriceAmount> should not be rounded to zero decimals
+
+# Changelog for v1.21.0
+
+### New features & improvements
+
+- Add missing ICD Code list. See also https://docs.peppol.eu/poacc/billing/3.0/codelist/ICD/
+- Make <cac:ClassifiedTaxCategory> <cbc:Percent> optional - Thanks [@chipco](https://github.com/chipco)
+- Add <cac:AccountingContact> to <Invoice> - Thanks [@tgeorgel](https://github.com/tgeorgel)
+- Add <cbc:ID> to <cac:Contact> - Thanks [@tgeorgel](https://github.com/tgeorgel)
+- Allow both <cbc:DocumentTypeCode> and <cbc:DocumentType> to be present in <cac:AdditionalDocumentReference> - Thanks [@tgeorgel](https://github.com/tgeorgel)
+
+# Changelog for v1.20.0
 
 ### New features & improvements
 

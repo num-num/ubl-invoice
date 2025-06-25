@@ -11,10 +11,29 @@ use Sabre\Xml\XmlSerializable;
 
 class Contact implements XmlSerializable, XmlDeserializable
 {
+    private $id;
     private $name;
     private $telephone;
     private $telefax;
     private $electronicMail;
+
+    /**
+     * @return string
+     */
+    public function getId(): ?string
+    {
+        return $this->id;
+    }
+
+    /**
+     * @param string $id
+     * @return Contact
+     */
+    public function setId(string $id): Contact
+    {
+        $this->id = $id;
+        return $this;
+    }
 
     /**
      * @return string
@@ -96,6 +115,12 @@ class Contact implements XmlSerializable, XmlDeserializable
      */
     public function xmlSerialize(Writer $writer): void
     {
+        if ($this->id !== null) {
+            $writer->write([
+                Schema::CBC . 'ID' => $this->id
+            ]);
+        }
+
         if ($this->name !== null) {
             $writer->write([
                 Schema::CBC . 'Name' => $this->name

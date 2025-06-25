@@ -159,10 +159,6 @@ class TaxCategory implements XmlSerializable, XmlDeserializable
         if ($this->getId() === null) {
             throw new InvalidArgumentException('Missing taxcategory id');
         }
-
-        if ($this->getPercent() === null) {
-            throw new InvalidArgumentException('Missing taxcategory percent');
-        }
     }
 
     /**
@@ -182,26 +178,31 @@ class TaxCategory implements XmlSerializable, XmlDeserializable
                 'attributes' => $this->idAttributes,
             ],
         ]);
+
         if ($this->name !== null) {
             $writer->write([
                 Schema::CBC . 'Name' => $this->name,
             ]);
         }
 
-        $writer->write([
-            Schema::CBC . 'Percent' => NumberFormatter::format($this->percent, 2),
-        ]);
+        if ($this->percent !== null) {
+            $writer->write([
+                Schema::CBC . 'Percent' => NumberFormatter::format($this->percent, 2),
+            ]);
+        }
 
         if ($this->taxExemptionReasonCode !== null) {
             $writer->write([
                 Schema::CBC . 'TaxExemptionReasonCode' => $this->taxExemptionReasonCode,
             ]);
         }
+
         if ($this->taxExemptionReason !== null) {
             $writer->write([
                 Schema::CBC . 'TaxExemptionReason' => $this->taxExemptionReason,
             ]);
         }
+
         if ($this->taxScheme !== null) {
             $writer->write([Schema::CAC . 'TaxScheme' => $this->taxScheme]);
         } else {
