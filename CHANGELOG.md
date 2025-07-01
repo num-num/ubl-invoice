@@ -1,3 +1,9 @@
+# Changelog for v1.21.2
+
+#### Bug fixes
+
+- <cbc:MultiplierFactorNumeric> in AllowanceCharge should not crash when the system uses localized number output
+
 # Changelog for v1.21.1
 
 #### Bug fixes
