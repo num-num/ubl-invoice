@@ -20,6 +20,12 @@
 - Functions `setCustomizationID`/`getCustomizationID` have been renamed to `setCustomizationId`/`getCustomizationId`
 - Functions `setProfileID`/`getProfileID` have been renamed to `setProfileId`/`getProfileId`
 
+# Changelog for v1.21.3
+
+#### Bug fixes
+
+- Don't round `<cac:Price> <cbc:PriceAmount>` to two decimals
+
 # Changelog for v1.21.2
 
 #### Bug fixes
