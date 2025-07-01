@@ -63,7 +63,7 @@ class AccountingParty implements XmlSerializable, XmlDeserializable
      * @param Contact $accountingContact
      * @return AccountingParty
      */
-    public function setAccountingContact(Contact $accountingContact): AccountingParty
+    public function setAccountingContact(?Contact $accountingContact): AccountingParty
     {
         $this->accountingContact = $accountingContact;
         return $this;
