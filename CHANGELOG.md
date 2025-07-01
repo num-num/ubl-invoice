@@ -20,6 +20,13 @@
 - Functions `setCustomizationID`/`getCustomizationID` have been renamed to `setCustomizationId`/`getCustomizationId`
 - Functions `setProfileID`/`getProfileID` have been renamed to `setProfileId`/`getProfileId`
 
+# Changelog for v1.21.2
+
+#### Bug fixes
+
+- <cbc:MultiplierFactorNumeric> in AllowanceCharge should not crash when the system uses localized number output
+- documentTypeCode in AdditionalDocumentReference should not be limited to int values - Thanks [@tgeorgel](https://github.com/tgeorgel)
+
 # Changelog for v1.21.1
 
 #### Bug fixes
