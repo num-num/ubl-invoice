@@ -765,12 +765,6 @@ class Invoice implements XmlSerializable, XmlDeserializable
             ]);
         }
 
-        $customerParty = array_filter([
-            Schema::CBC . 'SupplierAssignedAccountID' => $this->supplierAssignedAccountID,
-            Schema::CAC . 'Party' => $this->accountingCustomerParty,
-            Schema::CAC . 'AccountingContact' => $this->accountingCustomerPartyContact,
-        ]);
-
         $writer->write([
             Schema::CAC . 'AccountingSupplierParty' => $this->accountingSupplierParty,
             Schema::CAC . 'AccountingCustomerParty' => $this->accountingCustomerParty,
