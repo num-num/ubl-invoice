@@ -3,6 +3,7 @@
 #### Bug fixes
 
 - <cbc:MultiplierFactorNumeric> in AllowanceCharge should not crash when the system uses localized number output
+- documentTypeCode in AdditionalDocumentReference should not be limited to int values - Thanks [@tgeorgel](https://github.com/tgeorgel)
 
 # Changelog for v1.21.1
 
