@@ -9,10 +9,22 @@ A modern object-oriented PHP library to create valid UBL and Peppol BIS 3.0 file
 
 ## Installation and usage
 
+#### 1.0 - writing UBL files
+
 This package requires PHP 7.4 or higher and is fully compatible with PHP8. Installation can be done through [composer](https://www.getcomposer.org).
 
 ```zsh
 $ composer require num-num/ubl-invoice
+```
+
+#### 2.0 - reading and writing UBL files
+
+> 💡 We are working on a 2.0 release of this package that will also be able to **read ubl files**!
+
+If you are interested in trying this out, please check out the [2.0 branch](https://github.com/num-num/ubl-invoice/tree/master-2.0) or use the 2.0 version of the package in your project. Please beware that this is still in development and we may still introduce breaking changes.
+
+```zsh
+$ composer require num-num/ubl-invoice:^2.0.0-beta
 ```
 
 ## Contributing
