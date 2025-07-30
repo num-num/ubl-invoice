@@ -186,7 +186,7 @@ class AllowanceCharge implements XmlSerializable
 
         if ($this->multiplierFactorNumeric !== null) {
             $writer->write([
-                Schema::CBC . 'MultiplierFactorNumeric' => NumberFormatter::format($this->baseAmount)
+                Schema::CBC . 'MultiplierFactorNumeric' => NumberFormatter::format($this->multiplierFactorNumeric)
             ]);
         }
 
