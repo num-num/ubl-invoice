@@ -2,7 +2,7 @@
 
 #### Bug fixes
 
-- Fix return type annotation for `Invoice::setBillingReference()`
+- Fix argument and return type annotation for `Invoice::setBillingReference()`
 
 # Changelog for v1.21.3
 
