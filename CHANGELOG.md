@@ -1,3 +1,9 @@
+# Changelog for v1.21.4
+
+#### Bug fixes
+
+- <cbc:MultiplierFactorNumeric> in AllowanceCharge was incorrectly set to baseAmount instead of the actual multiplierFactorNumeric - Thanks [@dragonfly4](https://github.com/dragonfly4)
+
 # Changelog for v1.21.3
 
 #### Bug fixes
