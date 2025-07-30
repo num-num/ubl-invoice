@@ -1,3 +1,9 @@
+# Changelog for <next-version>
+
+#### Bug fixes
+
+- Fix return type annotation for `Invoice::setBillingReference()`
+
 # Changelog for v1.21.3
 
 #### Bug fixes

@@ -548,12 +548,7 @@ class Invoice implements XmlSerializable
         return $this->billingReference;
     }
 
-    /**
-     * Set the reference to the invoice that is being credited
-     *
-     * @return CreditNote
-     */
-    public function setBillingReference($billingReference): CreditNote
+    public function setBillingReference(?BillingReference $billingReference): self
     {
         $this->billingReference = $billingReference;
         return $this;
