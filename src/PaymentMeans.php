@@ -19,6 +19,7 @@ class PaymentMeans implements XmlSerializable
     private $instructionNote;
     private $paymentId;
     private $payeeFinancialAccount;
+    private $paymentMandate
 
     /**
      * @return string
@@ -130,7 +131,23 @@ class PaymentMeans implements XmlSerializable
         $this->payeeFinancialAccount = $payeeFinancialAccount;
         return $this;
     }
+        /**
+     * @return string
+     */
+    public function getPaymentMandate(): ?string
+    {
+        return $this->paymentMandate;
+    }
 
+    /**
+     * @param string $paymentMandate
+     * @return PaymentMeans
+     */
+    public function setInstructionId(?string $paymentMandate): PaymentMeans
+    {
+        $this->paymentMandate = $paymentMandate;
+        return $this;
+    }
     public function xmlSerialize(Writer $writer): void
     {
         $writer->write([
@@ -142,6 +159,12 @@ class PaymentMeans implements XmlSerializable
         if ($this->getPaymentDueDate() !== null) {
             $writer->write([
                 Schema::CBC . 'PaymentDueDate' => $this->getPaymentDueDate()->format('Y-m-d')
+            ]);
+        }
+
+        if ($this->getPaymentMandate() !== null) {
+            $writer->write([
+                Schema::CAC . 'PaymentMandate' => $this->getPaymentMandate()
             ]);
         }
 
