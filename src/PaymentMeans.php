@@ -131,10 +131,11 @@ class PaymentMeans implements XmlSerializable
         $this->payeeFinancialAccount = $payeeFinancialAccount;
         return $this;
     }
-        /**
-     * @return string
+
+    /**
+     * @return PaymentMandate
      */
-    public function getPaymentMandate(): ?string
+    public function getPaymentMandate(): ?PaymentMandate
     {
         return $this->paymentMandate;
     }
