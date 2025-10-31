@@ -162,12 +162,6 @@ class PaymentMeans implements XmlSerializable
             ]);
         }
 
-        if ($this->getPaymentMandate() !== null) {
-            $writer->write([
-                Schema::CAC . 'PaymentMandate' => $this->getPaymentMandate()
-            ]);
-        }
-
         if ($this->getInstructionId() !== null) {
             $writer->write([
                 Schema::CBC . 'InstructionID' => $this->getInstructionId()
