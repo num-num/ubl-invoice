@@ -41,9 +41,9 @@ class PaymentMandate implements XmlSerializable
 
     /**
      * @param mixed $payeeFinancialAccount
-     * @return PaymentMeans
+     * @return PaymentMandate
      */
-    public function setPayeeFinancialAccount(?PayeeFinancialAccount $payeeFinancialAccount): PaymentMeans
+    public function setPayeeFinancialAccount(?PayeeFinancialAccount $payeeFinancialAccount): PaymentMandate
     {
         $this->payeeFinancialAccount = $payeeFinancialAccount;
         return $this;
