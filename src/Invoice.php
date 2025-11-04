@@ -160,6 +160,15 @@ class Invoice implements XmlSerializable, XmlDeserializable
     }
 
     /**
+     * @return string
+     */
+    public function getDocumentCurrencyCode(): ?string
+    {
+        return $this->documentCurrencyCode;
+    }
+
+
+    /**
      * @param mixed $currencyCode
      * @return static
      */
