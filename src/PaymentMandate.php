@@ -4,7 +4,6 @@ namespace NumNum\UBL;
 
 use Sabre\Xml\Writer;
 use Sabre\Xml\XmlSerializable;
-use DateTime;
 
 class PaymentMandate implements XmlSerializable
 {
@@ -12,6 +11,7 @@ class PaymentMandate implements XmlSerializable
 
     private $id;
     private $payeeFinancialAccount;
+
     /**
      * @return string
      */
@@ -22,17 +22,16 @@ class PaymentMandate implements XmlSerializable
 
     /**
      * @param string $id
-     * @return PaymentMandate
+     * @return static
      */
-    public function setId(?string $id): PaymentMandate
+    public function setId(?string $id)
     {
         $this->id = $id;
         return $this;
     }
 
-
     /**
-     * @return mixed
+     * @return PayeeFinancialAccount
      */
     public function getPayeeFinancialAccount(): ?PayeeFinancialAccount
     {
@@ -40,15 +39,14 @@ class PaymentMandate implements XmlSerializable
     }
 
     /**
-     * @param mixed $payeeFinancialAccount
-     * @return PaymentMandate
+     * @param PayeeFinancialAccount $payeeFinancialAccount
+     * @return static
      */
-    public function setPayeeFinancialAccount(?PayeeFinancialAccount $payeeFinancialAccount): PaymentMandate
+    public function setPayeeFinancialAccount(?PayeeFinancialAccount $payeeFinancialAccount)
     {
         $this->payeeFinancialAccount = $payeeFinancialAccount;
         return $this;
     }
-
 
     public function xmlSerialize(Writer $writer): void
     {

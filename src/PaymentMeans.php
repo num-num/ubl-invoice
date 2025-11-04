@@ -147,14 +147,15 @@ class PaymentMeans implements XmlSerializable, XmlDeserializable
     }
 
     /**
-     * @param string $paymentMandate
-     * @return PaymentMeans
+     * @param PaymentMandate $paymentMandate
+     * @return static
      */
-    public function setPayementMandate(?PaymentMandate $paymentMandate): PaymentMeans
+    public function setPaymentMandate(?PaymentMandate $paymentMandate)
     {
         $this->paymentMandate = $paymentMandate;
         return $this;
     }
+
     public function xmlSerialize(Writer $writer): void
     {
         $writer->write([
@@ -193,7 +194,7 @@ class PaymentMeans implements XmlSerializable, XmlDeserializable
             ]);
         }
 
-        if($this->getPaymentMandate() !== null){
+        if ($this->getPaymentMandate() !== null) {
             $writer->write([
                 Schema::CAC . 'PaymentMandate' => $this->getPaymentMandate()
             ]);
