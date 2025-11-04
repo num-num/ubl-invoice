@@ -3,6 +3,7 @@
 #### Bug fixes
 
 - Fix argument and return type annotation for `Invoice::setBillingReference()` - Thanks [@ronaldsgailis](https://github.com/ronaldsgailis)
+- Add PaymentMandate class and update PaymentMeans class - Thanks [@UbiManu](https://github.com/UbiManu)
 
 # Changelog for v1.21.3
 
