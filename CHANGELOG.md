@@ -1,8 +1,10 @@
-# Changelog for v1.21.4
+# Changelog for <next-version>
 
 #### Bug fixes
 
 - <cbc:MultiplierFactorNumeric> in AllowanceCharge was incorrectly set to baseAmount instead of the actual multiplierFactorNumeric - Thanks [@dragonfly4](https://github.com/dragonfly4)
+- Fix argument and return type annotation for `Invoice::setBillingReference()` - Thanks [@ronaldsgailis](https://github.com/ronaldsgailis)
+- Add PaymentMandate class and update PaymentMeans class - Thanks [@UbiManu](https://github.com/UbiManu)
 
 # Changelog for v1.21.3
 
