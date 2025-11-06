@@ -2,13 +2,16 @@
 
 namespace NumNum\UBL;
 
-use Sabre\Xml\Writer;
-use Sabre\Xml\XmlSerializable;
+use function Sabre\Xml\Deserializer\keyValue;
 
 use DateTime;
 use InvalidArgumentException;
+use Sabre\Xml\Reader;
+use Sabre\Xml\Writer;
+use Sabre\Xml\XmlDeserializable;
+use Sabre\Xml\XmlSerializable;
 
-class InvoiceDocumentReference implements XmlSerializable
+class InvoiceDocumentReference implements XmlSerializable, XmlDeserializable
 {
     private $originalInvoiceId;
     private $issueDate;
@@ -24,10 +27,10 @@ class InvoiceDocumentReference implements XmlSerializable
 
     /**
      * Set the id of the invoice that is being credited
-     * 
-     * @return InvoiceDocumentReference
+     *
+     * @return static
      */
-    public function setOriginalInvoiceId(string $invoiceRef): InvoiceDocumentReference
+    public function setOriginalInvoiceId(string $invoiceRef)
     {
         $this->originalInvoiceId = $invoiceRef;
         return $this;
@@ -35,7 +38,7 @@ class InvoiceDocumentReference implements XmlSerializable
 
     /**
      * Get the issue date of the original invoice that is being credited
-     * 
+     *
      * @return ?DateTime
      */
     public function getIssueDate(): ?DateTime
@@ -45,10 +48,10 @@ class InvoiceDocumentReference implements XmlSerializable
 
     /**
      * Set the issue date of the original invoice that is being credited
-     * 
-     * @return InvoiceDocumentReference
+     *
+     * @return static
      */
-    public function setIssueDate(DateTime $issueDate): InvoiceDocumentReference
+    public function setIssueDate(?DateTime $issueDate)
     {
         $this->issueDate = $issueDate;
         return $this;
@@ -78,19 +81,33 @@ class InvoiceDocumentReference implements XmlSerializable
 
         $writer->write([
             [
-                'name' => Schema::CBC . 'ID',
+                'name'  => Schema::CBC . 'ID',
                 'value' => $this->originalInvoiceId
             ]
         ]);
 
-        if ($this->issueDate != null)
-        {
+        if ($this->issueDate != null) {
             $writer->write([
                 [
-                    'name' => Schema::CBC . 'IssueDate',
+                    'name'  => Schema::CBC . 'IssueDate',
                     'value' => $this->issueDate->format('Y-m-d')
                 ]
             ]);
         }
+    }
+
+    /**
+     * The xmlDeserialize method is called during xml reading.
+     * @param Reader $xml
+     * @return static
+     */
+    public static function xmlDeserialize(Reader $reader)
+    {
+        $mixedContent = keyValue($reader);
+
+        return (new static())
+            ->setOriginalInvoiceId($mixedContent[Schema::CBC . 'ID'] ?? null)
+            ->setIssueDate(isset($mixedContent[Schema::CBC . 'IssueDate']) ? new DateTime($mixedContent[Schema::CBC . 'IssueDate']) : null)
+        ;
     }
 }

@@ -2,10 +2,14 @@
 
 namespace NumNum\UBL;
 
+use function Sabre\Xml\Deserializer\keyValue;
+
+use Sabre\Xml\Reader;
 use Sabre\Xml\Writer;
+use Sabre\Xml\XmlDeserializable;
 use Sabre\Xml\XmlSerializable;
 
-class TaxScheme implements XmlSerializable
+class TaxScheme implements XmlSerializable, XmlDeserializable
 {
     private $id;
     private $name;
@@ -22,9 +26,9 @@ class TaxScheme implements XmlSerializable
 
     /**
      * @param string $id
-     * @return TaxScheme
+     * @return static
      */
-    public function setId(string $id): TaxScheme
+    public function setId(?string $id)
     {
         $this->id = $id;
         return $this;
@@ -40,7 +44,7 @@ class TaxScheme implements XmlSerializable
 
     /**
      * @param string $name
-     * @return TaxScheme
+     * @return static
      */
     public function setName(?string $name)
     {
@@ -58,7 +62,7 @@ class TaxScheme implements XmlSerializable
 
     /**
      * @param string $taxTypeCode
-     * @return TaxScheme
+     * @return static
      */
     public function setTaxTypeCode(?string $taxTypeCode)
     {
@@ -76,7 +80,7 @@ class TaxScheme implements XmlSerializable
 
     /**
      * @param string $currencyCode
-     * @return TaxScheme
+     * @return static
      */
     public function setCurrencyCode(?string $currencyCode)
     {
@@ -92,9 +96,11 @@ class TaxScheme implements XmlSerializable
      */
     public function xmlSerialize(Writer $writer): void
     {
-        $writer->write([
-            Schema::CBC . 'ID' => $this->id
-        ]);
+        if ($this->id !== null) {
+            $writer->write([
+                Schema::CBC . 'ID' => $this->id
+            ]);
+        }
         if ($this->name !== null) {
             $writer->write([
                 Schema::CBC . 'Name' => $this->name
@@ -110,5 +116,22 @@ class TaxScheme implements XmlSerializable
                 Schema::CBC . 'CurrencyCode' => $this->currencyCode
             ]);
         }
+    }
+
+    /**
+     * The xmlDeserialize method is called during xml reading.
+     * @param Reader $xml
+     * @return static
+     */
+    public static function xmlDeserialize(Reader $reader)
+    {
+        $keyValues = keyValue($reader);
+
+        return (new static())
+            ->setId($keyValues[Schema::CBC . 'ID'] ?? null)
+            ->setName($keyValues[Schema::CBC . 'Name'] ?? null)
+            ->setTaxTypeCode($keyValues[Schema::CBC . 'TaxTypeCode'] ?? null)
+            ->setCurrencyCode($keyValues[Schema::CBC . 'CurrencyCode'] ?? null)
+        ;
     }
 }

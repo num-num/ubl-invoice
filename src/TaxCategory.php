@@ -2,12 +2,17 @@
 
 namespace NumNum\UBL;
 
-use Sabre\Xml\Writer;
-use Sabre\Xml\XmlSerializable;
-
+use Doctrine\Common\Collections\ArrayCollection;
 use InvalidArgumentException;
 
-class TaxCategory implements XmlSerializable
+use function Sabre\Xml\Deserializer\mixedContent;
+
+use Sabre\Xml\Reader;
+use Sabre\Xml\Writer;
+use Sabre\Xml\XmlDeserializable;
+use Sabre\Xml\XmlSerializable;
+
+class TaxCategory implements XmlSerializable, XmlDeserializable
 {
     private $id;
     private $idAttributes = [
@@ -42,9 +47,9 @@ class TaxCategory implements XmlSerializable
     /**
      * @param string $id
      * @param array $attributes
-     * @return TaxCategory
+     * @return static
      */
-    public function setId(?string $id, $attributes = null): TaxCategory
+    public function setId(?string $id, $attributes = null)
     {
         $this->id = $id;
         if (isset($attributes)) {
@@ -63,9 +68,9 @@ class TaxCategory implements XmlSerializable
 
     /**
      * @param string $name
-     * @return TaxCategory
+     * @return static
      */
-    public function setName(?string $name): TaxCategory
+    public function setName(?string $name)
     {
         $this->name = $name;
         return $this;
@@ -81,9 +86,9 @@ class TaxCategory implements XmlSerializable
 
     /**
      * @param string $percent
-     * @return TaxCategory
+     * @return static
      */
-    public function setPercent(?float $percent): TaxCategory
+    public function setPercent(?float $percent)
     {
         $this->percent = $percent;
         return $this;
@@ -99,9 +104,9 @@ class TaxCategory implements XmlSerializable
 
     /**
      * @param TaxScheme $taxScheme
-     * @return TaxCategory
+     * @return static
      */
-    public function setTaxScheme(?TaxScheme $taxScheme): TaxCategory
+    public function setTaxScheme(?TaxScheme $taxScheme)
     {
         $this->taxScheme = $taxScheme;
         return $this;
@@ -117,9 +122,9 @@ class TaxCategory implements XmlSerializable
 
     /**
      * @param string $taxExemptionReason
-     * @return TaxCategory
+     * @return static
      */
-    public function setTaxExemptionReason(?string $taxExemptionReason): TaxCategory
+    public function setTaxExemptionReason(?string $taxExemptionReason)
     {
         $this->taxExemptionReason = $taxExemptionReason;
         return $this;
@@ -135,9 +140,9 @@ class TaxCategory implements XmlSerializable
 
     /**
      * @param string $taxExemptionReason
-     * @return TaxCategory
+     * @return static
      */
-    public function setTaxExemptionReasonCode(?string $taxExemptionReasonCode): TaxCategory
+    public function setTaxExemptionReasonCode(?string $taxExemptionReasonCode)
     {
         $this->taxExemptionReasonCode = $taxExemptionReasonCode;
         return $this;
@@ -168,8 +173,8 @@ class TaxCategory implements XmlSerializable
 
         $writer->write([
             [
-                'name' => Schema::CBC . 'ID',
-                'value' => $this->getId(),
+                'name'       => Schema::CBC . 'ID',
+                'value'      => $this->getId(),
                 'attributes' => $this->idAttributes,
             ],
         ]);
@@ -179,9 +184,10 @@ class TaxCategory implements XmlSerializable
                 Schema::CBC . 'Name' => $this->name,
             ]);
         }
+
         if ($this->percent !== null) {
             $writer->write([
-                Schema::CBC . 'Percent' => number_format($this->percent, 2, '.', ''),
+                Schema::CBC . 'Percent' => NumberFormatter::format($this->percent, 2),
             ]);
         }
 
@@ -204,5 +210,34 @@ class TaxCategory implements XmlSerializable
                 Schema::CAC . 'TaxScheme' => null,
             ]);
         }
+    }
+
+
+
+    /**
+     * The xmlDeserialize method is called during xml reading.
+     * @param Reader $xml
+     * @return static
+     */
+    public static function xmlDeserialize(Reader $reader)
+    {
+        $mixedContent = mixedContent($reader);
+        $collection = new ArrayCollection($mixedContent);
+
+        $idTag = ReaderHelper::getTag(Schema::CBC . 'ID', $collection);
+        $nameTag = ReaderHelper::getTag(Schema::CBC . 'Name', $collection);
+        $percentTag = ReaderHelper::getTag(Schema::CBC . 'Percent', $collection);
+        $taxSchemeTag = ReaderHelper::getTag(Schema::CAC . 'TaxScheme', $collection);
+        $taxExemptionReasonTag = ReaderHelper::getTag(Schema::CBC . 'TaxExemptionReason', $collection);
+        $taxExemptionReasonCodeTag = ReaderHelper::getTag(Schema::CBC . 'TaxExemptionReasonCode', $collection);
+
+        return (new static())
+            ->setId($idTag['value'] ?? null, $idTag['attributes'] ?? null)
+            ->setName($nameTag['value'] ?? null)
+            ->setPercent(isset($percentTag['value']) ? floatval($percentTag['value']) : null)
+            ->setTaxScheme(isset($taxSchemeTag['value']) ? $taxSchemeTag['value'] : null)
+            ->setTaxExemptionReason($taxExemptionReasonTag['value'] ?? null)
+            ->setTaxExemptionReasonCode($taxExemptionReasonCodeTag['value'] ?? null)
+        ;
     }
 }

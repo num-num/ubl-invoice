@@ -1,4 +1,31 @@
+# Changelog for v2.0.0-beta
+
+### New features & improvements
+
+- Possibility to deserialize XML into object tree
+
+### Breaking changes ⚠️
+
+- `Invoice::setAccountingSupplierParty` now requires an `AccountingParty` instead of a `Party` object
+- `Invoice::setAccountingCustomerParty` now requires an `AccountingParty` instead of a `Party` object
+- `Invoice::getAccountingSupplierParty` now returns an `AccountingParty` instead of a `Party` object
+- `Invoice::getAccountingCustomerParty` now returns an `AccountingParty` instead of a `Party` object
+- `Invoice::accountingCustomerPartyContact` has been removed, use `Invoice::getAccountingCustomerParty()->setAccountingContact()` instead
+- `Invoice::setSupplierAssignedAccountID`/`Invoice::getSupplierAssignedAccountID` no longer exists and has moved to `AccountingParty::setSupplierAssignedAccountID`/`AccountingParty::getSupplierAssignedAccountID`
+- `Attachment::setFileStream` / `Attachment::getFileStream` to manually set the Attachment xml tag base 64 string content, has been renamed to `Attachment::setBase64Content` / `Attachment::getBase64Content`
+- Functions `setUBLVersionID`/`getUBLVersionID` have been renamed to `setUBLVersionId`/`getUBLVersionId`
+- Functions `setSupplierAssignedAccountID`/`getSupplierAssignedAccountID` have been renamed to `setSupplierAssignedAccountId`/`getSupplierAssignedAccountId`
+- Functions `setUnitCodeListID`/`getUnitCodeListID` have been renamed to `setUnitCodeListId`/`getUnitCodeListId`
+- Functions `setSchemeID`/`getSchemeID` have been renamed to `setSchemeId`/`getSchemeId`
+- Functions `setCustomizationID`/`getCustomizationID` have been renamed to `setCustomizationId`/`getCustomizationId`
+- Functions `setProfileID`/`getProfileID` have been renamed to `setProfileId`/`getProfileId`
+
 # Changelog for v1.21.4
+
+### New features & improvements
+
+- Add missing class PaymentMandate. See Also https://docs.peppol.eu/poacc/billing/3.0/syntax/ubl-invoice/cac-PaymentMeans/cac-PaymentMandate/
+- Add <cac:PaymentMandate> to <PaymentMeans>
 
 #### Bug fixes
 
@@ -66,7 +93,7 @@
 
 # Changelog for v1.18.1
 
-#### Bug fixes
+### Bug fixes
 
 - Fix Creditnote `<cac:BillingReference>` validation issues, this tag should be optional
 
@@ -88,7 +115,7 @@
 
 - Add support to include multiple `PaymentMeans` - Thanks [@Quazz](https://github.com/Quazz)
 
-#### Bug fixes
+### Bug fixes
 
 - Fix `InvoiceTypeCode` documentation dead link - Thanks [@TSimkus](https://github.com/TSimkus)
 - Changed `<cbc:MultiplierFactorNumeric />` type from `int` to `float` - Thanks [@TSimkus](https://github.com/TSimkus)
@@ -193,46 +220,46 @@
 
 ### New features & improvements
 
-- PHP8 Support — Thanks [@ChristianVermeulen](https://github.com/ChristianVermeulen)
+- PHP8 Support — Thanks [@ChristianVermeulen](https://github.com/ChristianVermeulen)
 
 # Changelog for version 1.11
 
 ### New features & improvements
 
-- Added new ContractDocumentReference class & tag `<cac:ContractDocumentReference />` to Invoice — Thanks [@mabjavaid](https://github.com/mabjavaid)
-- Remove duplicate validation for `id` on invoice — Thanks [@mabjavaid](https://github.com/mabjavaid)
+- Added new ContractDocumentReference class & tag `<cac:ContractDocumentReference />` to Invoice — Thanks [@mabjavaid](https://github.com/mabjavaid)
+- Remove duplicate validation for `id` on invoice — Thanks [@mabjavaid](https://github.com/mabjavaid)
 - Added new cac:PartyIdentification tag to cac:Party
 
 # Changelog for version 1.10.2
 
 ### New features & improvements
 
-- Added AdditionalStreetName in Address.php — Thanks [@jbputit](https://github.com/jbputit)
+- Added AdditionalStreetName in Address.php — Thanks [@jbputit](https://github.com/jbputit)
 
 # Changelog for version 1.10.1
 
 ### New features & improvements
 
-- Added year, month and piece as additional units in UnitCode.php — Thanks [@jbputit](https://github.com/jbputit)
-- Added possibility to set InvoicePeriod in InvoiceLine — Thanks [@jbputit](https://github.com/jbputit)
+- Added year, month and piece as additional units in UnitCode.php — Thanks [@jbputit](https://github.com/jbputit)
+- Added possibility to set InvoicePeriod in InvoiceLine — Thanks [@jbputit](https://github.com/jbputit)
 
 # Changelog for version 1.10
 
 ### New features & improvements
 
-- Added new OrderReferen class & tag `<cac:OrderReference>` to Invoice — Thanks [@jbputit](https://github.com/jbputit)
+- Added new OrderReferen class & tag `<cac:OrderReference>` to Invoice — Thanks [@jbputit](https://github.com/jbputit)
 
 # Changelog for version 1.9.6
 
 ### New features & improvements
 
-- Support for `<cbc:SupplierAssignedAccountID>` in `<cac:AccountingCustomerParty>` — Thanks [@eborned](https://github.com/eborned)
+- Support for `<cbc:SupplierAssignedAccountID>` in `<cac:AccountingCustomerParty>` — Thanks [@eborned](https://github.com/eborned)
 
 # Changelog for version 1.9.5
 
 ### New features & improvements
 
-- Add `<cac:BuyersItemIdentification>` child node for `<cac:Item>` — Thanks [@eborned](https://github.com/eborned)
+- Add `<cac:BuyersItemIdentification>` child node for `<cac:Item>` — Thanks [@eborned](https://github.com/eborned)
 
 # Changelog for version 1.9.4
 
@@ -258,7 +285,7 @@
 
 ### New features & improvements
 
-- Bugfix in `<cac:Party>`, set correct order for child nodes `<cac:PartyLegalEntity>` & `<cac:Contact>` — Thanks [@stedekay](https://github.com/stedekay)
+- Bugfix in `<cac:Party>`, set correct order for child nodes `<cac:PartyLegalEntity>` & `<cac:Contact>` — Thanks [@stedekay](https://github.com/stedekay)
 
 # Changelog for version 1.9
 

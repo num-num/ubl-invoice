@@ -2,13 +2,18 @@
 
 namespace NumNum\UBL;
 
-use Sabre\Xml\Writer;
-use Sabre\Xml\XmlSerializable;
-
+use Carbon\Carbon;
 use DateTime;
 use InvalidArgumentException;
 
-class SettlementPeriod implements XmlSerializable
+use function Sabre\Xml\Deserializer\keyValue;
+
+use Sabre\Xml\Reader;
+use Sabre\Xml\Writer;
+use Sabre\Xml\XmlDeserializable;
+use Sabre\Xml\XmlSerializable;
+
+class SettlementPeriod implements XmlSerializable, XmlDeserializable
 {
     private $startDate;
     private $endDate;
@@ -23,9 +28,9 @@ class SettlementPeriod implements XmlSerializable
 
     /**
      * @param DateTime $startDate
-     * @return SettlementPeriod
+     * @return static
      */
-    public function setStartDate(DateTime $startDate): SettlementPeriod
+    public function setStartDate(DateTime $startDate)
     {
         $this->startDate = $startDate;
         return $this;
@@ -41,9 +46,9 @@ class SettlementPeriod implements XmlSerializable
 
     /**
      * @param DateTime $endDate
-     * @return SettlementPeriod
+     * @return static
      */
-    public function setEndDate(DateTime $endDate): SettlementPeriod
+    public function setEndDate(DateTime $endDate)
     {
         $this->endDate = $endDate;
         return $this;
@@ -77,17 +82,32 @@ class SettlementPeriod implements XmlSerializable
 
         $writer->write([
             Schema::CBC . 'StartDate' => $this->startDate->format('Y-m-d'),
-            Schema::CBC . 'EndDate' => $this->endDate->format('Y-m-d'),
+            Schema::CBC . 'EndDate'   => $this->endDate->format('Y-m-d'),
         ]);
 
         $writer->write([
             [
-                'name' => Schema::CBC . 'DurationMeasure',
-                'value' => $this->endDate->diff($this->startDate)->format('%d'),
+                'name'       => Schema::CBC . 'DurationMeasure',
+                'value'      => $this->endDate->diff($this->startDate)->format('%d'),
                 'attributes' => [
                     'unitCode' => 'DAY'
                 ]
             ]
         ]);
+    }
+
+    /**
+     * The xmlDeserialize method is called during xml reading.
+     * @param Reader $xml
+     * @return static
+     */
+    public static function xmlDeserialize(Reader $reader)
+    {
+        $keyValues = keyValue($reader);
+
+        return (new static())
+            ->setStartDate(Carbon::parse($keyValues[Schema::CBC . 'StartDate'])->toDateTime())
+            ->setEndDate(Carbon::parse($keyValues[Schema::CBC . 'EndDate'])->toDateTime())
+        ;
     }
 }

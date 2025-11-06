@@ -2,7 +2,6 @@
 
 namespace NumNum\UBL;
 
-use Sabre\Xml\Writer;
 use Sabre\Xml\XmlSerializable;
 
 class CreditNote extends Invoice implements XmlSerializable
@@ -20,9 +19,9 @@ class CreditNote extends Invoice implements XmlSerializable
 
     /**
      * @param CreditNoteLine[] $creditNoteLines
-     * @return CreditNote
+     * @return static
      */
-    public function setCreditNoteLines(array $creditNoteLines): CreditNote
+    public function setCreditNoteLines(array $creditNoteLines)
     {
         $this->invoiceLines = $creditNoteLines;
         return $this;

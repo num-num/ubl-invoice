@@ -2,15 +2,18 @@
 
 namespace NumNum\UBL;
 
+use function Sabre\Xml\Deserializer\keyValue;
+
+use Sabre\Xml\Reader;
 use Sabre\Xml\Writer;
+use Sabre\Xml\XmlDeserializable;
 use Sabre\Xml\XmlSerializable;
 
-class PayeeFinancialAccount implements XmlSerializable
+class PayeeFinancialAccount implements XmlSerializable, XmlDeserializable
 {
     private $id;
     private $name;
     private $financialInstitutionBranch;
-
 
     /**
      * @return string
@@ -22,9 +25,9 @@ class PayeeFinancialAccount implements XmlSerializable
 
     /**
      * @param string $id
-     * @return PayeeFinancialAccount
+     * @return static
      */
-    public function setId(?string $id): PayeeFinancialAccount
+    public function setId(?string $id)
     {
         $this->id = $id;
         return $this;
@@ -40,9 +43,9 @@ class PayeeFinancialAccount implements XmlSerializable
 
     /**
      * @param string $name
-     * @return PayeeFinancialAccount
+     * @return static
      */
-    public function setName(?string $name): PayeeFinancialAccount
+    public function setName(?string $name)
     {
         $this->name = $name;
         return $this;
@@ -58,9 +61,9 @@ class PayeeFinancialAccount implements XmlSerializable
 
     /**
      * @param FinancialInstitutionBranch $financialInstitutionBranch
-     * @return PayeeFinancialAccount
+     * @return static
      */
-    public function setFinancialInstitutionBranch(?FinancialInstitutionBranch $financialInstitutionBranch): PayeeFinancialAccount
+    public function setFinancialInstitutionBranch(?FinancialInstitutionBranch $financialInstitutionBranch)
     {
         $this->financialInstitutionBranch = $financialInstitutionBranch;
         return $this;
@@ -68,24 +71,39 @@ class PayeeFinancialAccount implements XmlSerializable
 
     public function xmlSerialize(Writer $writer): void
     {
-        $writer->write([
-            'name' => Schema::CBC . 'ID',
-            'value' => $this->id,
-            'attributes' => [
-                //'schemeID' => 'IBAN'
-            ]
-        ]);
-
+        if ($this->getId() !== null) {
+            $writer->write([
+                'name'       => Schema::CBC . 'ID',
+                'value'      => $this->id,
+                'attributes' => [
+                    //'schemeID' => 'IBAN'
+                ]
+            ]);
+        }
         if ($this->getName() !== null) {
             $writer->write([
                 Schema::CBC . 'Name' => $this->getName()
             ]);
         }
-
         if ($this->getFinancialInstitutionBranch() !== null) {
             $writer->write([
                 Schema::CAC . 'FinancialInstitutionBranch' => $this->getFinancialInstitutionBranch()
             ]);
         }
+    }
+
+    /**
+     * The xmlDeserialize method is called during xml reading.
+     * @param Reader $xml
+     * @return static
+     */
+    public static function xmlDeserialize(Reader $reader)
+    {
+        $keyValues = keyValue($reader);
+
+        return (new static())
+            ->setId($keyValues[Schema::CBC . 'ID'] ?? null)
+            ->setName($keyValues[Schema::CBC . 'Name'] ?? null)
+            ->setFinancialInstitutionBranch($keyValues[Schema::CAC . 'FinancialInstitutionBranch'] ?? null);
     }
 }

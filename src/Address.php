@@ -2,10 +2,14 @@
 
 namespace NumNum\UBL;
 
+use function Sabre\Xml\Deserializer\keyValue;
+
+use Sabre\Xml\Reader;
 use Sabre\Xml\Writer;
+use Sabre\Xml\XmlDeserializable;
 use Sabre\Xml\XmlSerializable;
 
-class Address implements XmlSerializable
+class Address implements XmlSerializable, XmlDeserializable
 {
     private $streetName;
     private $additionalStreetName;
@@ -25,9 +29,9 @@ class Address implements XmlSerializable
 
     /**
      * @param string $streetName
-     * @return Address
+     * @return static
      */
-    public function setStreetName(?string $streetName): Address
+    public function setStreetName(?string $streetName)
     {
         $this->streetName = $streetName;
         return $this;
@@ -43,15 +47,14 @@ class Address implements XmlSerializable
 
     /**
      * @param string $additionalStreetName
-     * @return Address
+     * @return static
      */
-    public function setAdditionalStreetName(?string $additionalStreetName): Address
+    public function setAdditionalStreetName(?string $additionalStreetName)
     {
         $this->additionalStreetName = $additionalStreetName;
         return $this;
     }
 
-    /**
     /**
      * @return string
      */
@@ -62,9 +65,9 @@ class Address implements XmlSerializable
 
     /**
      * @param string $buildingNumber
-     * @return Address
+     * @return static
      */
-    public function setBuildingNumber(?string $buildingNumber): Address
+    public function setBuildingNumber(?string $buildingNumber)
     {
         $this->buildingNumber = $buildingNumber;
         return $this;
@@ -80,9 +83,9 @@ class Address implements XmlSerializable
 
     /**
      * @param string $cityName
-     * @return Address
+     * @return static
      */
-    public function setCityName(?string $cityName): Address
+    public function setCityName(?string $cityName)
     {
         $this->cityName = $cityName;
         return $this;
@@ -98,9 +101,9 @@ class Address implements XmlSerializable
 
     /**
      * @param string $postalZone
-     * @return Address
+     * @return static
      */
-    public function setPostalZone(?string $postalZone): Address
+    public function setPostalZone(?string $postalZone)
     {
         $this->postalZone = $postalZone;
         return $this;
@@ -116,14 +119,14 @@ class Address implements XmlSerializable
 
     /**
      * @param string $subentity
-     * @return Address
+     * @return static
      */
-    public function setCountrySubentity(string $countrySubentity): Address
+    public function setCountrySubentity(?string $countrySubentity)
     {
         $this->countrySubentity = $countrySubentity;
         return $this;
     }
-    
+
     /**
      * @return Country
      */
@@ -134,9 +137,9 @@ class Address implements XmlSerializable
 
     /**
      * @param Country $country
-     * @return Address
+     * @return static
      */
-    public function setCountry(Country $country): Address
+    public function setCountry(?Country $country)
     {
         $this->country = $country;
         return $this;
@@ -146,7 +149,7 @@ class Address implements XmlSerializable
      * The xmlSerialize method is called during xml writing.
      *
      * @param Writer $writer
-     * @return void
+     * @return static
      */
     public function xmlSerialize(Writer $writer): void
     {
@@ -185,5 +188,24 @@ class Address implements XmlSerializable
                 Schema::CAC . 'Country' => $this->country,
             ]);
         }
+    }
+
+    /**
+     * The xmlDeserialize method is called during xml reading.
+     * @param Reader $xml
+     * @return static
+     */
+    public static function xmlDeserialize(Reader $reader)
+    {
+        $keyValues = keyValue($reader);
+
+        return (new static())
+            ->setStreetName($keyValues[Schema::CBC . 'StreetName'] ?? null)
+            ->setAdditionalStreetName($keyValues[Schema::CBC . 'AdditionalStreetName'] ?? null)
+            ->setBuildingNumber($keyValues[Schema::CBC . 'BuildingNumber'] ?? null)
+            ->setCityName($keyValues[Schema::CBC . 'CityName'] ?? null)
+            ->setPostalZone($keyValues[Schema::CBC . 'PostalZone'] ?? null)
+            ->setCountrySubentity($keyValues[Schema::CBC . 'CountrySubentity'] ?? null)
+            ->setCountry($keyValues[Schema::CAC . 'Country'] ?? null);
     }
 }

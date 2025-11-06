@@ -2,10 +2,14 @@
 
 namespace NumNum\UBL;
 
+use function Sabre\Xml\Deserializer\keyValue;
+
+use Sabre\Xml\Reader;
 use Sabre\Xml\Writer;
+use Sabre\Xml\XmlDeserializable;
 use Sabre\Xml\XmlSerializable;
 
-class PaymentTerms implements XmlSerializable
+class PaymentTerms implements XmlSerializable, XmlDeserializable
 {
     private $note;
     private $settlementDiscountPercent;
@@ -22,9 +26,9 @@ class PaymentTerms implements XmlSerializable
 
     /**
      * @param string $note
-     * @return PaymentTerms
+     * @return static
      */
-    public function setNote(?string $note): PaymentTerms
+    public function setNote(?string $note)
     {
         $this->note = $note;
         return $this;
@@ -40,9 +44,9 @@ class PaymentTerms implements XmlSerializable
 
     /**
      * @param float $settlementDiscountPercent
-     * @return PaymentTerms
+     * @return static
      */
-    public function setSettlementDiscountPercent(?float $settlementDiscountPercent): PaymentTerms
+    public function setSettlementDiscountPercent(?float $settlementDiscountPercent)
     {
         $this->settlementDiscountPercent = $settlementDiscountPercent;
         return $this;
@@ -58,9 +62,9 @@ class PaymentTerms implements XmlSerializable
 
     /**
      * @param float $amount
-     * @return PaymentTerms
+     * @return static
      */
-    public function setAmount(?float $amount): PaymentTerms
+    public function setAmount(?float $amount)
     {
         $this->amount = $amount;
         return $this;
@@ -76,9 +80,9 @@ class PaymentTerms implements XmlSerializable
 
     /**
      * @param SettlementPeriod $settlementPeriod
-     * @return PaymentTerms
+     * @return static
      */
-    public function setSettlementPeriod(?SettlementPeriod $settlementPeriod): PaymentTerms
+    public function setSettlementPeriod(?SettlementPeriod $settlementPeriod)
     {
         $this->settlementPeriod = $settlementPeriod;
         return $this;
@@ -97,8 +101,8 @@ class PaymentTerms implements XmlSerializable
         if ($this->amount !== null) {
             $writer->write([
                 [
-                    'name' => Schema::CBC . 'Amount',
-                    'value' => NumberFormatter::format($this->amount, 2),
+                    'name'       => Schema::CBC . 'Amount',
+                    'value'      => NumberFormatter::format($this->amount, 2),
                     'attributes' => [
                         'currencyID' => 'EUR'
                     ]
@@ -109,5 +113,22 @@ class PaymentTerms implements XmlSerializable
         if ($this->settlementPeriod !== null) {
             $writer->write([ Schema::CAC . 'SettlementPeriod' => $this->settlementPeriod ]);
         }
+    }
+
+    /**
+     * The xmlDeserialize method is called during xml reading.
+     * @param Reader $xml
+     * @return static
+     */
+    public static function xmlDeserialize(Reader $reader)
+    {
+        $keyValues = keyValue($reader);
+
+        return (new static())
+            ->setNote($keyValues[Schema::CBC . 'Note'] ?? null)
+            ->setSettlementDiscountPercent($keyValues[Schema::CBC . 'SettlementDiscountPercent'] ?? null)
+            ->setAmount($keyValues[Schema::CBC . 'Amount'] ?? null)
+            ->setSettlementPeriod($keyValues[Schema::CAC . 'SettlementPeriod'] ?? null)
+        ;
     }
 }

@@ -2,12 +2,18 @@
 
 namespace NumNum\UBL;
 
-use Sabre\Xml\Writer;
-use Sabre\Xml\XmlSerializable;
+use Carbon\Carbon;
 use DateTime;
 use InvalidArgumentException;
 
-class InvoicePeriod implements XmlSerializable
+use function Sabre\Xml\Deserializer\keyValue;
+
+use Sabre\Xml\Reader;
+use Sabre\Xml\Writer;
+use Sabre\Xml\XmlDeserializable;
+use Sabre\Xml\XmlSerializable;
+
+class InvoicePeriod implements XmlSerializable, XmlDeserializable
 {
     private $startDate;
     private $endDate;
@@ -23,9 +29,9 @@ class InvoicePeriod implements XmlSerializable
 
     /**
      * @param DateTime $startDate
-     * @return InvoicePeriod
+     * @return static
      */
-    public function setStartDate(?DateTime $startDate): InvoicePeriod
+    public function setStartDate(?DateTime $startDate)
     {
         $this->startDate = $startDate;
         return $this;
@@ -41,9 +47,9 @@ class InvoicePeriod implements XmlSerializable
 
     /**
      * @param DateTime $endDate
-     * @return InvoicePeriod
+     * @return static
      */
-    public function setEndDate(?DateTime $endDate): InvoicePeriod
+    public function setEndDate(?DateTime $endDate)
     {
         $this->endDate = $endDate;
         return $this;
@@ -59,9 +65,9 @@ class InvoicePeriod implements XmlSerializable
 
     /**
      * @param Integer $descriptionCode
-     * @return InvoicePeriod
+     * @return static
      */
-    public function setDescriptionCode(?int $descriptionCode): InvoicePeriod
+    public function setDescriptionCode(?int $descriptionCode)
     {
         $this->descriptionCode = $descriptionCode;
         return $this;
@@ -105,5 +111,21 @@ class InvoicePeriod implements XmlSerializable
                 Schema::CBC . 'DescriptionCode' => $this->descriptionCode,
             ]);
         }
+    }
+
+    /**
+     * The xmlDeserialize method is called during xml reading.
+     * @param Reader $xml
+     * @return static
+     */
+    public static function xmlDeserialize(Reader $reader)
+    {
+        $keyValue = keyValue($reader);
+
+        return (new static())
+            ->setStartDate(isset($keyValue[Schema::CBC . 'StartDate']) ? Carbon::parse($keyValue[Schema::CBC . 'StartDate'])->toDateTime() : null)
+            ->setEndDate(isset($keyValue[Schema::CBC . 'EndDate']) ? Carbon::parse($keyValue[Schema::CBC . 'EndDate'])->toDateTime() : null)
+            ->setDescriptionCode(isset($keyValue[Schema::CBC . 'DescriptionCode']) ? intval($keyValue[Schema::CBC . 'DescriptionCode']) : null)
+        ;
     }
 }

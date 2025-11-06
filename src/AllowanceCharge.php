@@ -2,10 +2,15 @@
 
 namespace NumNum\UBL;
 
+use function Sabre\Xml\Deserializer\mixedContent;
+
+use Doctrine\Common\Collections\ArrayCollection;
+use Sabre\Xml\Reader;
 use Sabre\Xml\Writer;
+use Sabre\Xml\XmlDeserializable;
 use Sabre\Xml\XmlSerializable;
 
-class AllowanceCharge implements XmlSerializable
+class AllowanceCharge implements XmlSerializable, XmlDeserializable
 {
     private $chargeIndicator;
     private $allowanceChargeReasonCode;
@@ -26,9 +31,9 @@ class AllowanceCharge implements XmlSerializable
 
     /**
      * @param bool $chargeIndicator
-     * @return AllowanceCharge
+     * @return static
      */
-    public function setChargeIndicator(bool $chargeIndicator): AllowanceCharge
+    public function setChargeIndicator(bool $chargeIndicator)
     {
         $this->chargeIndicator = $chargeIndicator;
         return $this;
@@ -44,9 +49,9 @@ class AllowanceCharge implements XmlSerializable
 
     /**
      * @param int $allowanceChargeReasonCode
-     * @return AllowanceCharge
+     * @return static
      */
-    public function setAllowanceChargeReasonCode(?int $allowanceChargeReasonCode): AllowanceCharge
+    public function setAllowanceChargeReasonCode(?int $allowanceChargeReasonCode)
     {
         $this->allowanceChargeReasonCode = $allowanceChargeReasonCode;
         return $this;
@@ -62,9 +67,9 @@ class AllowanceCharge implements XmlSerializable
 
     /**
      * @param string $allowanceChargeReason
-     * @return AllowanceCharge
+     * @return static
      */
-    public function setAllowanceChargeReason(?string $allowanceChargeReason): AllowanceCharge
+    public function setAllowanceChargeReason(?string $allowanceChargeReason)
     {
         $this->allowanceChargeReason = $allowanceChargeReason;
         return $this;
@@ -80,9 +85,9 @@ class AllowanceCharge implements XmlSerializable
 
     /**
      * @param float $multiplierFactorNumeric
-     * @return AllowanceCharge
+     * @return static
      */
-    public function setMultiplierFactorNumeric(?float $multiplierFactorNumeric): AllowanceCharge
+    public function setMultiplierFactorNumeric(?float $multiplierFactorNumeric)
     {
         $this->multiplierFactorNumeric = $multiplierFactorNumeric;
         return $this;
@@ -98,9 +103,9 @@ class AllowanceCharge implements XmlSerializable
 
     /**
      * @param float $baseAmount
-     * @return AllowanceCharge
+     * @return static
      */
-    public function setBaseAmount(?float $baseAmount): AllowanceCharge
+    public function setBaseAmount(?float $baseAmount)
     {
         $this->baseAmount = $baseAmount;
         return $this;
@@ -116,9 +121,9 @@ class AllowanceCharge implements XmlSerializable
 
     /**
      * @param float $amount
-     * @return AllowanceCharge
+     * @return static
      */
-    public function setAmount(?float $amount): AllowanceCharge
+    public function setAmount(?float $amount)
     {
         $this->amount = $amount;
         return $this;
@@ -134,9 +139,9 @@ class AllowanceCharge implements XmlSerializable
 
     /**
      * @param TaxCategory $taxCategory
-     * @return AllowanceCharge
+     * @return static
      */
-    public function setTaxCategory(?TaxCategory $taxCategory): AllowanceCharge
+    public function setTaxCategory(?TaxCategory $taxCategory)
     {
         $this->taxCategory = $taxCategory;
         return $this;
@@ -152,9 +157,9 @@ class AllowanceCharge implements XmlSerializable
 
     /**
      * @param TaxTotal $taxTotal
-     * @return AllowanceCharge
+     * @return static
      */
-    public function setTaxtotal(?TaxTotal $taxTotal): AllowanceCharge
+    public function setTaxtotal(?TaxTotal $taxTotal)
     {
         $this->taxTotal = $taxTotal;
         return $this;
@@ -223,5 +228,25 @@ class AllowanceCharge implements XmlSerializable
                 Schema::CAC . 'TaxTotal' => $this->taxTotal
             ]);
         }
+    }
+
+    /**
+     * The xmlDeserialize method is called during xml reading.
+     * @param Reader $xml
+     * @return static
+     */
+    public static function xmlDeserialize(Reader $reader)
+    {
+        $mixedContent = mixedContent($reader);
+        $collection = new ArrayCollection($mixedContent);
+
+        return (new static())
+            ->setChargeIndicator(ReaderHelper::getTagValue(Schema::CBC . 'ChargeIndicator', $collection) === 'true')
+            ->setAllowanceChargeReasonCode(ReaderHelper::getTagValue(Schema::CBC . 'AllowanceChargeReasonCode', $collection) !== null ? intval(ReaderHelper::getTagValue(Schema::CBC . 'AllowanceChargeReasonCode', $collection)) : null)
+            ->setAllowanceChargeReason(ReaderHelper::getTagValue(Schema::CBC . 'AllowanceChargeReason', $collection))
+            ->setMultiplierFactorNumeric(ReaderHelper::getTagValue(Schema::CBC . 'MultiplierFactorNumeric', $collection) !== null ? floatval(ReaderHelper::getTagValue(Schema::CBC . 'MultiplierFactorNumeric', $collection)) : null)
+            ->setBaseAmount(ReaderHelper::getTagValue(Schema::CBC . 'BaseAmount', $collection) !== null ? floatval(ReaderHelper::getTagValue(Schema::CBC . 'BaseAmount', $collection)) : null)
+            ->setAmount(ReaderHelper::getTagValue(Schema::CBC . 'Amount', $collection) !== null ? floatval(ReaderHelper::getTagValue(Schema::CBC . 'Amount', $collection)) : null)
+            ->setTaxTotal(ReaderHelper::getTagValue(Schema::CAC . 'TaxTotal', $collection));
     }
 }

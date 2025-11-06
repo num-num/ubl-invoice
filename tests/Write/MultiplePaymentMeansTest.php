@@ -1,15 +1,15 @@
 <?php
 
-namespace NumNum\UBL\Tests;
+namespace NumNum\UBL\Tests\Write;
 
 use PHPUnit\Framework\TestCase;
 
 /**
  * Test an UBL2.1 invoice document
  */
-class EmptyAttachmentTest extends TestCase
+class MultiplePaymentMeansTest extends TestCase
 {
-    private $schema = 'http://docs.oasis-open.org/ubl/os-UBL-2.2/xsd/maindoc/UBL-Invoice-2.2.xsd';
+    private $schema = 'http://docs.oasis-open.org/ubl/os-UBL-2.1/xsd/maindoc/UBL-Invoice-2.1.xsd';
 
     /** @test */
     public function testIfXMLIsValid()
@@ -53,11 +53,18 @@ class EmptyAttachmentTest extends TestCase
         $taxScheme = (new \NumNum\UBL\TaxScheme())
             ->setId(0);
 
+        $commodityClassification = (new \NumNum\UBL\CommodityClassification())
+            ->setItemClassificationCode('123456')
+            ->setItemClassificationListId('urn:ean.ucc:eanucc:2:2')
+            ->setItemClassificationListVersionId('16');
+
         // Product
         $productItem = (new \NumNum\UBL\Item())
             ->setName('Product Name')
             ->setDescription('Product Description')
-            ->setSellersItemIdentification('SELLERID');
+            ->setSellersItemIdentification('SELLERID')
+            ->setCommodityClassification($commodityClassification);
+
 
         // Price
         $price = (new \NumNum\UBL\Price())
@@ -120,29 +127,38 @@ class EmptyAttachmentTest extends TestCase
             ->addTaxSubTotal($taxSubTotal)
             ->setTaxAmount(2.1);
 
-        // Attachment
-        $attachment = (new \NumNum\UBL\Attachment())
-            ->setFilePath(__DIR__.DIRECTORY_SEPARATOR.'SampleInvoice.pdf');
+        $paymentMeans = [];
 
-		$additionalDocumentReference = new \NumNum\UBL\AdditionalDocumentReference();
-		$additionalDocumentReference->setId('SomeID');
-		$additionalDocumentReference->setDocumentTypeCode(130);
+        $payeeFinancialAccount = (new \NumNum\UBL\PayeeFinancialAccount())->setId('RO123456789012345');
+        $paymentMeans[] = (new \NumNum\UBL\PaymentMeans())
+            ->setPaymentMeansCode(31)
+            ->setPaymentDueDate(new \DateTime())
+            ->setPayeeFinancialAccount($payeeFinancialAccount);
 
-        // Not adding an attachment to AdditionalDocumentReference should not trigger an error
-		// $additionalDocumentReference->setAttachment($attachment);
+        $payeeFinancialAccount = (new \NumNum\UBL\PayeeFinancialAccount())->setId('RO544456789067890');
+        $paymentMeans[] = (new \NumNum\UBL\PaymentMeans())
+            ->setPaymentMeansCode(31)
+            ->setPaymentDueDate(new \DateTime())
+            ->setPayeeFinancialAccount($payeeFinancialAccount);
+
+        $accountingSupplierParty = (new \NumNum\UBL\AccountingParty())
+            ->setParty($supplierCompany);
+
+        $accountingCustomerParty = (new \NumNum\UBL\AccountingParty())
+            ->setSupplierAssignedAccountId('10001')
+            ->setParty($clientCompany);
 
         // Invoice object
         $invoice = (new \NumNum\UBL\Invoice())
             ->setId(1234)
             ->setCopyIndicator(false)
             ->setIssueDate(new \DateTime())
-            ->setAccountingSupplierParty($supplierCompany)
-            ->setAccountingCustomerParty($clientCompany)
-            ->setSupplierAssignedAccountID('10001')
+            ->setAccountingSupplierParty($accountingSupplierParty)
+            ->setAccountingCustomerParty($accountingCustomerParty)
+            ->setPaymentMeans($paymentMeans)
             ->setInvoiceLines($invoiceLines)
             ->setLegalMonetaryTotal($legalMonetaryTotal)
-            ->setTaxTotal($taxTotal)
-            ->setAdditionalDocumentReference($additionalDocumentReference);
+            ->setTaxTotal($taxTotal);
 
         // Test created object
         // Use \NumNum\UBL\Generator to generate an XML string
@@ -151,10 +167,10 @@ class EmptyAttachmentTest extends TestCase
 
         // Create PHP Native DomDocument object, that can be
         // used to validate the generate XML
-        $dom = new \DOMDocument;
+        $dom = new \DOMDocument();
         $dom->loadXML($outputXMLString);
 
-        $dom->save('./tests/EmptyAttachmentTest.xml');
+        $dom->save('./tests/MultiplePaymentMeansTest.xml');
 
         $this->assertEquals(true, $dom->schemaValidate($this->schema));
     }

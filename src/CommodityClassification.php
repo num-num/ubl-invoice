@@ -2,14 +2,19 @@
 
 namespace NumNum\UBL;
 
+use function Sabre\Xml\Deserializer\mixedContent;
+
+use Doctrine\Common\Collections\ArrayCollection;
+use Sabre\Xml\Reader;
 use Sabre\Xml\Writer;
+use Sabre\Xml\XmlDeserializable;
 use Sabre\Xml\XmlSerializable;
 
-class CommodityClassification implements XmlSerializable
+class CommodityClassification implements XmlSerializable, XmlDeserializable
 {
-    private $itemClassificationCode;
-    private $itemClassificationListId;
-    private $itemClassificationListVersionId;
+    private $itemClassificationCode = null;
+    private $itemClassificationListId = null;
+    private $itemClassificationListVersionId = null;
 
     /**
      * @return string
@@ -21,9 +26,9 @@ class CommodityClassification implements XmlSerializable
 
     /**
      * @param string $itemClassificationCode
-     * @return CommodityClassification
+     * @return static
      */
-    public function setItemClassificationCode(?string $itemClassificationCode): CommodityClassification
+    public function setItemClassificationCode(?string $itemClassificationCode)
     {
         $this->itemClassificationCode = $itemClassificationCode;
         return $this;
@@ -39,9 +44,9 @@ class CommodityClassification implements XmlSerializable
 
     /**
      * @param ?string $itemClassificationListId
-     * @return CommodityClassification
+     * @return static
      */
-    public function setItemClassificationListId(?string $itemClassificationListId): CommodityClassification
+    public function setItemClassificationListId(?string $itemClassificationListId)
     {
         $this->itemClassificationListId = $itemClassificationListId;
         return $this;
@@ -57,9 +62,9 @@ class CommodityClassification implements XmlSerializable
 
     /**
      * @param ?string $itemClassificationListVersionId
-     * @return CommodityClassification
+     * @return static
      */
-    public function setItemClassificationListVersionId(?string $itemClassificationListVersionId): CommodityClassification
+    public function setItemClassificationListVersionId(?string $itemClassificationListVersionId)
     {
         $this->itemClassificationListVersionId = $itemClassificationListVersionId;
         return $this;
@@ -86,5 +91,24 @@ class CommodityClassification implements XmlSerializable
             'value'      => $this->itemClassificationCode ?? '',
             'attributes' => $attributes
         ]);
+    }
+
+    /**
+     * The xmlDeserialize method is called during xml reading.
+     *
+     * @param Reader $reader
+     * @return void
+     */
+    public static function xmlDeserialize(Reader $reader)
+    {
+        $mixedContent = mixedContent($reader);
+        $collection = new ArrayCollection($mixedContent);
+
+        $itemClassificationCode = ReaderHelper::getTag(Schema::CBC . 'ItemClassificationCode', $collection);
+
+        return (new static())
+            ->setItemClassificationCode($itemClassificationCode['value'])
+            ->setItemClassificationListId($itemClassificationCode['attributes']['listID'] ?? null)
+            ->setItemClassificationListVersionId($itemClassificationCode['attributes']['listVersionID'] ?? null);
     }
 }

@@ -2,10 +2,14 @@
 
 namespace NumNum\UBL;
 
+use function Sabre\Xml\Deserializer\keyValue;
+
+use Sabre\Xml\Reader;
 use Sabre\Xml\Writer;
+use Sabre\Xml\XmlDeserializable;
 use Sabre\Xml\XmlSerializable;
 
-class AdditionalDocumentReference implements XmlSerializable
+class AdditionalDocumentReference implements XmlSerializable, XmlDeserializable
 {
     private $id;
     private $documentType;
@@ -23,9 +27,9 @@ class AdditionalDocumentReference implements XmlSerializable
 
     /**
      * @param string $id
-     * @return AdditionalDocumentReference
+     * @return static
      */
-    public function setId(string $id): AdditionalDocumentReference
+    public function setId(?string $id)
     {
         $this->id = $id;
         return $this;
@@ -41,9 +45,9 @@ class AdditionalDocumentReference implements XmlSerializable
 
     /**
      * @param string $documentType
-     * @return AdditionalDocumentReference
+     * @return static
      */
-    public function setDocumentType(string $documentType): AdditionalDocumentReference
+    public function setDocumentType(?string $documentType)
     {
         $this->documentType = $documentType;
         return $this;
@@ -59,9 +63,9 @@ class AdditionalDocumentReference implements XmlSerializable
 
     /**
      * @param int|string $documentTypeCode
-     * @return AdditionalDocumentReference
+     * @return static
      */
-    public function setDocumentTypeCode($documentTypeCode): AdditionalDocumentReference
+    public function setDocumentTypeCode($documentTypeCode)
     {
         $this->documentTypeCode = $documentTypeCode;
         return $this;
@@ -77,9 +81,9 @@ class AdditionalDocumentReference implements XmlSerializable
 
     /**
      * @param string $documentDescription
-     * @return AdditionalDocumentReference
+     * @return static
      */
-    public function setDocumentDescription(string $documentDescription): AdditionalDocumentReference
+    public function setDocumentDescription(?string $documentDescription)
     {
         $this->documentDescription = $documentDescription;
         return $this;
@@ -95,9 +99,9 @@ class AdditionalDocumentReference implements XmlSerializable
 
     /**
      * @param Attachment $attachment
-     * @return AdditionalDocumentReference
+     * @return static
      */
-    public function setAttachment(Attachment $attachment): AdditionalDocumentReference
+    public function setAttachment(?Attachment $attachment)
     {
         $this->attachment = $attachment;
         return $this;
@@ -136,5 +140,23 @@ class AdditionalDocumentReference implements XmlSerializable
               Schema::CAC . 'Attachment' => $this->attachment
             ]);
         }
+    }
+
+    /**
+     * The xmlDeserialize method is called during xml reading.
+     * @param Reader $xml
+     * @return static
+     */
+    public static function xmlDeserialize(Reader $reader)
+    {
+        $keyValues = keyValue($reader);
+
+        return (new static())
+            ->setId($keyValues[Schema::CBC . 'ID'] ?? null)
+            ->setDocumentType($keyValues[Schema::CBC . 'DocumentType'] ?? null)
+            ->setDocumentTypeCode($keyValues[Schema::CBC . 'DocumentTypeCode'] ?? null)
+            ->setDocumentDescription($keyValues[Schema::CBC . 'DocumentDescription'] ?? null)
+            ->setAttachment($keyValues[Schema::CAC . 'Attachment'] ?? null)
+        ;
     }
 }

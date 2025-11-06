@@ -1,6 +1,6 @@
 <?php
 
-namespace NumNum\UBL\Tests;
+namespace NumNum\UBL\Tests\Write;
 
 use NumNum\UBL\UNCL4461;
 use PHPUnit\Framework\TestCase;
@@ -8,7 +8,7 @@ use PHPUnit\Framework\TestCase;
 /**
  * Test an UBL2.1 invoice document
  */
-class EN16931Test extends TestCase
+class ProjectReferenceTest extends TestCase
 {
     private $schema = 'http://docs.oasis-open.org/ubl/os-UBL-2.1/xsd/maindoc/UBL-Invoice-2.1.xsd';
     private $xslfile = 'vendor/num-num/ubl-invoice/tests/EN16931-UBL-validation.xslt';
@@ -79,7 +79,7 @@ class EN16931Test extends TestCase
 
         $legalMonetaryTotal = (new \NumNum\UBL\LegalMonetaryTotal())
             ->setPayableAmount(10 + 2.1)
-            ->setPayableRoundingAmount(0)
+            ->setAllowanceTotalAmount(0)
             ->setTaxInclusiveAmount(10 + 2.1)
             ->setLineExtensionAmount(10)
             ->setTaxExclusiveAmount(10);
@@ -152,6 +152,16 @@ class EN16931Test extends TestCase
             ->setId('5009567')
             ->setSalesOrderId('tRST-tKhM');
 
+        // Test Project Reference
+        $projectReference = (new \NumNum\UBL\ProjectReference())
+            ->setId('Project1234');
+
+        $accountingSupplierParty = (new \NumNum\UBL\AccountingParty())
+            ->setParty($supplierCompany);
+
+        $accountingCustomerParty = (new \NumNum\UBL\AccountingParty())
+            ->setParty($clientCompany);
+
         // Invoice object
         $invoice = (new \NumNum\UBL\Invoice())
             ->setCustomizationID('urn:cen.eu:en16931:2017')
@@ -159,8 +169,8 @@ class EN16931Test extends TestCase
             ->setIssueDate(new \DateTime())
             ->setNote('invoice note')
             ->setDelivery($delivery)
-            ->setAccountingSupplierParty($supplierCompany)
-            ->setAccountingCustomerParty($clientCompany)
+            ->setAccountingSupplierParty($accountingSupplierParty)
+            ->setAccountingCustomerParty($accountingCustomerParty)
             ->setInvoiceLines($invoiceLines)
             ->setLegalMonetaryTotal($legalMonetaryTotal)
             ->setPaymentTerms($paymentTerms)
@@ -168,7 +178,8 @@ class EN16931Test extends TestCase
             ->setPaymentMeans([$paymentMeans])
             ->setBuyerReference('BUYER_REF')
             ->setOrderReference($orderReference)
-            ->setTaxTotal($taxTotal);
+            ->setTaxTotal($taxTotal)
+            ->setProjectReference($projectReference);
 
         // Test created object
         // Use \NumNum\UBL\Generator to generate an XML string
@@ -180,23 +191,8 @@ class EN16931Test extends TestCase
         $dom = new \DOMDocument;
         $dom->loadXML($outputXMLString);
 
-        $dom->save('./tests/EN16931Test.xml');
+        $dom->save('./tests/ProjectReferenceTest.xml');
 
-        // $this->assertEquals(true, $dom->schemaValidate($this->schema));
-
-        // Use webservice at peppol.helger.com to verify the result
-        $wsdl = "http://peppol.helger.com/wsdvs?wsdl=1";
-        $client = new \SoapClient($wsdl);
-        $response = $client->validate(['XML' => $outputXMLString, 'VESID' => 'eu.cen.en16931:ubl:1.3.1']);
-
-        // Output validation warnings if present
-        if ($response->mostSevereErrorLevel == 'WARN' && isset($response->Result[1]->Item)) {
-            foreach ($response->Result[1]->Item as $responseWarning) {
-                // fwrite(STDERR, '*** '.$responseWarning->errorText."\n");
-                fwrite(STDERR, '*** '.json_encode($responseWarning)."\n");
-            }
-        }
-
-        $this->assertEquals('SUCCESS', $response->mostSevereErrorLevel);
+        $this->assertEquals(true, $dom->schemaValidate($this->schema));
     }
 }

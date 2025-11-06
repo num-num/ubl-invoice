@@ -2,11 +2,14 @@
 
 namespace NumNum\UBL;
 
-use DateTime;
+use function Sabre\Xml\Deserializer\keyValue;
+
+use Sabre\Xml\Reader;
 use Sabre\Xml\Writer;
+use Sabre\Xml\XmlDeserializable;
 use Sabre\Xml\XmlSerializable;
 
-class ProjectReference implements XmlSerializable
+class ProjectReference implements XmlSerializable, XmlDeserializable
 {
     private $id;
 
@@ -39,5 +42,19 @@ class ProjectReference implements XmlSerializable
         if ($this->id !== null) {
             $writer->write([Schema::CBC . 'ID' => $this->id]);
         }
+    }
+
+    /**
+     * The xmlDeserialize method is called during xml reading.
+     * @param Reader $xml
+     * @return static
+     */
+    public static function xmlDeserialize(Reader $reader)
+    {
+        $mixedContent = keyValue($reader);
+
+        return (new static())
+            ->setId($mixedContent[Schema::CBC . 'ID'] ?? null)
+        ;
     }
 }
