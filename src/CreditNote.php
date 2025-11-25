@@ -3,7 +3,6 @@
 namespace NumNum\UBL;
 
 use Sabre\Xml\Reader;
-use Sabre\Xml\XmlDeserializable;
 use Sabre\Xml\XmlSerializable;
 use Doctrine\Common\Collections\ArrayCollection;
 
