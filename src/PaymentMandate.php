@@ -9,7 +9,7 @@ use Sabre\Xml\Writer;
 use Sabre\Xml\XmlDeserializable;
 use Sabre\Xml\XmlSerializable;
 
-class PaymentMandate implements XmlSerializable
+class PaymentMandate implements XmlSerializable,XmlDeserializable
 {
     public $xmlTagName = 'PaymentMandate';
 
