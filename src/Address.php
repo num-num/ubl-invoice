@@ -2,8 +2,9 @@
 
 namespace NumNum\UBL;
 
-use function Sabre\Xml\Deserializer\keyValue;
+use function Sabre\Xml\Deserializer\mixedContent;
 
+use Doctrine\Common\Collections\ArrayCollection;
 use Sabre\Xml\Reader;
 use Sabre\Xml\Writer;
 use Sabre\Xml\XmlDeserializable;
@@ -17,6 +18,7 @@ class Address implements XmlSerializable, XmlDeserializable
     private $cityName;
     private $postalZone;
     private $countrySubentity;
+    private $addressLines = [];
     private $country;
 
     /**
@@ -146,6 +148,34 @@ class Address implements XmlSerializable, XmlDeserializable
     }
 
     /**
+     * @return AddressLine[]
+     */
+    public function getAddressLines(): array
+    {
+        return $this->addressLines;
+    }
+
+    /**
+     * @param AddressLine[] $addressLines
+     * @return static
+     */
+    public function setAddressLines(array $addressLines)
+    {
+        $this->addressLines = $addressLines;
+        return $this;
+    }
+
+    /**
+     * @param AddressLine $addressLine
+     * @return static
+     */
+    public function addAddressLine(AddressLine $addressLine)
+    {
+        $this->addressLines[] = $addressLine;
+        return $this;
+    }
+
+    /**
      * The xmlSerialize method is called during xml writing.
      *
      * @param Writer $writer
@@ -183,6 +213,11 @@ class Address implements XmlSerializable, XmlDeserializable
                 Schema::CBC . 'CountrySubentity' => $this->countrySubentity,
             ]);
         }
+        foreach ($this->addressLines as $addressLine) {
+            $writer->write([
+                Schema::CAC . 'AddressLine' => $addressLine
+            ]);
+        }
         if ($this->country !== null) {
             $writer->write([
                 Schema::CAC . 'Country' => $this->country,
@@ -192,20 +227,22 @@ class Address implements XmlSerializable, XmlDeserializable
 
     /**
      * The xmlDeserialize method is called during xml reading.
-     * @param Reader $xml
+     * @param Reader $reader
      * @return static
      */
     public static function xmlDeserialize(Reader $reader)
     {
-        $keyValues = keyValue($reader);
+        $mixedContent = mixedContent($reader);
+        $collection = new ArrayCollection($mixedContent);
 
         return (new static())
-            ->setStreetName($keyValues[Schema::CBC . 'StreetName'] ?? null)
-            ->setAdditionalStreetName($keyValues[Schema::CBC . 'AdditionalStreetName'] ?? null)
-            ->setBuildingNumber($keyValues[Schema::CBC . 'BuildingNumber'] ?? null)
-            ->setCityName($keyValues[Schema::CBC . 'CityName'] ?? null)
-            ->setPostalZone($keyValues[Schema::CBC . 'PostalZone'] ?? null)
-            ->setCountrySubentity($keyValues[Schema::CBC . 'CountrySubentity'] ?? null)
-            ->setCountry($keyValues[Schema::CAC . 'Country'] ?? null);
+            ->setStreetName(ReaderHelper::getTagValue(Schema::CBC . 'StreetName', $collection))
+            ->setAdditionalStreetName(ReaderHelper::getTagValue(Schema::CBC . 'AdditionalStreetName', $collection))
+            ->setBuildingNumber(ReaderHelper::getTagValue(Schema::CBC . 'BuildingNumber', $collection))
+            ->setCityName(ReaderHelper::getTagValue(Schema::CBC . 'CityName', $collection))
+            ->setPostalZone(ReaderHelper::getTagValue(Schema::CBC . 'PostalZone', $collection))
+            ->setCountrySubentity(ReaderHelper::getTagValue(Schema::CBC . 'CountrySubentity', $collection))
+            ->setAddressLines(array_values(ReaderHelper::getArrayValue(Schema::CAC . 'AddressLine', $collection)))
+            ->setCountry(ReaderHelper::getTagValue(Schema::CAC . 'Country', $collection));
     }
 }
