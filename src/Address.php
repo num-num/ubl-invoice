@@ -2,8 +2,9 @@
 
 namespace NumNum\UBL;
 
-use function Sabre\Xml\Deserializer\keyValue;
+use function Sabre\Xml\Deserializer\mixedContent;
 
+use Doctrine\Common\Collections\ArrayCollection;
 use Sabre\Xml\Reader;
 use Sabre\Xml\Writer;
 use Sabre\Xml\XmlDeserializable;
@@ -197,15 +198,16 @@ class Address implements XmlSerializable, XmlDeserializable
      */
     public static function xmlDeserialize(Reader $reader)
     {
-        $keyValues = keyValue($reader);
+        $mixedContent = mixedContent($reader);
+        $collection = new ArrayCollection($mixedContent);
 
         return (new static())
-            ->setStreetName($keyValues[Schema::CBC . 'StreetName'] ?? null)
-            ->setAdditionalStreetName($keyValues[Schema::CBC . 'AdditionalStreetName'] ?? null)
-            ->setBuildingNumber($keyValues[Schema::CBC . 'BuildingNumber'] ?? null)
-            ->setCityName($keyValues[Schema::CBC . 'CityName'] ?? null)
-            ->setPostalZone($keyValues[Schema::CBC . 'PostalZone'] ?? null)
-            ->setCountrySubentity($keyValues[Schema::CBC . 'CountrySubentity'] ?? null)
-            ->setCountry($keyValues[Schema::CAC . 'Country'] ?? null);
+            ->setStreetName(ReaderHelper::getTagValue(Schema::CBC . 'StreetName', $collection))
+            ->setAdditionalStreetName(ReaderHelper::getTagValue(Schema::CBC . 'AdditionalStreetName', $collection))
+            ->setBuildingNumber(ReaderHelper::getTagValue(Schema::CBC . 'BuildingNumber', $collection))
+            ->setCityName(ReaderHelper::getTagValue(Schema::CBC . 'CityName', $collection))
+            ->setPostalZone(ReaderHelper::getTagValue(Schema::CBC . 'PostalZone', $collection))
+            ->setCountrySubentity(ReaderHelper::getTagValue(Schema::CBC . 'CountrySubentity', $collection))
+            ->setCountry(ReaderHelper::getTagValue(Schema::CAC . 'Country', $collection));
     }
 }
