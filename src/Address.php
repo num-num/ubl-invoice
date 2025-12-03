@@ -192,7 +192,7 @@ class Address implements XmlSerializable, XmlDeserializable
 
     /**
      * The xmlDeserialize method is called during xml reading.
-     * @param Reader $xml
+     * @param Reader $reader
      * @return static
      */
     public static function xmlDeserialize(Reader $reader)
