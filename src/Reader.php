@@ -52,6 +52,7 @@ class Reader
             Schema::CAC.        'PayeeFinancialAccount'       => fn ($reader) => PayeeFinancialAccount::xmlDeserialize($reader),
             Schema::CAC.        'PayeeParty'                  => fn ($reader) => Party::xmlDeserialize($reader),
             Schema::CAC.        'PaymentMeans'                => fn ($reader) => PaymentMeans::xmlDeserialize($reader),
+            Schema::CAC.        'PaymentMandate'              => fn ($reader) => PaymentMandate::xmlDeserialize($reader),
             Schema::CAC.        'PaymentTerms'                => fn ($reader) => PaymentTerms::xmlDeserialize($reader),
             Schema::CAC.        'PostalAddress'               => fn ($reader) => Address::xmlDeserialize($reader),
             Schema::CAC.        'Price'                       => fn ($reader) => Price::xmlDeserialize($reader),

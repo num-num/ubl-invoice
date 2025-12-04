@@ -216,6 +216,7 @@ class PaymentMeans implements XmlSerializable, XmlDeserializable
             ->setInstructionId($keyValues[Schema::CBC . 'InstructionID'] ?? null)
             ->setInstructionNote($keyValues[Schema::CBC . 'InstructionNote'] ?? null)
             ->setPaymentId($keyValues[Schema::CBC . 'PaymentID'] ?? null)
-            ->setPayeeFinancialAccount($keyValues[Schema::CAC . 'PayeeFinancialAccount'] ?? null);
+            ->setPayeeFinancialAccount($keyValues[Schema::CAC . 'PayeeFinancialAccount'] ?? null)
+            ->setPaymentMandate($keyValues[Schema::CAC . 'PaymentMandate'] ?? null);
     }
 }
