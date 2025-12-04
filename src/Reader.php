@@ -35,6 +35,7 @@ class Reader
             Schema::CAC.        'Contact'                     => fn ($reader) => Contact::xmlDeserialize($reader),
             Schema::CAC.        'ContractDocumentReference'   => fn ($reader) => ContractDocumentReference::xmlDeserialize($reader),
             Schema::CAC.        'Country'                     => fn ($reader) => Country::xmlDeserialize($reader),
+            Schema::CAC.        'DespatchDocumentReference'   => fn ($reader) => DespatchDocumentReference::xmlDeserialize($reader),
             Schema::CAC.        'CreditNoteLine'              => fn ($reader) => CreditNoteLine::xmlDeserialize($reader),
             Schema::CAC.        'CreditNoteLine'              => fn ($reader) => CreditNoteLine::xmlDeserialize($reader),
             Schema::CAC.        'Delivery'                    => fn ($reader) => Delivery::xmlDeserialize($reader),

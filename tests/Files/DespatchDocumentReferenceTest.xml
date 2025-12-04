@@ -1,0 +1,97 @@
+<?xml version="1.0"?>
+<Invoice xmlns="urn:oasis:names:specification:ubl:schema:xsd:Invoice-2" xmlns:cbc="urn:oasis:names:specification:ubl:schema:xsd:CommonBasicComponents-2" xmlns:cac="urn:oasis:names:specification:ubl:schema:xsd:CommonAggregateComponents-2">
+ <cbc:UBLVersionID>2.2</cbc:UBLVersionID>
+ <cbc:CustomizationID>1.0</cbc:CustomizationID>
+ <cbc:ID>1234</cbc:ID>
+ <cbc:CopyIndicator>false</cbc:CopyIndicator>
+ <cbc:IssueDate>2025-12-04</cbc:IssueDate>
+ <cbc:DueDate>2025-12-04</cbc:DueDate>
+ <cbc:InvoiceTypeCode>380</cbc:InvoiceTypeCode>
+ <cbc:DocumentCurrencyCode>EUR</cbc:DocumentCurrencyCode>
+ <cbc:BuyerReference>SomeReference</cbc:BuyerReference>
+ <cac:DespatchDocumentReference>
+  <cbc:ID>DESP-2024-001</cbc:ID>
+ </cac:DespatchDocumentReference>
+ <cac:AccountingSupplierParty>
+  <cac:Party>
+   <cac:PartyName>
+    <cbc:Name>Supplier Company Name</cbc:Name>
+   </cac:PartyName>
+   <cac:PostalAddress>
+    <cbc:StreetName>Korenmarkt</cbc:StreetName>
+    <cbc:BuildingNumber>1</cbc:BuildingNumber>
+    <cbc:CityName>Gent</cbc:CityName>
+    <cbc:PostalZone>9000</cbc:PostalZone>
+    <cac:Country>
+     <cbc:IdentificationCode>BE</cbc:IdentificationCode>
+    </cac:Country>
+   </cac:PostalAddress>
+   <cac:PhysicalLocation>
+    <cac:Address>
+     <cbc:StreetName>Korenmarkt</cbc:StreetName>
+     <cbc:BuildingNumber>1</cbc:BuildingNumber>
+     <cbc:CityName>Gent</cbc:CityName>
+     <cbc:PostalZone>9000</cbc:PostalZone>
+     <cac:Country>
+      <cbc:IdentificationCode>BE</cbc:IdentificationCode>
+     </cac:Country>
+    </cac:Address>
+   </cac:PhysicalLocation>
+  </cac:Party>
+ </cac:AccountingSupplierParty>
+ <cac:AccountingCustomerParty>
+  <cac:Party>
+   <cac:PartyName>
+    <cbc:Name>My client</cbc:Name>
+   </cac:PartyName>
+   <cac:PostalAddress>
+    <cbc:StreetName>Korenmarkt</cbc:StreetName>
+    <cbc:BuildingNumber>1</cbc:BuildingNumber>
+    <cbc:CityName>Gent</cbc:CityName>
+    <cbc:PostalZone>9000</cbc:PostalZone>
+    <cac:Country>
+     <cbc:IdentificationCode>BE</cbc:IdentificationCode>
+    </cac:Country>
+   </cac:PostalAddress>
+  </cac:Party>
+ </cac:AccountingCustomerParty>
+ <cac:TaxTotal>
+  <cbc:TaxAmount currencyID="EUR">2.10</cbc:TaxAmount>
+  <cac:TaxSubtotal>
+   <cbc:TaxableAmount currencyID="EUR">10.00</cbc:TaxableAmount>
+   <cbc:TaxAmount currencyID="EUR">2.10</cbc:TaxAmount>
+   <cac:TaxCategory>
+    <cbc:ID schemeID="UNCL5305" schemeName="Duty or tax or fee category">S</cbc:ID>
+    <cbc:Name>VAT21%</cbc:Name>
+    <cbc:Percent>0.21</cbc:Percent>
+    <cac:TaxScheme>
+     <cbc:ID>0</cbc:ID>
+    </cac:TaxScheme>
+   </cac:TaxCategory>
+  </cac:TaxSubtotal>
+ </cac:TaxTotal>
+ <cac:LegalMonetaryTotal>
+  <cbc:LineExtensionAmount currencyID="EUR">0.00</cbc:LineExtensionAmount>
+  <cbc:TaxExclusiveAmount currencyID="EUR">0.00</cbc:TaxExclusiveAmount>
+  <cbc:TaxInclusiveAmount currencyID="EUR">0.00</cbc:TaxInclusiveAmount>
+  <cbc:AllowanceTotalAmount currencyID="EUR">0.00</cbc:AllowanceTotalAmount>
+  <cbc:ChargeTotalAmount currencyID="EUR">0.00</cbc:ChargeTotalAmount>
+  <cbc:PayableAmount currencyID="EUR">12.00</cbc:PayableAmount>
+ </cac:LegalMonetaryTotal>
+ <cac:InvoiceLine>
+  <cbc:ID>0</cbc:ID>
+  <cbc:InvoicedQuantity unitCode="C62">1</cbc:InvoicedQuantity>
+  <cbc:LineExtensionAmount currencyID="EUR">0.00</cbc:LineExtensionAmount>
+  <cac:TaxTotal>
+   <cbc:TaxAmount currencyID="EUR">2.10</cbc:TaxAmount>
+  </cac:TaxTotal>
+  <cac:Item>
+   <cbc:Description>Product Description</cbc:Description>
+   <cbc:Name>Product Name</cbc:Name>
+  </cac:Item>
+  <cac:Price>
+   <cbc:PriceAmount currencyID="EUR">10</cbc:PriceAmount>
+   <cbc:BaseQuantity unitCode="C62">1</cbc:BaseQuantity>
+  </cac:Price>
+ </cac:InvoiceLine>
+</Invoice>
