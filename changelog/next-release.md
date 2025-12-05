@@ -13,3 +13,7 @@
   - `Address::addAddressLine(AddressLine $addressLine)` - add a single address line
   - Supports multiple `<cac:AddressLine>` elements per address (UBL 2.1 compliant)
 
+### Bug fixes
+
+- Fix `Attachment::xmlSerialize()` to not output `EmbeddedDocumentBinaryObject` when only an `externalReference` is set - Thanks [@fMads](https://github.com/fMads)
+
