@@ -46,6 +46,7 @@ class Reader
             Schema::CAC.        'LegalMonetaryTotal'          => fn ($reader) => LegalMonetaryTotal::xmlDeserialize($reader),
             Schema::CAC.        'OrderLineReference'          => fn ($reader) => OrderLineReference::xmlDeserialize($reader),
             Schema::CAC.        'OrderReference'              => fn ($reader) => OrderReference::xmlDeserialize($reader),
+            Schema::CAC.        'OriginCountry'               => fn ($reader) => Country::xmlDeserialize($reader),
             Schema::CAC.        'Party'                       => fn ($reader) => Party::xmlDeserialize($reader),
             Schema::CAC.        'PartyLegalEntity'            => fn ($reader) => LegalEntity::xmlDeserialize($reader),
             Schema::CAC.        'PartyTaxScheme'              => fn ($reader) => PartyTaxScheme::xmlDeserialize($reader),
