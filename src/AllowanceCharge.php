@@ -40,18 +40,18 @@ class AllowanceCharge implements XmlSerializable, XmlDeserializable
     }
 
     /**
-     * @return int
+     * @return int|string|null
      */
-    public function getAllowanceChargeReasonCode(): ?int
+    public function getAllowanceChargeReasonCode(): int|string|null
     {
         return $this->allowanceChargeReasonCode;
     }
 
     /**
-     * @param int $allowanceChargeReasonCode
+     * @param int|string|null $allowanceChargeReasonCode
      * @return static
      */
-    public function setAllowanceChargeReasonCode(?int $allowanceChargeReasonCode)
+    public function setAllowanceChargeReasonCode(int|string|null $allowanceChargeReasonCode)
     {
         $this->allowanceChargeReasonCode = $allowanceChargeReasonCode;
         return $this;
@@ -231,6 +231,24 @@ class AllowanceCharge implements XmlSerializable, XmlDeserializable
     }
 
     /**
+     * Parse allowance charge reason code, converting numeric strings to int, preserving non-numeric strings.
+     * @param string|null $value
+     * @return int|string|null
+     */
+    private static function parseAllowanceChargeReasonCode(?string $value): int|string|null
+    {
+        if ($value === null) {
+            return null;
+        }
+        
+        if (is_numeric($value)) {
+            return intval($value);
+        }
+        
+        return $value;
+    }
+
+    /**
      * The xmlDeserialize method is called during xml reading.
      * @param Reader $xml
      * @return static
@@ -242,7 +260,7 @@ class AllowanceCharge implements XmlSerializable, XmlDeserializable
 
         return (new static())
             ->setChargeIndicator(ReaderHelper::getTagValue(Schema::CBC . 'ChargeIndicator', $collection) === 'true')
-            ->setAllowanceChargeReasonCode(ReaderHelper::getTagValue(Schema::CBC . 'AllowanceChargeReasonCode', $collection) !== null ? intval(ReaderHelper::getTagValue(Schema::CBC . 'AllowanceChargeReasonCode', $collection)) : null)
+            ->setAllowanceChargeReasonCode(self::parseAllowanceChargeReasonCode(ReaderHelper::getTagValue(Schema::CBC . 'AllowanceChargeReasonCode', $collection)))
             ->setAllowanceChargeReason(ReaderHelper::getTagValue(Schema::CBC . 'AllowanceChargeReason', $collection))
             ->setMultiplierFactorNumeric(ReaderHelper::getTagValue(Schema::CBC . 'MultiplierFactorNumeric', $collection) !== null ? floatval(ReaderHelper::getTagValue(Schema::CBC . 'MultiplierFactorNumeric', $collection)) : null)
             ->setBaseAmount(ReaderHelper::getTagValue(Schema::CBC . 'BaseAmount', $collection) !== null ? floatval(ReaderHelper::getTagValue(Schema::CBC . 'BaseAmount', $collection)) : null)
