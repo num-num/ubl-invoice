@@ -13,6 +13,7 @@
   - `Address::addAddressLine(AddressLine $addressLine)` - add a single address line
   - Supports multiple `<cac:AddressLine>` elements per address (UBL 2.1 compliant)
 - Add `<cac:OriginCountry>` support to `<cac:Item>` for specifying country of origin - Thanks [@fMads](https://github.com/fMads)
+- Update `AllowanceCharge::allowanceChargeReasonCode` to accept `int|string|null` instead of `?int`, allowing string values like "ZZZ" per UNCL7161 - Thanks [@Mikael-Leger](https://github.com/Mikael-Leger)
 
 ### Bug fixes
 
