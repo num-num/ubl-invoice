@@ -6,6 +6,7 @@
 - Add `<cac:DespatchDocumentReference>` to `<Invoice>` - Thanks [@fMads](https://github.com/fMads)
 - Add `<cac:ReceiptDocumentReference>` to `<Invoice>`
 - Add `<cac:OriginatorDocumentReference>` to `<Invoice>`
+- Add FRCTC Electronic Address (0225) to EASCode - Thanks [@UbiManu](https://github.com/UbiManu)
 
 ### Breaking changes ⚠️
 
