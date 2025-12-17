@@ -53,6 +53,6 @@ class DespatchDocumentReference implements XmlSerializable, XmlDeserializable
     {
         $mixedContent = keyValue($reader);
 
-        return new static()->setId($mixedContent[Schema::CBC . "ID"] ?? null);
+        return (new static())->setId($mixedContent[Schema::CBC . "ID"] ?? null);
     }
 }

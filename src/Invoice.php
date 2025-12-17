@@ -981,7 +981,7 @@ class Invoice implements XmlSerializable, XmlDeserializable
             $collection,
         );
 
-        return new static()
+        return (new static())
             ->setUBLVersionId(
                 ReaderHelper::getTagValue(
                     Schema::CBC . "UBLVersionID",
