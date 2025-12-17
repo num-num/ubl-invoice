@@ -47,6 +47,7 @@ class Invoice implements XmlSerializable, XmlDeserializable
     private $delivery;
     private $orderReference;
     private $contractDocumentReference;
+    private $despatchDocumentReference;
 
     /**
      * @return string
@@ -626,6 +627,24 @@ class Invoice implements XmlSerializable, XmlDeserializable
     }
 
     /**
+     * @return DespatchDocumentReference
+     */
+    public function getDespatchDocumentReference(): ?DespatchDocumentReference
+    {
+        return $this->despatchDocumentReference;
+    }
+
+    /**
+     * @param DespatchDocumentReference $despatchDocumentReference
+     * @return static
+     */
+    public function setDespatchDocumentReference(?DespatchDocumentReference $despatchDocumentReference): static
+    {
+        $this->despatchDocumentReference = $despatchDocumentReference;
+        return $this;
+    }
+
+    /**
      * The validate function that is called during xml writing to valid the data of the object.
      *
      * @return void
@@ -751,6 +770,12 @@ class Invoice implements XmlSerializable, XmlDeserializable
         if ($this->billingReference != null) {
             $writer->write([
                 Schema::CAC . 'BillingReference' => $this->billingReference
+            ]);
+        }
+
+        if ($this->despatchDocumentReference !== null) {
+            $writer->write([
+                Schema::CAC . 'DespatchDocumentReference' => $this->despatchDocumentReference,
             ]);
         }
 
@@ -886,6 +911,7 @@ class Invoice implements XmlSerializable, XmlDeserializable
             ->setBillingReference(ReaderHelper::getTagValue(Schema::CAC . 'BillingReference', $collection))
             ->setDelivery(ReaderHelper::getTagValue(Schema::CAC . 'Delivery', $collection))
             ->setOrderReference(ReaderHelper::getTagValue(Schema::CAC . 'OrderReference', $collection))
-            ->setContractDocumentReference(ReaderHelper::getTagValue(Schema::CAC . 'ContractDocumentReference', $collection));
+            ->setContractDocumentReference(ReaderHelper::getTagValue(Schema::CAC . 'ContractDocumentReference', $collection))
+            ->setDespatchDocumentReference(ReaderHelper::getTagValue(Schema::CAC . 'DespatchDocumentReference', $collection));
     }
 }
