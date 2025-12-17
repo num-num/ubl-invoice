@@ -7,6 +7,7 @@
 - Add `<cac:ReceiptDocumentReference>` to `<Invoice>`
 - Add `<cac:OriginatorDocumentReference>` to `<Invoice>`
 - Add FRCTC Electronic Address (0225) to EASCode - Thanks [@UbiManu](https://github.com/UbiManu)
+- Add `<cac:AddressLine>` support to `<cac:Address>` - Thanks [@fMads](https://github.com/fMads)
 
 ### Breaking changes ⚠️
 
