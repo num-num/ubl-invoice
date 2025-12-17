@@ -266,7 +266,7 @@ class Invoice implements XmlSerializable, XmlDeserializable
      * @return static
      */
     public function setAccountingSupplierParty(
-        AccountingParty $accountingSupplierParty,
+        AccountingParty $accountingSupplierParty
     ) {
         $this->accountingSupplierParty = $accountingSupplierParty;
         return $this;
@@ -285,7 +285,7 @@ class Invoice implements XmlSerializable, XmlDeserializable
      * @return Invoice
      */
     public function setSupplierAssignedAccountID(
-        string $supplierAssignedAccountID,
+        string $supplierAssignedAccountID
     ): Invoice {
         $this->supplierAssignedAccountID = $supplierAssignedAccountID;
         return $this;
@@ -304,7 +304,7 @@ class Invoice implements XmlSerializable, XmlDeserializable
      * @return static
      */
     public function setAccountingCustomerParty(
-        AccountingParty $accountingCustomerParty,
+        AccountingParty $accountingCustomerParty
     ) {
         $this->accountingCustomerParty = $accountingCustomerParty;
         return $this;
@@ -323,7 +323,7 @@ class Invoice implements XmlSerializable, XmlDeserializable
      * @return Invoice
      */
     public function setAccountingCustomerPartyContact(
-        Contact $accountingCustomerPartyContact,
+        Contact $accountingCustomerPartyContact
     ): Invoice {
         $this->accountingCustomerPartyContact = $accountingCustomerPartyContact;
         return $this;
@@ -396,7 +396,7 @@ class Invoice implements XmlSerializable, XmlDeserializable
      * @return static
      */
     public function setLegalMonetaryTotal(
-        LegalMonetaryTotal $legalMonetaryTotal,
+        LegalMonetaryTotal $legalMonetaryTotal
     ) {
         $this->legalMonetaryTotal = $legalMonetaryTotal;
         return $this;
@@ -460,7 +460,7 @@ class Invoice implements XmlSerializable, XmlDeserializable
      * @return static
      */
     public function setAdditionalDocumentReference(
-        AdditionalDocumentReference $additionalDocumentReference,
+        AdditionalDocumentReference $additionalDocumentReference
     ) {
         $this->additionalDocumentReferences = [$additionalDocumentReference];
         return $this;
@@ -471,7 +471,7 @@ class Invoice implements XmlSerializable, XmlDeserializable
      * @return static
      */
     public function setAdditionalDocumentReferences(
-        array $additionalDocumentReference,
+        array $additionalDocumentReference
     ) {
         $this->additionalDocumentReferences = $additionalDocumentReference;
         return $this;
@@ -482,7 +482,7 @@ class Invoice implements XmlSerializable, XmlDeserializable
      * @return static
      */
     public function addAdditionalDocumentReference(
-        AdditionalDocumentReference $additionalDocumentReference,
+        AdditionalDocumentReference $additionalDocumentReference
     ) {
         $this->additionalDocumentReferences[] = $additionalDocumentReference;
         return $this;
@@ -493,7 +493,7 @@ class Invoice implements XmlSerializable, XmlDeserializable
      * @return Invoice
      */
     public function setProjectReference(
-        ProjectReference $projectReference,
+        ProjectReference $projectReference
     ): Invoice {
         $this->projectReference = $projectReference;
         return $this;
@@ -631,7 +631,7 @@ class Invoice implements XmlSerializable, XmlDeserializable
      * @return static
      */
     public function setContractDocumentReference(
-        ?ContractDocumentReference $contractDocumentReference,
+        ?ContractDocumentReference $contractDocumentReference
     ) {
         $this->contractDocumentReference = $contractDocumentReference;
         return $this;
@@ -650,7 +650,7 @@ class Invoice implements XmlSerializable, XmlDeserializable
      * @return static
      */
     public function setDespatchDocumentReference(
-        ?DespatchDocumentReference $despatchDocumentReference,
+        ?DespatchDocumentReference $despatchDocumentReference
     ): static {
         $this->despatchDocumentReference = $despatchDocumentReference;
         return $this;
@@ -669,7 +669,7 @@ class Invoice implements XmlSerializable, XmlDeserializable
      * @return static
      */
     public function setReceiptDocumentReference(
-        ?ReceiptDocumentReference $receiptDocumentReference,
+        ?ReceiptDocumentReference $receiptDocumentReference
     ): static {
         $this->receiptDocumentReference = $receiptDocumentReference;
         return $this;
@@ -688,7 +688,7 @@ class Invoice implements XmlSerializable, XmlDeserializable
      * @return static
      */
     public function setOriginatorDocumentReference(
-        ?OriginatorDocumentReference $originatorDocumentReference,
+        ?OriginatorDocumentReference $originatorDocumentReference
     ): static {
         $this->originatorDocumentReference = $originatorDocumentReference;
         return $this;
