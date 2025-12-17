@@ -30,7 +30,7 @@
         }
     ],
     "require": {
-        "php": "^8.0",
+        "php": "^7.4 || ^8.0",
         "sabre/xml": "^4.0",
         "nesbot/carbon": "^2.72 || ^3.11",
         "doctrine/collections": "^1.8 || ^2.0"
