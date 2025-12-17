@@ -3,6 +3,9 @@
 ### New features & improvements
 
 - Possibility to deserialize XML into object tree
+- Add `<cac:DespatchDocumentReference>` to `<Invoice>` - Thanks [@fMads](https://github.com/fMads)
+- Add `<cac:ReceiptDocumentReference>` to `<Invoice>`
+- Add `<cac:OriginatorDocumentReference>` to `<Invoice>`
 
 ### Breaking changes ⚠️
 

@@ -2,14 +2,20 @@
 
 namespace NumNum\UBL;
 
-use function Sabre\Xml\Deserializer\keyValue;
-
 use Sabre\Xml\Reader;
 use Sabre\Xml\Writer;
 use Sabre\Xml\XmlDeserializable;
 use Sabre\Xml\XmlSerializable;
 
-class DespatchDocumentReference implements XmlSerializable, XmlDeserializable
+use function Sabre\Xml\Deserializer\keyValue;
+
+/**
+ * Originator Document Reference
+ * A reference to an originator document associated with this document.
+ *
+ * @see https://docs.peppol.eu/poacc/billing/3.0/syntax/ubl-invoice/cac-OriginatorDocumentReference/
+ */
+class OriginatorDocumentReference implements XmlSerializable, XmlDeserializable
 {
     private $id;
 
@@ -40,19 +46,21 @@ class DespatchDocumentReference implements XmlSerializable, XmlDeserializable
     public function xmlSerialize(Writer $writer): void
     {
         if ($this->id !== null) {
-            $writer->write([Schema::CBC . "ID" => $this->id]);
+            $writer->write([Schema::CBC . 'ID' => $this->id]);
         }
     }
 
     /**
      * The xmlDeserialize method is called during xml reading.
-     * @param Reader $xml
+     *
+     * @param Reader $reader
      * @return static
      */
     public static function xmlDeserialize(Reader $reader)
     {
         $mixedContent = keyValue($reader);
 
-        return new static()->setId($mixedContent[Schema::CBC . "ID"] ?? null);
+        return (new static())
+            ->setId($mixedContent[Schema::CBC . 'ID'] ?? null);
     }
 }
