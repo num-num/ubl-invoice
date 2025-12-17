@@ -651,7 +651,7 @@ class Invoice implements XmlSerializable, XmlDeserializable
      */
     public function setDespatchDocumentReference(
         ?DespatchDocumentReference $despatchDocumentReference,
-    ) {
+    ): static {
         $this->despatchDocumentReference = $despatchDocumentReference;
         return $this;
     }
@@ -670,7 +670,7 @@ class Invoice implements XmlSerializable, XmlDeserializable
      */
     public function setReceiptDocumentReference(
         ?ReceiptDocumentReference $receiptDocumentReference,
-    ) {
+    ): static {
         $this->receiptDocumentReference = $receiptDocumentReference;
         return $this;
     }
@@ -689,7 +689,7 @@ class Invoice implements XmlSerializable, XmlDeserializable
      */
     public function setOriginatorDocumentReference(
         ?OriginatorDocumentReference $originatorDocumentReference,
-    ) {
+    ): static {
         $this->originatorDocumentReference = $originatorDocumentReference;
         return $this;
     }
