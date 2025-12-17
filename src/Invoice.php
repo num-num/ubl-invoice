@@ -265,8 +265,9 @@ class Invoice implements XmlSerializable, XmlDeserializable
      * @param AccountingParty $accountingSupplierParty
      * @return static
      */
-    public function setAccountingSupplierParty(AccountingParty $accountingSupplierParty)
-    {
+    public function setAccountingSupplierParty(
+        AccountingParty $accountingSupplierParty,
+    ) {
         $this->accountingSupplierParty = $accountingSupplierParty;
         return $this;
     }
@@ -283,8 +284,9 @@ class Invoice implements XmlSerializable, XmlDeserializable
      * @param string $supplierAssignedAccountID
      * @return Invoice
      */
-    public function setSupplierAssignedAccountID(string $supplierAssignedAccountID): Invoice
-    {
+    public function setSupplierAssignedAccountID(
+        string $supplierAssignedAccountID,
+    ): Invoice {
         $this->supplierAssignedAccountID = $supplierAssignedAccountID;
         return $this;
     }
@@ -301,8 +303,9 @@ class Invoice implements XmlSerializable, XmlDeserializable
      * @param AccountingParty $accountingCustomerParty
      * @return static
      */
-    public function setAccountingCustomerParty(AccountingParty $accountingCustomerParty)
-    {
+    public function setAccountingCustomerParty(
+        AccountingParty $accountingCustomerParty,
+    ) {
         $this->accountingCustomerParty = $accountingCustomerParty;
         return $this;
     }
@@ -319,8 +322,9 @@ class Invoice implements XmlSerializable, XmlDeserializable
      * @param Contact $accountingCustomerPartyContact
      * @return Invoice
      */
-    public function setAccountingCustomerPartyContact(Contact $accountingCustomerPartyContact): Invoice
-    {
+    public function setAccountingCustomerPartyContact(
+        Contact $accountingCustomerPartyContact,
+    ): Invoice {
         $this->accountingCustomerPartyContact = $accountingCustomerPartyContact;
         return $this;
     }
@@ -391,8 +395,9 @@ class Invoice implements XmlSerializable, XmlDeserializable
      * @param LegalMonetaryTotal $legalMonetaryTotal
      * @return static
      */
-    public function setLegalMonetaryTotal(LegalMonetaryTotal $legalMonetaryTotal)
-    {
+    public function setLegalMonetaryTotal(
+        LegalMonetaryTotal $legalMonetaryTotal,
+    ) {
         $this->legalMonetaryTotal = $legalMonetaryTotal;
         return $this;
     }
@@ -454,8 +459,9 @@ class Invoice implements XmlSerializable, XmlDeserializable
      * @param AdditionalDocumentReference $additionalDocumentReference
      * @return static
      */
-    public function setAdditionalDocumentReference(AdditionalDocumentReference $additionalDocumentReference)
-    {
+    public function setAdditionalDocumentReference(
+        AdditionalDocumentReference $additionalDocumentReference,
+    ) {
         $this->additionalDocumentReferences = [$additionalDocumentReference];
         return $this;
     }
@@ -464,8 +470,9 @@ class Invoice implements XmlSerializable, XmlDeserializable
      * @param AdditionalDocumentReference $additionalDocumentReference
      * @return static
      */
-    public function setAdditionalDocumentReferences(array $additionalDocumentReference)
-    {
+    public function setAdditionalDocumentReferences(
+        array $additionalDocumentReference,
+    ) {
         $this->additionalDocumentReferences = $additionalDocumentReference;
         return $this;
     }
@@ -474,8 +481,9 @@ class Invoice implements XmlSerializable, XmlDeserializable
      * @param AdditionalDocumentReference $additionalDocumentReference
      * @return static
      */
-    public function addAdditionalDocumentReference(AdditionalDocumentReference $additionalDocumentReference)
-    {
+    public function addAdditionalDocumentReference(
+        AdditionalDocumentReference $additionalDocumentReference,
+    ) {
         $this->additionalDocumentReferences[] = $additionalDocumentReference;
         return $this;
     }
@@ -484,8 +492,9 @@ class Invoice implements XmlSerializable, XmlDeserializable
      * @param ProjectReference $projectReference
      * @return Invoice
      */
-    public function setProjectReference(ProjectReference $projectReference): Invoice
-    {
+    public function setProjectReference(
+        ProjectReference $projectReference,
+    ): Invoice {
         $this->projectReference = $projectReference;
         return $this;
     }
@@ -621,8 +630,9 @@ class Invoice implements XmlSerializable, XmlDeserializable
      * @param ContractDocumentReference $ContractDocumentReference
      * @return static
      */
-    public function setContractDocumentReference(?ContractDocumentReference $contractDocumentReference)
-    {
+    public function setContractDocumentReference(
+        ?ContractDocumentReference $contractDocumentReference,
+    ) {
         $this->contractDocumentReference = $contractDocumentReference;
         return $this;
     }
@@ -639,8 +649,9 @@ class Invoice implements XmlSerializable, XmlDeserializable
      * @param DespatchDocumentReference $despatchDocumentReference
      * @return static
      */
-    public function setDespatchDocumentReference(?DespatchDocumentReference $despatchDocumentReference)
-    {
+    public function setDespatchDocumentReference(
+        ?DespatchDocumentReference $despatchDocumentReference,
+    ): static {
         $this->despatchDocumentReference = $despatchDocumentReference;
         return $this;
     }
@@ -657,8 +668,9 @@ class Invoice implements XmlSerializable, XmlDeserializable
      * @param ReceiptDocumentReference $receiptDocumentReference
      * @return static
      */
-    public function setReceiptDocumentReference(?ReceiptDocumentReference $receiptDocumentReference)
-    {
+    public function setReceiptDocumentReference(
+        ?ReceiptDocumentReference $receiptDocumentReference,
+    ): static {
         $this->receiptDocumentReference = $receiptDocumentReference;
         return $this;
     }
@@ -675,8 +687,9 @@ class Invoice implements XmlSerializable, XmlDeserializable
      * @param OriginatorDocumentReference $originatorDocumentReference
      * @return static
      */
-    public function setOriginatorDocumentReference(?OriginatorDocumentReference $originatorDocumentReference)
-    {
+    public function setOriginatorDocumentReference(
+        ?OriginatorDocumentReference $originatorDocumentReference,
+    ): static {
         $this->originatorDocumentReference = $originatorDocumentReference;
         return $this;
     }
