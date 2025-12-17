@@ -3,6 +3,7 @@
 ### New features & improvements
 
 - Possibility to deserialize XML into object tree
+- Add `xmlDeserialize` support for `CreditNote` class to properly parse `<cac:CreditNoteLine>` elements - Thanks [@RoanB](https://github.com/RoanB)
 
 ### Breaking changes ⚠️
 
