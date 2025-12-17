@@ -1,14 +1,15 @@
-# Changelog for v2.0.0-beta
+# Changelog for v1.22.0 (Final 1.x release)
+
+> **Note:** This is the final feature release for the 1.x branch. Only bugfix releases (1.22.x) will follow.
+> The master branch will be updated to version 2.0 which contains breaking changes.
 
 ### New features & improvements
 
-- Possibility to deserialize XML into object tree
 - Add `<cac:DespatchDocumentReference>` to `<Invoice>` - Thanks [@fMads](https://github.com/fMads)
-- Add `<cac:ReceiptDocumentReference>` to `<Invoice>`
-- Add `<cac:OriginatorDocumentReference>` to `<Invoice>`
 - Add FRCTC Electronic Address (0225) to EASCode - Thanks [@UbiManu](https://github.com/UbiManu)
-- Add `<cac:AddressLine>` support to `<cac:Address>` - Thanks [@fMads](https://github.com/fMads)
-- Add `<cac:OriginCountry>` support to `<cac:Item>` - Thanks [@fMads](https://github.com/fMads)
+- Add `<cac:AddressLine>` support to `<cac:Address>` for additional unstructured address lines - Thanks [@fMads](https://github.com/fMads)
+- Add `<cac:OriginCountry>` support to `<cac:Item>` for specifying country of origin - Thanks [@fMads](https://github.com/fMads)
+- Update `AllowanceCharge::allowanceChargeReasonCode` to accept `int|string|null` instead of `?int`, allowing string values like "ZZZ" per UNCL7161 - Thanks [@Mikael-Leger](https://github.com/Mikael-Leger)
 
 ### Bug fixes
 
@@ -17,22 +18,6 @@
 ### Maintenance
 
 - Update dependency constraints to support Carbon 3.x and Doctrine Collections 2.x - Thanks [@GHuygen](https://github.com/GHuygen)
-
-### Breaking changes ⚠️
-
-- `Invoice::setAccountingSupplierParty` now requires an `AccountingParty` instead of a `Party` object
-- `Invoice::setAccountingCustomerParty` now requires an `AccountingParty` instead of a `Party` object
-- `Invoice::getAccountingSupplierParty` now returns an `AccountingParty` instead of a `Party` object
-- `Invoice::getAccountingCustomerParty` now returns an `AccountingParty` instead of a `Party` object
-- `Invoice::accountingCustomerPartyContact` has been removed, use `Invoice::getAccountingCustomerParty()->setAccountingContact()` instead
-- `Invoice::setSupplierAssignedAccountID`/`Invoice::getSupplierAssignedAccountID` no longer exists and has moved to `AccountingParty::setSupplierAssignedAccountID`/`AccountingParty::getSupplierAssignedAccountID`
-- `Attachment::setFileStream` / `Attachment::getFileStream` to manually set the Attachment xml tag base 64 string content, has been renamed to `Attachment::setBase64Content` / `Attachment::getBase64Content`
-- Functions `setUBLVersionID`/`getUBLVersionID` have been renamed to `setUBLVersionId`/`getUBLVersionId`
-- Functions `setSupplierAssignedAccountID`/`getSupplierAssignedAccountID` have been renamed to `setSupplierAssignedAccountId`/`getSupplierAssignedAccountId`
-- Functions `setUnitCodeListID`/`getUnitCodeListID` have been renamed to `setUnitCodeListId`/`getUnitCodeListId`
-- Functions `setSchemeID`/`getSchemeID` have been renamed to `setSchemeId`/`getSchemeId`
-- Functions `setCustomizationID`/`getCustomizationID` have been renamed to `setCustomizationId`/`getCustomizationId`
-- Functions `setProfileID`/`getProfileID` have been renamed to `setProfileId`/`getProfileId`
 
 # Changelog for v1.21.4
 
