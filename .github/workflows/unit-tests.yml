@@ -2,7 +2,7 @@ name: Unit tests
 
 on:
   pull_request:
-    branches: [master-2.0]
+    branches: [master, master-2.0]
 
 jobs:
   php-tests:
