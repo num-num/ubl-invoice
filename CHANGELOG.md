@@ -9,6 +9,10 @@
 - Add FRCTC Electronic Address (0225) to EASCode - Thanks [@UbiManu](https://github.com/UbiManu)
 - Add `<cac:AddressLine>` support to `<cac:Address>` - Thanks [@fMads](https://github.com/fMads)
 
+### Bug fixes
+
+- Fix `Attachment::xmlSerialize()` to not output `EmbeddedDocumentBinaryObject` when only `externalReference` is set - Thanks [@fMads](https://github.com/fMads)
+
 ### Breaking changes ⚠️
 
 - `Invoice::setAccountingSupplierParty` now requires an `AccountingParty` instead of a `Party` object
