@@ -2,10 +2,14 @@
 
 namespace NumNum\UBL;
 
+use Sabre\Xml\Reader;
 use Sabre\Xml\Writer;
+use Sabre\Xml\XmlDeserializable;
 use Sabre\Xml\XmlSerializable;
 
-class PaymentMandate implements XmlSerializable
+use function Sabre\Xml\Deserializer\keyValue;
+
+class PaymentMandate implements XmlSerializable, XmlDeserializable
 {
     public $xmlTagName = 'PaymentMandate';
 
@@ -59,5 +63,19 @@ class PaymentMandate implements XmlSerializable
                 Schema::CAC . 'PayeeFinancialAccount' => $this->getPayeeFinancialAccount()
             ]);
         }
+    }
+
+    /**
+     * The xmlDeserialize method is called during xml reading.
+     * @param Reader $reader
+     * @return static
+     */
+    public static function xmlDeserialize(Reader $reader)
+    {
+        $keyValues = keyValue($reader);
+
+        return (new static())
+            ->setId($keyValues[Schema::CBC . 'ID'] ?? null)
+            ->setPayeeFinancialAccount($keyValues[Schema::CAC . 'PayeeFinancialAccount'] ?? null);
     }
 }
