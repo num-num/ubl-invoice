@@ -157,24 +157,26 @@ class Attachment implements XmlSerializable, XmlDeserializable
     {
         $this->validate();
 
-        if (!empty($this->filePath)) {
-            $fileContents = base64_encode(file_get_contents($this->filePath));
-            $fileName = basename($this->filePath);
-            $mimeType = $this->getFilePathMimeType();
-        } else {
-            $fileContents = $this->base64Content;
-            $fileName = $this->fileName;
-            $mimeType = $this->mimeType;
-        }
+        if (!empty($this->filePath) || !empty($this->base64Content)) {
+            if (!empty($this->filePath)) {
+                $fileContents = base64_encode(file_get_contents($this->filePath));
+                $fileName = basename($this->filePath);
+                $mimeType = $this->getFilePathMimeType();
+            } else {
+                $fileContents = $this->base64Content;
+                $fileName = $this->fileName;
+                $mimeType = $this->mimeType;
+            }
 
-        $writer->write([
-            'name'       => Schema::CBC . 'EmbeddedDocumentBinaryObject',
-            'value'      => $fileContents,
-            'attributes' => [
-                'mimeCode' => $mimeType,
-                'filename' => $fileName,
-            ]
-        ]);
+            $writer->write([
+                'name'       => Schema::CBC . 'EmbeddedDocumentBinaryObject',
+                'value'      => $fileContents,
+                'attributes' => [
+                    'mimeCode' => $mimeType,
+                    'filename' => $fileName,
+                ]
+            ]);
+        }
 
         if ($this->externalReference) {
             $writer->writeElement(
