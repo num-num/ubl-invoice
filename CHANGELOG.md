@@ -14,6 +14,10 @@
 
 - Fix `Attachment::xmlSerialize()` to not output `EmbeddedDocumentBinaryObject` when only `externalReference` is set - Thanks [@fMads](https://github.com/fMads)
 
+### Maintenance
+
+- Update dependency constraints to support Carbon 3.x and Doctrine Collections 2.x - Thanks [@GHuygen](https://github.com/GHuygen)
+
 ### Breaking changes ⚠️
 
 - `Invoice::setAccountingSupplierParty` now requires an `AccountingParty` instead of a `Party` object
