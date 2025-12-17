@@ -81,3 +81,19 @@ $RECYCLE.BIN/
 
 # Editors
 .vscode/
+.phpactor.json
+
+## AI Agents
+.claude/
+.cursor/
+.cursorignore
+.cursorrules
+.aider*
+.continue/
+.codeium/
+.windsurf/
+.amazonq/
+.tabnine/
+.cody/
+.supermaven/
+.codex/

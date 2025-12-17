@@ -47,6 +47,7 @@ class EASCode
     public const NET_SERVICE_ID = "0215";
     public const OVTCODE = "0216";
     public const REGISTERED_NUMBER_OF_THE_QUALIFIED_INVOICE_ISSUER_JAPAN = "0221";
+    public const FRCTC_ELECTRONIC_ADDRESS = "0225";
     public const NATIONAL_EINVOICING_FRAMEWORK_MALAYSIA = "0230";
     public const DANISH_MINISTRY_OF_THE_INTERIOR_AND_HEALTH = "9901";
     /** @deprecated */

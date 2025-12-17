@@ -20,6 +20,7 @@ class Item implements XmlSerializable, XmlDeserializable
     private $standardItemIdentificationAttributes = [];
     private $commodityClassification;
     private $classifiedTaxCategory;
+    private $originCountry;
 
     /**
      * @return string
@@ -151,6 +152,24 @@ class Item implements XmlSerializable, XmlDeserializable
     }
 
     /**
+     * @return Country
+     */
+    public function getOriginCountry(): ?Country
+    {
+        return $this->originCountry;
+    }
+
+    /**
+     * @param Country $originCountry
+     * @return Item
+     */
+    public function setOriginCountry(?Country $originCountry): Item
+    {
+        $this->originCountry = $originCountry;
+        return $this;
+    }
+
+    /**
      * The xmlSerialize method is called during xml writing.
      *
      * @param Writer $writer
@@ -195,6 +214,12 @@ class Item implements XmlSerializable, XmlDeserializable
             ]);
         }
 
+        if (!empty($this->getOriginCountry())) {
+            $writer->write([
+                Schema::CAC . 'OriginCountry' => $this->originCountry
+            ]);
+        }
+
         if (!empty($this->getCommodityClassification())) {
             $writer->write([
                 Schema::CAC . 'CommodityClassification' => $this->commodityClassification
@@ -222,6 +247,7 @@ class Item implements XmlSerializable, XmlDeserializable
         $nameTag = ReaderHelper::getTag(Schema::CBC . 'Name', $collection);
         $classifiedTaxCategoryTag = ReaderHelper::getTag(Schema::CAC . 'ClassifiedTaxCategory', $collection);
         $commodityClassification = ReaderHelper::getTag(Schema::CAC . 'CommodityClassification', $collection);
+        $originCountryTag = ReaderHelper::getTag(Schema::CAC . 'OriginCountry', $collection);
 
         $buyersItemIdentificationTag = ReaderHelper::getTag(Schema::CAC . 'BuyersItemIdentification', $collection);
         $buyersItemIdentificationIdTag = ReaderHelper::getTag(
@@ -249,6 +275,7 @@ class Item implements XmlSerializable, XmlDeserializable
             ->setStandardItemIdentification($standardItemIdentificationIdTag['value'] ?? null, $standardItemIdentificationIdTag['attributes'] ?? null)
             ->setClassifiedTaxCategory($classifiedTaxCategoryTag['value'] ?? null)
             ->setCommodityClassification($commodityClassification['value'] ?? null)
+            ->setOriginCountry($originCountryTag['value'] ?? null)
         ;
     }
 }
