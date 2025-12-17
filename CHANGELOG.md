@@ -1,3 +1,16 @@
+# Changelog for v1.22.1
+
+### Bug fixes
+
+- Fix PHP 7.4 compatibility issues in `Invoice.php` and `DespatchDocumentReference.php`:
+  - Add parentheses around `new static()` for proper method chaining
+  - Remove trailing commas in function parameter definitions (PHP 8.0+ syntax)
+  - Remove `static` return type declarations (PHP 8.0+ syntax)
+
+### Maintenance
+
+- Enable CI workflow for PRs to `master` branch
+
 # Changelog for v1.22.0 (Final 1.x release)
 
 > **Note:** This is the final feature release for the 1.x branch. Only bugfix releases (1.22.x) will follow.
