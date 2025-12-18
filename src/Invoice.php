@@ -181,19 +181,19 @@ class Invoice implements XmlSerializable, XmlDeserializable
     }
 
     /**
-     * @return string
+     * @return int
      */
-    public function getInvoiceTypeCode(): ?string
+    public function getInvoiceTypeCode(): ?int
     {
         return $this->invoiceTypeCode;
     }
 
     /**
-     * @param string $invoiceTypeCode
-     *                                See also: src/InvoiceTypeCode.php
+     * @param int $invoiceTypeCode
+     *                             See also: src/InvoiceTypeCode.php
      * @return static
      */
-    public function setInvoiceTypeCode(?string $invoiceTypeCode)
+    public function setInvoiceTypeCode(?int $invoiceTypeCode)
     {
         $this->invoiceTypeCode = $invoiceTypeCode;
         return $this;
@@ -1011,10 +1011,10 @@ class Invoice implements XmlSerializable, XmlDeserializable
                 ),
             )
             ->setInvoiceTypeCode(
-                ReaderHelper::getTagValue(
+                ($typeCode = ReaderHelper::getTagValue(
                     Schema::CBC . "InvoiceTypeCode",
                     $collection,
-                ),
+                )) !== null ? (int) $typeCode : null,
             )
             ->setNote(
                 ReaderHelper::getTagValue(Schema::CBC . "Note", $collection),
