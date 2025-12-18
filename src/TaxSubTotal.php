@@ -160,7 +160,7 @@ class TaxSubTotal implements XmlSerializable, XmlDeserializable
         return (new static())
             ->setTaxableAmount(isset($keyValues[Schema::CBC . 'TaxableAmount']) ? floatval($keyValues[Schema::CBC . 'TaxableAmount']) : null)
             ->setTaxAmount(isset($keyValues[Schema::CBC . 'TaxAmount']) ? floatval($keyValues[Schema::CBC . 'TaxAmount']) : null)
-            ->setTaxCategory($keyvalues[Schema::CAC . 'TaxCategory'] ?? null)
+            ->setTaxCategory($keyValues[Schema::CAC . 'TaxCategory'] ?? null)
             ->setPercent(isset($keyValues[Schema::CBC . 'Percent']) ? floatval($keyValues[Schema::CBC . 'Percent']) : null)
         ;
     }
