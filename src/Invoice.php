@@ -273,25 +273,6 @@ class Invoice implements XmlSerializable, XmlDeserializable
     }
 
     /**
-     * @return string
-     */
-    public function getSupplierAssignedAccountID(): ?string
-    {
-        return $this->supplierAssignedAccountID;
-    }
-
-    /**
-     * @param string $supplierAssignedAccountID
-     * @return Invoice
-     */
-    public function setSupplierAssignedAccountID(
-        string $supplierAssignedAccountID
-    ): Invoice {
-        $this->supplierAssignedAccountID = $supplierAssignedAccountID;
-        return $this;
-    }
-
-    /**
      * @return AccountingParty
      */
     public function getAccountingCustomerParty(): ?AccountingParty
