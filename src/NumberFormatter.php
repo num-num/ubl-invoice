@@ -16,10 +16,14 @@ class NumberFormatter
     public static function format($number, ?int $decimals = null, string $decimalSeparator = '.', string $thousandsSeparator = '')
     {
         if ($decimals == null) {
-            // Convert to string to detect decimals
-            // Get the current decimal point character according to the locale
-            $locale = localeconv();
-            $decimalPoint = $locale['decimal_point'] ?? '.';
+
+            $decimalPoint = '.';
+            if(!is_float($number)) {
+                // Convert to string to detect decimals
+                // Get the current decimal point character according to the locale
+                $locale = localeconv();
+                $decimalPoint = $locale['decimal_point'] ?? '.';
+            }
 
             // Convert to string to detect decimals
             $parts = explode($decimalPoint, (string)$number);
