@@ -42,7 +42,7 @@ class AllowanceCharge implements XmlSerializable, XmlDeserializable
     /**
      * @return int|string|null
      */
-    public function getAllowanceChargeReasonCode(): int|string|null
+    public function getAllowanceChargeReasonCode()
     {
         return $this->allowanceChargeReasonCode;
     }
@@ -51,7 +51,7 @@ class AllowanceCharge implements XmlSerializable, XmlDeserializable
      * @param int|string|null $allowanceChargeReasonCode
      * @return static
      */
-    public function setAllowanceChargeReasonCode(int|string|null $allowanceChargeReasonCode)
+    public function setAllowanceChargeReasonCode($allowanceChargeReasonCode)
     {
         $this->allowanceChargeReasonCode = $allowanceChargeReasonCode;
         return $this;
@@ -235,7 +235,7 @@ class AllowanceCharge implements XmlSerializable, XmlDeserializable
      * @param string|null $value
      * @return int|string|null
      */
-    private static function parseAllowanceChargeReasonCode(?string $value): int|string|null
+    private static function parseAllowanceChargeReasonCode(?string $value)
     {
         if ($value === null) {
             return null;
