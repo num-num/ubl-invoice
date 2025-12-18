@@ -14,8 +14,8 @@ class LegalMonetaryTotal implements XmlSerializable, XmlDeserializable
     private $lineExtensionAmount = 0;
     private $taxExclusiveAmount = 0;
     private $taxInclusiveAmount = 0;
-    private $allowanceTotalAmount = 0;
-    private $chargeTotalAmount = 0;
+    private $allowanceTotalAmount;
+    private $chargeTotalAmount;
     private $prepaidAmount;
     private $payableAmount = 0;
     private $payableRoundingAmount;
@@ -193,24 +193,32 @@ class LegalMonetaryTotal implements XmlSerializable, XmlDeserializable
                     'currencyID' => Generator::$currencyID
                 ]
 
-            ],
-            [
-                'name'       => Schema::CBC . 'AllowanceTotalAmount',
-                'value'      => NumberFormatter::format($this->allowanceTotalAmount,2),
-                'attributes' => [
-                    'currencyID' => Generator::$currencyID
-                ]
-
-            ],
-            [
-                'name'       => Schema::CBC . 'ChargeTotalAmount',
-                'value'      => NumberFormatter::format($this->chargeTotalAmount, 2),
-                'attributes' => [
-                    'currencyID' => Generator::$currencyID
-                ]
-
             ]
         ]);
+
+        if ($this->allowanceTotalAmount !== null) {
+            $writer->write([
+                [
+                    'name'       => Schema::CBC . 'AllowanceTotalAmount',
+                    'value'      => NumberFormatter::format($this->allowanceTotalAmount, 2),
+                    'attributes' => [
+                        'currencyID' => Generator::$currencyID
+                    ]
+                ]
+            ]);
+        }
+
+        if ($this->chargeTotalAmount !== null) {
+            $writer->write([
+                [
+                    'name'       => Schema::CBC . 'ChargeTotalAmount',
+                    'value'      => NumberFormatter::format($this->chargeTotalAmount, 2),
+                    'attributes' => [
+                        'currencyID' => Generator::$currencyID
+                    ]
+                ]
+            ]);
+        }
 
         if ($this->prepaidAmount !== null) {
             $writer->write([

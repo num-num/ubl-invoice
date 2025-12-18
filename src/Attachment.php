@@ -181,7 +181,7 @@ class Attachment implements XmlSerializable, XmlDeserializable
         if ($this->externalReference) {
             $writer->writeElement(
                 Schema::CAC . 'ExternalReference',
-                [ Schema::CBC . 'URI' => $this->externalReference ]
+                [Schema::CBC . 'URI' => $this->externalReference]
             );
         }
     }
@@ -197,9 +197,9 @@ class Attachment implements XmlSerializable, XmlDeserializable
         $collection = new ArrayCollection($mixedContent);
 
         $embeddedBinObj = ReaderHelper::getTag(Schema::CBC . 'EmbeddedDocumentBinaryObject', $collection);
+        $externalRef = ReaderHelper::getTag(Schema::CAC . 'ExternalReference', $collection);
 
         $result_obj = new static();
-
 
         if ($embeddedBinObj !== null) {
             $result_obj->setBase64Content(
@@ -207,6 +207,15 @@ class Attachment implements XmlSerializable, XmlDeserializable
                 $embeddedBinObj['attributes']['filename'] ?? null,
                 $embeddedBinObj['attributes']['mimeCode'] ?? null
             );
+        }
+
+        if ($externalRef !== null) {
+            // ExternalReference contains a nested URI element
+            $externalRefCollection = new ArrayCollection($externalRef['value'] ?? []);
+            $uri = ReaderHelper::getTagValue(Schema::CBC . 'URI', $externalRefCollection);
+            if ($uri !== null) {
+                $result_obj->setExternalReference($uri);
+            }
         }
 
         return $result_obj;
