@@ -120,12 +120,12 @@ class InvoicePeriod implements XmlSerializable, XmlDeserializable
      */
     public static function xmlDeserialize(Reader $reader)
     {
-        $keyValue = keyValue($reader);
+        $keyValues = keyValue($reader);
 
         return (new static())
-            ->setStartDate(isset($keyValue[Schema::CBC . 'StartDate']) ? Carbon::parse($keyValue[Schema::CBC . 'StartDate'])->toDateTime() : null)
-            ->setEndDate(isset($keyValue[Schema::CBC . 'EndDate']) ? Carbon::parse($keyValue[Schema::CBC . 'EndDate'])->toDateTime() : null)
-            ->setDescriptionCode(isset($keyValue[Schema::CBC . 'DescriptionCode']) ? intval($keyValue[Schema::CBC . 'DescriptionCode']) : null)
+            ->setStartDate(isset($keyValues[Schema::CBC . 'StartDate']) ? Carbon::parse($keyValues[Schema::CBC . 'StartDate'])->toDateTime() : null)
+            ->setEndDate(isset($keyValues[Schema::CBC . 'EndDate']) ? Carbon::parse($keyValues[Schema::CBC . 'EndDate'])->toDateTime() : null)
+            ->setDescriptionCode(isset($keyValues[Schema::CBC . 'DescriptionCode']) ? intval($keyValues[Schema::CBC . 'DescriptionCode']) : null)
         ;
     }
 }
