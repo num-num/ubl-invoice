@@ -2,6 +2,7 @@
 
 namespace NumNum\UBL;
 
+use Carbon\Carbon;
 use DateTime;
 
 use function Sabre\Xml\Deserializer\keyValue;
@@ -20,7 +21,7 @@ class Delivery implements XmlSerializable, XmlDeserializable
     /**
      * @return DateTime
      */
-    public function getActualDeliveryDate()
+    public function getActualDeliveryDate(): ?DateTime
     {
         return $this->actualDeliveryDate;
     }
@@ -29,7 +30,7 @@ class Delivery implements XmlSerializable, XmlDeserializable
      * @param DateTime $actualDeliveryDate
      * @return static
      */
-    public function setActualDeliveryDate($actualDeliveryDate)
+    public function setActualDeliveryDate(?DateTime $actualDeliveryDate)
     {
         $this->actualDeliveryDate = $actualDeliveryDate;
         return $this;
@@ -106,7 +107,7 @@ class Delivery implements XmlSerializable, XmlDeserializable
         $keyValues = keyValue($reader);
 
         return (new static())
-            ->setActualDeliveryDate($keyValues[Schema::CBC . 'ActualDeliveryDate'] ?? null)
+            ->setActualDeliveryDate(isset($keyValues[Schema::CBC . 'ActualDeliveryDate']) ? Carbon::parse($keyValues[Schema::CBC . 'ActualDeliveryDate'])->toDateTime() : null)
             ->setDeliveryLocation($keyValues[Schema::CAC . 'DeliveryLocation'] ?? null)
             ->setDeliveryParty($keyValues[Schema::CAC . 'DeliveryParty'] ?? null)
         ;
