@@ -21,6 +21,7 @@ class Invoice implements XmlSerializable, XmlDeserializable
     private $id;
     private $copyIndicator;
     private $issueDate;
+    private ?DateTime $issueTime;
     protected $invoiceTypeCode = InvoiceTypeCode::INVOICE;
     private $note;
     private $taxPointDate;
@@ -141,6 +142,25 @@ class Invoice implements XmlSerializable, XmlDeserializable
     public function setIssueDate(?DateTime $issueDate)
     {
         $this->issueDate = $issueDate;
+        return $this;
+    }
+
+    /**
+     * @return DateTime
+     */
+    public function getIssueTime() : ?DateTime
+    {
+        return $this->issueTime ?? null;
+    }
+
+    /**
+     * @param DateTime $issueTime
+     * @return static
+     */
+    public function setIssueTime(?DateTime $issueTime = null) : self
+    {
+        $this->issueTime = $issueTime;
+
         return $this;
     }
 
@@ -755,6 +775,12 @@ class Invoice implements XmlSerializable, XmlDeserializable
         $writer->write([
             Schema::CBC . "IssueDate" => $this->issueDate->format("Y-m-d"),
         ]);
+
+        if (isset($this->issueTime)) {
+            $writer->write([
+                Schema::CBC . 'IssueTime' => $this->issueTime->format('H:i:s'),
+            ]);
+        }
 
         if ($this->dueDate !== null && $this->xmlTagName === "Invoice") {
             $writer->write([
