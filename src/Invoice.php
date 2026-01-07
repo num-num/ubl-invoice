@@ -1022,6 +1022,14 @@ class Invoice implements XmlSerializable, XmlDeserializable
                     ),
                 )->toDateTime(),
             )
+            ->setIssueTime(
+                Carbon::parse(
+                    ReaderHelper::getTagValue(
+                        Schema::CBC . "IssueTime",
+                        $collection,
+                    ),
+                )->toDateTime(),
+            )
             ->setDueDate(
                 Carbon::parse(
                     ReaderHelper::getTagValue(
