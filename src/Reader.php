@@ -67,6 +67,7 @@ class Reader
             Schema::CAC.        'TaxScheme'                   => fn ($reader) => TaxScheme::xmlDeserialize($reader),
             Schema::CAC.        'TaxSubtotal'                 => fn ($reader) => TaxSubTotal::xmlDeserialize($reader),
             Schema::CAC.        'TaxTotal'                    => fn ($reader) => TaxTotal::xmlDeserialize($reader),
+            Schema::EXT.        'UBLExtension'                    => fn ($reader) => Extension::xmlDeserialize($reader),
         ];
 
         return $xmlService;

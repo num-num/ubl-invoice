@@ -8,4 +8,5 @@ class Schema
     public const CREDITNOTE = '{urn:oasis:names:specification:ubl:schema:xsd:CreditNote-2}';
     public const CBC        = '{urn:oasis:names:specification:ubl:schema:xsd:CommonBasicComponents-2}';
     public const CAC        = '{urn:oasis:names:specification:ubl:schema:xsd:CommonAggregateComponents-2}';
+    public const EXT        = '{urn:oasis:names:specification:ubl:schema:xsd:CommonExtensionComponents-2}';
 }

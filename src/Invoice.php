@@ -51,6 +51,8 @@ class Invoice implements XmlSerializable, XmlDeserializable
     private $despatchDocumentReference;
     private $receiptDocumentReference;
     private $originatorDocumentReference;
+    /** @var Extension[] $extensions */
+    private array $extensions = [];
 
     /**
      * @return string
@@ -696,6 +698,36 @@ class Invoice implements XmlSerializable, XmlDeserializable
     }
 
     /**
+     * @param Extension $extension
+     * @return static
+     */
+    public function addExtension(Extension $extension): self
+    {
+        $this->extensions[] = $extension;
+
+        return $this;
+    }
+
+    /**
+     * @param Extension[] $extensions
+     * @return static
+     */
+    public function setExtensions(array $extensions): self
+    {
+        $this->extensions = $extensions;
+
+        return $this;
+    }
+
+    /**
+     * @return Extension[]
+     */
+    public function getExtensions(): array
+    {
+        return $this->extensions;
+    }
+
+    /**
      * The validate function that is called during xml writing to valid the data of the object.
      *
      * @return void
@@ -748,6 +780,13 @@ class Invoice implements XmlSerializable, XmlDeserializable
     public function xmlSerialize(Writer $writer): void
     {
         $this->validate();
+
+        if ($this->extensions) {
+            $writer->write([
+                'name' => Schema::EXT . 'UBLExtensions',
+                'value' => $this->extensions
+            ]);
+        }
 
         $writer->write([
             Schema::CBC . "UBLVersionID" => $this->UBLVersionID,
@@ -989,6 +1028,12 @@ class Invoice implements XmlSerializable, XmlDeserializable
         );
 
         return (new static())
+            ->setExtensions(
+                ReaderHelper::getArrayValue(
+                    Schema::EXT . "UBLExtensions",
+                    $collection,
+                ),
+            )
             ->setUBLVersionId(
                 ReaderHelper::getTagValue(
                     Schema::CBC . "UBLVersionID",
