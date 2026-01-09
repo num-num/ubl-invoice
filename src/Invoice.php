@@ -153,10 +153,10 @@ class Invoice implements XmlSerializable, XmlDeserializable
     }
 
     /**
-     * @param DateTime $dueDate
+     * @param DateTime|null $dueDate
      * @return static
      */
-    public function setDueDate(DateTime $dueDate)
+    public function setDueDate(?DateTime $dueDate)
     {
         $this->dueDate = $dueDate;
         return $this;
@@ -226,10 +226,10 @@ class Invoice implements XmlSerializable, XmlDeserializable
     }
 
     /**
-     * @param DateTime $taxPointDate
+     * @param DateTime|null $taxPointDate
      * @return static
      */
-    public function setTaxPointDate(DateTime $taxPointDate)
+    public function setTaxPointDate(?DateTime $taxPointDate)
     {
         $this->taxPointDate = $taxPointDate;
         return $this;
@@ -997,12 +997,10 @@ class Invoice implements XmlSerializable, XmlDeserializable
                 )->toDateTime(),
             )
             ->setDueDate(
-                Carbon::parse(
-                    ReaderHelper::getTagValue(
-                        Schema::CBC . "DueDate",
-                        $collection,
-                    ),
-                )->toDateTime(),
+                ($dueDate = ReaderHelper::getTagValue(
+                    Schema::CBC . "DueDate",
+                    $collection,
+                )) !== null ? Carbon::parse($dueDate)->toDateTime() : null
             )
             ->setDocumentCurrencyCode(
                 ReaderHelper::getTagValue(
@@ -1020,12 +1018,10 @@ class Invoice implements XmlSerializable, XmlDeserializable
                 ReaderHelper::getTagValue(Schema::CBC . "Note", $collection),
             )
             ->setTaxPointDate(
-                Carbon::parse(
-                    ReaderHelper::getTagValue(
-                        Schema::CBC . "TaxPointDate",
-                        $collection,
-                    ),
-                )->toDateTime(),
+                ($taxPointDate = ReaderHelper::getTagValue(
+                    Schema::CBC . "TaxPointDate",
+                    $collection,
+                )) !== null ? Carbon::parse($taxPointDate)->toDateTime() : null
             )
             ->setPaymentTerms(
                 ReaderHelper::getTagValue(
