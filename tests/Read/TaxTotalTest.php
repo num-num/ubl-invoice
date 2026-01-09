@@ -115,7 +115,7 @@ XML;
 
         $this->assertCount(1, $taxSubtotals);
 
-        $firstSubtotal = $taxSubtotals[0];
+        $firstSubtotal = reset($taxSubtotals);
 
         $this->assertInstanceOf(TaxSubTotal::class, $firstSubtotal);
 
