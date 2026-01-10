@@ -40,6 +40,7 @@ class Invoice implements XmlSerializable, XmlDeserializable
     private $additionalDocumentReferences = [];
     private $projectReference;
     private $documentCurrencyCode = "EUR";
+    private $taxCurrencyCode;
     private $buyerReference;
     private $accountingCostCode;
     private $invoicePeriod;
@@ -177,6 +178,24 @@ class Invoice implements XmlSerializable, XmlDeserializable
     public function setDocumentCurrencyCode(?string $currencyCode = "EUR")
     {
         $this->documentCurrencyCode = $currencyCode;
+        return $this;
+    }
+
+    /**
+     * @return string
+     */
+    public function getTaxCurrencyCode(): ?string
+    {
+        return $this->taxCurrencyCode;
+    }
+
+    /**
+     * @param mixed $currencyCode
+     * @return static
+     */
+    public function setTaxCurrencyCode(?string $currencyCode)
+    {
+        $this->taxCurrencyCode = $currencyCode;
         return $this;
     }
 
@@ -1007,6 +1026,12 @@ class Invoice implements XmlSerializable, XmlDeserializable
             ->setDocumentCurrencyCode(
                 ReaderHelper::getTagValue(
                     Schema::CBC . "DocumentCurrencyCode",
+                    $collection,
+                ),
+            )
+            ->setTaxCurrencyCode(
+                ReaderHelper::getTagValue(
+                    Schema::CBC . "TaxCurrencyCode",
                     $collection,
                 ),
             )
