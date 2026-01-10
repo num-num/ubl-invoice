@@ -110,10 +110,11 @@ class TaxTotal implements XmlSerializable, XmlDeserializable
         $mixedContent = mixedContent($reader);
         $collection = new ArrayCollection($mixedContent);
 
+        $taxAmount = ReaderHelper::getTag(Schema::CBC . 'TaxAmount', $collection);
         $taxSubTotals = ReaderHelper::getArrayValue(Schema::CAC . 'TaxSubtotal', $collection);
 
         return (new static())
-            ->setTaxAmount(isset($keyValues[Schema::CBC.'TaxAmount']) ? floatval($keyValues[Schema::CBC.'TaxAmount']) : null)
+            ->setTaxAmount(isset($taxAmount) ? floatval($taxAmount['value']) : null)
             ->setTaxSubTotals($taxSubTotals);
     }
 }
