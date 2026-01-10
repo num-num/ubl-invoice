@@ -57,6 +57,21 @@ class LegalEntity implements XmlSerializable, XmlDeserializable
         }
         return $this;
     }
+    /**
+     * @return array|null
+     */
+    public function getCompanyIdAttributes(): ?array
+    {
+        return $this->companyIdAttributes;
+    }
+
+    /**
+     * @return string|null
+     */
+    public function getCompanyIdSchemeId(): ?string
+    {
+        return $this->companyIdAttributes['schemeID'] ?? null;
+    }
 
     /**
     *
