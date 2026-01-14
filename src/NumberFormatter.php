@@ -17,7 +17,7 @@ class NumberFormatter
         $number,
         ?int $decimals = null,
         string $decimalSeparator = ".",
-        string $thousandsSeparator = "",
+        string $thousandsSeparator = ""
     ) {
         if ($decimals == null) {
             // Get the current decimal point character according to the locale
@@ -36,7 +36,7 @@ class NumberFormatter
             $number,
             $decimals,
             $decimalSeparator,
-            $thousandsSeparator,
+            $thousandsSeparator
         );
 
         return $value;
