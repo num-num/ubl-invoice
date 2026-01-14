@@ -111,11 +111,13 @@ XML;
 
         $this->assertInstanceOf(TaxTotal::class, $taxTotal);
 
+        $this->assertEquals(20.79, $taxTotal->getTaxAmount());
+
         $taxSubtotals = $taxTotal->getTaxSubTotals();
 
         $this->assertCount(1, $taxSubtotals);
 
-        $firstSubtotal = $taxSubtotals[0];
+        $firstSubtotal = reset($taxSubtotals);
 
         $this->assertInstanceOf(TaxSubTotal::class, $firstSubtotal);
 
