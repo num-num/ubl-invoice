@@ -14,18 +14,18 @@ class ContractDocumentReference implements XmlSerializable, XmlDeserializable
     private $id;
 
     /**
-     * @return string
+     * @return string|null
      */
-    public function getId(): string
+    public function getId(): ?string
     {
         return $this->id;
     }
 
     /**
-     * @param string $id
+     * @param string|null $id
      * @return static
      */
-    public function setId(string $id)
+    public function setId(?string $id)
     {
         $this->id = $id;
         return $this;
