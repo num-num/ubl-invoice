@@ -311,18 +311,18 @@ class Invoice implements XmlSerializable, XmlDeserializable
     }
 
     /**
-     * @return Party
+     * @return PayeeParty
      */
-    public function getPayeeParty(): ?Party
+    public function getPayeeParty(): ?PayeeParty
     {
         return $this->payeeParty;
     }
 
     /**
-     * @param Party $payeeParty
+     * @param PayeeParty $payeeParty
      * @return static
      */
-    public function setPayeeParty(?Party $payeeParty)
+    public function setPayeeParty(?PayeeParty $payeeParty)
     {
         $this->payeeParty = $payeeParty;
         return $this;
