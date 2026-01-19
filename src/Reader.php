@@ -23,6 +23,7 @@ class Reader
         $xmlService->elementMap = [
             Schema::INVOICE.   'Invoice'                      => fn ($reader) => Invoice::xmlDeserialize($reader),
             Schema::CREDITNOTE.'CreditNote'                   => fn ($reader) => CreditNote::xmlDeserialize($reader),
+            Schema::DEBITNOTE. 'DebitNote'                    => fn ($reader) => DebitNote::xmlDeserialize($reader),
             Schema::CAC.        'AccountingCustomerParty'     => fn ($reader) => AccountingParty::xmlDeserialize($reader),
             Schema::CAC.        'AccountingSupplierParty'     => fn ($reader) => AccountingParty::xmlDeserialize($reader),
             Schema::CAC.        'AdditionalDocumentReference' => fn ($reader) => AdditionalDocumentReference::xmlDeserialize($reader),
@@ -38,6 +39,7 @@ class Reader
             Schema::CAC.        'Country'                     => fn ($reader) => Country::xmlDeserialize($reader),
             Schema::CAC.        'DespatchDocumentReference'   => fn ($reader) => DespatchDocumentReference::xmlDeserialize($reader),
             Schema::CAC.        'CreditNoteLine'              => fn ($reader) => CreditNoteLine::xmlDeserialize($reader),
+            Schema::CAC.        'DebitNoteLine'               => fn ($reader) => DebitNoteLine::xmlDeserialize($reader),
             Schema::CAC.        'Delivery'                    => fn ($reader) => Delivery::xmlDeserialize($reader),
             Schema::CAC.        'FinancialInstitutionBranch'  => fn ($reader) => FinancialInstitutionBranch::xmlDeserialize($reader),
             Schema::CAC.        'InvoiceDocumentReference'    => fn ($reader) => InvoiceDocumentReference::xmlDeserialize($reader),

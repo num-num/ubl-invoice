@@ -34,6 +34,11 @@ class InvoiceLine implements XmlSerializable, XmlDeserializable
         return $this->xmlTagName === 'CreditNoteLine';
     }
 
+    private function isDebitNoteLine(): bool
+    {
+        return $this->xmlTagName === 'DebitNoteLine';
+    }
+
     /**
      * @return string
      */
@@ -311,8 +316,15 @@ class InvoiceLine implements XmlSerializable, XmlDeserializable
             $invoicedQuantityAttributes['unitCodeListID'] = $this->getUnitCodeListId();
         }
 
+        $quantityTagName = 'InvoicedQuantity';
+        if ($this->isCreditNoteLine()) {
+            $quantityTagName = 'CreditedQuantity';
+        } elseif ($this->isDebitNoteLine()) {
+            $quantityTagName = 'DebitedQuantity';
+        }
+
         $writer->write([
-            'name'       => Schema::CBC . ($this->isCreditNoteLine() ? 'CreditedQuantity' : 'InvoicedQuantity'),
+            'name'       => Schema::CBC . $quantityTagName,
             'value'      => NumberFormatter::format($this->invoicedQuantity),
             'attributes' => $invoicedQuantityAttributes
         ]);

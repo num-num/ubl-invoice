@@ -1,0 +1,122 @@
+<?php
+
+namespace NumNum\UBL\Tests\Write;
+
+use PHPUnit\Framework\TestCase;
+
+/**
+ * Test an UBL2.1 debit note document
+ */
+class SimpleDebitNoteTest extends TestCase
+{
+    private $schema = 'http://docs.oasis-open.org/ubl/os-UBL-2.1/xsd/maindoc/UBL-DebitNote-2.1.xsd';
+
+    /** @test */
+    public function testIfXMLIsValid()
+    {
+        // Address country
+        $country = (new \NumNum\UBL\Country())
+            ->setIdentificationCode('BE');
+
+        // Full address
+        $address = (new \NumNum\UBL\Address())
+            ->setStreetName('Korenmarkt')
+            ->setBuildingNumber(1)
+            ->setCityName('Gent')
+            ->setPostalZone('9000')
+            ->setCountry($country);
+
+        // Supplier company node
+        $supplierCompany = (new \NumNum\UBL\Party())
+            ->setName('Supplier Company Name')
+            ->setPhysicalLocation($address)
+            ->setPostalAddress($address);
+
+        // Client company node
+        $clientCompany = (new \NumNum\UBL\Party())
+            ->setName('My client')
+            ->setPostalAddress($address);
+
+        $legalMonetaryTotal = (new \NumNum\UBL\LegalMonetaryTotal())
+            ->setPayableAmount(10 + 2)
+            ->setAllowanceTotalAmount(0);
+
+        // Tax scheme
+        $taxScheme = (new \NumNum\UBL\TaxScheme())
+            ->setId(0);
+
+        // Product
+        $productItem = (new \NumNum\UBL\Item())
+            ->setName('Product Name')
+            ->setDescription('Product Description')
+            ->setSellersItemIdentification('SELLERID')
+            ->setBuyersItemIdentification('BUYERID');
+
+        // Price
+        $price = (new \NumNum\UBL\Price())
+            ->setBaseQuantity(1)
+            ->setUnitCode(\NumNum\UBL\UnitCode::UNIT)
+            ->setPriceAmount(10);
+
+        // Invoice Line tax totals
+        $lineTaxTotal = (new \NumNum\UBL\TaxTotal())
+            ->setTaxAmount(2.1);
+
+        // Debit Note Line(s)
+        $debitNoteLine = (new \NumNum\UBL\DebitNoteLine())
+            ->setId(0)
+            ->setItem($productItem)
+            ->setPrice($price)
+            ->setTaxTotal($lineTaxTotal)
+            ->setDebitedQuantity(1);
+
+        $debitNoteLines = [$debitNoteLine];
+
+        // Total Taxes
+        $taxCategory = (new \NumNum\UBL\TaxCategory())
+            ->setId(0)
+            ->setName('VAT21%')
+            ->setPercent(.21)
+            ->setTaxScheme($taxScheme);
+
+        $taxSubTotal = (new \NumNum\UBL\TaxSubTotal())
+            ->setTaxableAmount(10)
+            ->setTaxAmount(2.1)
+            ->setTaxCategory($taxCategory);
+
+        $taxTotal = (new \NumNum\UBL\TaxTotal())
+            ->addTaxSubTotal($taxSubTotal)
+            ->setTaxAmount(2.1);
+
+        $accountingSupplierParty = (new \NumNum\UBL\AccountingParty())
+            ->setParty($supplierCompany);
+
+        $accountingCustomerParty = (new \NumNum\UBL\AccountingParty())
+            ->setParty($clientCompany);
+
+        // Debit Note object
+        $debitNote = (new \NumNum\UBL\DebitNote())
+            ->setId(1234)
+            ->setCopyIndicator(false)
+            ->setIssueDate(new \DateTime())
+            ->setAccountingSupplierParty($accountingSupplierParty)
+            ->setAccountingCustomerParty($accountingCustomerParty)
+            ->setDebitNoteLines($debitNoteLines)
+            ->setLegalMonetaryTotal($legalMonetaryTotal)
+            ->setTaxTotal($taxTotal);
+
+        // Test created object
+        // Use \NumNum\UBL\Generator to generate an XML string
+        $generator = new \NumNum\UBL\Generator();
+        $outputXMLString = $generator->debitNote($debitNote);
+
+        // Create PHP Native DomDocument object, that can be
+        // used to validate the generate XML
+        $dom = new \DOMDocument();
+        $dom->loadXML($outputXMLString);
+
+        $dom->save('./tests/SimpleDebitNoteTest.xml');
+
+        $this->assertEquals(true, $dom->schemaValidate($this->schema));
+    }
+}
