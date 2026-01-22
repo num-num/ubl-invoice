@@ -13,6 +13,17 @@ use Sabre\Xml\Writer;
 use Sabre\Xml\XmlDeserializable;
 use Sabre\Xml\XmlSerializable;
 
+/**
+ * Represents the invoicing period (cac:InvoicePeriod / cac:SettlementPeriod).
+ *
+ * According to Peppol BIS Billing 3.0 specification:
+ * - StartDate (BT-73): 0..1 - Optional
+ * - EndDate (BT-74): 0..1 - Optional
+ * - BR-CO-19: At least one of StartDate or EndDate must be present
+ *
+ * @see https://docs.peppol.eu/poacc/billing/3.0/syntax/ubl-invoice/cac-InvoicePeriod/cbc-StartDate/
+ * @see https://docs.peppol.eu/poacc/billing/3.0/syntax/ubl-invoice/cac-InvoicePeriod/cbc-EndDate/
+ */
 class SettlementPeriod implements XmlSerializable, XmlDeserializable
 {
     private $startDate;
