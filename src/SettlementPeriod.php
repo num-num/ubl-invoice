@@ -68,9 +68,9 @@ class SettlementPeriod implements XmlSerializable, XmlDeserializable
     /**
      * The validate function that is called during xml writing to valid the data of the object.
      *
-     * Volgens Peppol BIS 3.0 spec:
-     * - StartDate (BT-73): 0..1 (optioneel)
-     * - EndDate (BT-74): 0..1 (optioneel)
+     * According to Peppol BIS 3.0 spec:
+     * - StartDate (BT-73): 0..1 (optional)
+     * - EndDate (BT-74): 0..1 (optional)
      * - BR-CO-19: "If Invoicing period is used, the start date or end date shall be filled, or both."
      *
      * @throws InvalidArgumentException An error with information about required data that is missing to write the XML
@@ -78,7 +78,7 @@ class SettlementPeriod implements XmlSerializable, XmlDeserializable
      */
     public function validate()
     {
-        // BR-CO-19: minstens startDate of endDate moet aanwezig zijn
+        // BR-CO-19: at least startDate or endDate must be present
         if ($this->startDate === null && $this->endDate === null) {
             throw new InvalidArgumentException('Missing startDate or endDate - at least one is required (BR-CO-19)');
         }
@@ -96,19 +96,19 @@ class SettlementPeriod implements XmlSerializable, XmlDeserializable
 
         $data = [];
 
-        // StartDate is optioneel (0..1)
+        // StartDate is optional (0..1)
         if ($this->startDate !== null) {
             $data[Schema::CBC . "StartDate"] = $this->startDate->format("Y-m-d");
         }
 
-        // EndDate is optioneel (0..1)
+        // EndDate is optional (0..1)
         if ($this->endDate !== null) {
             $data[Schema::CBC . "EndDate"] = $this->endDate->format("Y-m-d");
         }
 
         $writer->write($data);
 
-        // DurationMeasure alleen schrijven als beide datums aanwezig zijn
+        // Only write DurationMeasure when both dates are present
         if ($this->startDate !== null && $this->endDate !== null) {
             $writer->write([
                 [
@@ -136,7 +136,7 @@ class SettlementPeriod implements XmlSerializable, XmlDeserializable
 
         $instance = new static();
 
-        // StartDate is optioneel (0..1) volgens Peppol BIS 3.0 spec
+        // StartDate is optional (0..1) per Peppol BIS 3.0 spec
         if (isset($keyValues[Schema::CBC . "StartDate"])) {
             $instance->setStartDate(
                 Carbon::parse(
@@ -145,7 +145,7 @@ class SettlementPeriod implements XmlSerializable, XmlDeserializable
             );
         }
 
-        // EndDate is optioneel (0..1) volgens Peppol BIS 3.0 spec
+        // EndDate is optional (0..1) per Peppol BIS 3.0 spec
         if (isset($keyValues[Schema::CBC . "EndDate"])) {
             $instance->setEndDate(
                 Carbon::parse(
