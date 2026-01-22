@@ -781,7 +781,8 @@ class Invoice implements XmlSerializable, XmlDeserializable
             ]);
         }
 
-        if ($this->invoiceTypeCode !== null) {
+        // DebitNote does not have a TypeCode element in UBL 2.1
+        if ($this->invoiceTypeCode !== null && $this->xmlTagName !== 'DebitNote') {
             $writer->write([
                 Schema::CBC .
                 $this->xmlTagName .
@@ -930,8 +931,10 @@ class Invoice implements XmlSerializable, XmlDeserializable
             ]);
         }
 
+        // DebitNote uses RequestedMonetaryTotal instead of LegalMonetaryTotal
+        $monetaryTotalTagName = $this->xmlTagName === 'DebitNote' ? 'RequestedMonetaryTotal' : 'LegalMonetaryTotal';
         $writer->write([
-            Schema::CAC . "LegalMonetaryTotal" => $this->legalMonetaryTotal,
+            Schema::CAC . $monetaryTotalTagName => $this->legalMonetaryTotal,
         ]);
 
         foreach ($this->invoiceLines as $invoiceLine) {

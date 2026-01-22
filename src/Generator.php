@@ -41,4 +41,21 @@ class Generator
             $creditNote
         ]);
     }
+
+    public static function debitNote(DebitNote $debitNote, $currencyId = 'EUR')
+    {
+        self::$currencyID = $currencyId;
+
+        $xmlService = new Service();
+
+        $xmlService->namespaceMap = [
+            'urn:oasis:names:specification:ubl:schema:xsd:' . $debitNote->xmlTagName . '-2' => '',
+            'urn:oasis:names:specification:ubl:schema:xsd:CommonBasicComponents-2'          => 'cbc',
+            'urn:oasis:names:specification:ubl:schema:xsd:CommonAggregateComponents-2'      => 'cac'
+        ];
+
+        return $xmlService->write($debitNote->xmlTagName, [
+            $debitNote
+        ]);
+    }
 }
