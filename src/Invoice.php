@@ -90,6 +90,14 @@ class Invoice implements XmlSerializable, XmlDeserializable
     }
 
     /**
+     * @return string|null
+     */
+    public function getCustomizationId(): ?string
+    {
+        return $this->customizationID;
+    }
+
+    /**
      * @param mixed $customizationID
      * @return static
      */
@@ -97,6 +105,14 @@ class Invoice implements XmlSerializable, XmlDeserializable
     {
         $this->customizationID = $customizationID;
         return $this;
+    }
+
+    /**
+     * @return string|null
+     */
+    public function getProfileId(): ?string
+    {
+        return $this->profileID;
     }
 
     /**
