@@ -21,6 +21,7 @@ class Item implements XmlSerializable, XmlDeserializable
     private $commodityClassification;
     private $classifiedTaxCategory;
     private $originCountry;
+    private $additionalItemProperties;
 
     /**
      * @return string
@@ -170,6 +171,24 @@ class Item implements XmlSerializable, XmlDeserializable
     }
 
     /**
+     * @return AdditionalItemProperty[]
+     */
+    public function getAdditionalItemProperties(): ?array
+    {
+        return $this->additionalItemProperties;
+    }
+
+    /**
+     * @param AdditionalItemProperty[] $additionalItemProperties
+     * @return static
+     */
+    public function setAdditionalItemProperties(?array $additionalItemProperties)
+    {
+        $this->additionalItemProperties = $additionalItemProperties;
+        return $this;
+    }
+
+    /**
      * The xmlSerialize method is called during xml writing.
      *
      * @param Writer $writer
@@ -231,6 +250,14 @@ class Item implements XmlSerializable, XmlDeserializable
                 Schema::CAC . 'ClassifiedTaxCategory' => $this->classifiedTaxCategory
             ]);
         }
+
+        if (!empty($this->getAdditionalItemProperties())) {
+            foreach ($this->getAdditionalItemProperties() as $additionalItemProperty) {
+                $writer->write([
+                    Schema::CAC . 'AdditionalItemProperty' => $additionalItemProperty,
+                ]);
+            }
+        }
     }
 
     /**
@@ -248,6 +275,7 @@ class Item implements XmlSerializable, XmlDeserializable
         $classifiedTaxCategoryTag = ReaderHelper::getTag(Schema::CAC . 'ClassifiedTaxCategory', $collection);
         $commodityClassification = ReaderHelper::getTag(Schema::CAC . 'CommodityClassification', $collection);
         $originCountryTag = ReaderHelper::getTag(Schema::CAC . 'OriginCountry', $collection);
+        $additionalItemPropertiesTags = ReaderHelper::getArrayValue(Schema::CAC . 'AdditionalItemProperty', $collection);
 
         $buyersItemIdentificationTag = ReaderHelper::getTag(Schema::CAC . 'BuyersItemIdentification', $collection);
         $buyersItemIdentificationIdTag = ReaderHelper::getTag(
@@ -276,6 +304,7 @@ class Item implements XmlSerializable, XmlDeserializable
             ->setClassifiedTaxCategory($classifiedTaxCategoryTag['value'] ?? null)
             ->setCommodityClassification($commodityClassification['value'] ?? null)
             ->setOriginCountry($originCountryTag['value'] ?? null)
+            ->setAdditionalItemProperties($additionalItemPropertiesTags)
         ;
     }
 }
