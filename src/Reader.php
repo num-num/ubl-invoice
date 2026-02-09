@@ -13,6 +13,7 @@ class Reader
         self::$currencyID = $currencyId;
 
         $xmlService = new Service();
+        $xmlService->options = LIBXML_PARSEHUGE;
 
         $xmlService->namespaceMap = [
             Schema::INVOICE => '',
