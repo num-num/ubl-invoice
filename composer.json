@@ -1,6 +1,6 @@
 {
     "name": "num-num/ubl-invoice",
-    "description": "A modern object-oriented PHP library to create and read valid UBL and Peppol BIS 3.0 files",
+    "description": "A modern object-oriented PHP library to create and read valid UBL and EN 16931/Peppol BIS 3.0 files",
     "keywords": [
         "ubl",
         "invoice",
