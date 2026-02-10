@@ -21,7 +21,6 @@ class Invoice implements XmlSerializable, XmlDeserializable
     private $id;
     private $copyIndicator;
     private $issueDate;
-    private ?DateTime $issueTime;
     protected $invoiceTypeCode = InvoiceTypeCode::INVOICE;
     private $note;
     private $taxPointDate;
@@ -52,6 +51,8 @@ class Invoice implements XmlSerializable, XmlDeserializable
     private $despatchDocumentReference;
     private $receiptDocumentReference;
     private $originatorDocumentReference;
+    /** @var Extension[] $extensions */
+    private array $extensions = [];
 
     /**
      * @return string
@@ -159,25 +160,6 @@ class Invoice implements XmlSerializable, XmlDeserializable
     public function setIssueDate(?DateTime $issueDate)
     {
         $this->issueDate = $issueDate;
-        return $this;
-    }
-
-    /**
-     * @return DateTime
-     */
-    public function getIssueTime() : ?DateTime
-    {
-        return $this->issueTime ?? null;
-    }
-
-    /**
-     * @param DateTime $issueTime
-     * @return static
-     */
-    public function setIssueTime(?DateTime $issueTime = null) : self
-    {
-        $this->issueTime = $issueTime;
-
         return $this;
     }
 
@@ -731,6 +713,36 @@ class Invoice implements XmlSerializable, XmlDeserializable
     }
 
     /**
+     * @param Extension $extension
+     * @return static
+     */
+    public function addExtension(Extension $extension): self
+    {
+        $this->extensions[] = $extension;
+
+        return $this;
+    }
+
+    /**
+     * @param Extension[] $extensions
+     * @return static
+     */
+    public function setExtensions(array $extensions): self
+    {
+        $this->extensions = $extensions;
+
+        return $this;
+    }
+
+    /**
+     * @return Extension[]
+     */
+    public function getExtensions(): array
+    {
+        return $this->extensions;
+    }
+
+    /**
      * The validate function that is called during xml writing to valid the data of the object.
      *
      * @return void
@@ -784,6 +796,13 @@ class Invoice implements XmlSerializable, XmlDeserializable
     {
         $this->validate();
 
+        if ($this->extensions) {
+            $writer->write([
+                'name' => Schema::EXT . 'UBLExtensions',
+                'value' => $this->extensions
+            ]);
+        }
+
         $writer->write([
             Schema::CBC . "UBLVersionID" => $this->UBLVersionID,
             Schema::CBC . "CustomizationID" => $this->customizationID,
@@ -810,12 +829,6 @@ class Invoice implements XmlSerializable, XmlDeserializable
         $writer->write([
             Schema::CBC . "IssueDate" => $this->issueDate->format("Y-m-d"),
         ]);
-
-        if (isset($this->issueTime)) {
-            $writer->write([
-                Schema::CBC . 'IssueTime' => $this->issueTime->format('H:i:s'),
-            ]);
-        }
 
         if ($this->dueDate !== null && $this->xmlTagName === "Invoice") {
             $writer->write([
@@ -1027,6 +1040,12 @@ class Invoice implements XmlSerializable, XmlDeserializable
         );
 
         return (new static())
+            ->setExtensions(
+                ReaderHelper::getArrayValue(
+                    Schema::EXT . "UBLExtensions",
+                    $collection,
+                ),
+            )
             ->setUBLVersionId(
                 ReaderHelper::getTagValue(
                     Schema::CBC . "UBLVersionID",
@@ -1056,14 +1075,6 @@ class Invoice implements XmlSerializable, XmlDeserializable
                 Carbon::parse(
                     ReaderHelper::getTagValue(
                         Schema::CBC . "IssueDate",
-                        $collection,
-                    ),
-                )->toDateTime(),
-            )
-            ->setIssueTime(
-                Carbon::parse(
-                    ReaderHelper::getTagValue(
-                        Schema::CBC . "IssueTime",
                         $collection,
                     ),
                 )->toDateTime(),
