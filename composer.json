@@ -31,6 +31,7 @@
     ],
     "require": {
         "php": "^7.4 || ^8.0",
+        "ext-libxml": "*",
         "sabre/xml": "^4.0",
         "nesbot/carbon": "^2.72 || ^3.11",
         "doctrine/collections": "^1.8 || ^2.0"
