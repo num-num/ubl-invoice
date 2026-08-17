@@ -28,6 +28,7 @@ class Reader
             Schema::CAC.        'AccountingCustomerParty'     => fn ($reader) => AccountingParty::xmlDeserialize($reader),
             Schema::CAC.        'AccountingSupplierParty'     => fn ($reader) => AccountingParty::xmlDeserialize($reader),
             Schema::CAC.        'AdditionalDocumentReference' => fn ($reader) => AdditionalDocumentReference::xmlDeserialize($reader),
+            Schema::CAC.        'AdditionalItemProperty'      => fn ($reader) => AdditionalItemProperty::xmlDeserialize($reader),
             Schema::CAC.        'Address'                     => fn ($reader) => Address::xmlDeserialize($reader),
             Schema::CAC.        'AddressLine'                 => fn ($reader) => AddressLine::xmlDeserialize($reader),
             Schema::CAC.        'AllowanceCharge'             => fn ($reader) => AllowanceCharge::xmlDeserialize($reader),
