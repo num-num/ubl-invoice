@@ -4,6 +4,7 @@ namespace NumNum\UBL;
 
 use Carbon\Carbon;
 use DateTime;
+use Doctrine\Common\Collections\ArrayCollection;
 
 use function Sabre\Xml\Deserializer\keyValue;
 
@@ -110,9 +111,19 @@ class Delivery implements XmlSerializable, XmlDeserializable
             ? Carbon::parse($keyValues[Schema::CBC . 'ActualDeliveryDate'])->toDateTime()
             : null;
 
+        $deliveryLocation = ReaderHelper::getTag(
+            Schema::CAC . 'Address',
+            new ArrayCollection($keyValues[Schema::CAC . 'DeliveryLocation'] ?? [])
+        );
+
+        $deliveryParty = ReaderHelper::getTag(
+            Schema::CAC . 'Party',
+            new ArrayCollection($keyValues[Schema::CAC . 'DeliveryParty'] ?? [])
+        );
+
         return (new static())
             ->setActualDeliveryDate($actualDeliveryDate)
-            ->setDeliveryLocation($keyValues[Schema::CAC . 'DeliveryLocation'] ?? null)
-            ->setDeliveryParty($keyValues[Schema::CAC . 'DeliveryParty'] ?? null);
+            ->setDeliveryLocation($deliveryLocation['value'] ?? null)
+            ->setDeliveryParty($deliveryParty['value'] ?? null);
     }
 }
