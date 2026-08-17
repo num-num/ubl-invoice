@@ -7,7 +7,7 @@ use NumNum\UBL\Invoice;
 use NumNum\UBL\Reader;
 use PHPUnit\Framework\TestCase;
 
-class ReadUbl extends TestCase
+class ReadUblTest extends TestCase
 {
     /**
      * @test
