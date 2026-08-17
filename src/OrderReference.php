@@ -15,7 +15,7 @@ use Sabre\Xml\XmlSerializable;
 class OrderReference implements XmlSerializable, XmlDeserializable
 {
     private ?string $id = null;
-    private string $salesOrderId;
+    private ?string $salesOrderId;
     private ?DateTime $issueDate = null;
 
     /**
@@ -37,9 +37,9 @@ class OrderReference implements XmlSerializable, XmlDeserializable
     }
 
     /**
-     * @return string
+     * @return string|null
      */
-    public function getSalesOrderId(): string
+    public function getSalesOrderId(): ?string
     {
         return $this->salesOrderId;
     }
