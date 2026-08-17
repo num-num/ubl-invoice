@@ -11,17 +11,17 @@ use Sabre\Xml\XmlSerializable;
 
 class LegalMonetaryTotal implements XmlSerializable, XmlDeserializable
 {
-    private $lineExtensionAmount = 0;
-    private $taxExclusiveAmount = 0;
-    private $taxInclusiveAmount = 0;
-    private $allowanceTotalAmount;
-    private $chargeTotalAmount;
-    private $prepaidAmount;
-    private $payableAmount = 0;
-    private $payableRoundingAmount;
+    private ?float $lineExtensionAmount = 0;
+    private ?float $taxExclusiveAmount = 0;
+    private ?float $taxInclusiveAmount = 0;
+    private ?float $allowanceTotalAmount = null;
+    private ?float $chargeTotalAmount = null;
+    private ?float $prepaidAmount = null;
+    private ?float $payableAmount = 0;
+    private ?float $payableRoundingAmount = null;
 
     /**
-     * @return float
+     * @return float|null
      */
     public function getLineExtensionAmount(): ?float
     {
@@ -29,7 +29,7 @@ class LegalMonetaryTotal implements XmlSerializable, XmlDeserializable
     }
 
     /**
-     * @param float $lineExtensionAmount
+     * @param float|null $lineExtensionAmount
      * @return static
      */
     public function setLineExtensionAmount(?float $lineExtensionAmount)
@@ -39,7 +39,7 @@ class LegalMonetaryTotal implements XmlSerializable, XmlDeserializable
     }
 
     /**
-     * @return float
+     * @return float|null
      */
     public function getTaxExclusiveAmount(): ?float
     {
@@ -47,7 +47,7 @@ class LegalMonetaryTotal implements XmlSerializable, XmlDeserializable
     }
 
     /**
-     * @param float $taxExclusiveAmount
+     * @param float|null $taxExclusiveAmount
      * @return static
      */
     public function setTaxExclusiveAmount(?float $taxExclusiveAmount)
@@ -57,7 +57,7 @@ class LegalMonetaryTotal implements XmlSerializable, XmlDeserializable
     }
 
     /**
-     * @return float
+     * @return float|null
      */
     public function getTaxInclusiveAmount(): ?float
     {
@@ -65,7 +65,7 @@ class LegalMonetaryTotal implements XmlSerializable, XmlDeserializable
     }
 
     /**
-     * @param float $taxInclusiveAmount
+     * @param float|null $taxInclusiveAmount
      * @return static
      */
     public function setTaxInclusiveAmount(?float $taxInclusiveAmount)
@@ -75,7 +75,7 @@ class LegalMonetaryTotal implements XmlSerializable, XmlDeserializable
     }
 
     /**
-     * @return float
+     * @return float|null
      */
     public function getAllowanceTotalAmount(): ?float
     {
@@ -83,7 +83,7 @@ class LegalMonetaryTotal implements XmlSerializable, XmlDeserializable
     }
 
     /**
-     * @param float $allowanceTotalAmount
+     * @param float|null $allowanceTotalAmount
      * @return static
      */
     public function setAllowanceTotalAmount(?float $allowanceTotalAmount)
@@ -93,7 +93,7 @@ class LegalMonetaryTotal implements XmlSerializable, XmlDeserializable
     }
 
     /**
-     * @return float
+     * @return float|null
      */
     public function getChargeTotalAmount(): ?float
     {
@@ -101,7 +101,7 @@ class LegalMonetaryTotal implements XmlSerializable, XmlDeserializable
     }
 
     /**
-     * @param float $chargeTotalAmount
+     * @param float|null $chargeTotalAmount
      * @return static
      */
     public function setChargeTotalAmount(?float $chargeTotalAmount)
@@ -111,7 +111,7 @@ class LegalMonetaryTotal implements XmlSerializable, XmlDeserializable
     }
 
     /**
-     * @return ?float
+     * @return float|null
      */
     public function getPrepaidAmount(): ?float
     {
@@ -129,7 +129,7 @@ class LegalMonetaryTotal implements XmlSerializable, XmlDeserializable
     }
 
     /**
-     * @return float
+     * @return float|null
      */
     public function getPayableAmount(): ?float
     {
@@ -137,7 +137,7 @@ class LegalMonetaryTotal implements XmlSerializable, XmlDeserializable
     }
 
     /**
-     * @param float $payableAmount
+     * @param float|null $payableAmount
      * @return static
      */
     public function setPayableAmount(?float $payableAmount)
@@ -146,6 +146,9 @@ class LegalMonetaryTotal implements XmlSerializable, XmlDeserializable
         return $this;
     }
 
+    /**
+     * @return float|null
+     */
     public function getPayableRoundingAmount(): ?float
     {
         return $this->payableRoundingAmount;
@@ -256,25 +259,51 @@ class LegalMonetaryTotal implements XmlSerializable, XmlDeserializable
     }
 
 
-
     /**
      * The xmlDeserialize method is called during xml reading.
-     * @param Reader $xml
+     * @param Reader $reader
      * @return static
      */
     public static function xmlDeserialize(Reader $reader)
     {
         $keyValues = keyValue($reader);
 
+        $lineExtensionAmount = isset($keyValues[Schema::CBC . 'LineExtensionAmount'])
+            ? floatval($keyValues[Schema::CBC . 'LineExtensionAmount'])
+            : null;
+
+        $taxExclusiveAmount = isset($keyValues[Schema::CBC . 'TaxExclusiveAmount'])
+            ? floatval($keyValues[Schema::CBC . 'TaxExclusiveAmount'])
+            : null;
+
+        $taxInclusiveAmount = isset($keyValues[Schema::CBC . 'TaxInclusiveAmount'])
+            ? floatval($keyValues[Schema::CBC . 'TaxInclusiveAmount'])
+            : null;
+
+        $allowanceTotalAmount = isset($keyValues[Schema::CBC . 'AllowanceTotalAmount'])
+            ? floatval($keyValues[Schema::CBC . 'AllowanceTotalAmount'])
+            : null;
+
+        $chargeTotalAmount = isset($keyValues[Schema::CBC . 'ChargeTotalAmount'])
+            ? floatval($keyValues[Schema::CBC . 'ChargeTotalAmount'])
+            : null;
+
+        $prepaidAmount = isset($keyValues[Schema::CBC . 'PrepaidAmount'])
+            ? floatval($keyValues[Schema::CBC . 'PrepaidAmount'])
+            : null;
+
+        $payableAmount = isset($keyValues[Schema::CBC . 'PayableAmount'])
+            ? floatval($keyValues[Schema::CBC . 'PayableAmount'])
+            : null;
+
         return (new static())
-            ->setLineExtensionAmount(isset($keyValues[Schema::CBC . 'LineExtensionAmount']) ? floatval($keyValues[Schema::CBC . 'LineExtensionAmount']) : null)
-            ->setTaxExclusiveAmount(isset($keyValues[Schema::CBC . 'TaxExclusiveAmount']) ? floatval($keyValues[Schema::CBC . 'TaxExclusiveAmount']) : null)
-            ->setTaxInclusiveAmount(isset($keyValues[Schema::CBC . 'TaxInclusiveAmount']) ? floatval($keyValues[Schema::CBC . 'TaxInclusiveAmount']) : null)
-            ->setAllowanceTotalAmount(isset($keyValues[Schema::CBC . 'AllowanceTotalAmount']) ? floatval($keyValues[Schema::CBC . 'AllowanceTotalAmount']) : null)
-            ->setChargeTotalAmount(isset($keyValues[Schema::CBC . 'ChargeTotalAmount']) ? floatval($keyValues[Schema::CBC . 'ChargeTotalAmount']) : null)
-            ->setPrepaidAmount(isset($keyValues[Schema::CBC . 'PrepaidAmount']) ? floatval($keyValues[Schema::CBC . 'PrepaidAmount']) : null)
-            ->setPayableRoundingAmount(isset($keyValues[Schema::CBC . 'PayableAmount']) ? floatval($keyValues[Schema::CBC . 'PayableAmount']) : null)
-            ->setPayableAmount(isset($keyValues[Schema::CBC . 'PayableAmount']) ? floatval($keyValues[Schema::CBC . 'PayableAmount']) : null)
-        ;
+            ->setLineExtensionAmount($lineExtensionAmount)
+            ->setTaxExclusiveAmount($taxExclusiveAmount)
+            ->setTaxInclusiveAmount($taxInclusiveAmount)
+            ->setAllowanceTotalAmount($allowanceTotalAmount)
+            ->setChargeTotalAmount($chargeTotalAmount)
+            ->setPrepaidAmount($prepaidAmount)
+            ->setPayableRoundingAmount($payableAmount)
+            ->setPayableAmount($payableAmount);
     }
 }

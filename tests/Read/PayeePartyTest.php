@@ -4,6 +4,7 @@ namespace NumNum\UBL\Tests\Read;
 
 use NumNum\UBL\Invoice;
 use NumNum\UBL\PayeeParty;
+use NumNum\UBL\Reader;
 use PHPUnit\Framework\TestCase;
 
 /**
@@ -80,7 +81,7 @@ class PayeePartyTest extends TestCase
 </Invoice>
 XML;
 
-        $ublReader = \NumNum\UBL\Reader::ubl();
+        $ublReader = Reader::ubl();
         $invoice = $ublReader->parse($xml);
 
         $this->assertInstanceOf(Invoice::class, $invoice);

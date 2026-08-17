@@ -4,6 +4,7 @@ namespace NumNum\UBL\Tests\Read;
 
 use NumNum\UBL\Country;
 use NumNum\UBL\Invoice;
+use NumNum\UBL\Reader;
 use PHPUnit\Framework\TestCase;
 
 /**
@@ -55,7 +56,7 @@ class ItemOriginCountryTest extends TestCase
 </Invoice>
 XML;
 
-        $ublReader = \NumNum\UBL\Reader::ubl();
+        $ublReader = Reader::ubl();
         $invoice = $ublReader->parse($xml);
 
         $this->assertNotNull($invoice);
@@ -115,7 +116,7 @@ XML;
 </Invoice>
 XML;
 
-        $ublReader = \NumNum\UBL\Reader::ubl();
+        $ublReader = Reader::ubl();
         $invoice = $ublReader->parse($xml);
 
         $this->assertNotNull($invoice);
@@ -133,4 +134,3 @@ XML;
         $this->assertNull($originCountry);
     }
 }
-

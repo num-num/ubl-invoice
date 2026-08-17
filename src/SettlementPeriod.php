@@ -26,11 +26,11 @@ use Sabre\Xml\XmlSerializable;
  */
 class SettlementPeriod implements XmlSerializable, XmlDeserializable
 {
-    private $startDate;
-    private $endDate;
+    private ?DateTime $startDate = null;
+    private ?DateTime $endDate = null;
 
     /**
-     * @return DateTime
+     * @return DateTime|null
      */
     public function getStartDate(): ?DateTime
     {
@@ -48,7 +48,7 @@ class SettlementPeriod implements XmlSerializable, XmlDeserializable
     }
 
     /**
-     * @return DateTime
+     * @return DateTime|null
      */
     public function getEndDate(): ?DateTime
     {
@@ -73,8 +73,8 @@ class SettlementPeriod implements XmlSerializable, XmlDeserializable
      * - EndDate (BT-74): 0..1 (optional)
      * - BR-CO-19: "If Invoicing period is used, the start date or end date shall be filled, or both."
      *
-     * @throws InvalidArgumentException An error with information about required data that is missing to write the XML
      * @return void
+     * @throws InvalidArgumentException An error with information about required data that is missing to write the XML
      */
     public function validate()
     {

@@ -2,7 +2,35 @@
 
 namespace NumNum\UBL\Tests\Write;
 
+use DateTime;
+use DOMDocument;
+use NumNum\UBL\AccountingParty;
+use NumNum\UBL\Address;
+use NumNum\UBL\ClassifiedTaxCategory;
+use NumNum\UBL\Country;
+use NumNum\UBL\Delivery;
+use NumNum\UBL\FinancialInstitutionBranch;
+use NumNum\UBL\Generator;
+use NumNum\UBL\Invoice;
+use NumNum\UBL\InvoiceLine;
+use NumNum\UBL\InvoicePeriod;
+use NumNum\UBL\Item;
+use NumNum\UBL\LegalEntity;
+use NumNum\UBL\LegalMonetaryTotal;
+use NumNum\UBL\OrderReference;
+use NumNum\UBL\Party;
+use NumNum\UBL\PartyTaxScheme;
+use NumNum\UBL\PayeeFinancialAccount;
+use NumNum\UBL\PaymentMeans;
+use NumNum\UBL\PaymentTerms;
+use NumNum\UBL\Price;
+use NumNum\UBL\ProjectReference;
+use NumNum\UBL\TaxCategory;
+use NumNum\UBL\TaxScheme;
+use NumNum\UBL\TaxSubTotal;
+use NumNum\UBL\TaxTotal;
 use NumNum\UBL\UNCL4461;
+use NumNum\UBL\UnitCode;
 use PHPUnit\Framework\TestCase;
 
 /**
@@ -10,51 +38,50 @@ use PHPUnit\Framework\TestCase;
  */
 class ProjectReferenceTest extends TestCase
 {
-    private $schema = 'http://docs.oasis-open.org/ubl/os-UBL-2.1/xsd/maindoc/UBL-Invoice-2.1.xsd';
-    private $xslfile = 'vendor/num-num/ubl-invoice/tests/EN16931-UBL-validation.xslt';
+    private string $schema = 'http://docs.oasis-open.org/ubl/os-UBL-2.1/xsd/maindoc/UBL-Invoice-2.1.xsd';
 
     /** @test */
     public function testIfXMLIsValid()
     {
         // Tax scheme
-        $taxScheme = (new \NumNum\UBL\TaxScheme())
+        $taxScheme = (new TaxScheme())
             ->setId('VAT');
 
         // Address country
-        $country = (new \NumNum\UBL\Country())
+        $country = (new Country())
             ->setIdentificationCode('BE');
 
         // Full address
-        $address = (new \NumNum\UBL\Address())
+        $address = (new Address())
             ->setStreetName('Korenmarkt 1')
             ->setAdditionalStreetName('Building A')
             ->setCityName('Gent')
             ->setPostalZone('9000')
             ->setCountry($country);
 
-        $financialInstitutionBranch = (new \NumNum\UBL\FinancialInstitutionBranch())
+        $financialInstitutionBranch = (new FinancialInstitutionBranch())
             ->setId('RABONL2U');
 
-        $payeeFinancialAccount = (new \NumNum\UBL\PayeeFinancialAccount())
+        $payeeFinancialAccount = (new PayeeFinancialAccount())
            ->setFinancialInstitutionBranch($financialInstitutionBranch)
             ->setName('Customer Account Holder')
             ->setId('NL00RABO0000000000');
 
-        $paymentMeans = (new \NumNum\UBL\PaymentMeans())
+        $paymentMeans = (new PaymentMeans())
             ->setPayeeFinancialAccount($payeeFinancialAccount)
             ->setPaymentMeansCode(UNCL4461::DEBIT_TRANSFER, [])
             ->setPaymentId('our invoice 1234');
 
         // Supplier company node
-        $supplierLegalEntity = (new \NumNum\UBL\LegalEntity())
+        $supplierLegalEntity = (new LegalEntity())
             ->setRegistrationName('Supplier Company Name')
             ->setCompanyId('BE123456789');
 
-        $supplierPartyTaxScheme = (new \NumNum\UBL\PartyTaxScheme())
+        $supplierPartyTaxScheme = (new PartyTaxScheme())
             ->setTaxScheme($taxScheme)
             ->setCompanyId('BE123456789');
 
-        $supplierCompany = (new \NumNum\UBL\Party())
+        $supplierCompany = (new Party())
             ->setName('Supplier Company Name')
             ->setLegalEntity($supplierLegalEntity)
             ->setPartyTaxScheme($supplierPartyTaxScheme)
@@ -62,55 +89,55 @@ class ProjectReferenceTest extends TestCase
             ->setPostalAddress($address);
 
         // Client company node
-        $clientLegalEntity = (new \NumNum\UBL\LegalEntity())
+        $clientLegalEntity = (new LegalEntity())
             ->setRegistrationName('Client Company Name')
             ->setCompanyId('Client Company Registration');
 
-        $clientPartyTaxScheme = (new \NumNum\UBL\PartyTaxScheme())
+        $clientPartyTaxScheme = (new PartyTaxScheme())
             ->setTaxScheme($taxScheme)
             ->setCompanyId('BE123456789');
 
-        $clientCompany = (new \NumNum\UBL\Party())
+        $clientCompany = (new Party())
             ->setName('Client Company Name')
             ->setLegalEntity($clientLegalEntity)
             ->setPartyTaxScheme($clientPartyTaxScheme)
             ->setPartyIdentificationId('BE123456789')
             ->setPostalAddress($address);
 
-        $legalMonetaryTotal = (new \NumNum\UBL\LegalMonetaryTotal())
+        $legalMonetaryTotal = (new LegalMonetaryTotal())
             ->setPayableAmount(10 + 2.1)
             ->setAllowanceTotalAmount(0)
             ->setTaxInclusiveAmount(10 + 2.1)
             ->setLineExtensionAmount(10)
             ->setTaxExclusiveAmount(10);
 
-        $classifiedTaxCategory = (new \NumNum\UBL\ClassifiedTaxCategory())
+        $classifiedTaxCategory = (new ClassifiedTaxCategory())
             ->setId('S')
             ->setPercent(21.00)
             ->setTaxScheme($taxScheme);
 
         // Product
-        $productItem = (new \NumNum\UBL\Item())
+        $productItem = (new Item())
             ->setName('Product Name')
             ->setClassifiedTaxCategory($classifiedTaxCategory)
             ->setDescription('Product Description');
 
         // Price
-        $price = (new \NumNum\UBL\Price())
+        $price = (new Price())
             ->setBaseQuantity(1)
-            ->setUnitCode(\NumNum\UBL\UnitCode::UNIT)
+            ->setUnitCode(UnitCode::UNIT)
             ->setPriceAmount(10);
 
         // Invoice Line tax totals
-        $lineTaxTotal = (new \NumNum\UBL\TaxTotal())
+        $lineTaxTotal = (new TaxTotal())
             ->setTaxAmount(2.1);
 
         // InvoicePeriod
-        $invoicePeriod = (new \NumNum\UBL\InvoicePeriod())
-            ->setStartDate(new \DateTime());
+        $invoicePeriod = (new InvoicePeriod())
+            ->setStartDate(new DateTime());
 
         // Invoice Line(s)
-        $invoiceLine = (new \NumNum\UBL\InvoiceLine())
+        $invoiceLine = (new InvoiceLine())
             ->setId(0)
             ->setItem($productItem)
             ->setPrice($price)
@@ -121,52 +148,52 @@ class ProjectReferenceTest extends TestCase
         $invoiceLines = [$invoiceLine];
 
         // Total Taxes
-        $taxCategory = (new \NumNum\UBL\TaxCategory())
+        $taxCategory = (new TaxCategory())
             ->setId('S', [])
             ->setPercent(21.00)
             ->setTaxScheme($taxScheme);
 
-        $taxSubTotal = (new \NumNum\UBL\TaxSubTotal())
+        $taxSubTotal = (new TaxSubTotal())
             ->setTaxableAmount(10)
             ->setTaxAmount(2.1)
             ->setTaxCategory($taxCategory);
 
 
-        $taxTotal = (new \NumNum\UBL\TaxTotal())
+        $taxTotal = (new TaxTotal())
             ->addTaxSubTotal($taxSubTotal)
             ->setTaxAmount(2.1);
 
         // Payment Terms
-        $paymentTerms = (new \NumNum\UBL\PaymentTerms())
+        $paymentTerms = (new PaymentTerms())
             ->setNote('30 days net');
 
         // Delivery
-        $deliveryLocation = (new \NumNum\UBL\Address())
+        $deliveryLocation = (new Address())
             ->setCountry($country);
 
-        $delivery = (new \NumNum\UBL\Delivery())
-            ->setActualDeliveryDate(new \DateTime())
+        $delivery = (new Delivery())
+            ->setActualDeliveryDate(new DateTime())
             ->setDeliveryLocation($deliveryLocation);
 
-        $orderReference = (new \NumNum\UBL\OrderReference())
+        $orderReference = (new OrderReference())
             ->setId('5009567')
             ->setSalesOrderId('tRST-tKhM');
 
         // Test Project Reference
-        $projectReference = (new \NumNum\UBL\ProjectReference())
+        $projectReference = (new ProjectReference())
             ->setId('Project1234');
 
-        $accountingSupplierParty = (new \NumNum\UBL\AccountingParty())
+        $accountingSupplierParty = (new AccountingParty())
             ->setParty($supplierCompany);
 
-        $accountingCustomerParty = (new \NumNum\UBL\AccountingParty())
+        $accountingCustomerParty = (new AccountingParty())
             ->setParty($clientCompany);
 
         // Invoice object
-        $invoice = (new \NumNum\UBL\Invoice())
+        $invoice = (new Invoice())
             ->setCustomizationID('urn:cen.eu:en16931:2017')
             ->setId(1234)
-            ->setIssueDate(new \DateTime())
+            ->setIssueDate(new DateTime())
             ->setNote('invoice note')
             ->setDelivery($delivery)
             ->setAccountingSupplierParty($accountingSupplierParty)
@@ -183,12 +210,12 @@ class ProjectReferenceTest extends TestCase
 
         // Test created object
         // Use \NumNum\UBL\Generator to generate an XML string
-        $generator = new \NumNum\UBL\Generator();
+        $generator = new Generator();
         $outputXMLString = $generator->invoice($invoice);
 
         // Create PHP Native DomDocument object, that can be
-        // used to validate the generate XML
-        $dom = new \DOMDocument;
+        // used to validate the generated XML
+        $dom = new DOMDocument;
         $dom->loadXML($outputXMLString);
 
         $dom->save('./tests/ProjectReferenceTest.xml');

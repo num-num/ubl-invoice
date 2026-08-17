@@ -17,11 +17,11 @@ use function Sabre\Xml\Deserializer\keyValue;
  */
 class AdditionalItemProperty implements XmlSerializable, XmlDeserializable
 {
-    private $name;
-    private $value;
+    private ?string $name = null;
+    private ?string $value = null;
 
     /**
-     * @return string
+     * @return string|null
      */
     public function getName(): ?string
     {
@@ -29,7 +29,7 @@ class AdditionalItemProperty implements XmlSerializable, XmlDeserializable
     }
 
     /**
-     * @param string $name
+     * @param string|null $name
      * @return static
      */
     public function setName(?string $name)
@@ -39,7 +39,7 @@ class AdditionalItemProperty implements XmlSerializable, XmlDeserializable
     }
 
     /**
-     * @return string
+     * @return string|null
      */
     public function getValue(): ?string
     {
@@ -47,7 +47,7 @@ class AdditionalItemProperty implements XmlSerializable, XmlDeserializable
     }
 
     /**
-     * @param string $value
+     * @param string|null $value
      * @return static
      */
     public function setValue(?string $value)

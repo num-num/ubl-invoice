@@ -11,7 +11,7 @@ use Sabre\Xml\XmlSerializable;
 
 class ContractDocumentReference implements XmlSerializable, XmlDeserializable
 {
-    private $id;
+    private ?string $id = null;
 
     /**
      * @return string|null
@@ -46,7 +46,7 @@ class ContractDocumentReference implements XmlSerializable, XmlDeserializable
 
     /**
      * The xmlDeserialize method is called during xml reading.
-     * @param Reader $xml
+     * @param Reader $reader
      * @return static
      */
     public static function xmlDeserialize(Reader $reader)
@@ -54,7 +54,6 @@ class ContractDocumentReference implements XmlSerializable, XmlDeserializable
         $mixedContent = keyValue($reader);
 
         return (new static())
-            ->setId($mixedContent[Schema::CBC . 'ID'] ?? null)
-        ;
+            ->setId($mixedContent[Schema::CBC . 'ID'] ?? null);
     }
 }

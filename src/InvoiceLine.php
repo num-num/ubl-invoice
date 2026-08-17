@@ -12,22 +12,22 @@ use Sabre\Xml\XmlSerializable;
 
 class InvoiceLine implements XmlSerializable, XmlDeserializable
 {
-    public $xmlTagName = 'InvoiceLine';
-    private $id;
-    protected $invoicedQuantity;
-    private $lineExtensionAmount;
-    private $unitCode = UnitCode::UNIT;
-    private $unitCodeListId;
-    private $taxTotal;
-    private $invoicePeriod;
-    private $orderLineReference;
-    private $note;
-    private $item;
-    private $price;
-    private $accountingCostCode;
-    private $accountingCost;
+    public string $xmlTagName = 'InvoiceLine';
+    private ?string $id = null;
+    protected ?float $invoicedQuantity = null;
+    private ?float $lineExtensionAmount = null;
+    private ?string $unitCode = UnitCode::UNIT;
+    private ?string $unitCodeListId = null;
+    private ?TaxTotal $taxTotal = null;
+    private ?InvoicePeriod $invoicePeriod = null;
+    private ?OrderLineReference $orderLineReference = null;
+    private ?string $note = null;
+    private ?Item $item = null;
+    private ?Price $price = null;
+    private ?string $accountingCostCode = null;
+    private ?string $accountingCost = null;
     /** @var AllowanceCharge[] $allowanceCharges */
-    private $allowanceCharges;
+    private ?array $allowanceCharges = null;
 
     private function isCreditNoteLine(): bool
     {
@@ -40,7 +40,7 @@ class InvoiceLine implements XmlSerializable, XmlDeserializable
     }
 
     /**
-     * @return string
+     * @return string|null
      */
     public function getId(): ?string
     {
@@ -48,7 +48,7 @@ class InvoiceLine implements XmlSerializable, XmlDeserializable
     }
 
     /**
-     * @param string $id
+     * @param string|null $id
      * @return static
      */
     public function setId(?string $id)
@@ -58,7 +58,7 @@ class InvoiceLine implements XmlSerializable, XmlDeserializable
     }
 
     /**
-     * @return float
+     * @return float|null
      */
     public function getInvoicedQuantity(): ?float
     {
@@ -76,7 +76,7 @@ class InvoiceLine implements XmlSerializable, XmlDeserializable
     }
 
     /**
-     * @return float
+     * @return float|null
      */
     public function getLineExtensionAmount(): ?float
     {
@@ -84,7 +84,7 @@ class InvoiceLine implements XmlSerializable, XmlDeserializable
     }
 
     /**
-     * @param float $lineExtensionAmount
+     * @param float|null $lineExtensionAmount
      * @return static
      */
     public function setLineExtensionAmount(?float $lineExtensionAmount)
@@ -94,7 +94,7 @@ class InvoiceLine implements XmlSerializable, XmlDeserializable
     }
 
     /**
-     * @return TaxTotal
+     * @return TaxTotal|null
      */
     public function getTaxTotal(): ?TaxTotal
     {
@@ -102,7 +102,7 @@ class InvoiceLine implements XmlSerializable, XmlDeserializable
     }
 
     /**
-     * @param TaxTotal $taxTotal
+     * @param TaxTotal|null $taxTotal
      * @return static
      */
     public function setTaxTotal(?TaxTotal $taxTotal)
@@ -112,7 +112,7 @@ class InvoiceLine implements XmlSerializable, XmlDeserializable
     }
 
     /**
-     * @return string
+     * @return string|null
      */
     public function getNote(): ?string
     {
@@ -120,7 +120,7 @@ class InvoiceLine implements XmlSerializable, XmlDeserializable
     }
 
     /**
-     * @param string $note
+     * @param string|null $note
      * @return static
      */
     public function setNote(?string $note)
@@ -130,7 +130,7 @@ class InvoiceLine implements XmlSerializable, XmlDeserializable
     }
 
     /**
-     * @return InvoicePeriod
+     * @return InvoicePeriod|null
      */
     public function getInvoicePeriod(): ?InvoicePeriod
     {
@@ -138,7 +138,7 @@ class InvoiceLine implements XmlSerializable, XmlDeserializable
     }
 
     /**
-     * @param InvoicePeriod $invoicePeriod
+     * @param InvoicePeriod|null $invoicePeriod
      * @return static
      */
     public function setInvoicePeriod(?InvoicePeriod $invoicePeriod)
@@ -148,7 +148,7 @@ class InvoiceLine implements XmlSerializable, XmlDeserializable
     }
 
     /**
-     * @return string
+     * @return OrderLineReference|null
      */
     public function getOrderLineReference(): ?OrderLineReference
     {
@@ -156,7 +156,7 @@ class InvoiceLine implements XmlSerializable, XmlDeserializable
     }
 
     /**
-     * @param ?string $orderLineReference
+     * @param OrderLineReference|null $orderLineReference
      * @return static
      */
     public function setOrderLineReference(?OrderLineReference $orderLineReference)
@@ -166,7 +166,7 @@ class InvoiceLine implements XmlSerializable, XmlDeserializable
     }
 
     /**
-     * @return Item
+     * @return Item|null
      */
     public function getItem(): ?Item
     {
@@ -174,7 +174,7 @@ class InvoiceLine implements XmlSerializable, XmlDeserializable
     }
 
     /**
-     * @param Item $item
+     * @param Item|null $item
      * @return static
      */
     public function setItem(?Item $item)
@@ -184,7 +184,7 @@ class InvoiceLine implements XmlSerializable, XmlDeserializable
     }
 
     /**
-     * @return Price
+     * @return Price|null
      */
     public function getPrice(): ?Price
     {
@@ -192,7 +192,7 @@ class InvoiceLine implements XmlSerializable, XmlDeserializable
     }
 
     /**
-     * @param Price $price
+     * @param Price|null $price
      * @return static
      */
     public function setPrice(?Price $price)
@@ -202,7 +202,7 @@ class InvoiceLine implements XmlSerializable, XmlDeserializable
     }
 
     /**
-     * @return string
+     * @return string|null
      */
     public function getUnitCode(): ?string
     {
@@ -210,7 +210,7 @@ class InvoiceLine implements XmlSerializable, XmlDeserializable
     }
 
     /**
-     * @param string $unitCode
+     * @param string|null $unitCode
      * @return static
      */
     public function setUnitCode(?string $unitCode)
@@ -220,7 +220,7 @@ class InvoiceLine implements XmlSerializable, XmlDeserializable
     }
 
     /**
-     * @return string
+     * @return string|null
      */
     public function getUnitCodeListId(): ?string
     {
@@ -228,7 +228,7 @@ class InvoiceLine implements XmlSerializable, XmlDeserializable
     }
 
     /**
-     * @param string $unitCodeListId
+     * @param string|null $unitCodeListId
      * @return static
      */
     public function setUnitCodeListId(?string $unitCodeListId)
@@ -238,7 +238,7 @@ class InvoiceLine implements XmlSerializable, XmlDeserializable
     }
 
     /**
-     * @return string
+     * @return string|null
      */
     public function getAccountingCostCode(): ?string
     {
@@ -246,7 +246,7 @@ class InvoiceLine implements XmlSerializable, XmlDeserializable
     }
 
     /**
-     * @param string $accountingCostCode
+     * @param string|null $accountingCostCode
      * @return static
      */
     public function setAccountingCostCode(?string $accountingCostCode)
@@ -256,7 +256,7 @@ class InvoiceLine implements XmlSerializable, XmlDeserializable
     }
 
     /**
-     * @return string
+     * @return string|null
      */
     public function getAccountingCost(): ?string
     {
@@ -264,7 +264,7 @@ class InvoiceLine implements XmlSerializable, XmlDeserializable
     }
 
     /**
-     * @param string $accountingCost
+     * @param string|null $accountingCost
      * @return static
      */
     public function setAccountingCost(?string $accountingCost)
@@ -274,7 +274,7 @@ class InvoiceLine implements XmlSerializable, XmlDeserializable
     }
 
     /**
-     * @return AllowanceCharge[]
+     * @return AllowanceCharge[]|null
      */
     public function getAllowanceCharges(): ?array
     {
@@ -403,13 +403,21 @@ class InvoiceLine implements XmlSerializable, XmlDeserializable
     {
         $collection = new ArrayCollection($mixedContent);
 
+        $invoicedQuantity = ReaderHelper::getTagValue(Schema::CBC . 'InvoicedQuantity', $collection) !== null
+            ? floatval(ReaderHelper::getTagValue(Schema::CBC . 'InvoicedQuantity', $collection))
+            : null;
+
+        $lineExtensionAmount = ReaderHelper::getTagValue(Schema::CBC . 'LineExtensionAmount', $collection) !== null
+            ? floatval(ReaderHelper::getTagValue(Schema::CBC . 'LineExtensionAmount', $collection))
+            : null;
+
         /** @var ?AllowanceCharge[] ReaderHelper::getArrayValue */
         $allowanceCharges = ReaderHelper::getArrayValue(Schema::CAC . 'AllowanceCharge', $collection);
 
         return (new static())
             ->setId(ReaderHelper::getTagValue(Schema::CBC . 'ID', $collection))
-            ->setInvoicedQuantity(ReaderHelper::getTagValue(Schema::CBC . 'InvoicedQuantity', $collection) !== null ? floatval(ReaderHelper::getTagValue(Schema::CBC . 'InvoicedQuantity', $collection)) : null)
-            ->setLineExtensionAmount(ReaderHelper::getTagValue(Schema::CBC . 'LineExtensionAmount', $collection) !== null ? floatval(ReaderHelper::getTagValue(Schema::CBC . 'LineExtensionAmount', $collection)) : null)
+            ->setInvoicedQuantity($invoicedQuantity)
+            ->setLineExtensionAmount($lineExtensionAmount)
             ->setTaxTotal(ReaderHelper::getTagValue(Schema::CAC . 'TaxTotal', $collection))
             ->setNote(ReaderHelper::getTagValue(Schema::CBC . 'Note', $collection))
             ->setInvoicePeriod(ReaderHelper::getTagValue(Schema::CAC . 'InvoicePeriod', $collection))

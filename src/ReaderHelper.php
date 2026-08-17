@@ -12,7 +12,7 @@ class ReaderHelper
      *
      * @param string $name
      * @param ArrayCollection $collection
-     * @return ?array
+     * @return array|null
      */
     public static function getTag(string $name, ArrayCollection $collection)
     {
@@ -30,7 +30,7 @@ class ReaderHelper
      *
      * @param string $name
      * @param ArrayCollection $collection
-     * @return ?string
+     * @return string|null
      */
     public static function getTagValue(string $name, ArrayCollection $collection)
     {
@@ -40,11 +40,12 @@ class ReaderHelper
     }
 
     /**
-     * Get the tags with a given name from a XML Reader mixedContent result
+     * Get the tags with a given name from an XML Reader mixedContent result
      * that was converted to ArrayCollection
      *
      * @param string $name
      * @param ArrayCollection $collection
+     * @return array
      */
     public static function getArrayValue(string $name, ArrayCollection $collection)
     {

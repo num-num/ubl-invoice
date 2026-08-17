@@ -12,12 +12,12 @@ use Sabre\Xml\XmlSerializable;
 
 class CommodityClassification implements XmlSerializable, XmlDeserializable
 {
-    private $itemClassificationCode = null;
-    private $itemClassificationListId = null;
-    private $itemClassificationListVersionId = null;
+    private ?string $itemClassificationCode = null;
+    private ?string $itemClassificationListId = null;
+    private ?string $itemClassificationListVersionId = null;
 
     /**
-     * @return string
+     * @return string|null
      */
     public function getItemClassificationCode(): ?string
     {
@@ -25,7 +25,7 @@ class CommodityClassification implements XmlSerializable, XmlDeserializable
     }
 
     /**
-     * @param string $itemClassificationCode
+     * @param string|null $itemClassificationCode
      * @return static
      */
     public function setItemClassificationCode(?string $itemClassificationCode)
@@ -35,7 +35,7 @@ class CommodityClassification implements XmlSerializable, XmlDeserializable
     }
 
     /**
-     * @return ?string
+     * @return string|null
      */
     public function getItemClassificationListId(): ?string
     {
@@ -53,7 +53,7 @@ class CommodityClassification implements XmlSerializable, XmlDeserializable
     }
 
     /**
-     * @return ?string
+     * @return string|null
      */
     public function getItemClassificationListVersionId(): ?string
     {
@@ -97,14 +97,14 @@ class CommodityClassification implements XmlSerializable, XmlDeserializable
      * The xmlDeserialize method is called during xml reading.
      *
      * @param Reader $reader
-     * @return void
+     * @return CommodityClassification
      */
     public static function xmlDeserialize(Reader $reader)
     {
         $mixedContent = mixedContent($reader);
         $collection = new ArrayCollection($mixedContent);
 
-        // UBL CommodityClassification kan zowel ItemClassificationCode als CommodityCode bevatten
+        // UBL CommodityClassification can contain both ItemClassificationCode and CommodityCode
         $classificationCode = ReaderHelper::getTag(Schema::CBC . 'ItemClassificationCode', $collection)
             ?? ReaderHelper::getTag(Schema::CBC . 'CommodityCode', $collection);
 

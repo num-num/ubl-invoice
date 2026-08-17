@@ -13,13 +13,13 @@ use Sabre\Xml\XmlSerializable;
 
 class TaxSubTotal implements XmlSerializable, XmlDeserializable
 {
-    private $taxableAmount;
-    private $taxAmount;
-    private $taxCategory;
-    private $percent;
+    private ?float $taxableAmount = null;
+    private ?float $taxAmount = null;
+    private ?TaxCategory $taxCategory = null;
+    private ?float $percent = null;
 
     /**
-     * @return mixed
+     * @return float|null
      */
     public function getTaxableAmount(): ?float
     {
@@ -27,7 +27,7 @@ class TaxSubTotal implements XmlSerializable, XmlDeserializable
     }
 
     /**
-     * @param mixed $taxableAmount
+     * @param float|null $taxableAmount
      * @return static
      */
     public function setTaxableAmount(?float $taxableAmount)
@@ -37,7 +37,7 @@ class TaxSubTotal implements XmlSerializable, XmlDeserializable
     }
 
     /**
-     * @return mixed
+     * @return float|null
      */
     public function getTaxAmount(): ?float
     {
@@ -45,7 +45,7 @@ class TaxSubTotal implements XmlSerializable, XmlDeserializable
     }
 
     /**
-     * @param mixed $taxAmount
+     * @param float|null $taxAmount
      * @return static
      */
     public function setTaxAmount(?float $taxAmount)
@@ -55,7 +55,7 @@ class TaxSubTotal implements XmlSerializable, XmlDeserializable
     }
 
     /**
-     * @return TaxCategory
+     * @return TaxCategory|null
      */
     public function getTaxCategory(): ?TaxCategory
     {
@@ -63,7 +63,7 @@ class TaxSubTotal implements XmlSerializable, XmlDeserializable
     }
 
     /**
-     * @param TaxCategory $taxCategory
+     * @param TaxCategory|null $taxCategory
      * @return static
      */
     public function setTaxCategory(?TaxCategory $taxCategory)
@@ -73,7 +73,7 @@ class TaxSubTotal implements XmlSerializable, XmlDeserializable
     }
 
     /**
-     * @return float
+     * @return float|null
      */
     public function getPercent(): ?float
     {
@@ -81,7 +81,7 @@ class TaxSubTotal implements XmlSerializable, XmlDeserializable
     }
 
     /**
-     * @param float $percent
+     * @param float|null $percent
      * @return static
      */
     public function setPercent(?float $percent)
@@ -93,8 +93,8 @@ class TaxSubTotal implements XmlSerializable, XmlDeserializable
     /**
      * The validate function that is called during xml writing to valid the data of the object.
      *
-     * @throws InvalidArgumentException An error with information about required data that is missing to write the XML
      * @return void
+     * @throws InvalidArgumentException An error with information about required data that is missing to write the XML
      */
     public function validate()
     {
@@ -150,18 +150,27 @@ class TaxSubTotal implements XmlSerializable, XmlDeserializable
 
     /**
      * The xmlDeserialize method is called during xml reading.
-     * @param Reader $xml
+     * @param Reader $reader
      * @return static
      */
     public static function xmlDeserialize(Reader $reader)
     {
         $keyValues = keyValue($reader);
 
+        $taxableAmount = isset($keyValues[Schema::CBC . 'TaxableAmount'])
+            ? floatval($keyValues[Schema::CBC . 'TaxableAmount'])
+            : null;
+
+        $taxAmount = isset($keyValues[Schema::CBC . 'TaxAmount'])
+            ? floatval($keyValues[Schema::CBC . 'TaxAmount'])
+            : null;
+
+        $percent = isset($keyValues[Schema::CBC . 'Percent']) ? floatval($keyValues[Schema::CBC . 'Percent']) : null;
+
         return (new static())
-            ->setTaxableAmount(isset($keyValues[Schema::CBC . 'TaxableAmount']) ? floatval($keyValues[Schema::CBC . 'TaxableAmount']) : null)
-            ->setTaxAmount(isset($keyValues[Schema::CBC . 'TaxAmount']) ? floatval($keyValues[Schema::CBC . 'TaxAmount']) : null)
+            ->setTaxableAmount($taxableAmount)
+            ->setTaxAmount($taxAmount)
             ->setTaxCategory($keyValues[Schema::CAC . 'TaxCategory'] ?? null)
-            ->setPercent(isset($keyValues[Schema::CBC . 'Percent']) ? floatval($keyValues[Schema::CBC . 'Percent']) : null)
-        ;
+            ->setPercent($percent);
     }
 }

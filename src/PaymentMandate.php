@@ -11,13 +11,13 @@ use function Sabre\Xml\Deserializer\keyValue;
 
 class PaymentMandate implements XmlSerializable, XmlDeserializable
 {
-    public $xmlTagName = 'PaymentMandate';
+    public string $xmlTagName = 'PaymentMandate';
 
-    private $id;
-    private $payeeFinancialAccount;
+    private ?string $id = null;
+    private ?PayeeFinancialAccount $payeeFinancialAccount = null;
 
     /**
-     * @return string
+     * @return string|null
      */
     public function getId(): ?string
     {
@@ -25,7 +25,7 @@ class PaymentMandate implements XmlSerializable, XmlDeserializable
     }
 
     /**
-     * @param string $id
+     * @param string|null $id
      * @return static
      */
     public function setId(?string $id)
@@ -35,7 +35,7 @@ class PaymentMandate implements XmlSerializable, XmlDeserializable
     }
 
     /**
-     * @return PayeeFinancialAccount
+     * @return PayeeFinancialAccount|null
      */
     public function getPayeeFinancialAccount(): ?PayeeFinancialAccount
     {
@@ -43,7 +43,7 @@ class PaymentMandate implements XmlSerializable, XmlDeserializable
     }
 
     /**
-     * @param PayeeFinancialAccount $payeeFinancialAccount
+     * @param PayeeFinancialAccount|null $payeeFinancialAccount
      * @return static
      */
     public function setPayeeFinancialAccount(?PayeeFinancialAccount $payeeFinancialAccount)

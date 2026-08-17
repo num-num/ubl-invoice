@@ -15,12 +15,12 @@ use Sabre\Xml\XmlSerializable;
 
 class InvoicePeriod implements XmlSerializable, XmlDeserializable
 {
-    private $startDate;
-    private $endDate;
-    private $descriptionCode;
+    private ?DateTime $startDate = null;
+    private ?DateTime $endDate = null;
+    private ?int $descriptionCode = null;
 
     /**
-     * @return DateTime
+     * @return DateTime|null
      */
     public function getStartDate(): ?DateTime
     {
@@ -28,7 +28,7 @@ class InvoicePeriod implements XmlSerializable, XmlDeserializable
     }
 
     /**
-     * @param DateTime $startDate
+     * @param DateTime|null $startDate
      * @return static
      */
     public function setStartDate(?DateTime $startDate)
@@ -38,7 +38,7 @@ class InvoicePeriod implements XmlSerializable, XmlDeserializable
     }
 
     /**
-     * @return DateTime
+     * @return DateTime|null
      */
     public function getEndDate(): ?DateTime
     {
@@ -46,7 +46,7 @@ class InvoicePeriod implements XmlSerializable, XmlDeserializable
     }
 
     /**
-     * @param DateTime $endDate
+     * @param DateTime|null $endDate
      * @return static
      */
     public function setEndDate(?DateTime $endDate)
@@ -56,7 +56,7 @@ class InvoicePeriod implements XmlSerializable, XmlDeserializable
     }
 
     /**
-     * @return int
+     * @return int|null
      */
     public function getDescriptionCode(): ?int
     {
@@ -64,7 +64,7 @@ class InvoicePeriod implements XmlSerializable, XmlDeserializable
     }
 
     /**
-     * @param Integer $descriptionCode
+     * @param int|null $descriptionCode
      * @return static
      */
     public function setDescriptionCode(?int $descriptionCode)
@@ -76,8 +76,8 @@ class InvoicePeriod implements XmlSerializable, XmlDeserializable
     /**
      * The validate function that is called during xml writing to valid the data of the object.
      *
-     * @throws InvalidArgumentException An error with information about required data that is missing to write the XML
      * @return void
+     * @throws InvalidArgumentException An error with information about required data that is missing to write the XML
      */
     public function validate()
     {
@@ -115,17 +115,28 @@ class InvoicePeriod implements XmlSerializable, XmlDeserializable
 
     /**
      * The xmlDeserialize method is called during xml reading.
-     * @param Reader $xml
+     * @param Reader $reader
      * @return static
      */
     public static function xmlDeserialize(Reader $reader)
     {
         $keyValues = keyValue($reader);
 
+        $startDate = isset($keyValues[Schema::CBC . 'StartDate'])
+            ? Carbon::parse($keyValues[Schema::CBC . 'StartDate'])->toDateTime()
+            : null;
+
+        $endDate = isset($keyValues[Schema::CBC . 'EndDate'])
+            ? Carbon::parse($keyValues[Schema::CBC . 'EndDate'])->toDateTime()
+            : null;
+
+        $descriptionCode = isset($keyValues[Schema::CBC . 'DescriptionCode'])
+            ? intval($keyValues[Schema::CBC . 'DescriptionCode'])
+            : null;
+
         return (new static())
-            ->setStartDate(isset($keyValues[Schema::CBC . 'StartDate']) ? Carbon::parse($keyValues[Schema::CBC . 'StartDate'])->toDateTime() : null)
-            ->setEndDate(isset($keyValues[Schema::CBC . 'EndDate']) ? Carbon::parse($keyValues[Schema::CBC . 'EndDate'])->toDateTime() : null)
-            ->setDescriptionCode(isset($keyValues[Schema::CBC . 'DescriptionCode']) ? intval($keyValues[Schema::CBC . 'DescriptionCode']) : null)
-        ;
+            ->setStartDate($startDate)
+            ->setEndDate($endDate)
+            ->setDescriptionCode($descriptionCode);
     }
 }

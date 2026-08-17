@@ -132,4 +132,3 @@ XML;
         $this->assertEquals(21, $taxCategory->getPercent());
     }
 }
-

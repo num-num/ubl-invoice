@@ -11,7 +11,7 @@ class NumberFormatter
      * @param int|null $decimals
      * @param string $decimalSeparator
      * @param string $thousandsSeparator
-     * @return void
+     * @return string
      */
     public static function format(
         $number,
@@ -32,13 +32,11 @@ class NumberFormatter
             $decimals = isset($parts[1]) ? strlen(rtrim($parts[1], "0")) : 0;
         }
 
-        $value = number_format(
+        return number_format(
             $number,
             $decimals,
             $decimalSeparator,
             $thousandsSeparator
         );
-
-        return $value;
     }
 }

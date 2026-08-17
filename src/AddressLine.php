@@ -11,7 +11,7 @@ use function Sabre\Xml\Deserializer\keyValue;
 
 class AddressLine implements XmlSerializable, XmlDeserializable
 {
-    private $line;
+    private ?string $line = null;
 
     /**
      * @return string|null

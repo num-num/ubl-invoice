@@ -14,21 +14,21 @@ use Sabre\Xml\XmlSerializable;
 
 class PaymentMeans implements XmlSerializable, XmlDeserializable
 {
-    public $xmlTagName = 'PaymentMeans';
-    private $paymentMeansCode = UNCL4461::INSTRUMENT_NOT_DEFINED;
-    private $paymentMeansCodeAttributes = [
+    public string $xmlTagName = 'PaymentMeans';
+    private string $paymentMeansCode = UNCL4461::INSTRUMENT_NOT_DEFINED;
+    private array $paymentMeansCodeAttributes = [
         'listID'   => 'UN/ECE 4461',
         'listName' => 'Payment Means',
         'listURI'  => 'http://docs.oasis-open.org/ubl/os-UBL-2.0-update/cl/gc/default/PaymentMeansCode-2.0.gc'];
-    private $paymentDueDate;
-    private $instructionId;
-    private $instructionNote;
-    private $paymentId;
-    private $payeeFinancialAccount;
-    private $paymentMandate;
+    private ?DateTime $paymentDueDate = null;
+    private ?string $instructionId = null;
+    private ?string $instructionNote = null;
+    private ?string $paymentId = null;
+    private ?PayeeFinancialAccount $payeeFinancialAccount = null;
+    private ?PaymentMandate $paymentMandate = null;
 
     /**
-     * @return string
+     * @return string|null
      */
     public function getPaymentMeansCode(): ?string
     {
@@ -36,10 +36,11 @@ class PaymentMeans implements XmlSerializable, XmlDeserializable
     }
 
     /**
-     * @param string $paymentMeansCode
+     * @param string|null $paymentMeansCode
+     * @param array|null $attributes
      * @return static
      */
-    public function setPaymentMeansCode(?string $paymentMeansCode, $attributes = null)
+    public function setPaymentMeansCode(?string $paymentMeansCode, ?array $attributes = null)
     {
         $this->paymentMeansCode = $paymentMeansCode;
         if (isset($attributes)) {
@@ -49,7 +50,7 @@ class PaymentMeans implements XmlSerializable, XmlDeserializable
     }
 
     /**
-     * @return DateTime
+     * @return DateTime|null
      */
     public function getPaymentDueDate(): ?DateTime
     {
@@ -57,7 +58,7 @@ class PaymentMeans implements XmlSerializable, XmlDeserializable
     }
 
     /**
-     * @param DateTime $paymentDueDate
+     * @param DateTime|null $paymentDueDate
      * @return static
      */
     public function setPaymentDueDate(?DateTime $paymentDueDate)
@@ -67,7 +68,7 @@ class PaymentMeans implements XmlSerializable, XmlDeserializable
     }
 
     /**
-     * @return string
+     * @return string|null
      */
     public function getInstructionId(): ?string
     {
@@ -75,7 +76,7 @@ class PaymentMeans implements XmlSerializable, XmlDeserializable
     }
 
     /**
-     * @param string $instructionId
+     * @param string|null $instructionId
      * @return static
      */
     public function setInstructionId(?string $instructionId)
@@ -85,7 +86,7 @@ class PaymentMeans implements XmlSerializable, XmlDeserializable
     }
 
     /**
-     * @return string
+     * @return string|null
      */
     public function getInstructionNote(): ?string
     {
@@ -93,7 +94,7 @@ class PaymentMeans implements XmlSerializable, XmlDeserializable
     }
 
     /**
-     * @param string $instructionNote
+     * @param string|null $instructionNote
      * @return static
      */
     public function setInstructionNote(?string $instructionNote)
@@ -103,7 +104,7 @@ class PaymentMeans implements XmlSerializable, XmlDeserializable
     }
 
     /**
-     * @return string
+     * @return string|null
      */
     public function getPaymentId(): ?string
     {
@@ -111,7 +112,7 @@ class PaymentMeans implements XmlSerializable, XmlDeserializable
     }
 
     /**
-     * @param string $paymentId
+     * @param string|null $paymentId
      * @return static
      */
     public function setPaymentId(?string $paymentId)
@@ -121,7 +122,7 @@ class PaymentMeans implements XmlSerializable, XmlDeserializable
     }
 
     /**
-     * @return mixed
+     * @return PayeeFinancialAccount|null
      */
     public function getPayeeFinancialAccount(): ?PayeeFinancialAccount
     {
@@ -129,7 +130,7 @@ class PaymentMeans implements XmlSerializable, XmlDeserializable
     }
 
     /**
-     * @param mixed $payeeFinancialAccount
+     * @param PayeeFinancialAccount|null $payeeFinancialAccount
      * @return static
      */
     public function setPayeeFinancialAccount(?PayeeFinancialAccount $payeeFinancialAccount)
@@ -139,7 +140,7 @@ class PaymentMeans implements XmlSerializable, XmlDeserializable
     }
 
     /**
-     * @return PaymentMandate
+     * @return PaymentMandate|null
      */
     public function getPaymentMandate(): ?PaymentMandate
     {
@@ -147,7 +148,7 @@ class PaymentMeans implements XmlSerializable, XmlDeserializable
     }
 
     /**
-     * @param PaymentMandate $paymentMandate
+     * @param PaymentMandate|null $paymentMandate
      * @return static
      */
     public function setPaymentMandate(?PaymentMandate $paymentMandate)
@@ -203,16 +204,20 @@ class PaymentMeans implements XmlSerializable, XmlDeserializable
 
     /**
      * The xmlDeserialize method is called during xml reading.
-     * @param Reader $xml
+     * @param Reader $reader
      * @return static
      */
     public static function xmlDeserialize(Reader $reader)
     {
         $keyValues = keyValue($reader);
 
+        $paymentDueDate = isset($keyValues[Schema::CBC . 'PaymentDueDate'])
+            ? Carbon::parse($keyValues[Schema::CBC . 'PaymentDueDate'])->toDateTime()
+            : null;
+
         return (new static())
             ->setPaymentMeansCode($keyValues[Schema::CBC . 'PaymentMeansCode'] ?? null)
-            ->setPaymentDueDate(isset($keyValues[Schema::CBC . 'PaymentDueDate']) ? Carbon::parse($keyValues[Schema::CBC . 'PaymentDueDate'])->toDateTime() : null)
+            ->setPaymentDueDate($paymentDueDate)
             ->setInstructionId($keyValues[Schema::CBC . 'InstructionID'] ?? null)
             ->setInstructionNote($keyValues[Schema::CBC . 'InstructionNote'] ?? null)
             ->setPaymentId($keyValues[Schema::CBC . 'PaymentID'] ?? null)

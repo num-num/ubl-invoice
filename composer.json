@@ -33,13 +33,18 @@
         "php": "^7.4 || ^8.0",
         "sabre/xml": "^4.0",
         "nesbot/carbon": "^2.72 || ^3.11",
-        "doctrine/collections": "^1.8 || ^2.0 || ^3.0"
+        "doctrine/collections": "^1.8 || ^2.0 || ^3.0",
+        "ext-fileinfo": "*",
+        "ext-libxml": "*"
     },
     "require-dev": {
         "squizlabs/php_codesniffer": "^3.7",
         "phpstan/phpstan": "^1.10",
         "brianium/paratest": "^6.11",
-        "phpunit/phpunit": "^9.6"
+        "phpunit/phpunit": "^9.6",
+        "ext-dom": "*",
+        "ext-json": "*",
+        "ext-soap": "*"
     },
     "autoload": {
         "psr-4": {
