@@ -26,10 +26,10 @@ class PartyTaxScheme implements XmlSerializable, XmlDeserializable
     }
 
     /**
-     * @param string $registrationName
+     * @param string|null $registrationName
      * @return static
      */
-    public function setRegistrationName(string $registrationName)
+    public function setRegistrationName(?string $registrationName)
     {
         $this->registrationName = $registrationName;
         return $this;
@@ -44,10 +44,10 @@ class PartyTaxScheme implements XmlSerializable, XmlDeserializable
     }
 
     /**
-     * @param string $companyId
+     * @param string|null $companyId
      * @return static
      */
-    public function setCompanyId(string $companyId)
+    public function setCompanyId(?string $companyId)
     {
         $this->companyId = $companyId;
         return $this;
