@@ -12,7 +12,7 @@ use Sabre\Xml\XmlSerializable;
 
 class AllowanceCharge implements XmlSerializable, XmlDeserializable
 {
-    private bool $chargeIndicator;
+    private bool $chargeIndicator = false;
     private $allowanceChargeReasonCode;
     private ?string $allowanceChargeReason = null;
     private ?float $multiplierFactorNumeric = null;

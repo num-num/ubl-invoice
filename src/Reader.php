@@ -6,7 +6,7 @@ use Sabre\Xml\Service;
 
 class Reader
 {
-    public static string $currencyID;
+    public static string $currencyID = 'EUR';
 
     public static function ubl(string $currencyId = 'EUR'): Service
     {

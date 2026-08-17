@@ -6,7 +6,7 @@ use Sabre\Xml\Service;
 
 class Generator
 {
-    public static string $currencyID;
+    public static string $currencyID = 'EUR';
 
     public static function invoice(Invoice $invoice, string $currencyId = 'EUR')
     {

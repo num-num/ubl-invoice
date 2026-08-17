@@ -11,7 +11,7 @@ use Sabre\Xml\XmlSerializable;
 
 class TaxScheme implements XmlSerializable, XmlDeserializable
 {
-    private ?string $id;
+    private ?string $id = null;
     private ?string $name = null;
     private ?string $taxTypeCode = null;
     private ?string $currencyCode = null;
