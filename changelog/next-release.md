@@ -7,3 +7,7 @@
   - `ProjectReference::setId()` now accepts `?string`
   - `ContractDocumentReference::setId()` now accepts `?string`
   - `InvoiceDocumentReference::setOriginalInvoiceId()` now accepts `?string`
+
+### Maintenance
+
+- Update dependency constraints to support Doctrine Collections 3.x
