@@ -35,8 +35,8 @@ class Invoice implements XmlSerializable, XmlDeserializable
     private ?array $paymentMeans = null;
     private ?TaxTotal $taxTotal = null;
     private ?LegalMonetaryTotal $legalMonetaryTotal = null;
-    /** @var InvoiceLine[] $invoiceLines */
-    protected array $invoiceLines = [];
+    /** @var InvoiceLine[]|null $invoiceLines */
+    protected ?array $invoiceLines = null;
     private ?array $allowanceCharges = null;
     private array $additionalDocumentReferences = [];
     private ?ProjectReference $projectReference = null;
