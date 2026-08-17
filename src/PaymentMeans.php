@@ -40,7 +40,7 @@ class PaymentMeans implements XmlSerializable, XmlDeserializable
      * @param array|null $attributes
      * @return static
      */
-    public function setPaymentMeansCode(?string $paymentMeansCode, array $attributes = null)
+    public function setPaymentMeansCode(?string $paymentMeansCode, ?array $attributes = null)
     {
         $this->paymentMeansCode = $paymentMeansCode;
         if (isset($attributes)) {

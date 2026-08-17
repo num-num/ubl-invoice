@@ -49,7 +49,7 @@ class TaxCategory implements XmlSerializable, XmlDeserializable
      * @param array|null $attributes
      * @return static
      */
-    public function setId(?string $id, array $attributes = null)
+    public function setId(?string $id, ?array $attributes = null)
     {
         $this->id = $id;
         if (isset($attributes)) {

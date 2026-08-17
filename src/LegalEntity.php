@@ -49,7 +49,7 @@ class LegalEntity implements XmlSerializable, XmlDeserializable
      * @param array|null $attributes
      * @return static
      */
-    public function setCompanyId(?string $companyId, array $attributes = null)
+    public function setCompanyId(?string $companyId, ?array $attributes = null)
     {
         $this->companyId = $companyId;
 
@@ -79,7 +79,7 @@ class LegalEntity implements XmlSerializable, XmlDeserializable
      * @param array|null $attributes
      * @return static
      */
-    public function setCompanyLegalForm(?string $legalForm, array $attributes = null)
+    public function setCompanyLegalForm(?string $legalForm, ?array $attributes = null)
     {
         $this->companyLegalForm = $legalForm;
 

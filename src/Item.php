@@ -90,7 +90,7 @@ class Item implements XmlSerializable, XmlDeserializable
      * @param array|null $attributes
      * @return static
      */
-    public function setStandardItemIdentification(?string $standardItemIdentification, array $attributes = null)
+    public function setStandardItemIdentification(?string $standardItemIdentification, ?array $attributes = null)
     {
         $this->standardItemIdentification = $standardItemIdentification;
         if (isset($attributes)) {
