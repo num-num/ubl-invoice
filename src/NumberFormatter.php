@@ -19,7 +19,7 @@ class NumberFormatter
         string $decimalSeparator = ".",
         string $thousandsSeparator = ""
     ) {
-        if ($decimals == null) {
+        if ($decimals === null) {
             // Get the current decimal point character according to the locale
             // This is needed because (string)$number uses the locale's decimal separator
             $locale = localeconv();
