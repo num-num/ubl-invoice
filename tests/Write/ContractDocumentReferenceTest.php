@@ -112,7 +112,7 @@ class ContractDocumentReferenceTest extends TestCase
             ->setInvoiceLines($invoiceLines)
             ->setLegalMonetaryTotal($legalMonetaryTotal)
             ->setTaxTotal($taxTotal)
-            // ->setContractDocumentReference($contractDocumentReference)
+            ->setContractDocumentReference($contractDocumentReference)
             ->setBuyerReference("SomeReference")
             ->setInvoicePeriod($invoicePeriod);
 
