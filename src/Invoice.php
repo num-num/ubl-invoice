@@ -45,7 +45,7 @@ class Invoice implements XmlSerializable, XmlDeserializable
     private $buyerReference;
     private $accountingCostCode;
     private $invoicePeriod;
-    private $billingReference;
+    private $billingReferences = [];
     private $delivery;
     private $orderReference;
     private $contractDocumentReference;
@@ -604,7 +604,15 @@ class Invoice implements XmlSerializable, XmlDeserializable
      */
     public function getBillingReference(): ?BillingReference
     {
-        return $this->billingReference;
+        return $this->billingReferences[0] ?? null;
+    }
+
+    /**
+     * @return array<BillingReference>
+     */
+    public function getBillingReferences(): array
+    {
+        return $this->billingReferences ?? [];
     }
 
     /**
@@ -614,7 +622,29 @@ class Invoice implements XmlSerializable, XmlDeserializable
      */
     public function setBillingReference(?BillingReference $billingReference)
     {
-        $this->billingReference = $billingReference;
+        $this->billingReferences = $billingReference !== null
+            ? [$billingReference]
+            : [];
+        return $this;
+    }
+
+    /**
+     * @param BillingReference[] $billingReferences
+     * @return static
+     */
+    public function setBillingReferences(array $billingReferences)
+    {
+        $this->billingReferences = $billingReferences;
+        return $this;
+    }
+
+    /**
+     * @param BillingReference $billingReference
+     * @return static
+     */
+    public function addBillingReference(BillingReference $billingReference)
+    {
+        $this->billingReferences[] = $billingReference;
         return $this;
     }
 
@@ -874,10 +904,12 @@ class Invoice implements XmlSerializable, XmlDeserializable
             ]);
         }
 
-        if ($this->billingReference != null) {
-            $writer->write([
-                Schema::CAC . "BillingReference" => $this->billingReference,
-            ]);
+        if (!empty($this->billingReferences)) {
+            foreach ($this->billingReferences as $billingReference) {
+                $writer->write([
+                    Schema::CAC . "BillingReference" => $billingReference,
+                ]);
+            }
         }
 
         if ($this->contractDocumentReference !== null) {
@@ -1159,8 +1191,8 @@ class Invoice implements XmlSerializable, XmlDeserializable
                     $collection,
                 ),
             )
-            ->setBillingReference(
-                ReaderHelper::getTagValue(
+            ->setBillingReferences(
+                ReaderHelper::getArrayValue(
                     Schema::CAC . "BillingReference",
                     $collection,
                 ),

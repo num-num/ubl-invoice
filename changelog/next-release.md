@@ -1,5 +1,9 @@
 # Next release
 
+## Added
+
+- Add support for multiple billing references on invoices and credit notes while preserving the single-reference API
+
 ## Fixed
 
 - Fix TypeError: Change setter types to nullable in reference classes to handle empty XML elements gracefully during parsing
