@@ -776,6 +776,44 @@ class Invoice implements XmlSerializable, XmlDeserializable
     }
 
     /**
+     * The order in which the document reference elements have to be written.
+     *
+     * UBL 2.1 declares these elements in an xsd:sequence, so writing them in
+     * any other order produces a document that fails schema validation. The
+     * required order is not the same for every document type.
+     *
+     * Elements that a document type does not declare at all (ProjectReference
+     * on a CreditNote or DebitNote, OriginatorDocumentReference on a DebitNote)
+     * are written last, which keeps the previous behaviour for those documents.
+     *
+     * @return string[]
+     */
+    protected function documentReferenceOrder(): array
+    {
+        if ($this->xmlTagName === 'Invoice') {
+            return [
+                'BillingReference',
+                'DespatchDocumentReference',
+                'ReceiptDocumentReference',
+                'OriginatorDocumentReference',
+                'ContractDocumentReference',
+                'AdditionalDocumentReference',
+                'ProjectReference',
+            ];
+        }
+
+        return [
+            'BillingReference',
+            'DespatchDocumentReference',
+            'ReceiptDocumentReference',
+            'ContractDocumentReference',
+            'AdditionalDocumentReference',
+            'OriginatorDocumentReference',
+            'ProjectReference',
+        ];
+    }
+
+    /**
      * The xmlSerialize method is called during xml writing.
      * @param Writer $writer
      * @return void
@@ -874,56 +912,32 @@ class Invoice implements XmlSerializable, XmlDeserializable
             ]);
         }
 
-        if ($this->billingReference != null) {
-            $writer->write([
-                Schema::CAC . "BillingReference" => $this->billingReference,
-            ]);
-        }
+        $documentReferences = [
+            "BillingReference"            => $this->billingReference,
+            "DespatchDocumentReference"   => $this->despatchDocumentReference,
+            "ReceiptDocumentReference"    => $this->receiptDocumentReference,
+            "OriginatorDocumentReference" => $this->originatorDocumentReference,
+            "ContractDocumentReference"   => $this->contractDocumentReference,
+            "AdditionalDocumentReference" => $this->additionalDocumentReferences,
+            "ProjectReference"            => $this->projectReference,
+        ];
 
-        if ($this->contractDocumentReference !== null) {
-            $writer->write([
-                Schema::CAC .
-                "ContractDocumentReference" => $this->contractDocumentReference,
-            ]);
-        }
+        foreach ($this->documentReferenceOrder() as $elementName) {
+            $documentReference = $documentReferences[$elementName];
 
-        if ($this->despatchDocumentReference !== null) {
-            $writer->write([
-                Schema::CAC .
-                "DespatchDocumentReference" => $this->despatchDocumentReference,
-            ]);
-        }
+            if ($documentReference === null) {
+                continue;
+            }
 
-        if ($this->receiptDocumentReference !== null) {
-            $writer->write([
-                Schema::CAC .
-                "ReceiptDocumentReference" => $this->receiptDocumentReference,
-            ]);
-        }
+            if (!is_array($documentReference)) {
+                $documentReference = [$documentReference];
+            }
 
-        if (!empty($this->additionalDocumentReferences)) {
-            foreach (
-                $this->additionalDocumentReferences
-                as $additionalDocumentReference
-            ) {
+            foreach ($documentReference as $reference) {
                 $writer->write([
-                    Schema::CAC .
-                    "AdditionalDocumentReference" => $additionalDocumentReference,
+                    Schema::CAC . $elementName => $reference,
                 ]);
             }
-        }
-
-        if ($this->originatorDocumentReference !== null) {
-            $writer->write([
-                Schema::CAC .
-                "OriginatorDocumentReference" => $this->originatorDocumentReference,
-            ]);
-        }
-
-        if ($this->projectReference != null) {
-            $writer->write([
-                Schema::CAC . "ProjectReference" => $this->projectReference,
-            ]);
         }
 
         $writer->write([
