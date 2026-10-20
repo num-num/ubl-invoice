@@ -138,7 +138,6 @@ class SimpleInvoiceTest extends TestCase
             ->setId(1234)
             ->setCopyIndicator(false)
             ->setIssueDate(new \DateTime())
-            ->setIssueTime(new \DateTime())
             ->setAccountingSupplierParty($accountingSupplierParty)
             ->setAccountingCustomerParty($accountingCustomerParty)
             ->setInvoiceLines($invoiceLines)
