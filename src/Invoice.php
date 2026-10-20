@@ -933,7 +933,8 @@ class Invoice implements XmlSerializable, XmlDeserializable
                 $documentReference = [$documentReference];
             }
 
-            foreach ($documentReference as $reference) {
+        if (!empty($this->additionalDocumentReferences)) {
+            foreach ($this->additionalDocumentReferences as $additionalDocumentReference) {
                 $writer->write([
                     Schema::CAC . $elementName => $reference,
                 ]);
