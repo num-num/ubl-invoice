@@ -35,7 +35,7 @@ class PaymentMandate implements XmlSerializable, XmlDeserializable
 
         if ($this->getPayerFinancialAccount() !== null) {
             $writer->write([
-                Schema::CAC . $this->payerFinancialAccount->xmlTagName => $this->getPayerFinancialAccount(),
+                Schema::CAC . 'PayerFinancialAccount' => $this->getPayerFinancialAccount(),
             ]);
         }
     }

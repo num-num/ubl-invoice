@@ -11,8 +11,6 @@ use function Sabre\Xml\Deserializer\keyValue;
 
 class PayerFinancialAccount implements XmlSerializable, XmlDeserializable
 {
-    public $xmlTagName = 'PayerFinancialAccount';
-
     /**
      * @var null|string
      */
