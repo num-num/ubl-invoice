@@ -969,6 +969,7 @@ class Invoice implements XmlSerializable, XmlDeserializable
             if (!is_array($documentReference)) {
                 $documentReference = [$documentReference];
             }
+        }
 
         if (!empty($this->additionalDocumentReferences)) {
             foreach ($this->additionalDocumentReferences as $additionalDocumentReference) {
