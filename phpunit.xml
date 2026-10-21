@@ -10,6 +10,11 @@
         </include>
     </coverage>
     <testsuites>
+        <testsuite name="unit">
+            <directory>tests</directory>
+            <exclude>tests/Read</exclude>
+            <exclude>tests/Write</exclude>
+        </testsuite>
         <testsuite name="write">
             <directory>tests/Write</directory>
         </testsuite>
