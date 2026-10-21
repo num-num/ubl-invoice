@@ -255,6 +255,25 @@ class Invoice implements XmlSerializable, XmlDeserializable
     }
 
     /**
+     * @param string $note
+     * @return static
+     */
+    public function addNote(string $note){
+        if(!is_array($this->notes)){
+            $this->notes = [];
+        }
+        $this->notes[] = $note;
+        return $this;
+    }
+    /**
+     * @return string|null
+     */
+    public function getNote()
+    {
+        return $this->notes[0] ?? null;
+    }
+
+    /**
      * @return array
      */
     public function getNotes()
@@ -263,10 +282,25 @@ class Invoice implements XmlSerializable, XmlDeserializable
     }
 
     /**
+     * @param string|null $note
+     * @return static
+     */
+    public function setNote(?string $note)
+    {
+        if(is_null($note)){
+            $this->setNotes(null);
+        }else{
+            $this->setNotes([$note]);
+        }
+        return $this;
+    }
+
+    /**
      * @param ?array
      * @return static
      */
-    public function setNotes(?array $notes){
+    public function setNotes(?array $notes)
+    {
         $this->notes = $notes;
         return $this;
     }
@@ -1094,9 +1128,11 @@ class Invoice implements XmlSerializable, XmlDeserializable
                 )) !== null ? (int) $typeCode : null,
             )
             ->setNotes(
-                ReaderHelper::getArrayValue(
-                    Schema::CBC . "Note",
-                    $collection,
+                array_values(
+                    ReaderHelper::getArrayValue(
+                        Schema::CBC . "Note",
+                        $collection,
+                    )
                 ),
             )
             ->setTaxPointDate(

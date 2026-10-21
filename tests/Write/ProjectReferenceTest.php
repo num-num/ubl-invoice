@@ -167,7 +167,7 @@ class ProjectReferenceTest extends TestCase
             ->setCustomizationID('urn:cen.eu:en16931:2017')
             ->setId(1234)
             ->setIssueDate(new \DateTime())
-            ->setNotes(['invoice note'])
+            ->setNote('invoice note')
             ->setDelivery($delivery)
             ->setAccountingSupplierParty($accountingSupplierParty)
             ->setAccountingCustomerParty($accountingCustomerParty)
