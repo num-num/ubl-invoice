@@ -258,8 +258,10 @@ class Invoice implements XmlSerializable, XmlDeserializable
      * @param string $note
      * @return static
      */
-    public function addNote(string $note){
-        if(!is_array($this->notes)){
+    public function addNote(string $note)
+    {
+        if(!is_array($this->notes))
+        {
             $this->notes = [];
         }
         $this->notes[] = $note;
@@ -1133,7 +1135,7 @@ class Invoice implements XmlSerializable, XmlDeserializable
                         Schema::CBC . "Note",
                         $collection,
                     )
-                ),
+                )
             )
             ->setTaxPointDate(
                 ($taxPointDate = ReaderHelper::getTagValue(
