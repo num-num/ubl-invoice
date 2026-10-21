@@ -950,13 +950,13 @@ class Invoice implements XmlSerializable, XmlDeserializable
         }
 
         $documentReferences = [
-            "BillingReference" => $this->billingReference,
-            "DespatchDocumentReference" => $this->despatchDocumentReference,
-            "ReceiptDocumentReference" => $this->receiptDocumentReference,
+            "BillingReference"            => $this->billingReference,
+            "DespatchDocumentReference"   => $this->despatchDocumentReference,
+            "ReceiptDocumentReference"    => $this->receiptDocumentReference,
             "OriginatorDocumentReference" => $this->originatorDocumentReference,
-            "ContractDocumentReference" => $this->contractDocumentReference,
+            "ContractDocumentReference"   => $this->contractDocumentReference,
             "AdditionalDocumentReference" => $this->additionalDocumentReferences,
-            "ProjectReference" => $this->projectReference,
+            "ProjectReference"            => $this->projectReference,
         ];
 
         foreach ($this->documentReferenceOrder() as $elementName) {
@@ -970,72 +970,71 @@ class Invoice implements XmlSerializable, XmlDeserializable
                 $documentReference = [$documentReference];
             }
 
-            if (!empty($this->additionalDocumentReferences)) {
-                foreach ($this->additionalDocumentReferences as $additionalDocumentReference) {
-                    $writer->write([
-                        Schema::CAC . $elementName => $reference,
-                    ]);
-                }
+        if (!empty($this->additionalDocumentReferences)) {
+            foreach ($this->additionalDocumentReferences as $additionalDocumentReference) {
+                $writer->write([
+                    Schema::CAC . $elementName => $reference,
+                ]);
             }
+        }
 
+        $writer->write([
+            Schema::CAC .
+            "AccountingSupplierParty" => $this->accountingSupplierParty,
+            Schema::CAC .
+            "AccountingCustomerParty" => $this->accountingCustomerParty,
+        ]);
+
+        if ($this->payeeParty != null) {
             $writer->write([
-                Schema::CAC .
-                "AccountingSupplierParty" => $this->accountingSupplierParty,
-                Schema::CAC .
-                "AccountingCustomerParty" => $this->accountingCustomerParty,
+                Schema::CAC . "PayeeParty" => $this->payeeParty,
             ]);
+        }
 
-            if ($this->payeeParty != null) {
-                $writer->write([
-                    Schema::CAC . "PayeeParty" => $this->payeeParty,
-                ]);
-            }
-
-            if ($this->delivery != null) {
-                $writer->write([
-                    Schema::CAC . "Delivery" => $this->delivery,
-                ]);
-            }
-
-            if ($this->paymentMeans !== null) {
-                foreach ($this->paymentMeans as $paymentMeans) {
-                    $writer->write([
-                        Schema::CAC . $paymentMeans->xmlTagName => $paymentMeans,
-                    ]);
-                }
-            }
-
-            if ($this->paymentTerms !== null) {
-                $writer->write([
-                    Schema::CAC . "PaymentTerms" => $this->paymentTerms,
-                ]);
-            }
-
-            if ($this->allowanceCharges !== null) {
-                foreach ($this->allowanceCharges as $allowanceCharge) {
-                    $writer->write([
-                        Schema::CAC . "AllowanceCharge" => $allowanceCharge,
-                    ]);
-                }
-            }
-
-            if ($this->taxTotal !== null) {
-                $writer->write([
-                    Schema::CAC . "TaxTotal" => $this->taxTotal,
-                ]);
-            }
-
-            // DebitNote uses RequestedMonetaryTotal instead of LegalMonetaryTotal
-            $monetaryTotalTagName = $this->xmlTagName === 'DebitNote' ? 'RequestedMonetaryTotal' : 'LegalMonetaryTotal';
+        if ($this->delivery != null) {
             $writer->write([
-                Schema::CAC . $monetaryTotalTagName => $this->legalMonetaryTotal,
+                Schema::CAC . "Delivery" => $this->delivery,
             ]);
+        }
 
-            foreach ($this->invoiceLines as $invoiceLine) {
+        if ($this->paymentMeans !== null) {
+            foreach ($this->paymentMeans as $paymentMeans) {
                 $writer->write([
-                    Schema::CAC . $invoiceLine->xmlTagName => $invoiceLine,
+                    Schema::CAC . $paymentMeans->xmlTagName => $paymentMeans,
                 ]);
             }
+        }
+
+        if ($this->paymentTerms !== null) {
+            $writer->write([
+                Schema::CAC . "PaymentTerms" => $this->paymentTerms,
+            ]);
+        }
+
+        if ($this->allowanceCharges !== null) {
+            foreach ($this->allowanceCharges as $allowanceCharge) {
+                $writer->write([
+                    Schema::CAC . "AllowanceCharge" => $allowanceCharge,
+                ]);
+            }
+        }
+
+        if ($this->taxTotal !== null) {
+            $writer->write([
+                Schema::CAC . "TaxTotal" => $this->taxTotal,
+            ]);
+        }
+
+        // DebitNote uses RequestedMonetaryTotal instead of LegalMonetaryTotal
+        $monetaryTotalTagName = $this->xmlTagName === 'DebitNote' ? 'RequestedMonetaryTotal' : 'LegalMonetaryTotal';
+        $writer->write([
+            Schema::CAC . $monetaryTotalTagName => $this->legalMonetaryTotal,
+        ]);
+
+        foreach ($this->invoiceLines as $invoiceLine) {
+            $writer->write([
+                Schema::CAC . $invoiceLine->xmlTagName => $invoiceLine,
+            ]);
         }
     }
 
