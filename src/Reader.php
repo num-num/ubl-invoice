@@ -56,6 +56,7 @@ class Reader
             Schema::CAC.        'PartyTaxScheme'              => fn ($reader) => PartyTaxScheme::xmlDeserialize($reader),
             Schema::CAC.        'OriginatorDocumentReference' => fn ($reader) => OriginatorDocumentReference::xmlDeserialize($reader),
             Schema::CAC.        'PayeeFinancialAccount'       => fn ($reader) => PayeeFinancialAccount::xmlDeserialize($reader),
+            Schema::CAC.        'PayerFinancialAccount'       => fn ($reader) => PayerFinancialAccount::xmlDeserialize($reader),
             Schema::CAC.        'PayeeParty'                  => fn ($reader) => PayeeParty::xmlDeserialize($reader),
             Schema::CAC.        'PaymentMandate'              => fn ($reader) => PaymentMandate::xmlDeserialize($reader),
             Schema::CAC.        'PaymentMeans'                => fn ($reader) => PaymentMeans::xmlDeserialize($reader),

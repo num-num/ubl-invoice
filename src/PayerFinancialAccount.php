@@ -12,6 +12,10 @@ use function Sabre\Xml\Deserializer\keyValue;
 class PayerFinancialAccount implements XmlSerializable, XmlDeserializable
 {
     public $xmlTagName = 'PayerFinancialAccount';
+
+    /**
+     * @var null|string
+     */
     private $id;
 
     public static function xmlDeserialize(Reader $reader)
@@ -24,17 +28,19 @@ class PayerFinancialAccount implements XmlSerializable, XmlDeserializable
 
     public function xmlSerialize(Writer $writer): void
     {
-        $writer->write([
-            Schema::CBC . 'ID' => $this->id,
-        ]);
+        if ($this->id !== null) {
+            $writer->write([
+                Schema::CBC . 'ID' => $this->id,
+            ]);
+        }
     }
 
-    public function getId(): string
+    public function getId(): ?string
     {
         return $this->id;
     }
 
-    public function setId(string $id): self
+    public function setId(?string $id): self
     {
         $this->id = $id;
 
