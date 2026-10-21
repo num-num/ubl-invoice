@@ -1,5 +1,4 @@
 # Next release
-
 ## Fixed
 
 - Fix document reference elements being written in the wrong order, producing XML that fails UBL schema validation
@@ -18,3 +17,7 @@
 ### Maintenance
 
 - Update dependency constraints to support Doctrine Collections 3.x
+
+## Added
+
+- Add the possibility to add multiple notes on invoice (needed for French's rules)
