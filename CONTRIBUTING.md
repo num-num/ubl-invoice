@@ -21,7 +21,7 @@ Please try to follow this workflow:
 
 ## Formatting ⚠️
 
-Please try to follow [PSR-12](https://www.php-fig.org/psr/psr-12/) rules when writing code. A PSR-12 compliant [phpcs.xml](phpcs.xml) is provided, so if your editor supports [phpcs](https://github.com/squizlabs/PHP_CodeSniffer), your editor should automatically warn you if you are deviating from PSR-12 compliant formatting.
+Please try to follow [PSR-12](https://www.php-fig.org/psr/psr-12/) rules when writing code. A PSR-12 compliant [phpcs.xml](phpcs.xml) is provided, so if your editor supports [phpcs](https://github.com/PHPCSStandards/PHP_CodeSniffer), your editor should automatically warn you if you are deviating from PSR-12 compliant formatting.
 
 You can also check code style manually by running `composer phpcs` in the projects' root folder on your disk.
 
