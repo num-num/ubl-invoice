@@ -811,6 +811,44 @@ class Invoice implements XmlSerializable, XmlDeserializable
     }
 
     /**
+     * The order in which the document reference elements have to be written.
+     *
+     * UBL 2.1 declares these elements in an xsd:sequence, so writing them in
+     * any other order produces a document that fails schema validation. The
+     * required order is not the same for every document type.
+     *
+     * Elements that a document type does not declare at all (ProjectReference
+     * on a CreditNote or DebitNote, OriginatorDocumentReference on a DebitNote)
+     * are written last, which keeps the previous behaviour for those documents.
+     *
+     * @return string[]
+     */
+    protected function documentReferenceOrder(): array
+    {
+        if ($this->xmlTagName === 'Invoice') {
+            return [
+                'BillingReference',
+                'DespatchDocumentReference',
+                'ReceiptDocumentReference',
+                'OriginatorDocumentReference',
+                'ContractDocumentReference',
+                'AdditionalDocumentReference',
+                'ProjectReference',
+            ];
+        }
+
+        return [
+            'BillingReference',
+            'DespatchDocumentReference',
+            'ReceiptDocumentReference',
+            'ContractDocumentReference',
+            'AdditionalDocumentReference',
+            'OriginatorDocumentReference',
+            'ProjectReference',
+        ];
+    }
+
+    /**
      * The xmlSerialize method is called during xml writing.
      * @param Writer $writer
      * @return void
@@ -911,115 +949,93 @@ class Invoice implements XmlSerializable, XmlDeserializable
             ]);
         }
 
-        if ($this->billingReference != null) {
-            $writer->write([
-                Schema::CAC . "BillingReference" => $this->billingReference,
-            ]);
-        }
+        $documentReferences = [
+            "BillingReference" => $this->billingReference,
+            "DespatchDocumentReference" => $this->despatchDocumentReference,
+            "ReceiptDocumentReference" => $this->receiptDocumentReference,
+            "OriginatorDocumentReference" => $this->originatorDocumentReference,
+            "ContractDocumentReference" => $this->contractDocumentReference,
+            "AdditionalDocumentReference" => $this->additionalDocumentReferences,
+            "ProjectReference" => $this->projectReference,
+        ];
 
-        if ($this->contractDocumentReference !== null) {
+        foreach ($this->documentReferenceOrder() as $elementName) {
+            $documentReference = $documentReferences[$elementName];
+
+            if ($documentReference === null) {
+                continue;
+            }
+
+            if (!is_array($documentReference)) {
+                $documentReference = [$documentReference];
+            }
+
+            if (!empty($this->additionalDocumentReferences)) {
+                foreach ($this->additionalDocumentReferences as $additionalDocumentReference) {
+                    $writer->write([
+                        Schema::CAC . $elementName => $reference,
+                    ]);
+                }
+            }
+
             $writer->write([
                 Schema::CAC .
-                "ContractDocumentReference" => $this->contractDocumentReference,
-            ]);
-        }
-
-        if ($this->despatchDocumentReference !== null) {
-            $writer->write([
+                "AccountingSupplierParty" => $this->accountingSupplierParty,
                 Schema::CAC .
-                "DespatchDocumentReference" => $this->despatchDocumentReference,
+                "AccountingCustomerParty" => $this->accountingCustomerParty,
             ]);
-        }
 
-        if ($this->receiptDocumentReference !== null) {
-            $writer->write([
-                Schema::CAC .
-                "ReceiptDocumentReference" => $this->receiptDocumentReference,
-            ]);
-        }
-
-        if (!empty($this->additionalDocumentReferences)) {
-            foreach (
-                $this->additionalDocumentReferences
-                as $additionalDocumentReference
-            ) {
+            if ($this->payeeParty != null) {
                 $writer->write([
-                    Schema::CAC .
-                    "AdditionalDocumentReference" => $additionalDocumentReference,
+                    Schema::CAC . "PayeeParty" => $this->payeeParty,
                 ]);
             }
-        }
 
-        if ($this->originatorDocumentReference !== null) {
-            $writer->write([
-                Schema::CAC .
-                "OriginatorDocumentReference" => $this->originatorDocumentReference,
-            ]);
-        }
-
-        if ($this->projectReference != null) {
-            $writer->write([
-                Schema::CAC . "ProjectReference" => $this->projectReference,
-            ]);
-        }
-
-        $writer->write([
-            Schema::CAC .
-            "AccountingSupplierParty" => $this->accountingSupplierParty,
-            Schema::CAC .
-            "AccountingCustomerParty" => $this->accountingCustomerParty,
-        ]);
-
-        if ($this->payeeParty != null) {
-            $writer->write([
-                Schema::CAC . "PayeeParty" => $this->payeeParty,
-            ]);
-        }
-
-        if ($this->delivery != null) {
-            $writer->write([
-                Schema::CAC . "Delivery" => $this->delivery,
-            ]);
-        }
-
-        if ($this->paymentMeans !== null) {
-            foreach ($this->paymentMeans as $paymentMeans) {
+            if ($this->delivery != null) {
                 $writer->write([
-                    Schema::CAC . $paymentMeans->xmlTagName => $paymentMeans,
+                    Schema::CAC . "Delivery" => $this->delivery,
                 ]);
             }
-        }
 
-        if ($this->paymentTerms !== null) {
-            $writer->write([
-                Schema::CAC . "PaymentTerms" => $this->paymentTerms,
-            ]);
-        }
+            if ($this->paymentMeans !== null) {
+                foreach ($this->paymentMeans as $paymentMeans) {
+                    $writer->write([
+                        Schema::CAC . $paymentMeans->xmlTagName => $paymentMeans,
+                    ]);
+                }
+            }
 
-        if ($this->allowanceCharges !== null) {
-            foreach ($this->allowanceCharges as $allowanceCharge) {
+            if ($this->paymentTerms !== null) {
                 $writer->write([
-                    Schema::CAC . "AllowanceCharge" => $allowanceCharge,
+                    Schema::CAC . "PaymentTerms" => $this->paymentTerms,
                 ]);
             }
-        }
 
-        if ($this->taxTotal !== null) {
+            if ($this->allowanceCharges !== null) {
+                foreach ($this->allowanceCharges as $allowanceCharge) {
+                    $writer->write([
+                        Schema::CAC . "AllowanceCharge" => $allowanceCharge,
+                    ]);
+                }
+            }
+
+            if ($this->taxTotal !== null) {
+                $writer->write([
+                    Schema::CAC . "TaxTotal" => $this->taxTotal,
+                ]);
+            }
+
+            // DebitNote uses RequestedMonetaryTotal instead of LegalMonetaryTotal
+            $monetaryTotalTagName = $this->xmlTagName === 'DebitNote' ? 'RequestedMonetaryTotal' : 'LegalMonetaryTotal';
             $writer->write([
-                Schema::CAC . "TaxTotal" => $this->taxTotal,
+                Schema::CAC . $monetaryTotalTagName => $this->legalMonetaryTotal,
             ]);
-        }
 
-        // DebitNote uses RequestedMonetaryTotal instead of LegalMonetaryTotal
-        $monetaryTotalTagName = $this->xmlTagName === 'DebitNote' ? 'RequestedMonetaryTotal' : 'LegalMonetaryTotal';
-        $writer->write([
-            Schema::CAC . $monetaryTotalTagName => $this->legalMonetaryTotal,
-        ]);
-
-        foreach ($this->invoiceLines as $invoiceLine) {
-            $writer->write([
-                Schema::CAC . $invoiceLine->xmlTagName => $invoiceLine,
-            ]);
+            foreach ($this->invoiceLines as $invoiceLine) {
+                $writer->write([
+                    Schema::CAC . $invoiceLine->xmlTagName => $invoiceLine,
+                ]);
+            }
         }
     }
 
