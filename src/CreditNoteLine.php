@@ -43,6 +43,8 @@ class CreditNoteLine extends InvoiceLine
 
         return (static::deserializedTag($mixedContent))
             ->setCreditedQuantity(isset($creditedQuantityTag) ? floatval($creditedQuantityTag['value']) : null)
+            ->setUnitCode($creditedQuantityTag['attributes']['unitCode'] ?? null)
+            ->setUnitCodeListId($creditedQuantityTag['attributes']['unitCodeListID'] ?? null)
         ;
     }
 }
