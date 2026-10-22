@@ -42,7 +42,7 @@ class Generator
         ]);
     }
 
-    public static function debitNote(DebitNote $debitNote, $currencyId = 'EUR')
+    public static function debitNote(DebitNote $debitNote, string $currencyId = 'EUR')
     {
         self::$currencyID = $currencyId;
 
