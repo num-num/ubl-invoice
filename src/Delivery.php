@@ -40,7 +40,7 @@ class Delivery implements XmlSerializable, XmlDeserializable
     /**
      * @return Address|null
      */
-    public function getDeliveryLocation()
+    public function getDeliveryLocation(): ?Address
     {
         return $this->deliveryLocation;
     }
@@ -58,7 +58,7 @@ class Delivery implements XmlSerializable, XmlDeserializable
     /**
      * @return Party|null
      */
-    public function getDeliveryParty()
+    public function getDeliveryParty(): ?Party
     {
         return $this->deliveryParty;
     }
@@ -116,14 +116,13 @@ class Delivery implements XmlSerializable, XmlDeserializable
             new ArrayCollection($keyValues[Schema::CAC . 'DeliveryLocation'] ?? [])
         );
 
-        $deliveryParty = ReaderHelper::getTag(
-            Schema::CAC . 'Party',
-            new ArrayCollection($keyValues[Schema::CAC . 'DeliveryParty'] ?? [])
-        );
+        // cac:DeliveryParty is itself a PartyType, so the Reader hydrates it
+        // into a Party directly and there is no nested cac:Party to look for.
+        $deliveryParty = $keyValues[Schema::CAC . 'DeliveryParty'] ?? null;
 
         return (new static())
             ->setActualDeliveryDate($actualDeliveryDate)
             ->setDeliveryLocation($deliveryLocation['value'] ?? null)
-            ->setDeliveryParty($deliveryParty['value'] ?? null);
+            ->setDeliveryParty($deliveryParty);
     }
 }
