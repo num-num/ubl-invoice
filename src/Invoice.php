@@ -135,10 +135,10 @@ class Invoice implements XmlSerializable, XmlDeserializable
     }
 
     /**
-     * @param bool $copyIndicator
+     * @param bool|null $copyIndicator
      * @return static
      */
-    public function setCopyIndicator(bool $copyIndicator)
+    public function setCopyIndicator(?bool $copyIndicator)
     {
         $this->copyIndicator = $copyIndicator;
         return $this;
@@ -317,11 +317,11 @@ class Invoice implements XmlSerializable, XmlDeserializable
     }
 
     /**
-     * @param AccountingParty $accountingSupplierParty
+     * @param AccountingParty|null $accountingSupplierParty
      * @return static
      */
     public function setAccountingSupplierParty(
-        AccountingParty $accountingSupplierParty
+        ?AccountingParty $accountingSupplierParty
     ) {
         $this->accountingSupplierParty = $accountingSupplierParty;
         return $this;
@@ -336,11 +336,11 @@ class Invoice implements XmlSerializable, XmlDeserializable
     }
 
     /**
-     * @param AccountingParty $accountingCustomerParty
+     * @param AccountingParty|null $accountingCustomerParty
      * @return static
      */
     public function setAccountingCustomerParty(
-        AccountingParty $accountingCustomerParty
+        ?AccountingParty $accountingCustomerParty
     ) {
         $this->accountingCustomerParty = $accountingCustomerParty;
         return $this;
@@ -355,11 +355,11 @@ class Invoice implements XmlSerializable, XmlDeserializable
     }
 
     /**
-     * @param Contact $accountingCustomerPartyContact
+     * @param Contact|null $accountingCustomerPartyContact
      * @return Invoice
      */
     public function setAccountingCustomerPartyContact(
-        Contact $accountingCustomerPartyContact
+        ?Contact $accountingCustomerPartyContact
     ): Invoice {
         $this->accountingCustomerPartyContact = $accountingCustomerPartyContact;
         return $this;
@@ -410,10 +410,10 @@ class Invoice implements XmlSerializable, XmlDeserializable
     }
 
     /**
-     * @param TaxTotal $taxTotal
+     * @param TaxTotal|null $taxTotal
      * @return static
      */
-    public function setTaxTotal(TaxTotal $taxTotal)
+    public function setTaxTotal(?TaxTotal $taxTotal)
     {
         $this->taxTotal = $taxTotal;
         return $this;
@@ -428,11 +428,11 @@ class Invoice implements XmlSerializable, XmlDeserializable
     }
 
     /**
-     * @param LegalMonetaryTotal $legalMonetaryTotal
+     * @param LegalMonetaryTotal|null $legalMonetaryTotal
      * @return static
      */
     public function setLegalMonetaryTotal(
-        LegalMonetaryTotal $legalMonetaryTotal
+        ?LegalMonetaryTotal $legalMonetaryTotal
     ) {
         $this->legalMonetaryTotal = $legalMonetaryTotal;
         return $this;
@@ -447,10 +447,10 @@ class Invoice implements XmlSerializable, XmlDeserializable
     }
 
     /**
-     * @param InvoiceLine[] $invoiceLines
+     * @param InvoiceLine[]|null $invoiceLines
      * @return static
      */
-    public function setInvoiceLines(array $invoiceLines)
+    public function setInvoiceLines(?array $invoiceLines)
     {
         $this->invoiceLines = $invoiceLines;
         return $this;
@@ -465,10 +465,10 @@ class Invoice implements XmlSerializable, XmlDeserializable
     }
 
     /**
-     * @param AllowanceCharge[] $allowanceCharges
+     * @param AllowanceCharge[]|null $allowanceCharges
      * @return static
      */
-    public function setAllowanceCharges(array $allowanceCharges)
+    public function setAllowanceCharges(?array $allowanceCharges)
     {
         $this->allowanceCharges = $allowanceCharges;
         return $this;
@@ -525,11 +525,11 @@ class Invoice implements XmlSerializable, XmlDeserializable
     }
 
     /**
-     * @param ProjectReference $projectReference
+     * @param ProjectReference|null $projectReference
      * @return Invoice
      */
     public function setProjectReference(
-        ProjectReference $projectReference
+        ?ProjectReference $projectReference
     ): Invoice {
         $this->projectReference = $projectReference;
         return $this;

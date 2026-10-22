@@ -2,6 +2,8 @@
 
 namespace NumNum\UBL\Tests\Read;
 
+use NumNum\UBL\AccountingParty;
+use NumNum\UBL\Invoice;
 use NumNum\UBL\Reader;
 use NumNum\UBL\TaxCategory;
 use NumNum\UBL\TaxSubTotal;
@@ -130,5 +132,67 @@ XML;
 
         $this->assertEquals('S', $taxCategory->getID());
         $this->assertEquals(21, $taxCategory->getPercent());
+    }
+
+    /** @test */
+    public function testInvoiceWithoutTaxTotalCanBeRead()
+    {
+        // cac:TaxTotal is optional in UBL 2.1, so reading a document that
+        // leaves it out has to yield an Invoice with a null tax total rather
+        // than fail.
+        $xml = <<<XML
+<?xml version="1.0" encoding="UTF-8"?>
+<Invoice xmlns="urn:oasis:names:specification:ubl:schema:xsd:Invoice-2"
+         xmlns:cac="urn:oasis:names:specification:ubl:schema:xsd:CommonAggregateComponents-2"
+         xmlns:cbc="urn:oasis:names:specification:ubl:schema:xsd:CommonBasicComponents-2">
+    <cbc:UBLVersionID>2.1</cbc:UBLVersionID>
+    <cbc:ID>123</cbc:ID>
+    <cbc:IssueDate>2024-01-01</cbc:IssueDate>
+    <cbc:InvoiceTypeCode>380</cbc:InvoiceTypeCode>
+    <cbc:DocumentCurrencyCode>EUR</cbc:DocumentCurrencyCode>
+    <cac:AccountingSupplierParty>
+        <cac:Party>
+            <cac:PostalAddress>
+                <cbc:StreetName>Korenmarkt</cbc:StreetName>
+                <cbc:CityName>Gent</cbc:CityName>
+                <cbc:PostalZone>9000</cbc:PostalZone>
+                <cac:Country>
+                    <cbc:IdentificationCode>BE</cbc:IdentificationCode>
+                </cac:Country>
+            </cac:PostalAddress>
+        </cac:Party>
+    </cac:AccountingSupplierParty>
+    <cac:AccountingCustomerParty>
+        <cac:Party>
+            <cac:PostalAddress>
+                <cbc:StreetName>Customer Street</cbc:StreetName>
+                <cbc:CityName>Amsterdam</cbc:CityName>
+                <cbc:PostalZone>1000</cbc:PostalZone>
+                <cac:Country>
+                    <cbc:IdentificationCode>NL</cbc:IdentificationCode>
+                </cac:Country>
+            </cac:PostalAddress>
+        </cac:Party>
+    </cac:AccountingCustomerParty>
+    <cac:LegalMonetaryTotal>
+        <cbc:PayableAmount currencyID="EUR">119.79</cbc:PayableAmount>
+    </cac:LegalMonetaryTotal>
+    <cac:InvoiceLine>
+        <cbc:ID>1</cbc:ID>
+        <cbc:InvoicedQuantity unitCode="C62">1</cbc:InvoicedQuantity>
+        <cbc:LineExtensionAmount currencyID="EUR">99</cbc:LineExtensionAmount>
+    </cac:InvoiceLine>
+</Invoice>
+XML;
+
+        $invoice = Reader::ubl()->parse($xml);
+
+        $this->assertInstanceOf(Invoice::class, $invoice);
+        $this->assertNull($invoice->getTaxTotal());
+        $this->assertEquals('123', $invoice->getId());
+        $this->assertInstanceOf(
+            AccountingParty::class,
+            $invoice->getAccountingSupplierParty()
+        );
     }
 }
