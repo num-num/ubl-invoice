@@ -4,7 +4,7 @@
 
 ### Stricter types and new required PHP extensions
 
-Version 3.0 adds native type declarations throughout the library. Most code is unaffected, but three changes can break existing projects:
+Version 3.0 adds native type declarations throughout the library. Most code is unaffected, but these changes can break existing projects:
 
 **Typed public and protected properties.** The following properties now carry a native type:
 
@@ -20,7 +20,7 @@ A subclass that redeclares one of these properties without the same type now cau
 
 **Stricter parameter types.** `Generator::invoice()`, `Generator::creditNote()`, `Generator::debitNote()` and `Reader::ubl()` now declare their `$currencyId` parameter as `string`, and most setters declare native parameter types. Passing `null` or an object of another type where it previously happened to work now throws a `TypeError`.
 
-**New required PHP extensions.** `composer.json` now requires `ext-libxml` (reading large UBL files) and `ext-fileinfo` (detecting the mime type of file attachments). Both are enabled by default in most PHP builds, but slim Docker images may need them added.
+**New required PHP extensions.** `composer.json` now requires `ext-libxml` (for reading UBL files) and `ext-fileinfo` (for detecting the mime type of file attachments). Both are enabled by default in most PHP builds, but slim Docker images may need them added.
 
 ### Quick migration checklist
 
