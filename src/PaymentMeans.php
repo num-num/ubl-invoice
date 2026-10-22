@@ -15,7 +15,7 @@ use Sabre\Xml\XmlSerializable;
 class PaymentMeans implements XmlSerializable, XmlDeserializable
 {
     public string $xmlTagName = 'PaymentMeans';
-    private string $paymentMeansCode = UNCL4461::INSTRUMENT_NOT_DEFINED;
+    private ?string $paymentMeansCode = UNCL4461::INSTRUMENT_NOT_DEFINED;
     private array $paymentMeansCodeAttributes = [
         'listID'   => 'UN/ECE 4461',
         'listName' => 'Payment Means',
