@@ -13,12 +13,12 @@ use Sabre\Xml\XmlSerializable;
 
 class PartyTaxScheme implements XmlSerializable, XmlDeserializable
 {
-    private $registrationName;
-    private $companyId;
-    private $taxScheme;
+    private ?string $registrationName = null;
+    private ?string $companyId = null;
+    private ?TaxScheme $taxScheme = null;
 
     /**
-     * @return string
+     * @return string|null
      */
     public function getRegistrationName(): ?string
     {
@@ -26,17 +26,17 @@ class PartyTaxScheme implements XmlSerializable, XmlDeserializable
     }
 
     /**
-     * @param string $registrationName
+     * @param string|null $registrationName
      * @return static
      */
-    public function setRegistrationName($registrationName)
+    public function setRegistrationName(?string $registrationName)
     {
         $this->registrationName = $registrationName;
         return $this;
     }
 
     /**
-     * @return string
+     * @return string|null
      */
     public function getCompanyId(): ?string
     {
@@ -44,17 +44,17 @@ class PartyTaxScheme implements XmlSerializable, XmlDeserializable
     }
 
     /**
-     * @param string $companyId
+     * @param string|null $companyId
      * @return static
      */
-    public function setCompanyId($companyId)
+    public function setCompanyId(?string $companyId)
     {
         $this->companyId = $companyId;
         return $this;
     }
 
     /**
-     * @return ?TaxScheme
+     * @return TaxScheme|null
      */
     public function getTaxScheme(): ?TaxScheme
     {
@@ -62,7 +62,7 @@ class PartyTaxScheme implements XmlSerializable, XmlDeserializable
     }
 
     /**
-     * @param TaxScheme $taxScheme
+     * @param TaxScheme|null $taxScheme
      * @return static
      */
     public function setTaxScheme(?TaxScheme $taxScheme)
@@ -111,7 +111,7 @@ class PartyTaxScheme implements XmlSerializable, XmlDeserializable
 
     /**
      * The xmlDeserialize method is called during xml reading.
-     * @param Reader $xml
+     * @param Reader $reader
      * @return static
      */
     public static function xmlDeserialize(Reader $reader)
@@ -121,7 +121,6 @@ class PartyTaxScheme implements XmlSerializable, XmlDeserializable
         return (new static())
             ->setRegistrationName($keyValues[Schema::CBC . 'RegistrationName'] ?? null)
             ->setCompanyId($keyValues[Schema::CBC . 'CompanyID'] ?? null)
-            ->setTaxScheme($keyValues[Schema::CAC . 'TaxScheme'] ?? null)
-        ;
+            ->setTaxScheme($keyValues[Schema::CAC . 'TaxScheme'] ?? null);
     }
 }

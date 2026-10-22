@@ -2,6 +2,7 @@
 
 namespace NumNum\UBL;
 
+use Exception;
 use function Sabre\Xml\Deserializer\keyValue;
 
 use DateTime;
@@ -13,12 +14,12 @@ use Sabre\Xml\XmlSerializable;
 
 class InvoiceDocumentReference implements XmlSerializable, XmlDeserializable
 {
-    private $originalInvoiceId;
-    private $issueDate;
+    private ?string $originalInvoiceId = null;
+    private ?DateTime $issueDate = null;
 
     /**
      * Get the id of the invoice that is being credited
-     * @return string
+     * @return string|null
      */
     public function getOriginalInvoiceId(): ?string
     {
@@ -40,7 +41,7 @@ class InvoiceDocumentReference implements XmlSerializable, XmlDeserializable
     /**
      * Get the issue date of the original invoice that is being credited
      *
-     * @return ?DateTime
+     * @return DateTime|null
      */
     public function getIssueDate(): ?DateTime
     {
@@ -61,8 +62,8 @@ class InvoiceDocumentReference implements XmlSerializable, XmlDeserializable
     /**
      * The validate function that is called during xml writing to valid the data of the object.
      *
-     * @throws InvalidArgumentException An error with information about required data that is missing to write the XML
      * @return void
+     * @throws InvalidArgumentException An error with information about required data that is missing to write the XML
      */
     public function validate()
     {
@@ -99,16 +100,20 @@ class InvoiceDocumentReference implements XmlSerializable, XmlDeserializable
 
     /**
      * The xmlDeserialize method is called during xml reading.
-     * @param Reader $xml
+     * @param Reader $reader
      * @return static
+     * @throws Exception
      */
     public static function xmlDeserialize(Reader $reader)
     {
         $mixedContent = keyValue($reader);
 
+        $issueDate = isset($mixedContent[Schema::CBC . 'IssueDate'])
+            ? new DateTime($mixedContent[Schema::CBC . 'IssueDate'])
+            : null;
+
         return (new static())
             ->setOriginalInvoiceId($mixedContent[Schema::CBC . 'ID'] ?? null)
-            ->setIssueDate(isset($mixedContent[Schema::CBC . 'IssueDate']) ? new DateTime($mixedContent[Schema::CBC . 'IssueDate']) : null)
-        ;
+            ->setIssueDate($issueDate);
     }
 }

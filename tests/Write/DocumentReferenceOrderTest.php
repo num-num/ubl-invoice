@@ -2,6 +2,31 @@
 
 namespace NumNum\UBL\Tests\Write;
 
+use DateTime;
+use DOMDocument;
+use DOMElement;
+use NumNum\UBL\AccountingParty;
+use NumNum\UBL\AdditionalDocumentReference;
+use NumNum\UBL\Address;
+use NumNum\UBL\BillingReference;
+use NumNum\UBL\ContractDocumentReference;
+use NumNum\UBL\Country;
+use NumNum\UBL\CreditNote;
+use NumNum\UBL\DebitNote;
+use NumNum\UBL\DespatchDocumentReference;
+use NumNum\UBL\Generator;
+use NumNum\UBL\Invoice;
+use NumNum\UBL\InvoiceDocumentReference;
+use NumNum\UBL\InvoiceLine;
+use NumNum\UBL\Item;
+use NumNum\UBL\LegalMonetaryTotal;
+use NumNum\UBL\OrderReference;
+use NumNum\UBL\OriginatorDocumentReference;
+use NumNum\UBL\Party;
+use NumNum\UBL\Price;
+use NumNum\UBL\ProjectReference;
+use NumNum\UBL\ReceiptDocumentReference;
+use NumNum\UBL\UnitCode;
 use PHPUnit\Framework\TestCase;
 
 /**
@@ -15,40 +40,40 @@ class DocumentReferenceOrderTest extends TestCase
      * Every document reference element this library can write, applied to a
      * document that is otherwise minimal but complete.
      *
-     * @param \NumNum\UBL\Invoice $document
-     * @return \NumNum\UBL\Invoice
+     * @param Invoice $document
+     * @return Invoice
      */
-    private function withAllDocumentReferences($document)
+    private function withAllDocumentReferences(Invoice $document): Invoice
     {
-        $country = (new \NumNum\UBL\Country())
+        $country = (new Country())
             ->setIdentificationCode('BE');
 
-        $address = (new \NumNum\UBL\Address())
+        $address = (new Address())
             ->setStreetName('Korenmarkt')
             ->setCityName('Gent')
             ->setPostalZone('9000')
             ->setCountry($country);
 
-        $supplierCompany = (new \NumNum\UBL\Party())
+        $supplierCompany = (new Party())
             ->setName('Supplier Company Name')
             ->setPostalAddress($address);
 
-        $clientCompany = (new \NumNum\UBL\Party())
+        $clientCompany = (new Party())
             ->setName('Client Company Name')
             ->setPostalAddress($address);
 
-        $legalMonetaryTotal = (new \NumNum\UBL\LegalMonetaryTotal())
+        $legalMonetaryTotal = (new LegalMonetaryTotal())
             ->setPayableAmount(12.1)
             ->setTaxExclusiveAmount(10);
 
-        $price = (new \NumNum\UBL\Price())
+        $price = (new Price())
             ->setPriceAmount(10)
-            ->setUnitCode(\NumNum\UBL\UnitCode::UNIT);
+            ->setUnitCode(UnitCode::UNIT);
 
-        $item = (new \NumNum\UBL\Item())
+        $item = (new Item())
             ->setName('Product Name');
 
-        $invoiceLine = (new \NumNum\UBL\InvoiceLine())
+        $invoiceLine = (new InvoiceLine())
             ->setId(1)
             ->setItem($item)
             ->setPrice($price)
@@ -57,35 +82,35 @@ class DocumentReferenceOrderTest extends TestCase
 
         return $document
             ->setId(1234)
-            ->setIssueDate(new \DateTime())
+            ->setIssueDate(new DateTime())
             ->setAccountingSupplierParty(
-                (new \NumNum\UBL\AccountingParty())->setParty($supplierCompany)
+                (new AccountingParty())->setParty($supplierCompany)
             )
             ->setAccountingCustomerParty(
-                (new \NumNum\UBL\AccountingParty())->setParty($clientCompany)
+                (new AccountingParty())->setParty($clientCompany)
             )
             ->setInvoiceLines([$invoiceLine])
             ->setLegalMonetaryTotal($legalMonetaryTotal)
-            ->setOrderReference((new \NumNum\UBL\OrderReference())->setId('ORD-1'))
+            ->setOrderReference((new OrderReference())->setId('ORD-1'))
             ->setBillingReference(
-                (new \NumNum\UBL\BillingReference())->setInvoiceDocumentReference(
-                    (new \NumNum\UBL\InvoiceDocumentReference())->setOriginalInvoiceId('PREC-1')
+                (new BillingReference())->setInvoiceDocumentReference(
+                    (new InvoiceDocumentReference())->setOriginalInvoiceId('PREC-1')
                 )
             )
             ->setDespatchDocumentReference(
-                (new \NumNum\UBL\DespatchDocumentReference())->setId('DESP-1')
+                (new DespatchDocumentReference())->setId('DESP-1')
             )
             ->setReceiptDocumentReference(
-                (new \NumNum\UBL\ReceiptDocumentReference())->setId('RCPT-1')
+                (new ReceiptDocumentReference())->setId('RCPT-1')
             )
             ->setOriginatorDocumentReference(
-                (new \NumNum\UBL\OriginatorDocumentReference())->setId('ORIG-1')
+                (new OriginatorDocumentReference())->setId('ORIG-1')
             )
             ->setContractDocumentReference(
-                (new \NumNum\UBL\ContractDocumentReference())->setId('CTR-1')
+                (new ContractDocumentReference())->setId('CTR-1')
             )
             ->setAdditionalDocumentReferences([
-                (new \NumNum\UBL\AdditionalDocumentReference())->setId('ADD-1'),
+                (new AdditionalDocumentReference())->setId('ADD-1'),
             ]);
     }
 
@@ -98,13 +123,13 @@ class DocumentReferenceOrderTest extends TestCase
      */
     private function referenceElementsIn(string $xml): array
     {
-        $dom = new \DOMDocument();
+        $dom = new DOMDocument();
         $dom->loadXML($xml);
 
         $elements = [];
 
         foreach ($dom->documentElement->childNodes as $node) {
-            if (!$node instanceof \DOMElement) {
+            if (!$node instanceof DOMElement) {
                 continue;
             }
 
@@ -119,10 +144,10 @@ class DocumentReferenceOrderTest extends TestCase
     /** @test */
     public function testInvoiceWritesDocumentReferencesInSchemaOrder()
     {
-        $invoice = $this->withAllDocumentReferences(new \NumNum\UBL\Invoice());
-        $invoice->setProjectReference((new \NumNum\UBL\ProjectReference())->setId('PRJ-1'));
+        $invoice = $this->withAllDocumentReferences(new Invoice());
+        $invoice->setProjectReference((new ProjectReference())->setId('PRJ-1'));
 
-        $xml = (new \NumNum\UBL\Generator())->invoice($invoice);
+        $xml = (new Generator())->invoice($invoice);
 
         $this->assertEquals([
             'OrderReference',
@@ -139,9 +164,9 @@ class DocumentReferenceOrderTest extends TestCase
     /** @test */
     public function testCreditNoteWritesDocumentReferencesInSchemaOrder()
     {
-        $creditNote = $this->withAllDocumentReferences(new \NumNum\UBL\CreditNote());
+        $creditNote = $this->withAllDocumentReferences(new CreditNote());
 
-        $xml = (new \NumNum\UBL\Generator())->creditNote($creditNote);
+        $xml = (new Generator())->creditNote($creditNote);
 
         // A CreditNote puts ContractDocumentReference before, and
         // OriginatorDocumentReference after, AdditionalDocumentReference.
@@ -159,9 +184,9 @@ class DocumentReferenceOrderTest extends TestCase
     /** @test */
     public function testDebitNoteWritesDocumentReferencesInSchemaOrder()
     {
-        $debitNote = $this->withAllDocumentReferences(new \NumNum\UBL\DebitNote());
+        $debitNote = $this->withAllDocumentReferences(new DebitNote());
 
-        $xml = (new \NumNum\UBL\Generator())->debitNote($debitNote);
+        $xml = (new Generator())->debitNote($debitNote);
 
         $this->assertEquals([
             'OrderReference',
@@ -177,12 +202,12 @@ class DocumentReferenceOrderTest extends TestCase
     /** @test */
     public function testOmittedDocumentReferencesAreNotWritten()
     {
-        $invoice = $this->withAllDocumentReferences(new \NumNum\UBL\Invoice())
+        $invoice = $this->withAllDocumentReferences(new Invoice())
             ->setDespatchDocumentReference(null)
             ->setOriginatorDocumentReference(null)
             ->setAdditionalDocumentReferences([]);
 
-        $xml = (new \NumNum\UBL\Generator())->invoice($invoice);
+        $xml = (new Generator())->invoice($invoice);
 
         $this->assertEquals([
             'OrderReference',

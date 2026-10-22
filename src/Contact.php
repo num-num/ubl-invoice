@@ -11,14 +11,14 @@ use Sabre\Xml\XmlSerializable;
 
 class Contact implements XmlSerializable, XmlDeserializable
 {
-    private $id;
-    private $name;
-    private $telephone;
-    private $telefax;
-    private $electronicMail;
+    private ?string $id = null;
+    private ?string $name = null;
+    private ?string $telephone = null;
+    private ?string $telefax = null;
+    private ?string $electronicMail = null;
 
     /**
-     * @return string
+     * @return string|null
      */
     public function getId(): ?string
     {
@@ -36,7 +36,7 @@ class Contact implements XmlSerializable, XmlDeserializable
     }
 
     /**
-     * @return string
+     * @return string|null
      */
     public function getName(): ?string
     {
@@ -54,7 +54,7 @@ class Contact implements XmlSerializable, XmlDeserializable
     }
 
     /**
-     * @return mixed
+     * @return string|null
      */
     public function getTelephone(): ?string
     {
@@ -62,7 +62,7 @@ class Contact implements XmlSerializable, XmlDeserializable
     }
 
     /**
-     * @param string $telephone
+     * @param string|null $telephone
      * @return static
      */
     public function setTelephone(?string $telephone)
@@ -72,7 +72,7 @@ class Contact implements XmlSerializable, XmlDeserializable
     }
 
     /**
-     * @return string
+     * @return string|null
      */
     public function getTelefax(): ?string
     {
@@ -80,7 +80,7 @@ class Contact implements XmlSerializable, XmlDeserializable
     }
 
     /**
-     * @param string $telefax
+     * @param string|null $telefax
      * @return static
      */
     public function setTelefax(?string $telefax)
@@ -90,7 +90,7 @@ class Contact implements XmlSerializable, XmlDeserializable
     }
 
     /**
-     * @return string
+     * @return string|null
      */
     public function getElectronicMail(): ?string
     {
@@ -98,7 +98,7 @@ class Contact implements XmlSerializable, XmlDeserializable
     }
 
     /**
-     * @param string $electronicMail
+     * @param string|null $electronicMail
      * @return static
      */
     public function setElectronicMail(?string $electronicMail)
@@ -148,7 +148,7 @@ class Contact implements XmlSerializable, XmlDeserializable
 
     /**
      * The xmlDeserialize method is called during xml reading.
-     * @param Reader $xml
+     * @param Reader $reader
      * @return static
      */
     public static function xmlDeserialize(Reader $reader)
@@ -160,6 +160,5 @@ class Contact implements XmlSerializable, XmlDeserializable
             ->setTelephone($keyValues[Schema::CBC . 'Telephone'] ?? null)
             ->setTelefax($keyValues[Schema::CBC . 'Telefax'] ?? null)
             ->setElectronicMail($keyValues[Schema::CBC . 'ElectronicMail'] ?? null);
-        ;
     }
 }

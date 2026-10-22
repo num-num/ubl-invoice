@@ -15,7 +15,7 @@ class Country implements XmlSerializable, XmlDeserializable
     private $listId;
 
     /**
-     * @return mixed
+     * @return string|null
      */
     public function getIdentificationCode(): ?string
     {
@@ -33,7 +33,7 @@ class Country implements XmlSerializable, XmlDeserializable
     }
 
     /**
-     * @return mixed
+     * @return string|null
      */
     public function getListId(): ?string
     {
@@ -41,7 +41,7 @@ class Country implements XmlSerializable, XmlDeserializable
     }
 
     /**
-     * @param mixed $listId
+     * @param string|null $listId
      * @return static
      */
     public function setListId(?string $listId)
@@ -73,7 +73,7 @@ class Country implements XmlSerializable, XmlDeserializable
 
     /**
      * The xmlDeserialize method is called during xml reading.
-     * @param Reader $xml
+     * @param Reader $reader
      * @return static
      */
     public static function xmlDeserialize(Reader $reader)
@@ -82,7 +82,6 @@ class Country implements XmlSerializable, XmlDeserializable
 
         return (new static())
             ->setIdentificationCode($keyValues[Schema::CBC . 'IdentificationCode'])
-            ->setListId($keyValues[Schema::CBC . 'IdentificationCode']['attributes']['listID'] ?? null)
-        ;
+            ->setListId($keyValues[Schema::CBC . 'IdentificationCode']['attributes']['listID'] ?? null);
     }
 }

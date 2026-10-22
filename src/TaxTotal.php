@@ -14,11 +14,11 @@ use Sabre\Xml\XmlSerializable;
 
 class TaxTotal implements XmlSerializable, XmlDeserializable
 {
-    private $taxAmount;
-    private $taxSubTotals = [];
+    private ?float $taxAmount = null;
+    private array $taxSubTotals = [];
 
     /**
-     * @return mixed
+     * @return float|null
      */
     public function getTaxAmount(): ?float
     {
@@ -26,7 +26,7 @@ class TaxTotal implements XmlSerializable, XmlDeserializable
     }
 
     /**
-     * @param mixed $taxAmount
+     * @param float|null $taxAmount
      * @return static
      */
     public function setTaxAmount(?float $taxAmount)
@@ -44,7 +44,7 @@ class TaxTotal implements XmlSerializable, XmlDeserializable
     }
 
     /**
-     * @param array<TaxSubTotal> $taxSubTotal
+     * @param array $taxSubTotals
      * @return static
      */
     public function setTaxSubTotals(array $taxSubTotals)
@@ -66,8 +66,8 @@ class TaxTotal implements XmlSerializable, XmlDeserializable
     /**
      * The validate function that is called during xml writing to valid the data of the object.
      *
-     * @throws InvalidArgumentException An error with information about required data that is missing to write the XML
      * @return void
+     * @throws InvalidArgumentException An error with information about required data that is missing to write the XML
      */
     public function validate()
     {

@@ -17,10 +17,10 @@ use function Sabre\Xml\Deserializer\keyValue;
  */
 class ReceiptDocumentReference implements XmlSerializable, XmlDeserializable
 {
-    private $id;
+    private ?string $id = null;
 
     /**
-     * @return string
+     * @return string|null
      */
     public function getId(): ?string
     {
@@ -28,7 +28,7 @@ class ReceiptDocumentReference implements XmlSerializable, XmlDeserializable
     }
 
     /**
-     * @param string $id
+     * @param string|null $id
      * @return static
      */
     public function setId(?string $id)

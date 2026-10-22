@@ -26,4 +26,3 @@ class DespatchDocumentReferenceTest extends TestCase
         $this->assertEquals('DESP-2024-001', $despatchDocumentReference->getId());
     }
 }
-

@@ -15,15 +15,15 @@ use Sabre\Xml\XmlSerializable;
 
 class Attachment implements XmlSerializable, XmlDeserializable
 {
-    private $filePath;
-    private $externalReference;
-    private $base64Content;
-    private $fileName;
-    private $mimeType;
+    private ?string $filePath = null;
+    private ?string $externalReference = null;
+    private ?string $base64Content = null;
+    private ?string $fileName = null;
+    private ?string $mimeType = null;
 
     /**
-     * @throws Exception exception when the mime type cannot be determined
      * @return string
+     * @throws Exception exception when the mime type cannot be determined
      */
     public function getFilePathMimeType(): string
     {
@@ -35,7 +35,7 @@ class Attachment implements XmlSerializable, XmlDeserializable
     }
 
     /**
-     * @return string
+     * @return string|null
      */
     public function getFilePath(): ?string
     {
@@ -53,7 +53,7 @@ class Attachment implements XmlSerializable, XmlDeserializable
     }
 
     /**
-     * @return string
+     * @return string|null
      */
     public function getExternalReference(): ?string
     {
@@ -70,6 +70,9 @@ class Attachment implements XmlSerializable, XmlDeserializable
         return $this;
     }
 
+    /**
+     * @return string|null
+     */
     public function getBase64Content(): ?string
     {
         return $this->base64Content;
@@ -91,7 +94,7 @@ class Attachment implements XmlSerializable, XmlDeserializable
     }
 
     /**
-     * @return ?string
+     * @return string|null
      */
     public function getFileName(): ?string
     {
@@ -109,7 +112,7 @@ class Attachment implements XmlSerializable, XmlDeserializable
     }
 
     /**
-     * @return ?string
+     * @return string|null
      */
     public function getMimeType(): ?string
     {
@@ -129,17 +132,19 @@ class Attachment implements XmlSerializable, XmlDeserializable
     /**
      * The validate function that is called during xml writing to valid the data of the object.
      *
-     * @throws InvalidArgumentException An error with information about required data that is missing to write the XML
      * @return void
+     * @throws InvalidArgumentException An error with information about required data that is missing to write the XML
      */
     public function validate()
     {
         if ($this->filePath === null && $this->externalReference === null && $this->base64Content === null) {
-            throw new InvalidArgumentException('Attachment must have a filePath, an externalReference, or a fileContent');
+            $message = 'Attachment must have a filePath, an externalReference, or a fileContent';
+            throw new InvalidArgumentException($message);
         }
 
         if ($this->base64Content !== null && $this->mimeType === null) {
-            throw new InvalidArgumentException('Using base64Content, you need to define a mimeType by also using setFileMimeType');
+            $message = 'Using base64Content, you need to define a mimeType by also using setFileMimeType';
+            throw new InvalidArgumentException($message);
         }
 
         if ($this->filePath !== null && !file_exists($this->filePath)) {
@@ -152,6 +157,7 @@ class Attachment implements XmlSerializable, XmlDeserializable
      *
      * @param Writer $writer
      * @return void
+     * @throws Exception
      */
     public function xmlSerialize(Writer $writer): void
     {
@@ -188,7 +194,7 @@ class Attachment implements XmlSerializable, XmlDeserializable
 
     /**
      * The xmlDeserialize method is called during xml reading.
-     * @param Reader $xml
+     * @param Reader $reader
      * @return static
      */
     public static function xmlDeserialize(Reader $reader)
