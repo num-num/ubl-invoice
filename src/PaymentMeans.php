@@ -159,11 +159,13 @@ class PaymentMeans implements XmlSerializable, XmlDeserializable
 
     public function xmlSerialize(Writer $writer): void
     {
-        $writer->write([
-            'name'       => Schema::CBC . 'PaymentMeansCode',
-            'value'      => $this->paymentMeansCode,
-            'attributes' => $this->paymentMeansCodeAttributes
-        ]);
+        if ($this->getPaymentMeansCode() !== null) {
+            $writer->write([
+                'name'       => Schema::CBC . 'PaymentMeansCode',
+                'value'      => $this->getPaymentMeansCode(),
+                'attributes' => $this->paymentMeansCodeAttributes
+            ]);
+        }
 
         if ($this->getPaymentDueDate() !== null) {
             $writer->write([
