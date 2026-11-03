@@ -14,7 +14,7 @@ class PaymentMandate implements XmlSerializable, XmlDeserializable
     public string $xmlTagName = 'PaymentMandate';
 
     private ?string $id = null;
-    private ?PayeeFinancialAccount $payeeFinancialAccount = null;
+    private ?PayerFinancialAccount $payerFinancialAccount = null;
 
     /**
      * @return string|null
@@ -35,47 +35,44 @@ class PaymentMandate implements XmlSerializable, XmlDeserializable
     }
 
     /**
-     * @return PayeeFinancialAccount|null
+     * @return PayerFinancialAccount|null
      */
-    public function getPayeeFinancialAccount(): ?PayeeFinancialAccount
+    public function getPayerFinancialAccount(): ?PayerFinancialAccount
     {
-        return $this->payeeFinancialAccount;
+        return $this->payerFinancialAccount;
     }
 
     /**
-     * @param PayeeFinancialAccount|null $payeeFinancialAccount
+     * @param PayerFinancialAccount|null $payerFinancialAccount
      * @return static
      */
-    public function setPayeeFinancialAccount(?PayeeFinancialAccount $payeeFinancialAccount)
+    public function setPayerFinancialAccount(?PayerFinancialAccount $payerFinancialAccount)
     {
-        $this->payeeFinancialAccount = $payeeFinancialAccount;
+        $this->payerFinancialAccount = $payerFinancialAccount;
         return $this;
     }
 
     public function xmlSerialize(Writer $writer): void
     {
-        $writer->write([
-            Schema::CBC . 'ID' => $this->id
-        ]);
-
-        if ($this->getPayeeFinancialAccount() !== null) {
+        if ($this->id !== null) {
             $writer->write([
-                Schema::CAC . 'PayeeFinancialAccount' => $this->getPayeeFinancialAccount()
+                Schema::CBC . 'ID' => $this->id,
+            ]);
+        }
+
+        if ($this->getPayerFinancialAccount() !== null) {
+            $writer->write([
+                Schema::CAC . 'PayerFinancialAccount' => $this->getPayerFinancialAccount(),
             ]);
         }
     }
 
-    /**
-     * The xmlDeserialize method is called during xml reading.
-     * @param Reader $reader
-     * @return static
-     */
     public static function xmlDeserialize(Reader $reader)
     {
         $keyValues = keyValue($reader);
 
         return (new static())
             ->setId($keyValues[Schema::CBC . 'ID'] ?? null)
-            ->setPayeeFinancialAccount($keyValues[Schema::CAC . 'PayeeFinancialAccount'] ?? null);
+            ->setPayerFinancialAccount($keyValues[Schema::CAC . 'PayerFinancialAccount'] ?? null);
     }
 }

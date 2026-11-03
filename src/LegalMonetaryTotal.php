@@ -292,6 +292,10 @@ class LegalMonetaryTotal implements XmlSerializable, XmlDeserializable
             ? floatval($keyValues[Schema::CBC . 'PrepaidAmount'])
             : null;
 
+        $payableRoundingAmount = isset($keyValues[Schema::CBC . 'PayableRoundingAmount'])
+            ? floatval($keyValues[Schema::CBC . 'PayableRoundingAmount'])
+            : null;
+
         $payableAmount = isset($keyValues[Schema::CBC . 'PayableAmount'])
             ? floatval($keyValues[Schema::CBC . 'PayableAmount'])
             : null;
@@ -303,7 +307,7 @@ class LegalMonetaryTotal implements XmlSerializable, XmlDeserializable
             ->setAllowanceTotalAmount($allowanceTotalAmount)
             ->setChargeTotalAmount($chargeTotalAmount)
             ->setPrepaidAmount($prepaidAmount)
-            ->setPayableRoundingAmount($payableAmount)
+            ->setPayableRoundingAmount($payableRoundingAmount)
             ->setPayableAmount($payableAmount);
     }
 }

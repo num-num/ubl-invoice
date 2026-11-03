@@ -43,6 +43,8 @@ class DebitNoteLine extends InvoiceLine
 
         return (static::deserializedTag($mixedContent))
             ->setDebitedQuantity(isset($debitedQuantityTag) ? floatval($debitedQuantityTag['value']) : null)
+            ->setUnitCode($debitedQuantityTag['attributes']['unitCode'] ?? null)
+            ->setUnitCodeListId($debitedQuantityTag['attributes']['unitCodeListID'] ?? null)
         ;
     }
 }
