@@ -2,7 +2,6 @@
 
 namespace NumNum\UBL;
 
-use function Sabre\Xml\Deserializer\keyValue;
 use function Sabre\Xml\Deserializer\mixedContent;
 
 use Sabre\Xml\Reader;
@@ -55,15 +54,12 @@ class Extension implements XmlSerializable, XmlDeserializable
 
     public static function xmlDeserialize(Reader $reader)
     {
-        $keyValues = keyValue($reader);
-        $mixedContent = mixedContent($reader);
-        $collection = new ArrayCollection($mixedContent);
+        $attributes = $reader->parseAttributes();
 
-        $extensionContentTag = ReaderHelper::getTag(Schema::EXT . 'ExtensionContent', $collection);
+        $collection = new ArrayCollection(mixedContent($reader));
 
         return (new static())
-            ->setContent($keyValues[Schema::EXT . 'ExtensionContent'] ?? null)
-            ->setAttributes(isset($extensionContentTag, $extensionContentTag['attributes']) ? $extensionContentTag['attributes'] : [])
-        ;
+            ->setContent(ReaderHelper::getTagValue(Schema::EXT . 'ExtensionContent', $collection))
+            ->setAttributes($attributes);
     }
 }
