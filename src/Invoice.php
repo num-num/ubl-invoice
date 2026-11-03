@@ -1079,12 +1079,19 @@ class Invoice implements XmlSerializable, XmlDeserializable
             $collection,
         );
 
+        $ublExtensions = ReaderHelper::getTagValue(
+            Schema::EXT . "UBLExtensions",
+            $collection,
+        );
+
         return (new static())
             ->setExtensions(
-                ReaderHelper::getArrayValue(
-                    Schema::EXT . "UBLExtensions",
-                    $collection,
-                ),
+                is_array($ublExtensions)
+                    ? array_values(ReaderHelper::getArrayValue(
+                        Schema::EXT . "UBLExtension",
+                        new ArrayCollection($ublExtensions),
+                    ))
+                    : [],
             )
             ->setUBLVersionId(
                 ReaderHelper::getTagValue(
