@@ -1,4 +1,5 @@
 # Next release
+
 ## Fixed
 
 - Fix document reference elements being written in the wrong order, producing XML that fails UBL schema validation

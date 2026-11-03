@@ -260,13 +260,13 @@ class Invoice implements XmlSerializable, XmlDeserializable
      */
     public function addNote(string $note)
     {
-        if(!is_array($this->notes))
-        {
+        if (!is_array($this->notes)) {
             $this->notes = [];
         }
         $this->notes[] = $note;
         return $this;
     }
+
     /**
      * @return string|null
      */
@@ -276,7 +276,7 @@ class Invoice implements XmlSerializable, XmlDeserializable
     }
 
     /**
-     * @return array
+     * @return string[]|null
      */
     public function getNotes()
     {
@@ -289,16 +289,16 @@ class Invoice implements XmlSerializable, XmlDeserializable
      */
     public function setNote(?string $note)
     {
-        if(is_null($note)){
+        if (is_null($note)) {
             $this->setNotes(null);
-        }else{
+        } else {
             $this->setNotes([$note]);
         }
         return $this;
     }
 
     /**
-     * @param ?array
+     * @param string[]|null $notes
      * @return static
      */
     public function setNotes(?array $notes)
@@ -976,7 +976,6 @@ class Invoice implements XmlSerializable, XmlDeserializable
                 ]);
             }
         }
-
 
         $writer->write([
             Schema::CAC .
