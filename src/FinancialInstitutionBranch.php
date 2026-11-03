@@ -11,10 +11,10 @@ use Sabre\Xml\XmlSerializable;
 
 class FinancialInstitutionBranch implements XmlSerializable, XmlDeserializable
 {
-    private $id;
+    private ?string $id = null;
 
     /**
-     * @return string
+     * @return string|null
      */
     public function getId(): ?string
     {
@@ -22,7 +22,7 @@ class FinancialInstitutionBranch implements XmlSerializable, XmlDeserializable
     }
 
     /**
-     * @param string $id
+     * @param string|null $id
      * @return static
      */
     public function setId(?string $id)
@@ -42,7 +42,7 @@ class FinancialInstitutionBranch implements XmlSerializable, XmlDeserializable
 
     /**
      * The xmlDeserialize method is called during xml reading.
-     * @param Reader $xml
+     * @param Reader $reader
      * @return static
      */
     public static function xmlDeserialize(Reader $reader)

@@ -6,9 +6,9 @@ use Sabre\Xml\Service;
 
 class Reader
 {
-    public static $currencyID;
+    public static string $currencyID = 'EUR';
 
-    public static function ubl($currencyId = 'EUR'): Service
+    public static function ubl(string $currencyId = 'EUR'): Service
     {
         self::$currencyID = $currencyId;
 
@@ -43,6 +43,7 @@ class Reader
             Schema::CAC.        'CreditNoteLine'              => fn ($reader) => CreditNoteLine::xmlDeserialize($reader),
             Schema::CAC.        'DebitNoteLine'               => fn ($reader) => DebitNoteLine::xmlDeserialize($reader),
             Schema::CAC.        'Delivery'                    => fn ($reader) => Delivery::xmlDeserialize($reader),
+            Schema::CAC.        'DeliveryParty'               => fn ($reader) => Party::xmlDeserialize($reader),
             Schema::CAC.        'FinancialInstitutionBranch'  => fn ($reader) => FinancialInstitutionBranch::xmlDeserialize($reader),
             Schema::CAC.        'InvoiceDocumentReference'    => fn ($reader) => InvoiceDocumentReference::xmlDeserialize($reader),
             Schema::CAC.        'InvoiceLine'                 => fn ($reader) => InvoiceLine::xmlDeserialize($reader),

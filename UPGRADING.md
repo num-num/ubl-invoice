@@ -1,5 +1,32 @@
 # Upgrading Guide
 
+## Upgrading from package version 2.x to 3.0
+
+### Stricter types and new required PHP extensions
+
+Version 3.0 adds native type declarations throughout the library. Most code is unaffected, but these changes can break existing projects:
+
+**Typed public and protected properties.** The following properties now carry a native type:
+
+| Property | Type |
+|----------|------|
+| `$xmlTagName` (Invoice, CreditNote, DebitNote, their line classes, PaymentMeans, PaymentMandate) | `string` |
+| `$invoiceTypeCode` (Invoice, CreditNote, DebitNote) | `?int` |
+| `InvoiceLine::$invoicedQuantity` | `?float` |
+| `Invoice::$invoiceLines` | `?array` |
+| `Generator::$currencyID` / `Reader::$currencyID` | `string` |
+
+A subclass that redeclares one of these properties without the same type now causes a fatal error, and assigning a value of another type throws a `TypeError`. `Generator::$currencyID` and `Reader::$currencyID` also default to `'EUR'` instead of `null` and can no longer be set to `null`.
+
+**Stricter parameter types.** `Generator::invoice()`, `Generator::creditNote()`, `Generator::debitNote()` and `Reader::ubl()` now declare their `$currencyId` parameter as `string`, and most setters declare native parameter types. Passing `null` or an object of another type where it previously happened to work now throws a `TypeError`.
+
+**New required PHP extensions.** `composer.json` now requires `ext-libxml` (for reading UBL files) and `ext-fileinfo` (for detecting the mime type of file attachments). Both are enabled by default in most PHP builds, but slim Docker images may need them added.
+
+### Quick migration checklist
+
+- [ ] If you extend library classes and redeclare `$xmlTagName`, `$invoiceTypeCode`, `$invoicedQuantity` or `$invoiceLines`, add the same type declarations
+- [ ] Make sure the `libxml` and `fileinfo` PHP extensions are enabled
+
 ## Upgrading from package version 1.0 to 2.0
 
 Version 2.0 of this package offers the ability to read UBL xml files and convert them into a `\NumNum\UBL\Invoice` or `\NumNum\UBL\CreditNote` + properties object structure.

@@ -11,14 +11,14 @@ use Sabre\Xml\XmlSerializable;
 
 class AdditionalDocumentReference implements XmlSerializable, XmlDeserializable
 {
-    private $id;
-    private $documentType;
-    private $documentTypeCode;
-    private $documentDescription;
-    private $attachment;
+    private ?string $id = null;
+    private ?string $documentType = null;
+    private $documentTypeCode = null;
+    private ?string $documentDescription = null;
+    private ?Attachment $attachment = null;
 
     /**
-     * @return string
+     * @return string|null
      */
     public function getId(): ?string
     {
@@ -26,7 +26,7 @@ class AdditionalDocumentReference implements XmlSerializable, XmlDeserializable
     }
 
     /**
-     * @param string $id
+     * @param string|null $id
      * @return static
      */
     public function setId(?string $id)
@@ -36,7 +36,7 @@ class AdditionalDocumentReference implements XmlSerializable, XmlDeserializable
     }
 
     /**
-     * @return string
+     * @return string|null
      */
     public function getDocumentType(): ?string
     {
@@ -44,7 +44,7 @@ class AdditionalDocumentReference implements XmlSerializable, XmlDeserializable
     }
 
     /**
-     * @param string $documentType
+     * @param string|null $documentType
      * @return static
      */
     public function setDocumentType(?string $documentType)
@@ -62,7 +62,7 @@ class AdditionalDocumentReference implements XmlSerializable, XmlDeserializable
     }
 
     /**
-     * @param int|string $documentTypeCode
+     * @param int|string|null $documentTypeCode
      * @return static
      */
     public function setDocumentTypeCode($documentTypeCode)
@@ -72,7 +72,7 @@ class AdditionalDocumentReference implements XmlSerializable, XmlDeserializable
     }
 
     /**
-     * @return string
+     * @return string|null
      */
     public function getDocumentDescription(): ?string
     {
@@ -80,7 +80,7 @@ class AdditionalDocumentReference implements XmlSerializable, XmlDeserializable
     }
 
     /**
-     * @param string $documentDescription
+     * @param string|null $documentDescription
      * @return static
      */
     public function setDocumentDescription(?string $documentDescription)
@@ -90,7 +90,7 @@ class AdditionalDocumentReference implements XmlSerializable, XmlDeserializable
     }
 
     /**
-     * @return Attachment
+     * @return Attachment|null
      */
     public function getAttachment(): ?Attachment
     {
@@ -98,7 +98,7 @@ class AdditionalDocumentReference implements XmlSerializable, XmlDeserializable
     }
 
     /**
-     * @param Attachment $attachment
+     * @param Attachment|null $attachment
      * @return static
      */
     public function setAttachment(?Attachment $attachment)
@@ -144,7 +144,7 @@ class AdditionalDocumentReference implements XmlSerializable, XmlDeserializable
 
     /**
      * The xmlDeserialize method is called during xml reading.
-     * @param Reader $xml
+     * @param Reader $reader
      * @return static
      */
     public static function xmlDeserialize(Reader $reader)
@@ -156,7 +156,6 @@ class AdditionalDocumentReference implements XmlSerializable, XmlDeserializable
             ->setDocumentType($keyValues[Schema::CBC . 'DocumentType'] ?? null)
             ->setDocumentTypeCode($keyValues[Schema::CBC . 'DocumentTypeCode'] ?? null)
             ->setDocumentDescription($keyValues[Schema::CBC . 'DocumentDescription'] ?? null)
-            ->setAttachment($keyValues[Schema::CAC . 'Attachment'] ?? null)
-        ;
+            ->setAttachment($keyValues[Schema::CAC . 'Attachment'] ?? null);
     }
 }

@@ -11,13 +11,13 @@ use Sabre\Xml\XmlSerializable;
 
 class TaxScheme implements XmlSerializable, XmlDeserializable
 {
-    private $id;
-    private $name;
-    private $taxTypeCode;
-    private $currencyCode;
+    private ?string $id = null;
+    private ?string $name = null;
+    private ?string $taxTypeCode = null;
+    private ?string $currencyCode = null;
 
     /**
-     * @return string
+     * @return string|null
      */
     public function getId()
     {
@@ -25,7 +25,7 @@ class TaxScheme implements XmlSerializable, XmlDeserializable
     }
 
     /**
-     * @param string $id
+     * @param string|null $id
      * @return static
      */
     public function setId(?string $id)
@@ -35,7 +35,7 @@ class TaxScheme implements XmlSerializable, XmlDeserializable
     }
 
     /**
-     * @return string
+     * @return string|null
      */
     public function getName(): ?string
     {
@@ -43,7 +43,7 @@ class TaxScheme implements XmlSerializable, XmlDeserializable
     }
 
     /**
-     * @param string $name
+     * @param string|null $name
      * @return static
      */
     public function setName(?string $name)
@@ -53,7 +53,7 @@ class TaxScheme implements XmlSerializable, XmlDeserializable
     }
 
     /**
-     * @return string
+     * @return string|null
      */
     public function getTaxTypeCode(): ?string
     {
@@ -61,7 +61,7 @@ class TaxScheme implements XmlSerializable, XmlDeserializable
     }
 
     /**
-     * @param string $taxTypeCode
+     * @param string|null $taxTypeCode
      * @return static
      */
     public function setTaxTypeCode(?string $taxTypeCode)
@@ -71,7 +71,7 @@ class TaxScheme implements XmlSerializable, XmlDeserializable
     }
 
     /**
-     * @return string
+     * @return string|null
      */
     public function getCurrencyCode(): ?string
     {
@@ -79,7 +79,7 @@ class TaxScheme implements XmlSerializable, XmlDeserializable
     }
 
     /**
-     * @param string $currencyCode
+     * @param string|null $currencyCode
      * @return static
      */
     public function setCurrencyCode(?string $currencyCode)
@@ -120,7 +120,7 @@ class TaxScheme implements XmlSerializable, XmlDeserializable
 
     /**
      * The xmlDeserialize method is called during xml reading.
-     * @param Reader $xml
+     * @param Reader $reader
      * @return static
      */
     public static function xmlDeserialize(Reader $reader)
@@ -131,7 +131,6 @@ class TaxScheme implements XmlSerializable, XmlDeserializable
             ->setId($keyValues[Schema::CBC . 'ID'] ?? null)
             ->setName($keyValues[Schema::CBC . 'Name'] ?? null)
             ->setTaxTypeCode($keyValues[Schema::CBC . 'TaxTypeCode'] ?? null)
-            ->setCurrencyCode($keyValues[Schema::CBC . 'CurrencyCode'] ?? null)
-        ;
+            ->setCurrencyCode($keyValues[Schema::CBC . 'CurrencyCode'] ?? null);
     }
 }

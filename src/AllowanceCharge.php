@@ -12,13 +12,13 @@ use Sabre\Xml\XmlSerializable;
 
 class AllowanceCharge implements XmlSerializable, XmlDeserializable
 {
-    private $chargeIndicator;
+    private bool $chargeIndicator = false;
     private $allowanceChargeReasonCode;
-    private $allowanceChargeReason;
-    private $multiplierFactorNumeric;
-    private $baseAmount;
-    private $amount;
-    private $taxCategory;
+    private ?string $allowanceChargeReason = null;
+    private ?float $multiplierFactorNumeric = null;
+    private ?float $baseAmount = null;
+    private ?float $amount = null;
+    private ?TaxCategory $taxCategory = null;
 
     /**
      * @return bool
@@ -57,7 +57,7 @@ class AllowanceCharge implements XmlSerializable, XmlDeserializable
     }
 
     /**
-     * @return string
+     * @return string|null
      */
     public function getAllowanceChargeReason(): ?string
     {
@@ -65,7 +65,7 @@ class AllowanceCharge implements XmlSerializable, XmlDeserializable
     }
 
     /**
-     * @param string $allowanceChargeReason
+     * @param string|null $allowanceChargeReason
      * @return static
      */
     public function setAllowanceChargeReason(?string $allowanceChargeReason)
@@ -75,7 +75,7 @@ class AllowanceCharge implements XmlSerializable, XmlDeserializable
     }
 
     /**
-     * @return float
+     * @return float|null
      */
     public function getMultiplierFactorNumeric(): ?float
     {
@@ -83,7 +83,7 @@ class AllowanceCharge implements XmlSerializable, XmlDeserializable
     }
 
     /**
-     * @param float $multiplierFactorNumeric
+     * @param float|null $multiplierFactorNumeric
      * @return static
      */
     public function setMultiplierFactorNumeric(?float $multiplierFactorNumeric)
@@ -93,7 +93,7 @@ class AllowanceCharge implements XmlSerializable, XmlDeserializable
     }
 
     /**
-     * @return float
+     * @return float|null
      */
     public function getBaseAmount(): ?float
     {
@@ -101,7 +101,7 @@ class AllowanceCharge implements XmlSerializable, XmlDeserializable
     }
 
     /**
-     * @param float $baseAmount
+     * @param float|null $baseAmount
      * @return static
      */
     public function setBaseAmount(?float $baseAmount)
@@ -111,7 +111,7 @@ class AllowanceCharge implements XmlSerializable, XmlDeserializable
     }
 
     /**
-     * @return float
+     * @return float|null
      */
     public function getAmount(): ?float
     {
@@ -119,7 +119,7 @@ class AllowanceCharge implements XmlSerializable, XmlDeserializable
     }
 
     /**
-     * @param float $amount
+     * @param float|null $amount
      * @return static
      */
     public function setAmount(?float $amount)
@@ -129,7 +129,7 @@ class AllowanceCharge implements XmlSerializable, XmlDeserializable
     }
 
     /**
-     * @return TaxCategory
+     * @return TaxCategory|null
      */
     public function getTaxCategory(): ?TaxCategory
     {
@@ -137,7 +137,7 @@ class AllowanceCharge implements XmlSerializable, XmlDeserializable
     }
 
     /**
-     * @param TaxCategory $taxCategory
+     * @param TaxCategory|null $taxCategory
      * @return static
      */
     public function setTaxCategory(?TaxCategory $taxCategory)
@@ -225,7 +225,7 @@ class AllowanceCharge implements XmlSerializable, XmlDeserializable
 
     /**
      * The xmlDeserialize method is called during xml reading.
-     * @param Reader $xml
+     * @param Reader $reader
      * @return static
      */
     public static function xmlDeserialize(Reader $reader)
@@ -233,13 +233,33 @@ class AllowanceCharge implements XmlSerializable, XmlDeserializable
         $mixedContent = mixedContent($reader);
         $collection = new ArrayCollection($mixedContent);
 
+        $allowanceChargeReasonCode = self::parseAllowanceChargeReasonCode(
+            ReaderHelper::getTagValue(Schema::CBC . 'AllowanceChargeReasonCode', $collection)
+        );
+
+        $multiplierFactorNumericTagValue = ReaderHelper::getTagValue(
+            Schema::CBC . 'MultiplierFactorNumeric',
+            $collection
+        );
+        $multiplierFactorNumeric = $multiplierFactorNumericTagValue !== null
+            ? floatval(ReaderHelper::getTagValue(Schema::CBC . 'MultiplierFactorNumeric', $collection))
+            : null;
+
+        $baseAmount = ReaderHelper::getTagValue(Schema::CBC . 'BaseAmount', $collection) !== null
+            ? floatval(ReaderHelper::getTagValue(Schema::CBC . 'BaseAmount', $collection))
+            : null;
+
+        $amount = ReaderHelper::getTagValue(Schema::CBC . 'Amount', $collection) !== null
+            ? floatval(ReaderHelper::getTagValue(Schema::CBC . 'Amount', $collection))
+            : null;
+
         return (new static())
             ->setChargeIndicator(ReaderHelper::getTagValue(Schema::CBC . 'ChargeIndicator', $collection) === 'true')
-            ->setAllowanceChargeReasonCode(self::parseAllowanceChargeReasonCode(ReaderHelper::getTagValue(Schema::CBC . 'AllowanceChargeReasonCode', $collection)))
+            ->setAllowanceChargeReasonCode($allowanceChargeReasonCode)
             ->setAllowanceChargeReason(ReaderHelper::getTagValue(Schema::CBC . 'AllowanceChargeReason', $collection))
-            ->setMultiplierFactorNumeric(ReaderHelper::getTagValue(Schema::CBC . 'MultiplierFactorNumeric', $collection) !== null ? floatval(ReaderHelper::getTagValue(Schema::CBC . 'MultiplierFactorNumeric', $collection)) : null)
-            ->setBaseAmount(ReaderHelper::getTagValue(Schema::CBC . 'BaseAmount', $collection) !== null ? floatval(ReaderHelper::getTagValue(Schema::CBC . 'BaseAmount', $collection)) : null)
-            ->setAmount(ReaderHelper::getTagValue(Schema::CBC . 'Amount', $collection) !== null ? floatval(ReaderHelper::getTagValue(Schema::CBC . 'Amount', $collection)) : null)
+            ->setMultiplierFactorNumeric($multiplierFactorNumeric)
+            ->setBaseAmount($baseAmount)
+            ->setAmount($amount)
             ->setTaxCategory(ReaderHelper::getTagValue(Schema::CAC . 'TaxCategory', $collection));
     }
 }

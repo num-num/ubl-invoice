@@ -11,12 +11,12 @@ use Sabre\Xml\XmlSerializable;
 
 class AccountingParty implements XmlSerializable, XmlDeserializable
 {
-    private $supplierAssignedAccountID;
-    private $party;
-    private $accountingContact;
+    private ?string $supplierAssignedAccountID = null;
+    private ?Party $party = null;
+    private ?Contact $accountingContact = null;
 
     /**
-     * @return string
+     * @return string|null
      */
     public function getSupplierAssignedAccountId(): ?string
     {
@@ -24,7 +24,7 @@ class AccountingParty implements XmlSerializable, XmlDeserializable
     }
 
     /**
-     * @param string $supplierAssignedAccountID
+     * @param string|null $supplierAssignedAccountID
      * @return static
      */
     public function setSupplierAssignedAccountId(?string $supplierAssignedAccountID)
@@ -34,7 +34,7 @@ class AccountingParty implements XmlSerializable, XmlDeserializable
     }
 
     /**
-     * @return Party
+     * @return Party|null
      */
     public function getParty(): ?Party
     {
@@ -42,7 +42,7 @@ class AccountingParty implements XmlSerializable, XmlDeserializable
     }
 
     /**
-     * @param Party $party
+     * @param Party|null $party
      * @return static
      */
     public function setParty(?Party $party)
@@ -52,7 +52,7 @@ class AccountingParty implements XmlSerializable, XmlDeserializable
     }
 
     /**
-     * @return ?Contact
+     * @return Contact|null
      */
     public function getAccountingContact(): ?Contact
     {
@@ -60,7 +60,7 @@ class AccountingParty implements XmlSerializable, XmlDeserializable
     }
 
     /**
-     * @param Contact $accountingContact
+     * @param Contact|null $accountingContact
      * @return AccountingParty
      */
     public function setAccountingContact(?Contact $accountingContact): AccountingParty
@@ -99,7 +99,7 @@ class AccountingParty implements XmlSerializable, XmlDeserializable
 
     /**
      * The xmlDeserialize method is called during xml reading.
-     * @param Reader $xml
+     * @param Reader $reader
      * @return static
      */
     public static function xmlDeserialize(Reader $reader)
@@ -109,7 +109,6 @@ class AccountingParty implements XmlSerializable, XmlDeserializable
         return (new static())
             ->setParty($keyValues[Schema::CAC . 'Party'] ?? null)
             ->setSupplierAssignedAccountId($keyValues[Schema::CBC . 'SupplierAssignedAccountID'] ?? null)
-            ->setAccountingContact($keyValues[Schema::CBC . 'AccountingContact'] ?? null)
-        ;
+            ->setAccountingContact($keyValues[Schema::CBC . 'AccountingContact'] ?? null);
     }
 }

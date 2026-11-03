@@ -2,6 +2,8 @@
 
 namespace NumNum\UBL\Tests\Write;
 
+use DateTime;
+use DOMDocument;
 use NumNum\UBL\Address;
 use NumNum\UBL\AddressLine;
 use NumNum\UBL\Country;
@@ -25,7 +27,7 @@ use PHPUnit\Framework\TestCase;
  */
 class AddressLineTest extends TestCase
 {
-    private $schema = 'http://docs.oasis-open.org/ubl/os-UBL-2.1/xsd/maindoc/UBL-Invoice-2.1.xsd';
+    private string $schema = 'http://docs.oasis-open.org/ubl/os-UBL-2.1/xsd/maindoc/UBL-Invoice-2.1.xsd';
 
     /** @test */
     public function testAddressLineSerializesToXml()
@@ -112,7 +114,7 @@ class AddressLineTest extends TestCase
         $invoice = (new Invoice())
             ->setId(1234)
             ->setCopyIndicator(false)
-            ->setIssueDate(new \DateTime())
+            ->setIssueDate(new DateTime())
             ->setAccountingSupplierParty($accountingSupplierParty)
             ->setAccountingCustomerParty($accountingCustomerParty)
             ->setInvoiceLines($invoiceLines)
@@ -129,7 +131,7 @@ class AddressLineTest extends TestCase
         $this->assertStringContainsString('<cbc:Line>Suite 5</cbc:Line>', $outputXMLString);
 
         // Create PHP Native DomDocument object for validation
-        $dom = new \DOMDocument();
+        $dom = new DOMDocument();
         $dom->loadXML($outputXMLString);
 
         $this->assertEquals(true, $dom->schemaValidate($this->schema));
@@ -220,7 +222,7 @@ class AddressLineTest extends TestCase
         $invoice = (new Invoice())
             ->setId(1234)
             ->setCopyIndicator(false)
-            ->setIssueDate(new \DateTime())
+            ->setIssueDate(new DateTime())
             ->setAccountingSupplierParty($accountingSupplierParty)
             ->setAccountingCustomerParty($accountingCustomerParty)
             ->setInvoiceLines($invoiceLines)
@@ -235,7 +237,7 @@ class AddressLineTest extends TestCase
         $this->assertStringNotContainsString('<cac:AddressLine>', $outputXMLString);
 
         // Create PHP Native DomDocument object for validation
-        $dom = new \DOMDocument();
+        $dom = new DOMDocument();
         $dom->loadXML($outputXMLString);
 
         $this->assertEquals(true, $dom->schemaValidate($this->schema));
@@ -259,4 +261,3 @@ class AddressLineTest extends TestCase
         $this->assertEquals('New Line', $address->getAddressLines()[0]->getLine());
     }
 }
-

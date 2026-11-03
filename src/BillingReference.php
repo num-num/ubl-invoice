@@ -13,11 +13,11 @@ use Sabre\Xml\XmlSerializable;
 
 class BillingReference implements XmlSerializable, XmlDeserializable
 {
-    private $invoiceDocumentReference;
+    private ?InvoiceDocumentReference $invoiceDocumentReference = null;
 
     /**
      *
-     * @return ?InvoiceDocumentReference
+     * @return InvoiceDocumentReference|null
      */
     public function getInvoiceDocumentReference(): ?InvoiceDocumentReference
     {
@@ -37,8 +37,8 @@ class BillingReference implements XmlSerializable, XmlDeserializable
     /**
      * The validate function that is called during xml writing to valid the data of the object.
      *
-     * @throws InvalidArgumentException An error with information about required data that is missing to write the XML
      * @return void
+     * @throws InvalidArgumentException An error with information about required data that is missing to write the XML
      */
     public function validate()
     {
@@ -61,7 +61,7 @@ class BillingReference implements XmlSerializable, XmlDeserializable
 
     /**
      * The xmlDeserialize method is called during xml reading.
-     * @param Reader $xml
+     * @param Reader $reader
      * @return static
      */
     public static function xmlDeserialize(Reader $reader)
@@ -69,7 +69,6 @@ class BillingReference implements XmlSerializable, XmlDeserializable
         $keyValues = keyValue($reader);
 
         return (new static())
-            ->setInvoiceDocumentReference($keyValues[Schema::CAC . 'InvoiceDocumentReference'] ?? null)
-        ;
+            ->setInvoiceDocumentReference($keyValues[Schema::CAC . 'InvoiceDocumentReference'] ?? null);
     }
 }

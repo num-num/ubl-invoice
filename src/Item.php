@@ -12,19 +12,19 @@ use Sabre\Xml\XmlSerializable;
 
 class Item implements XmlSerializable, XmlDeserializable
 {
-    private $description;
-    private $name;
-    private $buyersItemIdentification;
-    private $sellersItemIdentification;
-    private $standardItemIdentification;
-    private $standardItemIdentificationAttributes = [];
-    private $commodityClassification;
-    private $classifiedTaxCategory;
-    private $originCountry;
-    private $additionalItemProperties;
+    private ?string $description = null;
+    private ?string $name = null;
+    private ?string $buyersItemIdentification = null;
+    private ?string $sellersItemIdentification = null;
+    private ?string $standardItemIdentification = null;
+    private array $standardItemIdentificationAttributes = [];
+    private ?CommodityClassification $commodityClassification = null;
+    private ?ClassifiedTaxCategory $classifiedTaxCategory = null;
+    private ?Country $originCountry = null;
+    private ?array $additionalItemProperties = null;
 
     /**
-     * @return string
+     * @return string|null
      */
     public function getDescription(): ?string
     {
@@ -32,7 +32,7 @@ class Item implements XmlSerializable, XmlDeserializable
     }
 
     /**
-     * @param string $description
+     * @param string|null $description
      * @return static
      */
     public function setDescription(?string $description)
@@ -42,7 +42,7 @@ class Item implements XmlSerializable, XmlDeserializable
     }
 
     /**
-     * @return mixed
+     * @return string|null
      */
     public function getName(): ?string
     {
@@ -50,7 +50,7 @@ class Item implements XmlSerializable, XmlDeserializable
     }
 
     /**
-     * @param mixed $name
+     * @param string|null $name
      * @return static
      */
     public function setName(?string $name)
@@ -60,7 +60,7 @@ class Item implements XmlSerializable, XmlDeserializable
     }
 
     /**
-     * @return mixed
+     * @return string|null
      */
     public function getSellersItemIdentification(): ?string
     {
@@ -68,7 +68,7 @@ class Item implements XmlSerializable, XmlDeserializable
     }
 
     /**
-     * @param mixed $sellersItemIdentification
+     * @param string|null $sellersItemIdentification
      * @return static
      */
     public function setSellersItemIdentification(?string $sellersItemIdentification)
@@ -78,7 +78,7 @@ class Item implements XmlSerializable, XmlDeserializable
     }
 
     /**
-     * @return mixed
+     * @return string|null
      */
     public function getStandardItemIdentification(): ?string
     {
@@ -86,10 +86,11 @@ class Item implements XmlSerializable, XmlDeserializable
     }
 
     /**
-     * @param mixed $standardItemIdentification
+     * @param string|null $standardItemIdentification
+     * @param array|null $attributes
      * @return static
      */
-    public function setStandardItemIdentification(?string $standardItemIdentification, $attributes = null)
+    public function setStandardItemIdentification(?string $standardItemIdentification, ?array $attributes = null)
     {
         $this->standardItemIdentification = $standardItemIdentification;
         if (isset($attributes)) {
@@ -99,7 +100,7 @@ class Item implements XmlSerializable, XmlDeserializable
     }
 
     /**
-     * @return CommodityClassification
+     * @return CommodityClassification|null
      */
     public function getCommodityClassification(): ?CommodityClassification
     {
@@ -117,7 +118,7 @@ class Item implements XmlSerializable, XmlDeserializable
     }
 
     /**
-     * @return mixed
+     * @return string|null
      */
     public function getBuyersItemIdentification(): ?string
     {
@@ -125,7 +126,7 @@ class Item implements XmlSerializable, XmlDeserializable
     }
 
     /**
-     * @param mixed $buyersItemIdentification
+     * @param string|null $buyersItemIdentification
      * @return static
      */
     public function setBuyersItemIdentification(?string $buyersItemIdentification)
@@ -135,7 +136,7 @@ class Item implements XmlSerializable, XmlDeserializable
     }
 
     /**
-     * @return ClassifiedTaxCategory
+     * @return ClassifiedTaxCategory|null
      */
     public function getClassifiedTaxCategory(): ?ClassifiedTaxCategory
     {
@@ -143,7 +144,7 @@ class Item implements XmlSerializable, XmlDeserializable
     }
 
     /**
-     * @param ClassifiedTaxCategory $classifiedTaxCategory
+     * @param ClassifiedTaxCategory|null $classifiedTaxCategory
      * @return static
      */
     public function setClassifiedTaxCategory(?ClassifiedTaxCategory $classifiedTaxCategory)
@@ -153,7 +154,7 @@ class Item implements XmlSerializable, XmlDeserializable
     }
 
     /**
-     * @return Country
+     * @return Country|null
      */
     public function getOriginCountry(): ?Country
     {
@@ -161,7 +162,7 @@ class Item implements XmlSerializable, XmlDeserializable
     }
 
     /**
-     * @param Country $originCountry
+     * @param Country|null $originCountry
      * @return Item
      */
     public function setOriginCountry(?Country $originCountry): Item
@@ -171,7 +172,7 @@ class Item implements XmlSerializable, XmlDeserializable
     }
 
     /**
-     * @return AdditionalItemProperty[]
+     * @return AdditionalItemProperty[]|null
      */
     public function getAdditionalItemProperties(): ?array
     {
@@ -262,7 +263,7 @@ class Item implements XmlSerializable, XmlDeserializable
 
     /**
      * The xmlDeserialize method is called during xml reading.
-     * @param Reader $xml
+     * @param Reader $reader
      * @return static
      */
     public static function xmlDeserialize(Reader $reader)
@@ -275,7 +276,10 @@ class Item implements XmlSerializable, XmlDeserializable
         $classifiedTaxCategoryTag = ReaderHelper::getTag(Schema::CAC . 'ClassifiedTaxCategory', $collection);
         $commodityClassification = ReaderHelper::getTag(Schema::CAC . 'CommodityClassification', $collection);
         $originCountryTag = ReaderHelper::getTag(Schema::CAC . 'OriginCountry', $collection);
-        $additionalItemPropertiesTags = ReaderHelper::getArrayValue(Schema::CAC . 'AdditionalItemProperty', $collection);
+        $additionalItemPropertiesTags = ReaderHelper::getArrayValue(
+            Schema::CAC . 'AdditionalItemProperty',
+            $collection
+        );
 
         $buyersItemIdentificationTag = ReaderHelper::getTag(Schema::CAC . 'BuyersItemIdentification', $collection);
         $buyersItemIdentificationIdTag = ReaderHelper::getTag(
@@ -295,16 +299,18 @@ class Item implements XmlSerializable, XmlDeserializable
             new ArrayCollection($standardItemIdentificationTag['value'] ?? [])
         );
 
+        $standardItemIdentificationValue = $standardItemIdentificationIdTag['value'] ?? null;
+        $standardItemIdentificationAttributes = $standardItemIdentificationIdTag['attributes'] ?? null;
+
         return (new static())
             ->setDescription($descriptionTag['value'] ?? null)
             ->setName($nameTag['value'] ?? null)
             ->setBuyersItemIdentification($buyersItemIdentificationIdTag['value'] ?? null)
             ->setSellersItemIdentification($sellersItemIdentificationIdTag['value'] ?? null)
-            ->setStandardItemIdentification($standardItemIdentificationIdTag['value'] ?? null, $standardItemIdentificationIdTag['attributes'] ?? null)
+            ->setStandardItemIdentification($standardItemIdentificationValue, $standardItemIdentificationAttributes)
             ->setClassifiedTaxCategory($classifiedTaxCategoryTag['value'] ?? null)
             ->setCommodityClassification($commodityClassification['value'] ?? null)
             ->setOriginCountry($originCountryTag['value'] ?? null)
-            ->setAdditionalItemProperties($additionalItemPropertiesTags)
-        ;
+            ->setAdditionalItemProperties($additionalItemPropertiesTags);
     }
 }

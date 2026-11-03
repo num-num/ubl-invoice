@@ -12,14 +12,14 @@ use Sabre\Xml\XmlSerializable;
 
 class LegalEntity implements XmlSerializable, XmlDeserializable
 {
-    private $registrationName;
-    private $companyId;
-    private $companyIdAttributes;
-    private $companyLegalForm;
-    private $companyLegalFormAttributes;
+    private ?string $registrationName = null;
+    private ?string $companyId = null;
+    private ?array $companyIdAttributes = null;
+    private ?string $companyLegalForm = null;
+    private ?array $companyLegalFormAttributes = null;
 
     /**
-     * @return string
+     * @return string|null
      */
     public function getRegistrationName(): ?string
     {
@@ -27,7 +27,7 @@ class LegalEntity implements XmlSerializable, XmlDeserializable
     }
 
     /**
-     * @param string $registrationName
+     * @param string|null $registrationName
      * @return static
      */
     public function setRegistrationName(?string $registrationName)
@@ -37,7 +37,7 @@ class LegalEntity implements XmlSerializable, XmlDeserializable
     }
 
     /**
-     * @return string
+     * @return string|null
      */
     public function getCompanyId(): ?string
     {
@@ -45,10 +45,11 @@ class LegalEntity implements XmlSerializable, XmlDeserializable
     }
 
     /**
-     * @param string $companyId
+     * @param string|null $companyId
+     * @param array|null $attributes
      * @return static
      */
-    public function setCompanyId(?string $companyId, $attributes = null)
+    public function setCompanyId(?string $companyId, ?array $attributes = null)
     {
         $this->companyId = $companyId;
 
@@ -74,11 +75,11 @@ class LegalEntity implements XmlSerializable, XmlDeserializable
     }
 
     /**
-    *
-     * @param string $legalForm
+     * @param string|null $legalForm
+     * @param array|null $attributes
      * @return static
-    */
-    public function setCompanyLegalForm(?string $legalForm, $attributes = null)
+     */
+    public function setCompanyLegalForm(?string $legalForm, ?array $attributes = null)
     {
         $this->companyLegalForm = $legalForm;
 
@@ -123,7 +124,7 @@ class LegalEntity implements XmlSerializable, XmlDeserializable
 
     /**
      * The xmlDeserialize method is called during xml reading.
-     * @param Reader $xml
+     * @param Reader $reader
      * @return static
      */
     public static function xmlDeserialize(Reader $reader)
@@ -144,7 +145,6 @@ class LegalEntity implements XmlSerializable, XmlDeserializable
             ->setCompanyLegalForm(
                 $companyLegalForm['value'] ?? null,
                 $companyLegalForm['attributes'] ?? null
-            )
-        ;
+            );
     }
 }

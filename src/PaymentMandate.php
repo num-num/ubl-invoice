@@ -11,17 +11,44 @@ use function Sabre\Xml\Deserializer\keyValue;
 
 class PaymentMandate implements XmlSerializable, XmlDeserializable
 {
-    private $id;
-    private $payerFinancialAccount;
+    public string $xmlTagName = 'PaymentMandate';
 
+    private ?string $id = null;
+    private ?PayerFinancialAccount $payerFinancialAccount = null;
+
+    /**
+     * @return string|null
+     */
     public function getId(): ?string
     {
         return $this->id;
     }
 
-    public function setId(?string $id): self
+    /**
+     * @param string|null $id
+     * @return static
+     */
+    public function setId(?string $id)
     {
         $this->id = $id;
+        return $this;
+    }
+
+    /**
+     * @return PayerFinancialAccount|null
+     */
+    public function getPayerFinancialAccount(): ?PayerFinancialAccount
+    {
+        return $this->payerFinancialAccount;
+    }
+
+    /**
+     * @param PayerFinancialAccount|null $payerFinancialAccount
+     * @return static
+     */
+    public function setPayerFinancialAccount(?PayerFinancialAccount $payerFinancialAccount)
+    {
+        $this->payerFinancialAccount = $payerFinancialAccount;
         return $this;
     }
 
@@ -38,17 +65,6 @@ class PaymentMandate implements XmlSerializable, XmlDeserializable
                 Schema::CAC . 'PayerFinancialAccount' => $this->getPayerFinancialAccount(),
             ]);
         }
-    }
-
-    public function getPayerFinancialAccount(): ?PayerFinancialAccount
-    {
-        return $this->payerFinancialAccount;
-    }
-
-    public function setPayerFinancialAccount(?PayerFinancialAccount $payerFinancialAccount): self
-    {
-        $this->payerFinancialAccount = $payerFinancialAccount;
-        return $this;
     }
 
     public static function xmlDeserialize(Reader $reader)

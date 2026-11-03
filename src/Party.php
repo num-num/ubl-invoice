@@ -13,20 +13,20 @@ use Sabre\Xml\XmlSerializable;
 
 class Party implements XmlSerializable, XmlDeserializable
 {
-    private $name;
-    private $partyIdentificationId;
-    private $partyIdentificationSchemeId;
-    private $partyIdentificationSchemeName;
-    private $postalAddress;
-    private $physicalLocation;
-    private $contact;
-    private $partyTaxScheme;
-    private $legalEntity;
-    private $endpointID;
-    private $endpointID_schemeID;
+    private ?string $name = null;
+    private ?string $partyIdentificationId = null;
+    private ?string $partyIdentificationSchemeId = null;
+    private ?string $partyIdentificationSchemeName = null;
+    private ?Address $postalAddress = null;
+    private ?Address $physicalLocation = null;
+    private ?Contact $contact = null;
+    private ?PartyTaxScheme $partyTaxScheme = null;
+    private ?LegalEntity $legalEntity = null;
+    private ?string $endpointID = null;
+    private ?string $endpointID_schemeID = null;
 
     /**
-     * @return string
+     * @return string|null
      */
     public function getName(): ?string
     {
@@ -34,7 +34,7 @@ class Party implements XmlSerializable, XmlDeserializable
     }
 
     /**
-     * @param string $name
+     * @param string|null $name
      * @return static
      */
     public function setName(?string $name)
@@ -44,7 +44,7 @@ class Party implements XmlSerializable, XmlDeserializable
     }
 
     /**
-     * @return string
+     * @return string|null
      */
     public function getPartyIdentificationId(): ?string
     {
@@ -52,7 +52,7 @@ class Party implements XmlSerializable, XmlDeserializable
     }
 
     /**
-     * @param string $partyIdentificationId
+     * @param string|null $partyIdentificationId
      * @return static
      */
     public function setPartyIdentificationId(?string $partyIdentificationId)
@@ -62,7 +62,7 @@ class Party implements XmlSerializable, XmlDeserializable
     }
 
     /**
-     * @return string
+     * @return string|null
      */
     public function getPartyIdentificationSchemeId(): ?string
     {
@@ -70,7 +70,7 @@ class Party implements XmlSerializable, XmlDeserializable
     }
 
     /**
-     * @param string $partyIdentificationSchemeId
+     * @param string|null $partyIdentificationSchemeId
      * @return static
      */
     public function setPartyIdentificationSchemeId(?string $partyIdentificationSchemeId)
@@ -80,7 +80,7 @@ class Party implements XmlSerializable, XmlDeserializable
     }
 
     /**
-     * @return string
+     * @return string|null
      */
     public function getPartyIdentificationSchemeName(): ?string
     {
@@ -88,7 +88,7 @@ class Party implements XmlSerializable, XmlDeserializable
     }
 
     /**
-     * @param string $partyIdentificationSchemeName
+     * @param string|null $partyIdentificationSchemeName
      * @return static
      */
     public function setPartyIdentificationSchemeName(?string $partyIdentificationSchemeName)
@@ -98,7 +98,7 @@ class Party implements XmlSerializable, XmlDeserializable
     }
 
     /**
-     * @return Address
+     * @return Address|null
      */
     public function getPostalAddress(): ?Address
     {
@@ -106,7 +106,7 @@ class Party implements XmlSerializable, XmlDeserializable
     }
 
     /**
-     * @param Address $postalAddress
+     * @param Address|null $postalAddress
      * @return static
      */
     public function setPostalAddress(?Address $postalAddress)
@@ -116,7 +116,7 @@ class Party implements XmlSerializable, XmlDeserializable
     }
 
     /**
-     * @return LegalEntity
+     * @return LegalEntity|null
      */
     public function getLegalEntity(): ?LegalEntity
     {
@@ -124,7 +124,7 @@ class Party implements XmlSerializable, XmlDeserializable
     }
 
     /**
-     * @param LegalEntity $legalEntity
+     * @param LegalEntity|null $legalEntity
      * @return static
      */
     public function setLegalEntity(?LegalEntity $legalEntity)
@@ -134,7 +134,7 @@ class Party implements XmlSerializable, XmlDeserializable
     }
 
     /**
-     * @return Address
+     * @return Address|null
      */
     public function getPhysicalLocation(): ?Address
     {
@@ -142,7 +142,7 @@ class Party implements XmlSerializable, XmlDeserializable
     }
 
     /**
-     * @param Address $physicalLocation
+     * @param Address|null $physicalLocation
      * @return static
      */
     public function setPhysicalLocation(?Address $physicalLocation)
@@ -152,7 +152,7 @@ class Party implements XmlSerializable, XmlDeserializable
     }
 
     /**
-     * @return staticTaxScheme
+     * @return PartyTaxScheme|null
      */
     public function getPartyTaxScheme(): ?PartyTaxScheme
     {
@@ -160,7 +160,7 @@ class Party implements XmlSerializable, XmlDeserializable
     }
 
     /**
-     * @param PartyTaxScheme $partyTaxScheme
+     * @param PartyTaxScheme|null $partyTaxScheme
      * @return static
      */
     public function setPartyTaxScheme(?PartyTaxScheme $partyTaxScheme)
@@ -170,7 +170,7 @@ class Party implements XmlSerializable, XmlDeserializable
     }
 
     /**
-     * @return Contact
+     * @return Contact|null
      */
     public function getContact(): ?Contact
     {
@@ -178,7 +178,7 @@ class Party implements XmlSerializable, XmlDeserializable
     }
 
     /**
-     * @param Contact $contact
+     * @param Contact|null $contact
      * @return static
      */
     public function setContact(?Contact $contact)
@@ -199,11 +199,17 @@ class Party implements XmlSerializable, XmlDeserializable
         return $this;
     }
 
+    /**
+     * @return string|null
+     */
     public function getEndpointId(): ?string
     {
         return $this->endpointID;
     }
 
+    /**
+     * @return string|null
+     */
     public function getEndpointIDSchemeId(): ?string
     {
         return $this->endpointID_schemeID;
@@ -287,7 +293,7 @@ class Party implements XmlSerializable, XmlDeserializable
 
     /**
      * The xmlDeserialize method is called during xml reading.
-     * @param Reader $xml
+     * @param Reader $reader
      * @return static
      */
     public static function xmlDeserialize(Reader $reader)
@@ -301,14 +307,20 @@ class Party implements XmlSerializable, XmlDeserializable
         $endpointId = ReaderHelper::getTag(Schema::CBC . 'EndpointID', $collection);
         $postalAddress = ReaderHelper::getTag(Schema::CAC . 'PostalAddress', $collection);
         $physicalLocation = ReaderHelper::getTag(Schema::CAC . 'PhysicalLocation', $collection);
-        $physicalLocationAddress = ReaderHelper::getTag(Schema::CAC . 'Address', new ArrayCollection($physicalLocation['value'] ?? []));
+        $physicalLocationAddress = ReaderHelper::getTag(
+            Schema::CAC . 'Address',
+            new ArrayCollection($physicalLocation['value'] ?? [])
+        );
 
         $partyTaxScheme = ReaderHelper::getTag(Schema::CAC . 'PartyTaxScheme', $collection);
         $partyLegalEntity = ReaderHelper::getTag(Schema::CAC . 'PartyLegalEntity', $collection);
         $partyContact = ReaderHelper::getTag(Schema::CAC . 'Contact', $collection);
 
         $partyIdentification = ReaderHelper::getTag(Schema::CAC . 'PartyIdentification', $collection);
-        $partyIdentificationId = ReaderHelper::getTag(Schema::CBC . 'ID', new ArrayCollection($partyIdentification['value'] ?? []));
+        $partyIdentificationId = ReaderHelper::getTag(
+            Schema::CBC . 'ID',
+            new ArrayCollection($partyIdentification['value'] ?? [])
+        );
 
         return (new static())
             ->setName($partyNameName['value'] ?? null)
@@ -320,7 +332,6 @@ class Party implements XmlSerializable, XmlDeserializable
             ->setEndpointId($endpointId['value'] ?? null, $endpointId['attributes']['schemeID'] ?? null)
             ->setPartyIdentificationId($partyIdentificationId['value'] ?? null)
             ->setPartyIdentificationSchemeId($partyIdentificationId['attributes']['schemeID'] ?? null)
-            ->setPartyIdentificationSchemeName($partyIdentificationId['attributes']['schemeName'] ?? null)
-        ;
+            ->setPartyIdentificationSchemeName($partyIdentificationId['attributes']['schemeName'] ?? null);
     }
 }

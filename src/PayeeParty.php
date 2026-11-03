@@ -12,14 +12,14 @@ use function Sabre\Xml\Deserializer\mixedContent;
 
 class PayeeParty implements XmlSerializable, XmlDeserializable
 {
-    private $partyIdentificationId;
-    private $partyIdentificationSchemeId;
-    private $partyName;
-    private $partyLegalEntityCompanyId;
-    private $partyLegalEntityCompanySchemeId;
+    private ?string $partyIdentificationId = null;
+    private ?string $partyIdentificationSchemeId = null;
+    private ?string $partyName = null;
+    private ?string $partyLegalEntityCompanyId = null;
+    private ?string $partyLegalEntityCompanySchemeId = null;
 
     /**
-     * @return string
+     * @return string|null
      */
     public function getPartyIdentificationId(): ?string
     {
@@ -37,7 +37,7 @@ class PayeeParty implements XmlSerializable, XmlDeserializable
     }
 
     /**
-     * @return string
+     * @return string|null
      */
     public function getPartyIdentificationSchemeId(): ?string
     {
@@ -55,7 +55,7 @@ class PayeeParty implements XmlSerializable, XmlDeserializable
     }
 
     /**
-     * @return string
+     * @return string|null
      */
     public function getPartyName(): ?string
     {
@@ -74,7 +74,7 @@ class PayeeParty implements XmlSerializable, XmlDeserializable
     }
 
     /**
-     * @return string
+     * @return string|null
      */
     public function getPartyLegalEntityCompanyId(): ?string
     {
@@ -92,7 +92,7 @@ class PayeeParty implements XmlSerializable, XmlDeserializable
     }
 
     /**
-     * @return string
+     * @return string|null
      */
     public function getPartyLegalEntityCompanySchemeId(): ?string
     {
@@ -161,7 +161,8 @@ class PayeeParty implements XmlSerializable, XmlDeserializable
         $collection = new ArrayCollection($mixedContent);
 
         $partyIdentification = ReaderHelper::getTag(Schema::CAC . 'PartyIdentification', $collection);
-        $partyIdentificationId = ReaderHelper::getTag(Schema::CBC . 'ID', new ArrayCollection($partyIdentification['value'] ?? []));
+        $partyIdentificationCollection = new ArrayCollection($partyIdentification['value'] ?? []);
+        $partyIdentificationId = ReaderHelper::getTag(Schema::CBC . 'ID', $partyIdentificationCollection);
 
         $partyName = ReaderHelper::getTag(Schema::CAC . 'PartyName', $collection);
         $partyNameName = ReaderHelper::getTag(Schema::CBC . 'Name', new ArrayCollection($partyName['value'] ?? []));
