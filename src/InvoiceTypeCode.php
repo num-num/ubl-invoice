@@ -14,4 +14,8 @@ class InvoiceTypeCode
     public const CORRECTED_INVOICE = 384;
     public const ADVANCE_INVOICE = 386;
     public const SELF_BILLING_INVOICE = 389;
+
+    // Self-billing credit note (UNCL1001 code 261)
+    // Used when the buyer issues a credit note on behalf of the seller
+    public const SELF_BILLING_CREDIT_NOTE = 261;
 }

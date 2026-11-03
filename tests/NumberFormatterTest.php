@@ -30,6 +30,13 @@ class NumberFormatterTest extends TestCase
             [1.236789,  '1.24',      2],
             [1,         '1.00',      2],
             [1.000,     '1',         null],
+
+            // An explicit 0 must round to a whole number, not fall back
+            // to auto-detecting the decimals present in the input
+            [12.345,    '12',        0],
+            [0.5,       '1',         0],
+            [1.0,       '1',         0],
+            [0.0,       '0',         0],
         ];
     }
 }

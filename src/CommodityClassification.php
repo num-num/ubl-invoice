@@ -104,11 +104,17 @@ class CommodityClassification implements XmlSerializable, XmlDeserializable
         $mixedContent = mixedContent($reader);
         $collection = new ArrayCollection($mixedContent);
 
-        $itemClassificationCode = ReaderHelper::getTag(Schema::CBC . 'ItemClassificationCode', $collection);
+        // UBL CommodityClassification kan zowel ItemClassificationCode als CommodityCode bevatten
+        $classificationCode = ReaderHelper::getTag(Schema::CBC . 'ItemClassificationCode', $collection)
+            ?? ReaderHelper::getTag(Schema::CBC . 'CommodityCode', $collection);
+
+        if ($classificationCode === null) {
+            return new static();
+        }
 
         return (new static())
-            ->setItemClassificationCode($itemClassificationCode['value'])
-            ->setItemClassificationListId($itemClassificationCode['attributes']['listID'] ?? null)
-            ->setItemClassificationListVersionId($itemClassificationCode['attributes']['listVersionID'] ?? null);
+            ->setItemClassificationCode($classificationCode['value'] ?? null)
+            ->setItemClassificationListId($classificationCode['attributes']['listID'] ?? null)
+            ->setItemClassificationListVersionId($classificationCode['attributes']['listVersionID'] ?? null);
     }
 }

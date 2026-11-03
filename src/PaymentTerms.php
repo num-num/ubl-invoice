@@ -104,7 +104,7 @@ class PaymentTerms implements XmlSerializable, XmlDeserializable
                     'name'       => Schema::CBC . 'Amount',
                     'value'      => NumberFormatter::format($this->amount, 2),
                     'attributes' => [
-                        'currencyID' => 'EUR'
+                        'currencyID' => Generator::$currencyID
                     ]
                 ]
             ]);

@@ -14,18 +14,18 @@ class ProjectReference implements XmlSerializable, XmlDeserializable
     private $id;
 
     /**
-     * @return string
+     * @return string|null
      */
-    public function getId(): string
+    public function getId(): ?string
     {
         return $this->id;
     }
 
     /**
-     * @param string $id
+     * @param string|null $id
      * @return ProjectReference
      */
-    public function setId(string $id): ProjectReference
+    public function setId(?string $id): ProjectReference
     {
         $this->id = $id;
         return $this;

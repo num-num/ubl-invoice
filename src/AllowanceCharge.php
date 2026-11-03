@@ -18,7 +18,6 @@ class AllowanceCharge implements XmlSerializable, XmlDeserializable
     private $multiplierFactorNumeric;
     private $baseAmount;
     private $amount;
-    private $taxTotal;
     private $taxCategory;
 
     /**
@@ -148,24 +147,6 @@ class AllowanceCharge implements XmlSerializable, XmlDeserializable
     }
 
     /**
-     * @return TaxCategory
-     */
-    public function getTaxtotal(): ?TaxTotal
-    {
-        return $this->taxTotal;
-    }
-
-    /**
-     * @param TaxTotal $taxTotal
-     * @return static
-     */
-    public function setTaxtotal(?TaxTotal $taxTotal)
-    {
-        $this->taxTotal = $taxTotal;
-        return $this;
-    }
-
-    /**
      * The xmlSerialize method is called during xml writing.
      *
      * @param Writer $writer
@@ -222,12 +203,6 @@ class AllowanceCharge implements XmlSerializable, XmlDeserializable
                 Schema::CAC . 'TaxCategory' => $this->taxCategory
             ]);
         }
-
-        if ($this->taxTotal !== null) {
-            $writer->write([
-                Schema::CAC . 'TaxTotal' => $this->taxTotal
-            ]);
-        }
     }
 
     /**
@@ -240,11 +215,11 @@ class AllowanceCharge implements XmlSerializable, XmlDeserializable
         if ($value === null) {
             return null;
         }
-        
+
         if (is_numeric($value)) {
             return intval($value);
         }
-        
+
         return $value;
     }
 
@@ -265,6 +240,6 @@ class AllowanceCharge implements XmlSerializable, XmlDeserializable
             ->setMultiplierFactorNumeric(ReaderHelper::getTagValue(Schema::CBC . 'MultiplierFactorNumeric', $collection) !== null ? floatval(ReaderHelper::getTagValue(Schema::CBC . 'MultiplierFactorNumeric', $collection)) : null)
             ->setBaseAmount(ReaderHelper::getTagValue(Schema::CBC . 'BaseAmount', $collection) !== null ? floatval(ReaderHelper::getTagValue(Schema::CBC . 'BaseAmount', $collection)) : null)
             ->setAmount(ReaderHelper::getTagValue(Schema::CBC . 'Amount', $collection) !== null ? floatval(ReaderHelper::getTagValue(Schema::CBC . 'Amount', $collection)) : null)
-            ->setTaxTotal(ReaderHelper::getTagValue(Schema::CAC . 'TaxTotal', $collection));
+            ->setTaxCategory(ReaderHelper::getTagValue(Schema::CAC . 'TaxCategory', $collection));
     }
 }

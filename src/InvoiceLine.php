@@ -34,6 +34,11 @@ class InvoiceLine implements XmlSerializable, XmlDeserializable
         return $this->xmlTagName === 'CreditNoteLine';
     }
 
+    private function isDebitNoteLine(): bool
+    {
+        return $this->xmlTagName === 'DebitNoteLine';
+    }
+
     /**
      * @return string
      */
@@ -311,8 +316,15 @@ class InvoiceLine implements XmlSerializable, XmlDeserializable
             $invoicedQuantityAttributes['unitCodeListID'] = $this->getUnitCodeListId();
         }
 
+        $quantityTagName = 'InvoicedQuantity';
+        if ($this->isCreditNoteLine()) {
+            $quantityTagName = 'CreditedQuantity';
+        } elseif ($this->isDebitNoteLine()) {
+            $quantityTagName = 'DebitedQuantity';
+        }
+
         $writer->write([
-            'name'       => Schema::CBC . ($this->isCreditNoteLine() ? 'CreditedQuantity' : 'InvoicedQuantity'),
+            'name'       => Schema::CBC . $quantityTagName,
             'value'      => NumberFormatter::format($this->invoicedQuantity),
             'attributes' => $invoicedQuantityAttributes
         ]);
@@ -394,9 +406,11 @@ class InvoiceLine implements XmlSerializable, XmlDeserializable
         /** @var ?AllowanceCharge[] ReaderHelper::getArrayValue */
         $allowanceCharges = ReaderHelper::getArrayValue(Schema::CAC . 'AllowanceCharge', $collection);
 
+        $invoicedQuantityTag = ReaderHelper::getTag(Schema::CBC . 'InvoicedQuantity', $collection);
+
         return (new static())
             ->setId(ReaderHelper::getTagValue(Schema::CBC . 'ID', $collection))
-            ->setInvoicedQuantity(ReaderHelper::getTagValue(Schema::CBC . 'InvoicedQuantity', $collection) !== null ? floatval(ReaderHelper::getTagValue(Schema::CBC . 'InvoicedQuantity', $collection)) : null)
+            ->setInvoicedQuantity(isset($invoicedQuantityTag) ? floatval($invoicedQuantityTag['value']) : null)
             ->setLineExtensionAmount(ReaderHelper::getTagValue(Schema::CBC . 'LineExtensionAmount', $collection) !== null ? floatval(ReaderHelper::getTagValue(Schema::CBC . 'LineExtensionAmount', $collection)) : null)
             ->setTaxTotal(ReaderHelper::getTagValue(Schema::CAC . 'TaxTotal', $collection))
             ->setNote(ReaderHelper::getTagValue(Schema::CBC . 'Note', $collection))
@@ -404,8 +418,8 @@ class InvoiceLine implements XmlSerializable, XmlDeserializable
             ->setOrderLineReference(ReaderHelper::getTagValue(Schema::CAC . 'OrderLineReference', $collection))
             ->setItem(ReaderHelper::getTagValue(Schema::CAC . 'Item', $collection))
             ->setPrice(ReaderHelper::getTagValue(Schema::CAC . 'Price', $collection))
-            ->setUnitCode(ReaderHelper::getTagValue(Schema::CBC . 'UnitCode', $collection))
-            ->setUnitCodeListId(ReaderHelper::getTagValue(Schema::CBC . 'UnitCodeListID', $collection))
+            ->setUnitCode($invoicedQuantityTag['attributes']['unitCode'] ?? null)
+            ->setUnitCodeListId($invoicedQuantityTag['attributes']['unitCodeListID'] ?? null)
             ->setAccountingCostCode(ReaderHelper::getTagValue(Schema::CBC . 'AccountingCostCode', $collection))
             ->setAccountingCost(ReaderHelper::getTagValue(Schema::CBC . 'AccountingCost', $collection))
             ->setAllowanceCharges($allowanceCharges);

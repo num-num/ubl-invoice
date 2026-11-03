@@ -28,9 +28,10 @@ class InvoiceDocumentReference implements XmlSerializable, XmlDeserializable
     /**
      * Set the id of the invoice that is being credited
      *
+     * @param string|null $invoiceRef
      * @return static
      */
-    public function setOriginalInvoiceId(string $invoiceRef)
+    public function setOriginalInvoiceId(?string $invoiceRef)
     {
         $this->originalInvoiceId = $invoiceRef;
         return $this;

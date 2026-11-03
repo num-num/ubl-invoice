@@ -40,6 +40,7 @@ class Invoice implements XmlSerializable, XmlDeserializable
     private $additionalDocumentReferences = [];
     private $projectReference;
     private $documentCurrencyCode = "EUR";
+    private $taxCurrencyCode;
     private $buyerReference;
     private $accountingCostCode;
     private $invoicePeriod;
@@ -91,6 +92,14 @@ class Invoice implements XmlSerializable, XmlDeserializable
     }
 
     /**
+     * @return string|null
+     */
+    public function getCustomizationId(): ?string
+    {
+        return $this->customizationID;
+    }
+
+    /**
      * @param mixed $customizationID
      * @return static
      */
@@ -98,6 +107,14 @@ class Invoice implements XmlSerializable, XmlDeserializable
     {
         $this->customizationID = $customizationID;
         return $this;
+    }
+
+    /**
+     * @return string|null
+     */
+    public function getProfileId(): ?string
+    {
+        return $this->profileID;
     }
 
     /**
@@ -155,10 +172,10 @@ class Invoice implements XmlSerializable, XmlDeserializable
     }
 
     /**
-     * @param DateTime $dueDate
+     * @param DateTime|null $dueDate
      * @return static
      */
-    public function setDueDate(DateTime $dueDate)
+    public function setDueDate(?DateTime $dueDate)
     {
         $this->dueDate = $dueDate;
         return $this;
@@ -179,6 +196,24 @@ class Invoice implements XmlSerializable, XmlDeserializable
     public function setDocumentCurrencyCode(?string $currencyCode = "EUR")
     {
         $this->documentCurrencyCode = $currencyCode;
+        return $this;
+    }
+
+    /**
+     * @return string
+     */
+    public function getTaxCurrencyCode(): ?string
+    {
+        return $this->taxCurrencyCode;
+    }
+
+    /**
+     * @param mixed $currencyCode
+     * @return static
+     */
+    public function setTaxCurrencyCode(?string $currencyCode)
+    {
+        $this->taxCurrencyCode = $currencyCode;
         return $this;
     }
 
@@ -228,10 +263,10 @@ class Invoice implements XmlSerializable, XmlDeserializable
     }
 
     /**
-     * @param DateTime $taxPointDate
+     * @param DateTime|null $taxPointDate
      * @return static
      */
-    public function setTaxPointDate(DateTime $taxPointDate)
+    public function setTaxPointDate(?DateTime $taxPointDate)
     {
         $this->taxPointDate = $taxPointDate;
         return $this;
@@ -313,18 +348,18 @@ class Invoice implements XmlSerializable, XmlDeserializable
     }
 
     /**
-     * @return Party
+     * @return PayeeParty
      */
-    public function getPayeeParty(): ?Party
+    public function getPayeeParty(): ?PayeeParty
     {
         return $this->payeeParty;
     }
 
     /**
-     * @param Party $payeeParty
+     * @param PayeeParty $payeeParty
      * @return static
      */
-    public function setPayeeParty(?Party $payeeParty)
+    public function setPayeeParty(?PayeeParty $payeeParty)
     {
         $this->payeeParty = $payeeParty;
         return $this;
@@ -753,6 +788,44 @@ class Invoice implements XmlSerializable, XmlDeserializable
     }
 
     /**
+     * The order in which the document reference elements have to be written.
+     *
+     * UBL 2.1 declares these elements in an xsd:sequence, so writing them in
+     * any other order produces a document that fails schema validation. The
+     * required order is not the same for every document type.
+     *
+     * Elements that a document type does not declare at all (ProjectReference
+     * on a CreditNote or DebitNote, OriginatorDocumentReference on a DebitNote)
+     * are written last, which keeps the previous behaviour for those documents.
+     *
+     * @return string[]
+     */
+    protected function documentReferenceOrder(): array
+    {
+        if ($this->xmlTagName === 'Invoice') {
+            return [
+                'BillingReference',
+                'DespatchDocumentReference',
+                'ReceiptDocumentReference',
+                'OriginatorDocumentReference',
+                'ContractDocumentReference',
+                'AdditionalDocumentReference',
+                'ProjectReference',
+            ];
+        }
+
+        return [
+            'BillingReference',
+            'DespatchDocumentReference',
+            'ReceiptDocumentReference',
+            'ContractDocumentReference',
+            'AdditionalDocumentReference',
+            'OriginatorDocumentReference',
+            'ProjectReference',
+        ];
+    }
+
+    /**
      * The xmlSerialize method is called during xml writing.
      * @param Writer $writer
      * @return void
@@ -801,7 +874,8 @@ class Invoice implements XmlSerializable, XmlDeserializable
             ]);
         }
 
-        if ($this->invoiceTypeCode !== null) {
+        // DebitNote does not have a TypeCode element in UBL 2.1
+        if ($this->invoiceTypeCode !== null && $this->xmlTagName !== 'DebitNote') {
             $writer->write([
                 Schema::CBC .
                 $this->xmlTagName .
@@ -851,56 +925,32 @@ class Invoice implements XmlSerializable, XmlDeserializable
             ]);
         }
 
-        if ($this->billingReference != null) {
-            $writer->write([
-                Schema::CAC . "BillingReference" => $this->billingReference,
-            ]);
-        }
+        $documentReferences = [
+            "BillingReference"            => $this->billingReference,
+            "DespatchDocumentReference"   => $this->despatchDocumentReference,
+            "ReceiptDocumentReference"    => $this->receiptDocumentReference,
+            "OriginatorDocumentReference" => $this->originatorDocumentReference,
+            "ContractDocumentReference"   => $this->contractDocumentReference,
+            "AdditionalDocumentReference" => $this->additionalDocumentReferences,
+            "ProjectReference"            => $this->projectReference,
+        ];
 
-        if ($this->contractDocumentReference !== null) {
-            $writer->write([
-                Schema::CAC .
-                "ContractDocumentReference" => $this->contractDocumentReference,
-            ]);
-        }
+        foreach ($this->documentReferenceOrder() as $elementName) {
+            $documentReference = $documentReferences[$elementName];
 
-        if ($this->despatchDocumentReference !== null) {
-            $writer->write([
-                Schema::CAC .
-                "DespatchDocumentReference" => $this->despatchDocumentReference,
-            ]);
-        }
+            if ($documentReference === null) {
+                continue;
+            }
 
-        if ($this->receiptDocumentReference !== null) {
-            $writer->write([
-                Schema::CAC .
-                "ReceiptDocumentReference" => $this->receiptDocumentReference,
-            ]);
-        }
+            if (!is_array($documentReference)) {
+                $documentReference = [$documentReference];
+            }
 
-        if (!empty($this->additionalDocumentReferences)) {
-            foreach (
-                $this->additionalDocumentReferences
-                as $additionalDocumentReference
-            ) {
+            foreach ($documentReference as $reference) {
                 $writer->write([
-                    Schema::CAC .
-                    "AdditionalDocumentReference" => $additionalDocumentReference,
+                    Schema::CAC . $elementName => $reference,
                 ]);
             }
-        }
-
-        if ($this->originatorDocumentReference !== null) {
-            $writer->write([
-                Schema::CAC .
-                "OriginatorDocumentReference" => $this->originatorDocumentReference,
-            ]);
-        }
-
-        if ($this->projectReference != null) {
-            $writer->write([
-                Schema::CAC . "ProjectReference" => $this->projectReference,
-            ]);
         }
 
         $writer->write([
@@ -950,8 +1000,10 @@ class Invoice implements XmlSerializable, XmlDeserializable
             ]);
         }
 
+        // DebitNote uses RequestedMonetaryTotal instead of LegalMonetaryTotal
+        $monetaryTotalTagName = $this->xmlTagName === 'DebitNote' ? 'RequestedMonetaryTotal' : 'LegalMonetaryTotal';
         $writer->write([
-            Schema::CAC . "LegalMonetaryTotal" => $this->legalMonetaryTotal,
+            Schema::CAC . $monetaryTotalTagName => $this->legalMonetaryTotal,
         ]);
 
         foreach ($this->invoiceLines as $invoiceLine) {
@@ -1042,16 +1094,20 @@ class Invoice implements XmlSerializable, XmlDeserializable
                 )->toDateTime(),
             )
             ->setDueDate(
-                Carbon::parse(
-                    ReaderHelper::getTagValue(
-                        Schema::CBC . "DueDate",
-                        $collection,
-                    ),
-                )->toDateTime(),
+                ($dueDate = ReaderHelper::getTagValue(
+                    Schema::CBC . "DueDate",
+                    $collection,
+                )) !== null ? Carbon::parse($dueDate)->toDateTime() : null
             )
             ->setDocumentCurrencyCode(
                 ReaderHelper::getTagValue(
                     Schema::CBC . "DocumentCurrencyCode",
+                    $collection,
+                ),
+            )
+            ->setTaxCurrencyCode(
+                ReaderHelper::getTagValue(
+                    Schema::CBC . "TaxCurrencyCode",
                     $collection,
                 ),
             )
@@ -1065,12 +1121,10 @@ class Invoice implements XmlSerializable, XmlDeserializable
                 ReaderHelper::getTagValue(Schema::CBC . "Note", $collection),
             )
             ->setTaxPointDate(
-                Carbon::parse(
-                    ReaderHelper::getTagValue(
-                        Schema::CBC . "TaxPointDate",
-                        $collection,
-                    ),
-                )->toDateTime(),
+                ($taxPointDate = ReaderHelper::getTagValue(
+                    Schema::CBC . "TaxPointDate",
+                    $collection,
+                )) !== null ? Carbon::parse($taxPointDate)->toDateTime() : null
             )
             ->setPaymentTerms(
                 ReaderHelper::getTagValue(

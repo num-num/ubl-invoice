@@ -118,14 +118,6 @@ class Price implements XmlSerializable, XmlDeserializable
      */
     public function xmlSerialize(Writer $writer): void
     {
-        $baseQuantityAttributes = [
-            'unitCode' => $this->unitCode,
-        ];
-
-        if (!empty($this->getUnitCodeListId())) {
-            $baseQuantityAttributes['unitCodeListID'] = $this->getUnitCodeListId();
-        }
-
         $writer->write([
             [
                 'name'       => Schema::CBC . 'PriceAmount',
@@ -134,12 +126,25 @@ class Price implements XmlSerializable, XmlDeserializable
                     'currencyID' => Generator::$currencyID
                 ]
             ],
-            [
-                'name'       => Schema::CBC . 'BaseQuantity',
-                'value'      => NumberFormatter::format($this->baseQuantity),
-                'attributes' => $baseQuantityAttributes
-            ]
         ]);
+
+        if ($this->baseQuantity !== null) {
+            $baseQuantityAttributes = [
+                'unitCode' => $this->unitCode,
+            ];
+
+            if (!empty($this->getUnitCodeListId())) {
+                $baseQuantityAttributes['unitCodeListID'] = $this->getUnitCodeListId();
+            }
+
+            $writer->write([
+                [
+                    'name'       => Schema::CBC . 'BaseQuantity',
+                    'value'      => NumberFormatter::format($this->baseQuantity),
+                    'attributes' => $baseQuantityAttributes
+                ]
+            ]);
+        }
 
         if ($this->allowanceCharge !== null) {
             $writer->write([

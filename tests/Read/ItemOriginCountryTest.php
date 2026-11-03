@@ -132,5 +132,5 @@ XML;
         $originCountry = $item->getOriginCountry();
         $this->assertNull($originCountry);
     }
-}
 
+}

@@ -34,6 +34,11 @@ class CreditNote extends Invoice implements XmlSerializable, XmlDeserializable
 
     /**
      * The xmlDeserialize method is called during xml reading.
+     *
+     * Overrides parent to read CreditNoteTypeCode instead of InvoiceTypeCode.
+     * CreditNotes use CreditNoteTypeCode (e.g., 261 for self-billing credit note)
+     * while Invoices use InvoiceTypeCode (e.g., 389 for self-billing invoice).
+     *
      * @param Reader $reader
      * @return static
      */
@@ -42,7 +47,19 @@ class CreditNote extends Invoice implements XmlSerializable, XmlDeserializable
         $mixedContent = mixedContent($reader);
         $collection = new ArrayCollection($mixedContent);
 
-        return (static::deserializedTag($mixedContent))
+        $instance = static::deserializedTag($mixedContent)
             ->setCreditNoteLines(ReaderHelper::getArrayValue(Schema::CAC . 'CreditNoteLine', $collection));
+
+        // Read CreditNoteTypeCode (CreditNotes use this instead of InvoiceTypeCode)
+        $creditNoteTypeCode = ReaderHelper::getTagValue(
+            Schema::CBC . 'CreditNoteTypeCode',
+            $collection
+        );
+
+        if ($creditNoteTypeCode !== null) {
+            $instance->setInvoiceTypeCode((int) $creditNoteTypeCode);
+        }
+
+        return $instance;
     }
 }

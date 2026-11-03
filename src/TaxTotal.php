@@ -4,8 +4,9 @@ namespace NumNum\UBL;
 
 use InvalidArgumentException;
 
-use function Sabre\Xml\Deserializer\keyValue;
+use function Sabre\Xml\Deserializer\mixedContent;
 
+use Doctrine\Common\Collections\ArrayCollection;
 use Sabre\Xml\Reader;
 use Sabre\Xml\Writer;
 use Sabre\Xml\XmlDeserializable;
@@ -101,23 +102,19 @@ class TaxTotal implements XmlSerializable, XmlDeserializable
 
     /**
      * The xmlDeserialize method is called during xml reading.
-     * @param Reader $xml
+     * @param Reader $reader
      * @return static
      */
     public static function xmlDeserialize(Reader $reader)
     {
-        $keyValues = keyValue($reader);
+        $mixedContent = mixedContent($reader);
+        $collection = new ArrayCollection($mixedContent);
 
-        $taxSubTotals = array_values(
-            array_filter(
-                $keyValues,
-                fn ($value, $key) => $key === Schema::CAC . 'TaxSubtotal', ARRAY_FILTER_USE_BOTH
-            )
-        );
+        $taxAmount = ReaderHelper::getTag(Schema::CBC . 'TaxAmount', $collection);
+        $taxSubTotals = ReaderHelper::getArrayValue(Schema::CAC . 'TaxSubtotal', $collection);
 
         return (new static())
-            ->setTaxAmount(isset($keyValues[Schema::CBC.'TaxAmount']) ? floatval($keyValues[Schema::CBC.'TaxAmount']) : null)
+            ->setTaxAmount(isset($taxAmount) ? floatval($taxAmount['value']) : null)
             ->setTaxSubTotals($taxSubTotals);
-        ;
     }
 }

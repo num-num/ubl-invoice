@@ -13,6 +13,7 @@ class Reader
         self::$currencyID = $currencyId;
 
         $xmlService = new Service();
+        $xmlService->options = LIBXML_PARSEHUGE;
 
         $xmlService->namespaceMap = [
             Schema::INVOICE => '',
@@ -23,9 +24,11 @@ class Reader
         $xmlService->elementMap = [
             Schema::INVOICE.   'Invoice'                      => fn ($reader) => Invoice::xmlDeserialize($reader),
             Schema::CREDITNOTE.'CreditNote'                   => fn ($reader) => CreditNote::xmlDeserialize($reader),
+            Schema::DEBITNOTE. 'DebitNote'                    => fn ($reader) => DebitNote::xmlDeserialize($reader),
             Schema::CAC.        'AccountingCustomerParty'     => fn ($reader) => AccountingParty::xmlDeserialize($reader),
             Schema::CAC.        'AccountingSupplierParty'     => fn ($reader) => AccountingParty::xmlDeserialize($reader),
             Schema::CAC.        'AdditionalDocumentReference' => fn ($reader) => AdditionalDocumentReference::xmlDeserialize($reader),
+            Schema::CAC.        'AdditionalItemProperty'      => fn ($reader) => AdditionalItemProperty::xmlDeserialize($reader),
             Schema::CAC.        'Address'                     => fn ($reader) => Address::xmlDeserialize($reader),
             Schema::CAC.        'AddressLine'                 => fn ($reader) => AddressLine::xmlDeserialize($reader),
             Schema::CAC.        'AllowanceCharge'             => fn ($reader) => AllowanceCharge::xmlDeserialize($reader),
@@ -38,7 +41,7 @@ class Reader
             Schema::CAC.        'Country'                     => fn ($reader) => Country::xmlDeserialize($reader),
             Schema::CAC.        'DespatchDocumentReference'   => fn ($reader) => DespatchDocumentReference::xmlDeserialize($reader),
             Schema::CAC.        'CreditNoteLine'              => fn ($reader) => CreditNoteLine::xmlDeserialize($reader),
-            Schema::CAC.        'CreditNoteLine'              => fn ($reader) => CreditNoteLine::xmlDeserialize($reader),
+            Schema::CAC.        'DebitNoteLine'               => fn ($reader) => DebitNoteLine::xmlDeserialize($reader),
             Schema::CAC.        'Delivery'                    => fn ($reader) => Delivery::xmlDeserialize($reader),
             Schema::CAC.        'FinancialInstitutionBranch'  => fn ($reader) => FinancialInstitutionBranch::xmlDeserialize($reader),
             Schema::CAC.        'InvoiceDocumentReference'    => fn ($reader) => InvoiceDocumentReference::xmlDeserialize($reader),
@@ -54,7 +57,8 @@ class Reader
             Schema::CAC.        'PartyTaxScheme'              => fn ($reader) => PartyTaxScheme::xmlDeserialize($reader),
             Schema::CAC.        'OriginatorDocumentReference' => fn ($reader) => OriginatorDocumentReference::xmlDeserialize($reader),
             Schema::CAC.        'PayeeFinancialAccount'       => fn ($reader) => PayeeFinancialAccount::xmlDeserialize($reader),
-            Schema::CAC.        'PayeeParty'                  => fn ($reader) => Party::xmlDeserialize($reader),
+            Schema::CAC.        'PayerFinancialAccount'       => fn ($reader) => PayerFinancialAccount::xmlDeserialize($reader),
+            Schema::CAC.        'PayeeParty'                  => fn ($reader) => PayeeParty::xmlDeserialize($reader),
             Schema::CAC.        'PaymentMandate'              => fn ($reader) => PaymentMandate::xmlDeserialize($reader),
             Schema::CAC.        'PaymentMeans'                => fn ($reader) => PaymentMeans::xmlDeserialize($reader),
             Schema::CAC.        'PaymentTerms'                => fn ($reader) => PaymentTerms::xmlDeserialize($reader),
