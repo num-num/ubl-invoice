@@ -69,7 +69,7 @@ XML;
         $invoice = $ublReader->parse($xml);
         $notes = $invoice->getNotes();
         $this->assertCount(3, $notes);
-        $this->asserEquals("#PMD#Pénalités de retard : taux égal à trois fois le taux d'intérêt légal.",$invoice->getNote());
-        $this->asserEquals(array_keys($invoice->getNotes()),[0,1,2]);
+        $this->assertEquals("#PMD#Pénalités de retard : taux égal à trois fois le taux d'intérêt légal.",$invoice->getNote());
+        $this->assertEquals(array_keys($invoice->getNotes()),[0,1,2]);
     }
 }
