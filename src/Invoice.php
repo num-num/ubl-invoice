@@ -23,7 +23,7 @@ class Invoice implements XmlSerializable, XmlDeserializable
     private $issueDate;
     private ?DateTime $issueTime;
     protected $invoiceTypeCode = InvoiceTypeCode::INVOICE;
-    private $note;
+    private $notes;
     private $taxPointDate;
     private $dueDate;
     private $paymentTerms;
@@ -255,20 +255,55 @@ class Invoice implements XmlSerializable, XmlDeserializable
     }
 
     /**
-     * @return string
+     * @param string $note
+     * @return static
      */
-    public function getNote()
+    public function addNote(string $note)
     {
-        return $this->note;
+        if (!is_array($this->notes)) {
+            $this->notes = [];
+        }
+        $this->notes[] = $note;
+        return $this;
     }
 
     /**
-     * @param ?string $note
+     * @return string|null
+     */
+    public function getNote()
+    {
+        return $this->notes[0] ?? null;
+    }
+
+    /**
+     * @return string[]|null
+     */
+    public function getNotes()
+    {
+        return $this->notes;
+    }
+
+    /**
+     * @param string|null $note
      * @return static
      */
     public function setNote(?string $note)
     {
-        $this->note = $note;
+        if (is_null($note)) {
+            $this->setNotes(null);
+        } else {
+            $this->setNotes([$note]);
+        }
+        return $this;
+    }
+
+    /**
+     * @param string[]|null $notes
+     * @return static
+     */
+    public function setNotes(?array $notes)
+    {
+        $this->notes = $notes;
         return $this;
     }
 
@@ -870,10 +905,12 @@ class Invoice implements XmlSerializable, XmlDeserializable
             ]);
         }
 
-        if ($this->note !== null) {
-            $writer->write([
-                Schema::CBC . "Note" => $this->note,
-            ]);
+        if ($this->notes !== null) {
+            foreach ($this->notes as $note) {
+                $writer->write([
+                    Schema::CBC . "Note" => $note,
+                ]);
+            }
         }
 
         if ($this->taxPointDate !== null) {
@@ -1106,8 +1143,13 @@ class Invoice implements XmlSerializable, XmlDeserializable
                     $collection,
                 )) !== null ? (int) $typeCode : null,
             )
-            ->setNote(
-                ReaderHelper::getTagValue(Schema::CBC . "Note", $collection),
+            ->setNotes(
+                array_values(
+                    ReaderHelper::getArrayValue(
+                        Schema::CBC . "Note",
+                        $collection,
+                    )
+                )
             )
             ->setTaxPointDate(
                 ($taxPointDate = ReaderHelper::getTagValue(

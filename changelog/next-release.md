@@ -23,3 +23,7 @@
 ### Maintenance
 
 - Update dependency constraints to support Doctrine Collections 3.x
+
+## Added
+
+- Add the possibility to add multiple notes on invoice (needed for French's rules)

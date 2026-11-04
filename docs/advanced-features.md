@@ -374,6 +374,37 @@ UnitCode::KILOGRAM;  // KGM - Kilogram
 UnitCode::METER;     // MTR - Meter
 UnitCode::LITER;     // LTR - Liter
 ```
+# UBL / EN 16931: Document-Level Notes (`cbc:Note` / BT-22)
+
+## General Rule (Peppol BIS Billing 3.0 / EN 16931)
+
+- Cardinality of document-level notes (`cbc:Note`, BT-22): **0..1** in most cases.
+- **Peppol rule PEPPOL-EN16931-R002** (fatal):  
+  > No more than one note is allowed on document level, unless both the buyer and seller are German organizations.
+
+**Multiple notes are not accepted**, except for **Invoices** and **Credit Notes** in the following cases:
+
+- **Germany**: Both supplier and customer are German (DE-DE).
+- **France**: National CIUS-FR / EXT-CTC-FR / Factur-X profiles (UBL).
+
+## France – Mandatory Notes
+
+French specifications **require** multiple structured notes (using subject codes from UNCL 4451, often via extensions or prefixed `cbc:Note`).
+
+**Mandatory notes** (must each appear at most once):
+
+| Code | Description |
+|------|-------------|
+| **PMT** | Fixed €40 late payment penalty / collection costs |
+| **PMD** | Late payment penalties according to the seller’s terms |
+| **AAB** | Discount conditions (or statement that no discount applies) |
+
+**Conditional**:
+- **TXD** + text `MEMBRE_ASSUJETTI_UNIQUE` → when seller is a single taxable person (scheme ID 0231).
+
+**Optional examples**: `ACC` (factoring/subrogation), `AAI`, etc.
+
+These notes are required for French domestic B2B e-invoicing compliance.
 
 ## Next Steps
 
