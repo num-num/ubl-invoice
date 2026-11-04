@@ -126,7 +126,6 @@ class MultipleNotesTest extends TestCase
 
         $dom->save('./tests/MultipleNotesTest.xml');
         $this->assertEquals(count($invoice->getNotes()),3);
-        $this->assertEquals(count($invoice->getNote()),1);
         $this->assertEquals($invoice->getNote(),'#PMT#…');
         $this->assertEquals(['#PMT#…','#PMD#…','#AAB#…'],$invoice->getNotes());
 
