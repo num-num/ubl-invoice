@@ -20,6 +20,9 @@
   - Small values represented in scientific notation (e.g. `1.0E-5`) now keep their decimals
   - Decimal-comma locales on PHP 7.4 keep working
 
+- Fix `CreditNote` writing `cbc:TaxPointDate` after `cbc:Note`, producing schema-invalid XML when a tax point date is set
+  - Write `cbc:TaxPointDate` before `cbc:CreditNoteTypeCode` and `cbc:Note`, while preserving the `Invoice` element order
+
 - Fix document reference elements being written in the wrong order, producing XML that fails UBL schema validation
   - UBL declares these elements in an `xsd:sequence`, and the required order differs per document type
   - On an `Invoice`, `cac:ContractDocumentReference` was written before `cac:DespatchDocumentReference`

@@ -963,6 +963,15 @@ class Invoice implements XmlSerializable, XmlDeserializable
             ]);
         }
 
+        // CreditNote requires TaxPointDate before CreditNoteTypeCode.
+        if ($this->taxPointDate !== null && $this->xmlTagName === 'CreditNote') {
+            $writer->write([
+                Schema::CBC . "TaxPointDate" => $this->taxPointDate->format(
+                    "Y-m-d",
+                ),
+            ]);
+        }
+
         // DebitNote does not have a TypeCode element in UBL 2.1
         if ($this->invoiceTypeCode !== null && $this->xmlTagName !== 'DebitNote') {
             $writer->write([
@@ -980,7 +989,8 @@ class Invoice implements XmlSerializable, XmlDeserializable
             }
         }
 
-        if ($this->taxPointDate !== null) {
+        // Invoice requires TaxPointDate after Note.
+        if ($this->taxPointDate !== null && $this->xmlTagName !== 'CreditNote') {
             $writer->write([
                 Schema::CBC . "TaxPointDate" => $this->taxPointDate->format(
                     "Y-m-d",
