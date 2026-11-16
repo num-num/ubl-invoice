@@ -2,6 +2,9 @@
 
 ## Fixed
 
+- Fix automatic decimal detection in `NumberFormatter` for small floating-point values represented in scientific notation
+  - Normalize the locale decimal separator before detection to preserve PHP 7.4 support for decimal-comma locales
+
 - Fix document reference elements being written in the wrong order, producing XML that fails UBL schema validation
   - UBL declares these elements in an `xsd:sequence`, and the required order differs per document type
   - On an `Invoice`, `cac:ContractDocumentReference` was written before `cac:DespatchDocumentReference`
