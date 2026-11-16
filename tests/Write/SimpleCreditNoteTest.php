@@ -99,6 +99,8 @@ class SimpleCreditNoteTest extends TestCase
             ->setId(1234)
             ->setCopyIndicator(false)
             ->setIssueDate(new \DateTime())
+            ->setTaxPointDate(new \DateTime('2026-01-15'))
+            ->setNote('Credit note')
             ->setAccountingSupplierParty($accountingSupplierParty)
             ->setAccountingCustomerParty($accountingCustomerParty)
             ->setCreditNoteLines($creditNoteLines)

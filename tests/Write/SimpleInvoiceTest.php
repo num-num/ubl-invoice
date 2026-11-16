@@ -138,6 +138,8 @@ class SimpleInvoiceTest extends TestCase
             ->setId(1234)
             ->setCopyIndicator(false)
             ->setIssueDate(new \DateTime())
+            ->setTaxPointDate(new \DateTime('2026-01-15'))
+            ->setNote('Invoice note')
             ->setIssueTime(new \DateTime())
             ->setAccountingSupplierParty($accountingSupplierParty)
             ->setAccountingCustomerParty($accountingCustomerParty)
