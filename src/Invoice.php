@@ -861,6 +861,16 @@ class Invoice implements XmlSerializable, XmlDeserializable
             ]);
         }
 
+        // In a CreditNote, UBL 2.1 puts TaxPointDate before CreditNoteTypeCode and Note;
+        // in an Invoice and a DebitNote it comes after the Note
+        if ($this->taxPointDate !== null && $this->xmlTagName === 'CreditNote') {
+            $writer->write([
+                Schema::CBC . "TaxPointDate" => $this->taxPointDate->format(
+                    "Y-m-d",
+                ),
+            ]);
+        }
+
         // DebitNote does not have a TypeCode element in UBL 2.1
         if ($this->invoiceTypeCode !== null && $this->xmlTagName !== 'DebitNote') {
             $writer->write([
@@ -876,7 +886,7 @@ class Invoice implements XmlSerializable, XmlDeserializable
             ]);
         }
 
-        if ($this->taxPointDate !== null) {
+        if ($this->taxPointDate !== null && $this->xmlTagName !== 'CreditNote') {
             $writer->write([
                 Schema::CBC . "TaxPointDate" => $this->taxPointDate->format(
                     "Y-m-d",
