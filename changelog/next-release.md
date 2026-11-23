@@ -2,6 +2,11 @@
 
 ## Fixed
 
+- Fix automatic decimal detection in `NumberFormatter` when no `$decimals` argument is given (#164)
+  - On PHP 8 with a decimal-comma locale (e.g. `de_DE`), all decimals were dropped, because float-to-string conversion no longer uses the locale's decimal separator
+  - Small values represented in scientific notation (e.g. `1.0E-5`) now keep their decimals
+  - Decimal-comma locales on PHP 7.4 keep working
+
 - Fix document reference elements being written in the wrong order, producing XML that fails UBL schema validation
   - UBL declares these elements in an `xsd:sequence`, and the required order differs per document type
   - On an `Invoice`, `cac:ContractDocumentReference` was written before `cac:DespatchDocumentReference`

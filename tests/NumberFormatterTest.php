@@ -19,6 +19,25 @@ class NumberFormatterTest extends TestCase
         return $this->assertEqualsCanonicalizing($formattedNumber, $result);
     }
 
+    /**
+     * @dataProvider formattedNumbersProvider
+     */
+    public function testNumberFormatterWithCommaLocale($number, string $formattedNumber, ?int $decimals)
+    {
+        $originalLocale = setlocale(LC_NUMERIC, 0);
+
+        try {
+            $locale = setlocale(LC_NUMERIC, 'de_DE.UTF-8', 'de_DE.utf8', 'de_DE', 'German_Germany.1252');
+            if ($locale === false || localeconv()['decimal_point'] !== ',') {
+                $this->markTestSkipped('A locale with a decimal comma is not available.');
+            }
+
+            $this->assertSame($formattedNumber, NumberFormatter::format($number, $decimals));
+        } finally {
+            setlocale(LC_NUMERIC, $originalLocale);
+        }
+    }
+
     public function formattedNumbersProvider(): array
     {
         return [
@@ -30,6 +49,15 @@ class NumberFormatterTest extends TestCase
             [1.236789,  '1.24',      2],
             [1,         '1.00',      2],
             [1.000,     '1',         null],
+            [12.345,    '12.345',    null],
+            [0.125,     '0.125',     null],
+            [12.345,    '12.35',     2],
+
+            // Preserve small values represented in scientific notation.
+            [1.0e-5,   '0.00001',   null],
+            [1.23e-5,  '0.0000123', null],
+            [-1.0e-5,  '-0.00001',  null],
+            [1.0e-5,   '0.00',      2],
 
             // An explicit 0 must round to a whole number, not fall back
             // to auto-detecting the decimals present in the input
