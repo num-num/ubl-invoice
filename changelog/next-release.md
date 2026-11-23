@@ -2,6 +2,9 @@
 
 ## Added
 
+- Support multiple document-level notes (`cbc:Note`, BT-22) through `addNote()`, `setNotes()` and `getNotes()`, e.g. for the French CIUS
+  - `setNote()` and `getNote()` keep working with a single note; `getNote()` returns the first one
+
 - Support multiple billing references when writing and reading documents through `setBillingReferences()`, `addBillingReference()` and `getBillingReferences()`
   - Keep `setBillingReference()` and `getBillingReference()` compatible with a single reference
   - Normalize collection keys so `getBillingReference()` also returns the first reference after XML parsing
@@ -34,7 +37,3 @@
 ### Maintenance
 
 - Update dependency constraints to support Doctrine Collections 3.x
-
-## Added
-
-- Add the possibility to add multiple notes on invoice (needed for French's rules)
