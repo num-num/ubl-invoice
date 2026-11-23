@@ -45,13 +45,15 @@ class Invoice implements XmlSerializable, XmlDeserializable
     private $buyerReference;
     private $accountingCostCode;
     private $invoicePeriod;
-    private $billingReference;
+    private $billingReferences = [];
     private $delivery;
     private $orderReference;
     private $contractDocumentReference;
     private $despatchDocumentReference;
     private $receiptDocumentReference;
     private $originatorDocumentReference;
+    /** @var Extension[] $extensions */
+    private array $extensions = [];
 
     /**
      * @return string
@@ -633,13 +635,21 @@ class Invoice implements XmlSerializable, XmlDeserializable
     }
 
     /**
-     * Get the reference to the invoice that is being credited
+     * Get the first reference to an invoice that is being credited
      *
      * @return ?BillingReference
      */
     public function getBillingReference(): ?BillingReference
     {
-        return $this->billingReference;
+        return $this->billingReferences[0] ?? null;
+    }
+
+    /**
+     * @return array<BillingReference>
+     */
+    public function getBillingReferences(): array
+    {
+        return $this->billingReferences;
     }
 
     /**
@@ -649,7 +659,27 @@ class Invoice implements XmlSerializable, XmlDeserializable
      */
     public function setBillingReference(?BillingReference $billingReference)
     {
-        $this->billingReference = $billingReference;
+        $this->billingReferences = $billingReference !== null ? [$billingReference] : [];
+        return $this;
+    }
+
+    /**
+     * @param BillingReference[] $billingReferences
+     * @return static
+     */
+    public function setBillingReferences(array $billingReferences)
+    {
+        $this->billingReferences = array_values($billingReferences);
+        return $this;
+    }
+
+    /**
+     * @param BillingReference $billingReference
+     * @return static
+     */
+    public function addBillingReference(BillingReference $billingReference)
+    {
+        $this->billingReferences[] = $billingReference;
         return $this;
     }
 
@@ -766,6 +796,36 @@ class Invoice implements XmlSerializable, XmlDeserializable
     }
 
     /**
+     * @param Extension $extension
+     * @return static
+     */
+    public function addExtension(Extension $extension): self
+    {
+        $this->extensions[] = $extension;
+
+        return $this;
+    }
+
+    /**
+     * @param Extension[] $extensions
+     * @return static
+     */
+    public function setExtensions(array $extensions): self
+    {
+        $this->extensions = $extensions;
+
+        return $this;
+    }
+
+    /**
+     * @return Extension[]
+     */
+    public function getExtensions(): array
+    {
+        return $this->extensions;
+    }
+
+    /**
      * The validate function that is called during xml writing to valid the data of the object.
      *
      * @return void
@@ -856,6 +916,13 @@ class Invoice implements XmlSerializable, XmlDeserializable
     public function xmlSerialize(Writer $writer): void
     {
         $this->validate();
+
+        if ($this->extensions) {
+            $writer->write([
+                'name' => Schema::EXT . 'UBLExtensions',
+                'value' => $this->extensions
+            ]);
+        }
 
         $writer->write([
             Schema::CBC . "UBLVersionID" => $this->UBLVersionID,
@@ -950,7 +1017,7 @@ class Invoice implements XmlSerializable, XmlDeserializable
         }
 
         $documentReferences = [
-            "BillingReference"            => $this->billingReference,
+            "BillingReference"            => $this->billingReferences,
             "DespatchDocumentReference"   => $this->despatchDocumentReference,
             "ReceiptDocumentReference"    => $this->receiptDocumentReference,
             "OriginatorDocumentReference" => $this->originatorDocumentReference,
@@ -1077,7 +1144,20 @@ class Invoice implements XmlSerializable, XmlDeserializable
             $collection,
         );
 
+        $ublExtensions = ReaderHelper::getTagValue(
+            Schema::EXT . "UBLExtensions",
+            $collection,
+        );
+
         return (new static())
+            ->setExtensions(
+                is_array($ublExtensions)
+                    ? array_values(ReaderHelper::getArrayValue(
+                        Schema::EXT . "UBLExtension",
+                        new ArrayCollection($ublExtensions),
+                    ))
+                    : [],
+            )
             ->setUBLVersionId(
                 ReaderHelper::getTagValue(
                     Schema::CBC . "UBLVersionID",
@@ -1215,8 +1295,8 @@ class Invoice implements XmlSerializable, XmlDeserializable
                     $collection,
                 ),
             )
-            ->setBillingReference(
-                ReaderHelper::getTagValue(
+            ->setBillingReferences(
+                ReaderHelper::getArrayValue(
                     Schema::CAC . "BillingReference",
                     $collection,
                 ),

@@ -88,9 +88,14 @@ class BillingReferenceCreditNoteTest extends TestCase
             ->addTaxSubTotal($taxSubTotal)
             ->setTaxAmount(2.1);
 
-        $billingReference = (new \NumNum\UBL\BillingReference())
+        $firstBillingReference = (new \NumNum\UBL\BillingReference())
             ->setInvoiceDocumentReference((new \NumNum\UBL\InvoiceDocumentReference())
-                    ->setOriginalInvoiceId(1234)
+                    ->setOriginalInvoiceId('INV-1234')
+                    ->setIssueDate(new \DateTime()));
+
+        $secondBillingReference = (new \NumNum\UBL\BillingReference())
+            ->setInvoiceDocumentReference((new \NumNum\UBL\InvoiceDocumentReference())
+                    ->setOriginalInvoiceId('INV-5678')
                     ->setIssueDate(new \DateTime()));
 
         $accountingSupplierParty = (new \NumNum\UBL\AccountingParty())
@@ -106,7 +111,8 @@ class BillingReferenceCreditNoteTest extends TestCase
             ->setIssueDate(new \DateTime())
             ->setAccountingSupplierParty($accountingSupplierParty)
             ->setAccountingCustomerParty($accountingCustomerParty)
-            ->setBillingReference($billingReference)
+            ->setBillingReference($firstBillingReference)
+            ->addBillingReference($secondBillingReference)
             ->setCreditNoteLines($creditNoteLines)
             ->setLegalMonetaryTotal($legalMonetaryTotal)
             ->setTaxTotal($taxTotal)

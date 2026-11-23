@@ -57,6 +57,7 @@ class Reader
             Schema::CAC.        'PartyTaxScheme'              => fn ($reader) => PartyTaxScheme::xmlDeserialize($reader),
             Schema::CAC.        'OriginatorDocumentReference' => fn ($reader) => OriginatorDocumentReference::xmlDeserialize($reader),
             Schema::CAC.        'PayeeFinancialAccount'       => fn ($reader) => PayeeFinancialAccount::xmlDeserialize($reader),
+            Schema::CAC.        'PayerFinancialAccount'       => fn ($reader) => PayerFinancialAccount::xmlDeserialize($reader),
             Schema::CAC.        'PayeeParty'                  => fn ($reader) => PayeeParty::xmlDeserialize($reader),
             Schema::CAC.        'PaymentMandate'              => fn ($reader) => PaymentMandate::xmlDeserialize($reader),
             Schema::CAC.        'PaymentMeans'                => fn ($reader) => PaymentMeans::xmlDeserialize($reader),
@@ -70,6 +71,7 @@ class Reader
             Schema::CAC.        'TaxScheme'                   => fn ($reader) => TaxScheme::xmlDeserialize($reader),
             Schema::CAC.        'TaxSubtotal'                 => fn ($reader) => TaxSubTotal::xmlDeserialize($reader),
             Schema::CAC.        'TaxTotal'                    => fn ($reader) => TaxTotal::xmlDeserialize($reader),
+            Schema::EXT.        'UBLExtension'                    => fn ($reader) => Extension::xmlDeserialize($reader),
         ];
 
         return $xmlService;
