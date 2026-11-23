@@ -2,6 +2,10 @@
 
 ## Added
 
+- Support `ext:UBLExtensions` (e.g. for Croatian fiscalization) when writing and reading documents
+  - Add the new `Extension` class and `Invoice::addExtension()`, `setExtensions()` and `getExtensions()`
+  - `Generator::invoice()`, `creditNote()` and `debitNote()` take an optional `$additionalNamespaces` argument (`[uri => prefix]`) for namespaces used inside the extension content
+
 - Support multiple document-level notes (`cbc:Note`, BT-22) through `addNote()`, `setNotes()` and `getNotes()`, e.g. for the French CIUS
   - `setNote()` and `getNote()` keep working with a single note; `getNote()` returns the first one
 
