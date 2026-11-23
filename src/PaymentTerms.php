@@ -11,13 +11,13 @@ use Sabre\Xml\XmlSerializable;
 
 class PaymentTerms implements XmlSerializable, XmlDeserializable
 {
-    private $note;
-    private $settlementDiscountPercent;
-    private $amount;
-    private $settlementPeriod;
+    private ?string $note = null;
+    private ?float $settlementDiscountPercent = null;
+    private ?float $amount = null;
+    private ?SettlementPeriod $settlementPeriod = null;
 
     /**
-     * @return string
+     * @return string|null
      */
     public function getNote(): ?string
     {
@@ -25,7 +25,7 @@ class PaymentTerms implements XmlSerializable, XmlDeserializable
     }
 
     /**
-     * @param string $note
+     * @param string|null $note
      * @return static
      */
     public function setNote(?string $note)
@@ -35,7 +35,7 @@ class PaymentTerms implements XmlSerializable, XmlDeserializable
     }
 
     /**
-     * @return float
+     * @return float|null
      */
     public function getSettlementDiscountPercent(): ?float
     {
@@ -43,7 +43,7 @@ class PaymentTerms implements XmlSerializable, XmlDeserializable
     }
 
     /**
-     * @param float $settlementDiscountPercent
+     * @param float|null $settlementDiscountPercent
      * @return static
      */
     public function setSettlementDiscountPercent(?float $settlementDiscountPercent)
@@ -53,7 +53,7 @@ class PaymentTerms implements XmlSerializable, XmlDeserializable
     }
 
     /**
-     * @return float
+     * @return float|null
      */
     public function getAmount(): ?float
     {
@@ -61,7 +61,7 @@ class PaymentTerms implements XmlSerializable, XmlDeserializable
     }
 
     /**
-     * @param float $amount
+     * @param float|null $amount
      * @return static
      */
     public function setAmount(?float $amount)
@@ -71,7 +71,7 @@ class PaymentTerms implements XmlSerializable, XmlDeserializable
     }
 
     /**
-     * @return SettlementPeriod
+     * @return SettlementPeriod|null
      */
     public function getSettlementPeriod(): ?SettlementPeriod
     {
@@ -79,7 +79,7 @@ class PaymentTerms implements XmlSerializable, XmlDeserializable
     }
 
     /**
-     * @param SettlementPeriod $settlementPeriod
+     * @param SettlementPeriod|null $settlementPeriod
      * @return static
      */
     public function setSettlementPeriod(?SettlementPeriod $settlementPeriod)
@@ -117,7 +117,7 @@ class PaymentTerms implements XmlSerializable, XmlDeserializable
 
     /**
      * The xmlDeserialize method is called during xml reading.
-     * @param Reader $xml
+     * @param Reader $reader
      * @return static
      */
     public static function xmlDeserialize(Reader $reader)
@@ -128,7 +128,6 @@ class PaymentTerms implements XmlSerializable, XmlDeserializable
             ->setNote($keyValues[Schema::CBC . 'Note'] ?? null)
             ->setSettlementDiscountPercent($keyValues[Schema::CBC . 'SettlementDiscountPercent'] ?? null)
             ->setAmount($keyValues[Schema::CBC . 'Amount'] ?? null)
-            ->setSettlementPeriod($keyValues[Schema::CAC . 'SettlementPeriod'] ?? null)
-        ;
+            ->setSettlementPeriod($keyValues[Schema::CAC . 'SettlementPeriod'] ?? null);
     }
 }

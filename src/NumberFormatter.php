@@ -11,7 +11,7 @@ class NumberFormatter
      * @param int|null $decimals
      * @param string $decimalSeparator
      * @param string $thousandsSeparator
-     * @return void
+     * @return string
      */
     public static function format(
         $number,
@@ -40,13 +40,11 @@ class NumberFormatter
             }
         }
 
-        $value = number_format(
+        return number_format(
             $number,
             $decimals,
             $decimalSeparator,
             $thousandsSeparator
         );
-
-        return $value;
     }
 }

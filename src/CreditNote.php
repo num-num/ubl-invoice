@@ -11,11 +11,11 @@ use function Sabre\Xml\Deserializer\mixedContent;
 
 class CreditNote extends Invoice implements XmlSerializable, XmlDeserializable
 {
-    public $xmlTagName = 'CreditNote';
-    protected $invoiceTypeCode = InvoiceTypeCode::CREDIT_NOTE;
+    public string $xmlTagName = 'CreditNote';
+    protected ?int $invoiceTypeCode = InvoiceTypeCode::CREDIT_NOTE;
 
     /**
-     * @return CreditNoteLine[]
+     * @return CreditNoteLine[]|null
      */
     public function getCreditNoteLines(): ?array
     {

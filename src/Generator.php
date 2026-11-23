@@ -6,7 +6,7 @@ use Sabre\Xml\Service;
 
 class Generator
 {
-    public static $currencyID;
+    public static string $currencyID = 'EUR';
 
     /**
      * @param Invoice $invoice
@@ -14,7 +14,7 @@ class Generator
      * @param array<string, string> $additionalNamespaces Extra namespaces for the root element, as [uri => prefix]
      * @return string
      */
-    public static function invoice(Invoice $invoice, $currencyId = 'EUR', array $additionalNamespaces = [])
+    public static function invoice(Invoice $invoice, string $currencyId = 'EUR', array $additionalNamespaces = [])
     {
         return self::write($invoice, $currencyId, $additionalNamespaces);
     }
@@ -25,7 +25,7 @@ class Generator
      * @param array<string, string> $additionalNamespaces Extra namespaces for the root element, as [uri => prefix]
      * @return string
      */
-    public static function creditNote(CreditNote $creditNote, $currencyId = 'EUR', array $additionalNamespaces = [])
+    public static function creditNote(CreditNote $creditNote, string $currencyId = 'EUR', array $additionalNamespaces = [])
     {
         return self::write($creditNote, $currencyId, $additionalNamespaces);
     }
@@ -36,12 +36,12 @@ class Generator
      * @param array<string, string> $additionalNamespaces Extra namespaces for the root element, as [uri => prefix]
      * @return string
      */
-    public static function debitNote(DebitNote $debitNote, $currencyId = 'EUR', array $additionalNamespaces = [])
+    public static function debitNote(DebitNote $debitNote, string $currencyId = 'EUR', array $additionalNamespaces = [])
     {
         return self::write($debitNote, $currencyId, $additionalNamespaces);
     }
 
-    private static function write(Invoice $document, $currencyId, array $additionalNamespaces): string
+    private static function write(Invoice $document, string $currencyId, array $additionalNamespaces): string
     {
         self::$currencyID = $currencyId;
 

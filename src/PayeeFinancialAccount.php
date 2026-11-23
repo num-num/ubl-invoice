@@ -11,12 +11,12 @@ use Sabre\Xml\XmlSerializable;
 
 class PayeeFinancialAccount implements XmlSerializable, XmlDeserializable
 {
-    private $id;
-    private $name;
-    private $financialInstitutionBranch;
+    private ?string $id = null;
+    private ?string $name = null;
+    private ?FinancialInstitutionBranch $financialInstitutionBranch = null;
 
     /**
-     * @return string
+     * @return string|null
      */
     public function getId(): ?string
     {
@@ -24,7 +24,7 @@ class PayeeFinancialAccount implements XmlSerializable, XmlDeserializable
     }
 
     /**
-     * @param string $id
+     * @param string|null $id
      * @return static
      */
     public function setId(?string $id)
@@ -34,7 +34,7 @@ class PayeeFinancialAccount implements XmlSerializable, XmlDeserializable
     }
 
     /**
-     * @return string
+     * @return string|null
      */
     public function getName(): ?string
     {
@@ -42,7 +42,7 @@ class PayeeFinancialAccount implements XmlSerializable, XmlDeserializable
     }
 
     /**
-     * @param string $name
+     * @param string|null $name
      * @return static
      */
     public function setName(?string $name)
@@ -52,7 +52,7 @@ class PayeeFinancialAccount implements XmlSerializable, XmlDeserializable
     }
 
     /**
-     * @return FinancialInstitutionBranch
+     * @return FinancialInstitutionBranch|null
      */
     public function getFinancialInstitutionBranch(): ?FinancialInstitutionBranch
     {
@@ -60,7 +60,7 @@ class PayeeFinancialAccount implements XmlSerializable, XmlDeserializable
     }
 
     /**
-     * @param FinancialInstitutionBranch $financialInstitutionBranch
+     * @param FinancialInstitutionBranch|null $financialInstitutionBranch
      * @return static
      */
     public function setFinancialInstitutionBranch(?FinancialInstitutionBranch $financialInstitutionBranch)
@@ -94,7 +94,7 @@ class PayeeFinancialAccount implements XmlSerializable, XmlDeserializable
 
     /**
      * The xmlDeserialize method is called during xml reading.
-     * @param Reader $xml
+     * @param Reader $reader
      * @return static
      */
     public static function xmlDeserialize(Reader $reader)

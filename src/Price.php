@@ -12,14 +12,14 @@ use Sabre\Xml\XmlSerializable;
 
 class Price implements XmlSerializable, XmlDeserializable
 {
-    private $priceAmount;
-    private $baseQuantity;
-    private $unitCode = UnitCode::UNIT;
-    private $unitCodeListId;
-    private $allowanceCharge;
+    private ?float $priceAmount = null;
+    private ?float $baseQuantity = null;
+    private ?string $unitCode = UnitCode::UNIT;
+    private ?string $unitCodeListId = null;
+    private ?AllowanceCharge $allowanceCharge = null;
 
     /**
-     * @return float
+     * @return float|null
      */
     public function getPriceAmount(): ?float
     {
@@ -27,7 +27,7 @@ class Price implements XmlSerializable, XmlDeserializable
     }
 
     /**
-     * @param float $priceAmount
+     * @param float|null $priceAmount
      * @return static
      */
     public function setPriceAmount(?float $priceAmount)
@@ -37,7 +37,7 @@ class Price implements XmlSerializable, XmlDeserializable
     }
 
     /**
-     * @return float
+     * @return float|null
      */
     public function getBaseQuantity(): ?float
     {
@@ -45,7 +45,7 @@ class Price implements XmlSerializable, XmlDeserializable
     }
 
     /**
-     * @param float $baseQuantity
+     * @param float|null $baseQuantity
      * @return static
      */
     public function setBaseQuantity(?float $baseQuantity)
@@ -55,7 +55,7 @@ class Price implements XmlSerializable, XmlDeserializable
     }
 
     /**
-     * @return string
+     * @return string|null
      */
     public function getUnitCode(): ?string
     {
@@ -63,7 +63,7 @@ class Price implements XmlSerializable, XmlDeserializable
     }
 
     /**
-     * @param string $unitCode
+     * @param string|null $unitCode
      *                         See also: src/UnitCode.php
      * @return static
      */
@@ -75,7 +75,7 @@ class Price implements XmlSerializable, XmlDeserializable
 
 
     /**
-     * @return string
+     * @return string|null
      */
     public function getUnitCodeListId(): ?string
     {
@@ -83,7 +83,7 @@ class Price implements XmlSerializable, XmlDeserializable
     }
 
     /**
-     * @param string $unitCodeListId
+     * @param string|null $unitCodeListId
      * @return static
      */
     public function setUnitCodeListId(?string $unitCodeListId)
@@ -93,7 +93,7 @@ class Price implements XmlSerializable, XmlDeserializable
     }
 
     /**
-     * @return AllowanceCharge
+     * @return AllowanceCharge|null
      */
     public function getAllowanceCharge(): ?AllowanceCharge
     {
@@ -101,7 +101,7 @@ class Price implements XmlSerializable, XmlDeserializable
     }
 
     /**
-     * @param AllowanceCharge $allowanceCharge
+     * @param AllowanceCharge|null $allowanceCharge
      * @return static
      */
     public function setAllowanceCharge(?AllowanceCharge $allowanceCharge)
@@ -155,7 +155,7 @@ class Price implements XmlSerializable, XmlDeserializable
 
     /**
      * The xmlDeserialize method is called during xml reading.
-     * @param Reader $xml
+     * @param Reader $reader
      * @return static
      */
     public static function xmlDeserialize(Reader $reader)

@@ -11,10 +11,7 @@ use function Sabre\Xml\Deserializer\keyValue;
 
 class PayerFinancialAccount implements XmlSerializable, XmlDeserializable
 {
-    /**
-     * @var null|string
-     */
-    private $id;
+    private ?string $id = null;
 
     public static function xmlDeserialize(Reader $reader)
     {
@@ -33,12 +30,19 @@ class PayerFinancialAccount implements XmlSerializable, XmlDeserializable
         }
     }
 
+    /**
+     * @return string|null
+     */
     public function getId(): ?string
     {
         return $this->id;
     }
 
-    public function setId(?string $id): self
+    /**
+     * @param string|null $id
+     * @return static
+     */
+    public function setId(?string $id)
     {
         $this->id = $id;
 

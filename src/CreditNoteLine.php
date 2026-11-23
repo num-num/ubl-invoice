@@ -9,10 +9,10 @@ use Sabre\Xml\Reader;
 
 class CreditNoteLine extends InvoiceLine
 {
-    public $xmlTagName = 'CreditNoteLine';
+    public string $xmlTagName = 'CreditNoteLine';
 
     /**
-     * @return float
+     * @return float|null
      */
     public function getCreditedQuantity(): ?float
     {
@@ -31,7 +31,7 @@ class CreditNoteLine extends InvoiceLine
 
     /**
      * The xmlDeserialize method is called during xml reading.
-     * @param Reader $xml
+     * @param Reader $reader
      * @return static
      */
     public static function xmlDeserialize(Reader $reader)

@@ -4,9 +4,10 @@ namespace NumNum\UBL\Tests\Read;
 
 use NumNum\UBL\CreditNote;
 use NumNum\UBL\Invoice;
+use NumNum\UBL\Reader;
 use PHPUnit\Framework\TestCase;
 
-class ReadUbl extends TestCase
+class ReadUblTest extends TestCase
 {
     /**
      * @test
@@ -14,7 +15,7 @@ class ReadUbl extends TestCase
      */
     public function testIfInvoiceUblCanBeRead($fileName)
     {
-        $ublReader = \NumNum\UBL\Reader::ubl();
+        $ublReader = Reader::ubl();
 
         $invoice = $ublReader->parse(file_get_contents($fileName));
 
@@ -28,7 +29,7 @@ class ReadUbl extends TestCase
      */
     public function testIfCreditNoteUblCanBeRead($fileName)
     {
-        $ublReader = \NumNum\UBL\Reader::ubl();
+        $ublReader = Reader::ubl();
 
         $invoice = $ublReader->parse(file_get_contents($fileName));
 

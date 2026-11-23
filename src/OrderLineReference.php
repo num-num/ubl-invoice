@@ -16,10 +16,10 @@ use Sabre\Xml\XmlSerializable;
  */
 class OrderLineReference implements XmlSerializable, XmlDeserializable
 {
-    private $lineId;
+    private ?string $lineId = null;
 
     /**
-     * @return string
+     * @return string|null
      */
     public function getLineId(): ?string
     {
@@ -27,7 +27,7 @@ class OrderLineReference implements XmlSerializable, XmlDeserializable
     }
 
     /**
-     * @param string $lineId
+     * @param string|null $lineId
      * @return static
      */
     public function setLineId(?string $lineId)
@@ -60,7 +60,7 @@ class OrderLineReference implements XmlSerializable, XmlDeserializable
 
     /**
      * The xmlDeserialize method is called during xml reading.
-     * @param Reader $xml
+     * @param Reader $reader
      * @return static
      */
     public static function xmlDeserialize(Reader $reader)
@@ -68,7 +68,6 @@ class OrderLineReference implements XmlSerializable, XmlDeserializable
         $keyValues = keyValue($reader);
 
         return (new static())
-            ->setLineId($keyValues[Schema::CBC . 'LineID'] ?? null)
-        ;
+            ->setLineId($keyValues[Schema::CBC . 'LineID'] ?? null);
     }
 }

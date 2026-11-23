@@ -14,17 +14,17 @@ use Sabre\Xml\XmlSerializable;
 
 class ClassifiedTaxCategory implements XmlSerializable, XmlDeserializable
 {
-    private $id;
-    private $name;
-    private $percent;
-    private $taxScheme;
-    private $taxExemptionReason;
-    private $taxExemptionReasonCode;
-    private $schemeID;
-    private $schemeName;
+    private ?string $id = null;
+    private ?string $name = null;
+    private ?float $percent = null;
+    private ?TaxScheme $taxScheme = null;
+    private ?string $taxExemptionReason = null;
+    private ?string $taxExemptionReasonCode = null;
+    private ?string $schemeID = null;
+    private ?string $schemeName = null;
 
     /**
-     * @return string
+     * @return string|null
      */
     public function getId(): ?string
     {
@@ -42,7 +42,7 @@ class ClassifiedTaxCategory implements XmlSerializable, XmlDeserializable
     }
 
     /**
-     * @param string $id
+     * @param string|null $id
      * @return static
      */
     public function setId(?string $id)
@@ -52,7 +52,7 @@ class ClassifiedTaxCategory implements XmlSerializable, XmlDeserializable
     }
 
     /**
-     * @return string
+     * @return string|null
      */
     public function getName(): ?string
     {
@@ -60,7 +60,7 @@ class ClassifiedTaxCategory implements XmlSerializable, XmlDeserializable
     }
 
     /**
-     * @param string $name
+     * @param string|null $name
      * @return static
      */
     public function setName(?string $name)
@@ -70,7 +70,7 @@ class ClassifiedTaxCategory implements XmlSerializable, XmlDeserializable
     }
 
     /**
-     * @return float
+     * @return float|null
      */
     public function getPercent(): ?float
     {
@@ -78,7 +78,7 @@ class ClassifiedTaxCategory implements XmlSerializable, XmlDeserializable
     }
 
     /**
-     * @param float $percent
+     * @param float|null $percent
      * @return static
      */
     public function setPercent(?float $percent)
@@ -88,7 +88,7 @@ class ClassifiedTaxCategory implements XmlSerializable, XmlDeserializable
     }
 
     /**
-     * @return TaxScheme
+     * @return TaxScheme|null
      */
     public function getTaxScheme(): ?TaxScheme
     {
@@ -96,7 +96,7 @@ class ClassifiedTaxCategory implements XmlSerializable, XmlDeserializable
     }
 
     /**
-     * @param TaxScheme $taxScheme
+     * @param TaxScheme|null $taxScheme
      * @return static
      */
     public function setTaxScheme(?TaxScheme $taxScheme)
@@ -106,7 +106,7 @@ class ClassifiedTaxCategory implements XmlSerializable, XmlDeserializable
     }
 
     /**
-     * @return string
+     * @return string|null
      */
     public function getSchemeId(): ?string
     {
@@ -114,7 +114,7 @@ class ClassifiedTaxCategory implements XmlSerializable, XmlDeserializable
     }
 
     /**
-     * @param string $id
+     * @param string|null $id
      * @return static
      */
     public function setSchemeId(?string $id)
@@ -124,7 +124,7 @@ class ClassifiedTaxCategory implements XmlSerializable, XmlDeserializable
     }
 
     /**
-     * @return string
+     * @return string|null
      */
     public function getSchemeName(): ?string
     {
@@ -132,7 +132,7 @@ class ClassifiedTaxCategory implements XmlSerializable, XmlDeserializable
     }
 
     /**
-     * @param string $name
+     * @param string|null $name
      * @return static
      */
     public function setSchemeName(?string $name)
@@ -142,7 +142,7 @@ class ClassifiedTaxCategory implements XmlSerializable, XmlDeserializable
     }
 
     /**
-     * @return string
+     * @return string|null
      */
     public function getTaxExemptionReason(): ?string
     {
@@ -150,7 +150,7 @@ class ClassifiedTaxCategory implements XmlSerializable, XmlDeserializable
     }
 
     /**
-     * @param string $taxExemptionReason
+     * @param string|null $taxExemptionReason
      * @return static
      */
     public function setTaxExemptionReason(?string $taxExemptionReason)
@@ -160,7 +160,7 @@ class ClassifiedTaxCategory implements XmlSerializable, XmlDeserializable
     }
 
     /**
-     * @return string
+     * @return string|null
      */
     public function getTaxExemptionReasonCode(): ?string
     {
@@ -168,7 +168,7 @@ class ClassifiedTaxCategory implements XmlSerializable, XmlDeserializable
     }
 
     /**
-     * @param string $taxExemptionReasonCode
+     * @param string|null $taxExemptionReasonCode
      * @return static
      */
     public function setTaxExemptionReasonCode(?string $taxExemptionReasonCode)
@@ -180,8 +180,8 @@ class ClassifiedTaxCategory implements XmlSerializable, XmlDeserializable
     /**
      * The validate function that is called during xml writing to valid the data of the object.
      *
-     * @throws InvalidArgumentException An error with information about required data that is missing to write the XML
      * @return void
+     * @throws InvalidArgumentException An error with information about required data that is missing to write the XML
      */
     public function validate()
     {
@@ -247,7 +247,7 @@ class ClassifiedTaxCategory implements XmlSerializable, XmlDeserializable
 
     /**
      * The xmlDeserialize method is called during xml reading.
-     * @param Reader $xml
+     * @param Reader $reader
      * @return static
      */
     public static function xmlDeserialize(Reader $reader)
@@ -270,7 +270,6 @@ class ClassifiedTaxCategory implements XmlSerializable, XmlDeserializable
             ->setTaxExemptionReason($taxExemptionReasonTag['value'] ?? null)
             ->setTaxExemptionReasonCode($taxExemptionReasonCodeTag['value'] ?? null)
             ->setSchemeId($idTag['attributes']['schemeID'] ?? null)
-            ->setSchemeName($idTag['attributes']['schemeName'] ?? null)
-        ;
+            ->setSchemeName($idTag['attributes']['schemeName'] ?? null);
     }
 }

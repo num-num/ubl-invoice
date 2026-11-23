@@ -12,17 +12,17 @@ use Sabre\Xml\XmlSerializable;
 
 class Address implements XmlSerializable, XmlDeserializable
 {
-    private $streetName;
-    private $additionalStreetName;
-    private $buildingNumber;
-    private $cityName;
-    private $postalZone;
-    private $countrySubentity;
-    private $addressLines = [];
-    private $country;
+    private ?string $streetName = null;
+    private ?string $additionalStreetName = null;
+    private ?string $buildingNumber = null;
+    private ?string $cityName = null;
+    private ?string $postalZone = null;
+    private ?string $countrySubentity = null;
+    private array $addressLines = [];
+    private ?Country $country = null;
 
     /**
-     * @return string
+     * @return string|null
      */
     public function getStreetName(): ?string
     {
@@ -30,7 +30,7 @@ class Address implements XmlSerializable, XmlDeserializable
     }
 
     /**
-     * @param string $streetName
+     * @param string|null $streetName
      * @return static
      */
     public function setStreetName(?string $streetName)
@@ -40,7 +40,7 @@ class Address implements XmlSerializable, XmlDeserializable
     }
 
     /**
-     * @return string
+     * @return string|null
      */
     public function getAdditionalStreetName(): ?string
     {
@@ -48,7 +48,7 @@ class Address implements XmlSerializable, XmlDeserializable
     }
 
     /**
-     * @param string $additionalStreetName
+     * @param string|null $additionalStreetName
      * @return static
      */
     public function setAdditionalStreetName(?string $additionalStreetName)
@@ -58,7 +58,7 @@ class Address implements XmlSerializable, XmlDeserializable
     }
 
     /**
-     * @return string
+     * @return string|null
      */
     public function getBuildingNumber(): ?string
     {
@@ -66,7 +66,7 @@ class Address implements XmlSerializable, XmlDeserializable
     }
 
     /**
-     * @param string $buildingNumber
+     * @param string|null $buildingNumber
      * @return static
      */
     public function setBuildingNumber(?string $buildingNumber)
@@ -76,7 +76,7 @@ class Address implements XmlSerializable, XmlDeserializable
     }
 
     /**
-     * @return string
+     * @return string|null
      */
     public function getCityName(): ?string
     {
@@ -84,7 +84,7 @@ class Address implements XmlSerializable, XmlDeserializable
     }
 
     /**
-     * @param string $cityName
+     * @param string|null $cityName
      * @return static
      */
     public function setCityName(?string $cityName)
@@ -94,7 +94,7 @@ class Address implements XmlSerializable, XmlDeserializable
     }
 
     /**
-     * @return string
+     * @return string|null
      */
     public function getPostalZone(): ?string
     {
@@ -102,7 +102,7 @@ class Address implements XmlSerializable, XmlDeserializable
     }
 
     /**
-     * @param string $postalZone
+     * @param string|null $postalZone
      * @return static
      */
     public function setPostalZone(?string $postalZone)
@@ -112,7 +112,7 @@ class Address implements XmlSerializable, XmlDeserializable
     }
 
     /**
-     * @return string
+     * @return string|null
      */
     public function getCountrySubentity(): ?string
     {
@@ -120,7 +120,7 @@ class Address implements XmlSerializable, XmlDeserializable
     }
 
     /**
-     * @param string $subentity
+     * @param string|null $countrySubentity
      * @return static
      */
     public function setCountrySubentity(?string $countrySubentity)
@@ -130,7 +130,7 @@ class Address implements XmlSerializable, XmlDeserializable
     }
 
     /**
-     * @return Country
+     * @return Country|null
      */
     public function getCountry(): ?Country
     {
@@ -138,7 +138,7 @@ class Address implements XmlSerializable, XmlDeserializable
     }
 
     /**
-     * @param Country $country
+     * @param Country|null $country
      * @return static
      */
     public function setCountry(?Country $country)
@@ -179,7 +179,7 @@ class Address implements XmlSerializable, XmlDeserializable
      * The xmlSerialize method is called during xml writing.
      *
      * @param Writer $writer
-     * @return static
+     * @return void
      */
     public function xmlSerialize(Writer $writer): void
     {
