@@ -23,7 +23,8 @@ class Invoice implements XmlSerializable, XmlDeserializable
     private ?DateTime $issueDate = null;
     private ?DateTime $issueTime = null;
     protected ?int $invoiceTypeCode = InvoiceTypeCode::INVOICE;
-    private ?string $note = null;
+    /** @var string[]|null $notes */
+    private ?array $notes = null;
     private ?DateTime $taxPointDate = null;
     private ?DateTime $dueDate = null;
     private ?PaymentTerms $paymentTerms = null;
@@ -45,13 +46,16 @@ class Invoice implements XmlSerializable, XmlDeserializable
     private ?string $buyerReference = null;
     private ?string $accountingCostCode = null;
     private ?InvoicePeriod $invoicePeriod = null;
-    private ?BillingReference $billingReference = null;
+    /** @var BillingReference[] $billingReferences */
+    private array $billingReferences = [];
     private ?Delivery $delivery = null;
     private ?OrderReference $orderReference = null;
     private ?ContractDocumentReference $contractDocumentReference = null;
     private ?DespatchDocumentReference $despatchDocumentReference = null;
     private ?ReceiptDocumentReference $receiptDocumentReference = null;
     private ?OriginatorDocumentReference $originatorDocumentReference = null;
+    /** @var Extension[] $extensions */
+    private array $extensions = [];
 
     /**
      * @return string|null
@@ -255,11 +259,32 @@ class Invoice implements XmlSerializable, XmlDeserializable
     }
 
     /**
+     * @param string $note
+     * @return static
+     */
+    public function addNote(string $note)
+    {
+        if (!is_array($this->notes)) {
+            $this->notes = [];
+        }
+        $this->notes[] = $note;
+        return $this;
+    }
+
+    /**
      * @return string|null
      */
-    public function getNote()
+    public function getNote(): ?string
     {
-        return $this->note;
+        return $this->notes[0] ?? null;
+    }
+
+    /**
+     * @return string[]|null
+     */
+    public function getNotes(): ?array
+    {
+        return $this->notes;
     }
 
     /**
@@ -268,7 +293,21 @@ class Invoice implements XmlSerializable, XmlDeserializable
      */
     public function setNote(?string $note)
     {
-        $this->note = $note;
+        if (is_null($note)) {
+            $this->setNotes(null);
+        } else {
+            $this->setNotes([$note]);
+        }
+        return $this;
+    }
+
+    /**
+     * @param string[]|null $notes
+     * @return static
+     */
+    public function setNotes(?array $notes)
+    {
+        $this->notes = $notes;
         return $this;
     }
 
@@ -598,13 +637,21 @@ class Invoice implements XmlSerializable, XmlDeserializable
     }
 
     /**
-     * Get the reference to the invoice that is being credited
+     * Get the first reference to an invoice that is being credited
      *
      * @return BillingReference|null
      */
     public function getBillingReference(): ?BillingReference
     {
-        return $this->billingReference;
+        return $this->billingReferences[0] ?? null;
+    }
+
+    /**
+     * @return array<BillingReference>
+     */
+    public function getBillingReferences(): array
+    {
+        return $this->billingReferences;
     }
 
     /**
@@ -614,7 +661,27 @@ class Invoice implements XmlSerializable, XmlDeserializable
      */
     public function setBillingReference(?BillingReference $billingReference)
     {
-        $this->billingReference = $billingReference;
+        $this->billingReferences = $billingReference !== null ? [$billingReference] : [];
+        return $this;
+    }
+
+    /**
+     * @param BillingReference[] $billingReferences
+     * @return static
+     */
+    public function setBillingReferences(array $billingReferences)
+    {
+        $this->billingReferences = array_values($billingReferences);
+        return $this;
+    }
+
+    /**
+     * @param BillingReference $billingReference
+     * @return static
+     */
+    public function addBillingReference(BillingReference $billingReference)
+    {
+        $this->billingReferences[] = $billingReference;
         return $this;
     }
 
@@ -730,6 +797,36 @@ class Invoice implements XmlSerializable, XmlDeserializable
     }
 
     /**
+     * @param Extension $extension
+     * @return static
+     */
+    public function addExtension(Extension $extension): self
+    {
+        $this->extensions[] = $extension;
+
+        return $this;
+    }
+
+    /**
+     * @param Extension[] $extensions
+     * @return static
+     */
+    public function setExtensions(array $extensions): self
+    {
+        $this->extensions = $extensions;
+
+        return $this;
+    }
+
+    /**
+     * @return Extension[]
+     */
+    public function getExtensions(): array
+    {
+        return $this->extensions;
+    }
+
+    /**
      * The validate function that is called during xml writing to valid the data of the object.
      *
      * @return void
@@ -821,6 +918,13 @@ class Invoice implements XmlSerializable, XmlDeserializable
     {
         $this->validate();
 
+        if ($this->extensions) {
+            $writer->write([
+                'name' => Schema::EXT . 'UBLExtensions',
+                'value' => $this->extensions
+            ]);
+        }
+
         $writer->write([
             Schema::CBC . "UBLVersionID" => $this->UBLVersionID,
             Schema::CBC . "CustomizationID" => $this->customizationID,
@@ -869,10 +973,12 @@ class Invoice implements XmlSerializable, XmlDeserializable
             ]);
         }
 
-        if ($this->note !== null) {
-            $writer->write([
-                Schema::CBC . "Note" => $this->note,
-            ]);
+        if ($this->notes !== null) {
+            foreach ($this->notes as $note) {
+                $writer->write([
+                    Schema::CBC . "Note" => $note,
+                ]);
+            }
         }
 
         if ($this->taxPointDate !== null) {
@@ -912,7 +1018,7 @@ class Invoice implements XmlSerializable, XmlDeserializable
         }
 
         $documentReferences = [
-            "BillingReference"            => $this->billingReference,
+            "BillingReference"            => $this->billingReferences,
             "DespatchDocumentReference"   => $this->despatchDocumentReference,
             "ReceiptDocumentReference"    => $this->receiptDocumentReference,
             "OriginatorDocumentReference" => $this->originatorDocumentReference,
@@ -1039,7 +1145,20 @@ class Invoice implements XmlSerializable, XmlDeserializable
             $collection,
         );
 
+        $ublExtensions = ReaderHelper::getTagValue(
+            Schema::EXT . "UBLExtensions",
+            $collection,
+        );
+
         return (new static())
+            ->setExtensions(
+                is_array($ublExtensions)
+                    ? array_values(ReaderHelper::getArrayValue(
+                        Schema::EXT . "UBLExtension",
+                        new ArrayCollection($ublExtensions),
+                    ))
+                    : [],
+            )
             ->setUBLVersionId(
                 ReaderHelper::getTagValue(
                     Schema::CBC . "UBLVersionID",
@@ -1105,8 +1224,13 @@ class Invoice implements XmlSerializable, XmlDeserializable
                     $collection,
                 )) !== null ? (int) $typeCode : null,
             )
-            ->setNote(
-                ReaderHelper::getTagValue(Schema::CBC . "Note", $collection),
+            ->setNotes(
+                array_values(
+                    ReaderHelper::getArrayValue(
+                        Schema::CBC . "Note",
+                        $collection,
+                    )
+                )
             )
             ->setTaxPointDate(
                 ($taxPointDate = ReaderHelper::getTagValue(
@@ -1172,8 +1296,8 @@ class Invoice implements XmlSerializable, XmlDeserializable
                     $collection,
                 ),
             )
-            ->setBillingReference(
-                ReaderHelper::getTagValue(
+            ->setBillingReferences(
+                ReaderHelper::getArrayValue(
                     Schema::CAC . "BillingReference",
                     $collection,
                 ),

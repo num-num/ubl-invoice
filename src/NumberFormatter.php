@@ -20,16 +20,24 @@ class NumberFormatter
         string $thousandsSeparator = ""
     ) {
         if ($decimals === null) {
-            // Get the current decimal point character according to the locale
-            // This is needed because (string)$number uses the locale's decimal separator
-            $locale = localeconv();
-            $decimalPoint = $locale["decimal_point"] ?? ".";
+            // Before PHP 8, float-to-string conversion uses the locale's decimal separator.
+            $decimalPoint = localeconv()['decimal_point'] ?? '.';
+            $numberString = str_replace($decimalPoint, '.', strtolower((string) $number));
 
-            // Convert to string to detect decimals
-            $parts = explode($decimalPoint, (string) $number);
-
-            // Count decimals, if any
-            $decimals = isset($parts[1]) ? strlen(rtrim($parts[1], "0")) : 0;
+            if (strpos($numberString, 'e') !== false) {
+                [$coefficient, $exponent] = explode('e', $numberString, 2);
+                $exponent = (int) $exponent;
+                $decimalPosition = strpos($coefficient, '.');
+                $coefficientDecimals = $decimalPosition === false
+                    ? 0
+                    : strlen(rtrim(substr($coefficient, $decimalPosition + 1), '0'));
+                $decimals = max(0, $coefficientDecimals - $exponent);
+            } else {
+                $decimalPosition = strpos($numberString, '.');
+                $decimals = $decimalPosition === false
+                    ? 0
+                    : strlen(rtrim(substr($numberString, $decimalPosition + 1), '0'));
+            }
         }
 
         return number_format(

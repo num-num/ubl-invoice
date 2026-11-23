@@ -1,6 +1,24 @@
 # Next release
 
+## Added
+
+- Support `ext:UBLExtensions` (e.g. for Croatian fiscalization) when writing and reading documents
+  - Add the new `Extension` class and `Invoice::addExtension()`, `setExtensions()` and `getExtensions()`
+  - `Generator::invoice()`, `creditNote()` and `debitNote()` take an optional `$additionalNamespaces` argument (`[uri => prefix]`) for namespaces used inside the extension content
+
+- Support multiple document-level notes (`cbc:Note`, BT-22) through `addNote()`, `setNotes()` and `getNotes()`, e.g. for the French CIUS
+  - `setNote()` and `getNote()` keep working with a single note; `getNote()` returns the first one
+
+- Support multiple billing references when writing and reading documents through `setBillingReferences()`, `addBillingReference()` and `getBillingReferences()`
+  - Keep `setBillingReference()` and `getBillingReference()` compatible with a single reference
+  - Normalize collection keys so `getBillingReference()` also returns the first reference after XML parsing
+
 ## Fixed
+
+- Fix automatic decimal detection in `NumberFormatter` when no `$decimals` argument is given (#164)
+  - On PHP 8 with a decimal-comma locale (e.g. `de_DE`), all decimals were dropped, because float-to-string conversion no longer uses the locale's decimal separator
+  - Small values represented in scientific notation (e.g. `1.0E-5`) now keep their decimals
+  - Decimal-comma locales on PHP 7.4 keep working
 
 - Fix document reference elements being written in the wrong order, producing XML that fails UBL schema validation
   - UBL declares these elements in an `xsd:sequence`, and the required order differs per document type
