@@ -113,6 +113,12 @@ echo "Customer: " . $invoice->getAccountingCustomerParty()->getParty()->getName(
 echo "Total: " . $invoice->getLegalMonetaryTotal()->getPayableAmount() . "\n";
 ```
 
+## Sending over Peppol
+
+This library creates and reads UBL files, but it does not deliver them. To send a generated invoice over the Peppol network you need a Peppol access point. Free access points run by non-profits and governments exist, such as [Let's Peppol](https://letspeppol.org/), and OpenPeppol publishes the [list of certified service providers](https://peppol.org/members/peppol-certified-service-providers/).
+
+Some PHP packages send the generated XML to an access point, for example [`getpeppr/getpeppr-php`](https://github.com/zerolooplabs/getpeppr-php) or [`tigron/peppyrus-api-php`](https://github.com/tigron/peppyrus-api-php).
+
 ## Next Steps
 
 - [Creating Invoices](creating-invoices.md) - Detailed invoice creation guide

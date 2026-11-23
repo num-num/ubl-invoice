@@ -23,3 +23,7 @@
 ### Maintenance
 
 - Update dependency constraints to support Doctrine Collections 3.x
+
+### Documentation
+
+- Add a "Sending over Peppol" section to the getting started guide, pointing to access points and to PHP packages that deliver the generated XML
