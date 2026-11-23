@@ -1,5 +1,11 @@
 # Next release
 
+## Added
+
+- Support `ext:UBLExtensions` (e.g. for Croatian fiscalization) when writing and reading documents
+  - Add the new `Extension` class and `Invoice::addExtension()`, `setExtensions()` and `getExtensions()`
+  - `Generator::invoice()`, `creditNote()` and `debitNote()` take an optional `$additionalNamespaces` argument (`[uri => prefix]`) for namespaces used inside the extension content
+
 ## Fixed
 
 - Fix document reference elements being written in the wrong order, producing XML that fails UBL schema validation
