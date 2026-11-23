@@ -1,5 +1,11 @@
 # Next release
 
+## Added
+
+- Support multiple billing references when writing and reading documents through `setBillingReferences()`, `addBillingReference()` and `getBillingReferences()`
+  - Keep `setBillingReference()` and `getBillingReference()` compatible with a single reference
+  - Normalize collection keys so `getBillingReference()` also returns the first reference after XML parsing
+
 ## Fixed
 
 - Fix automatic decimal detection in `NumberFormatter` when no `$decimals` argument is given (#164)
