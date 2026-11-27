@@ -250,6 +250,38 @@ $taxTotal = (new TaxTotal())
     ->addTaxSubTotal($taxSubTotalReduced);
 ```
 
+## Tax Currency and Multiple Tax Totals
+
+Invoices and credit notes can declare a tax accounting currency and include
+multiple tax totals with different currencies:
+
+```php
+$invoice
+    ->setDocumentCurrencyCode('EUR')
+    ->setTaxCurrencyCode('CZK')
+    ->setTaxTotals([
+        (new TaxTotal())
+            ->setTaxAmount(21)
+            ->setCurrencyCode('EUR')
+            ->addTaxSubTotal($taxSubTotal),
+        (new TaxTotal())
+            ->setTaxAmount(525)
+            ->setCurrencyCode('CZK'),
+    ]);
+
+$xml = Generator::invoice($invoice, 'EUR');
+```
+
+Supply the amounts in each currency yourself; the library does not perform
+currency conversion. `TaxTotal::setCurrencyCode()` applies only to that total's
+`TaxAmount`. When unset or reset to `null`, the generator currency is used, as
+before. Subtotal amounts continue to use the generator currency.
+
+`addTaxTotal()` appends a total, and `getTaxTotals()` returns all totals in order.
+The existing `setTaxTotal()` replaces all totals with a single total, while
+`getTaxTotal()` returns the first total or `null`. XML reading preserves all
+document tax totals and their `TaxAmount/@currencyID` attributes.
+
 ## Item Identifiers
 
 ```php

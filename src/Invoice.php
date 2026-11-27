@@ -33,7 +33,8 @@ class Invoice implements XmlSerializable, XmlDeserializable
     private $payeeParty;
     /** @var PaymentMeans[] $paymentMeans */
     private $paymentMeans;
-    private $taxTotal;
+    /** @var TaxTotal[] $taxTotals */
+    private $taxTotals = [];
     private $legalMonetaryTotal;
     /** @var InvoiceLine[] $invoiceLines */
     protected $invoiceLines;
@@ -439,20 +440,50 @@ class Invoice implements XmlSerializable, XmlDeserializable
     }
 
     /**
-     * @return TaxTotal
+     * Get the first tax total, or null when no totals are set.
+     *
+     * @return TaxTotal|null
      */
     public function getTaxTotal(): ?TaxTotal
     {
-        return $this->taxTotal;
+        return $this->taxTotals[0] ?? null;
     }
 
     /**
+     * Replace all tax totals with a single total.
+     *
      * @param TaxTotal $taxTotal
      * @return static
      */
     public function setTaxTotal(TaxTotal $taxTotal)
     {
-        $this->taxTotal = $taxTotal;
+        return $this->setTaxTotals([$taxTotal]);
+    }
+
+    /**
+     * @return TaxTotal[]
+     */
+    public function getTaxTotals(): array
+    {
+        return $this->taxTotals;
+    }
+
+    /**
+     * @param TaxTotal[] $taxTotals
+     * @return static
+     */
+    public function setTaxTotals(array $taxTotals)
+    {
+        $this->taxTotals = array_values($taxTotals);
+        return $this;
+    }
+
+    /**
+     * @return static
+     */
+    public function addTaxTotal(TaxTotal $taxTotal)
+    {
+        $this->taxTotals[] = $taxTotal;
         return $this;
     }
 
@@ -992,6 +1023,12 @@ class Invoice implements XmlSerializable, XmlDeserializable
             Schema::CBC . "DocumentCurrencyCode" => $this->documentCurrencyCode,
         ]);
 
+        if ($this->taxCurrencyCode !== null) {
+            $writer->write([
+                Schema::CBC . "TaxCurrencyCode" => $this->taxCurrencyCode,
+            ]);
+        }
+
         if ($this->accountingCostCode !== null) {
             $writer->write([
                 Schema::CBC . "AccountingCostCode" => $this->accountingCostCode,
@@ -1085,9 +1122,9 @@ class Invoice implements XmlSerializable, XmlDeserializable
             }
         }
 
-        if ($this->taxTotal !== null) {
+        foreach ($this->taxTotals as $taxTotal) {
             $writer->write([
-                Schema::CAC . "TaxTotal" => $this->taxTotal,
+                Schema::CAC . "TaxTotal" => $taxTotal,
             ]);
         }
 
@@ -1132,8 +1169,8 @@ class Invoice implements XmlSerializable, XmlDeserializable
             $collection,
         );
 
-        /** @var ?TaxTotal $taxTotal */
-        $taxTotal = ReaderHelper::getTagValue(
+        /** @var TaxTotal[] $taxTotals */
+        $taxTotals = ReaderHelper::getArrayValue(
             Schema::CAC . "TaxTotal",
             $collection,
         );
@@ -1257,7 +1294,7 @@ class Invoice implements XmlSerializable, XmlDeserializable
                     $collection,
                 ),
             )
-            ->setTaxTotal($taxTotal)
+            ->setTaxTotals($taxTotals)
             ->setLegalMonetaryTotal($legalMonetaryTotal)
             ->setInvoiceLines(
                 ReaderHelper::getArrayValue(
