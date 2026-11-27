@@ -112,6 +112,7 @@ XML;
         $this->assertInstanceOf(TaxTotal::class, $taxTotal);
 
         $this->assertEquals(20.79, $taxTotal->getTaxAmount());
+        $this->assertSame('EUR', $taxTotal->getCurrencyCode());
 
         $taxSubtotals = $taxTotal->getTaxSubTotals();
 
@@ -130,6 +131,18 @@ XML;
 
         $this->assertEquals('S', $taxCategory->getID());
         $this->assertEquals(21, $taxCategory->getPercent());
+    }
+
+    public function testMissingCurrencyAttributeDeserializesAsNull(): void
+    {
+        $xml = '<cac:TaxTotal xmlns:cac="urn:oasis:names:specification:ubl:schema:xsd:CommonAggregateComponents-2"'
+            . ' xmlns:cbc="urn:oasis:names:specification:ubl:schema:xsd:CommonBasicComponents-2">'
+            . '<cbc:TaxAmount>0</cbc:TaxAmount></cac:TaxTotal>';
+
+        $total = Reader::ubl()->parse($xml);
+        $this->assertInstanceOf(TaxTotal::class, $total);
+        $this->assertSame(0.0, $total->getTaxAmount());
+        $this->assertNull($total->getCurrencyCode());
     }
 }
 

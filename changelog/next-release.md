@@ -2,6 +2,10 @@
 
 ## Added
 
+- Support multiple document-level tax totals on invoices and credit notes through `setTaxTotals()`, `addTaxTotal()` and `getTaxTotals()`
+  - Keep `setTaxTotal()` and `getTaxTotal()` compatible with a single total
+  - Add `TaxTotal::setCurrencyCode()` and `getCurrencyCode()` to write and read each total's `TaxAmount/@currencyID`, with the generator currency as the default
+
 - Support `ext:UBLExtensions` (e.g. for Croatian fiscalization) when writing and reading documents
   - Add the new `Extension` class and `Invoice::addExtension()`, `setExtensions()` and `getExtensions()`
   - `Generator::invoice()`, `creditNote()` and `debitNote()` take an optional `$additionalNamespaces` argument (`[uri => prefix]`) for namespaces used inside the extension content
@@ -14,6 +18,8 @@
   - Normalize collection keys so `getBillingReference()` also returns the first reference after XML parsing
 
 ## Fixed
+
+- Write `cbc:TaxCurrencyCode` when set on invoices and credit notes
 
 - Fix automatic decimal detection in `NumberFormatter` when no `$decimals` argument is given (#164)
   - On PHP 8 with a decimal-comma locale (e.g. `de_DE`), all decimals were dropped, because float-to-string conversion no longer uses the locale's decimal separator

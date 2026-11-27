@@ -15,7 +15,24 @@ use Sabre\Xml\XmlSerializable;
 class TaxTotal implements XmlSerializable, XmlDeserializable
 {
     private $taxAmount;
+    private $currencyCode;
     private $taxSubTotals = [];
+
+    public function getCurrencyCode(): ?string
+    {
+        return $this->currencyCode;
+    }
+
+    /**
+     * Set the TaxAmount currency, or null to use the generator currency.
+     *
+     * @return static
+     */
+    public function setCurrencyCode(?string $currencyCode)
+    {
+        $this->currencyCode = $currencyCode;
+        return $this;
+    }
 
     /**
      * @return mixed
@@ -90,7 +107,7 @@ class TaxTotal implements XmlSerializable, XmlDeserializable
                 'name'       => Schema::CBC . 'TaxAmount',
                 'value'      => NumberFormatter::format($this->taxAmount, 2),
                 'attributes' => [
-                    'currencyID' => Generator::$currencyID
+                    'currencyID' => $this->currencyCode ?? Generator::$currencyID
                 ]
             ],
         ]);
@@ -115,6 +132,7 @@ class TaxTotal implements XmlSerializable, XmlDeserializable
 
         return (new static())
             ->setTaxAmount(isset($taxAmount) ? floatval($taxAmount['value']) : null)
+            ->setCurrencyCode($taxAmount['attributes']['currencyID'] ?? null)
             ->setTaxSubTotals($taxSubTotals);
     }
 }

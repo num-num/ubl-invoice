@@ -106,6 +106,14 @@ class SimpleCreditNoteTest extends TestCase
             ->setTaxTotal($taxTotal)
             ->setInvoiceTypeCode(\NumNum\UBL\InvoiceTypeCode::CREDIT_NOTE);
 
+        $creditNote->setTaxTotals([$taxTotal])
+            ->setTaxCurrencyCode('CZK')
+            ->addTaxTotal(
+                (new \NumNum\UBL\TaxTotal())
+                    ->setTaxAmount(52.5)
+                    ->setCurrencyCode('CZK')
+            );
+
         // Test created object
         // Use \NumNum\UBL\Generator to generate an XML string
         $generator = new \NumNum\UBL\Generator();
@@ -119,5 +127,24 @@ class SimpleCreditNoteTest extends TestCase
         $dom->save('./tests/SimpleCreditNoteTest.xml');
 
         $this->assertEquals(true, $dom->schemaValidate($this->schema));
+
+        $this->assertStringContainsString('<cbc:TaxCurrencyCode>CZK</cbc:TaxCurrencyCode>', $outputXMLString);
+        $this->assertStringContainsString('<cbc:TaxAmount currencyID="EUR">2.10</cbc:TaxAmount>', $outputXMLString);
+        $this->assertStringContainsString('<cbc:TaxAmount currencyID="CZK">52.50</cbc:TaxAmount>', $outputXMLString);
+
+        $parsed = \NumNum\UBL\Reader::ubl()->parse($outputXMLString);
+        $taxTotals = $parsed->getTaxTotals();
+
+        $this->assertSame('CZK', $parsed->getTaxCurrencyCode());
+        $this->assertCount(2, $taxTotals);
+        $this->assertSame($taxTotals[0], $parsed->getTaxTotal());
+        $this->assertSame(2.1, $taxTotals[0]->getTaxAmount());
+        $this->assertSame('EUR', $taxTotals[0]->getCurrencyCode());
+        $this->assertSame(52.5, $taxTotals[1]->getTaxAmount());
+        $this->assertSame('CZK', $taxTotals[1]->getCurrencyCode());
+
+        $creditNote->setTaxTotal($taxTotal)->setTaxCurrencyCode(null);
+        $this->assertSame([$taxTotal], $creditNote->getTaxTotals());
+        $this->assertStringNotContainsString('TaxCurrencyCode', $generator->creditNote($creditNote));
     }
 }
